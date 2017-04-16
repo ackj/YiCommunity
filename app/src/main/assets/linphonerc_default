@@ -1,0 +1,26 @@
+[net]
+download_bw=380
+upload_bw=380
+
+[sip]
+contact="FvSSdk Android" <sip:fvssdk.android@unknown-host>
+use_info=0
+use_ipv6=0
+keepalive_period=30000
+
+[video]
+size=qvga
+
+automatically_initiate=1
+automatically_accept=1
+
+[app]
+sharing_server=https://www.linphone.org:444/lft.php
+tunnel=disabled
+push_notification=0
+
+push_notification_senderid=09876543210
+
+[tunnel]
+host=
+port=443
