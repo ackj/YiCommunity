@@ -12,6 +12,7 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.neighbour.view.NeighbourFragment;
+import com.aglhz.yicommunity.steward.view.StewardFragment;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
@@ -56,13 +57,13 @@ public class MainFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState == null) {
             mFragments[0] = NeighbourFragment.newInstance();
-            mFragments[1] = NeighbourFragment.newInstance();
+            mFragments[1] = StewardFragment.newInstance();
             mFragments[2] = NeighbourFragment.newInstance();
             mFragments[3] = NeighbourFragment.newInstance();
             loadMultipleRootFragment(R.id.fl_container_main_fragment, 0, mFragments[0], mFragments[1], mFragments[2], mFragments[3]);
         } else {
             mFragments[0] = findFragment(NeighbourFragment.class);
-            mFragments[1] = findFragment(NeighbourFragment.class);
+            mFragments[1] = findFragment(StewardFragment.class);
             mFragments[2] = findFragment(NeighbourFragment.class);
             mFragments[3] = findFragment(NeighbourFragment.class);
         }

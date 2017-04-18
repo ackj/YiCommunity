@@ -33,5 +33,25 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <!-- 管家模块 -->
+    <style name="StewardCardTitle">
+        <item name="android:paddingTop">13dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/base_black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="StewardCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="cardCornerRadius">6dp</item>
+        <item name="cardElevation">3dp</item>
+        <item name="contentPaddingBottom">5dp</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
 
 </resources>

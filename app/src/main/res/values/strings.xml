@@ -1,11 +1,21 @@
 <resources>
     <string name="app_name">亿社区</string>
 
+    <!-- 首页模块 -->
     <string name="community">社区</string>
     <string name="steward">管家</string>
     <string name="neighbour">邻里</string>
     <string name="mine">我的</string>
     <string name="zuolinyouli">左邻右里</string>
     <string name="publish">发布</string>
+
+
+    <!-- 管家模块 -->
+    <string name="my_house">我的房屋</string>
+    <string name="smart_home">智能家居</string>
+    <string name="smart_door">智慧门禁</string>
+    <string name="smart_park">智慧停车</string>
+    <string name="property_service">物业服务</string>
+
 
 </resources>

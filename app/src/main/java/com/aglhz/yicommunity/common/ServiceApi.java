@@ -184,4 +184,11 @@ public class ServiceApi {
 
     //物业公告
     public final static String noticeDet = HEADAPI_PROPERTY + "/client/info/noticeDet";
+
+
+    //******************************以下为新增接口**********************************
+    //商店
+    public final static String store = "http://www.aglhz.com/mall/m/index.html?appType=2&token=";
+    //智能设备
+    public final static String SMART_DEVICE = "http://www.aglhz.com/sub_property_ysq/m/html/zhinengshebei.html";
 }

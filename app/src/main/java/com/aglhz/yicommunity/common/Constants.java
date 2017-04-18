@@ -14,5 +14,6 @@ public class Constants {
     }
 
     public static final String PRESS_AGAIN = "再按一次退出";
-
+    public static final String WEB_LINK = "link";
+    public static final String WEB_TITLE = "title";
 }

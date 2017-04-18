@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.main.view.MainFragment;
+import com.aglhz.yicommunity.steward.view.StewardFragment;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -13,6 +14,7 @@ import com.aglhz.yicommunity.main.view.MainFragment;
  * 主页模块的容器，负责装载一个MainFragment和一些需要在这个容器里初始化的东西。
  */
 public class MainActivity extends BaseActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

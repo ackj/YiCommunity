@@ -73,13 +73,17 @@
             </intent-filter>
         </activity>
 
+
+        <activity android:name=".test.TestActivity" />
+        <activity android:name=".login.LoginActivity" />
+        <activity
+            android:name=".web.WebActivity"
+            android:theme="@style/AppTheme.Transparent" />
+
         <service
             android:name="com.sipphone.sdk.SipService"
             android:label="Sip Service"
             android:stopWithTask="false" />
-
-        <activity android:name=".test.TestActivity" />
-        <activity android:name=".login.LoginActivity" />
     </application>
 
 </manifest>

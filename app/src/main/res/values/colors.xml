@@ -24,6 +24,10 @@
     <color name="transparent">#0000</color>
     <color name="lightest_gray">#0a000000</color>
 
+    <!-- 管家模块 -->
+    <color name="base_black">#222222</color>
+
+
     <!-- Material Color Palette -->
     <!-- Red -->
     <color name="material_red_50">#fde0dc</color>

@@ -35,6 +35,8 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
         if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
             // 透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //实现透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
     }
 
