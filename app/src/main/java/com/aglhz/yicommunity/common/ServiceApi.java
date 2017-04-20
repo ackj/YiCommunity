@@ -191,4 +191,18 @@ public class ServiceApi {
     public final static String store = "http://www.aglhz.com/mall/m/index.html?appType=2&token=";
     //智能设备
     public final static String SMART_DEVICE = "http://www.aglhz.com/sub_property_ysq/m/html/zhinengshebei.html";
+    //楼栋列表
+    public final static String BUILDING_LIST = "http://www.aglhz.com:8096/propertyCFG-m/client/buildingList.do";
+    //单元列表
+    public final static String UNIT_LIST = "http://www.aglhz.com:8096/propertyCFG-m/client/buildingUnitList.do";
+    //楼层列表
+    public final static String FLOOR_LIST = "http://www.aglhz.com:8096/propertyCFG-m/client/floorList.do";
+    //房间列表
+    public final static String ROOM_LIST = " http://www.aglhz.com:8096/propertyCFG-m/client/houseList.do";
+
+    public static String apply(boolean b) {
+        return b ? ownerApply : fmApply;
+    }
+
+
 }

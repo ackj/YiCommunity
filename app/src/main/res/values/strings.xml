@@ -17,5 +17,28 @@
     <string name="smart_park">智慧停车</string>
     <string name="property_service">物业服务</string>
 
+    <!-- 房屋模块 -->
+    <string name="personnel_identity">人员身份</string>
+    <string name="personnel_information">个人信息</string>
+    <string name="proprietor">我是业主</string>
+    <string name="member">我是成员</string>
+    <string name="name">姓　名：</string>
+    <string name="identity_card">身份证：</string>
+    <string name="house_information">房屋信息</string>
+    <string name="area">区域：</string>
+    <string name="xiaoqu">小区：</string>
+    <string name="submit">提交</string>
+    <string name="hint_name">请填写真实姓名，以便小区物业审核</string>
+    <string name="hint_idcard">请填写正确身份证号码</string>
+    <string name="building">楼栋：</string>
+    <string name="unit">单元：</string>
+    <string name="floor">楼层：</string>
+    <string name="room_number">房号：</string>
+
+    <!--车卡管理-->
+    <string name="car_card_name">姓名： %1$s</string>
+    <string name="phone">电话： %1$s</string>
+    <string name="parking">车位： %1$s</string>
+    <string name="term_of_validity">有效期： %1$s-%2$s</string>
 
 </resources>

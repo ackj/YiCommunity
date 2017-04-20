@@ -22,7 +22,7 @@ public abstract class BeanCallback<T> extends AbsCallback<T> {
     @Override
     public T convertSuccess(Response response) throws Exception {
         String s = StringConvert.create().convertSuccess(response);
-        ALog.i(s);
+        ALog.e(s);
         response.close();
         Gson gson = new Gson();
         T bean = gson.fromJson(s, getBeanType());
@@ -32,6 +32,7 @@ public abstract class BeanCallback<T> extends AbsCallback<T> {
 
     @Override
     public void onError(Call call, Response response, Exception e) {
+        e.printStackTrace();
         super.onError(call, response, e);
         onError("网络错误，请检查您的网络");
     }
@@ -40,7 +41,9 @@ public abstract class BeanCallback<T> extends AbsCallback<T> {
     public void onSuccess(T bean, Call call, Response response) {
         Gson gson = new Gson();
         String resStr = gson.toJson(bean);
-        BaseBean resBean = gson.fromJson(resStr,BaseBean.class);
+        ALog.e(resStr);
+
+        BaseBean resBean = gson.fromJson(resStr, BaseBean.class);
         int code = resBean.getOther().getCode();
 
         if (code != 200) {
@@ -53,7 +56,7 @@ public abstract class BeanCallback<T> extends AbsCallback<T> {
 
     private void errorTask(BaseBean bean) {
         //123为登录失效
-        if(bean.getOther().getCode() == 123){
+        if (bean.getOther().getCode() == 123) {
 //            UserInfoHelper.cleanInfo();
         }
         onError(((BaseBean) bean).getOther().getMessage());
@@ -63,7 +66,7 @@ public abstract class BeanCallback<T> extends AbsCallback<T> {
 
     abstract public void onSuccess(T Bean);
 
-    public void onSuccess(String content){
+    public void onSuccess(String content) {
 
     }
 

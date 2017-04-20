@@ -23,6 +23,9 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.ServiceApi;
 import com.aglhz.yicommunity.common.bean.IconBean;
+import com.aglhz.yicommunity.house.HouseActivity;
+import com.aglhz.yicommunity.park.ParkActivity;
+import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.presenter.StewardPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
@@ -33,6 +36,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import chihane.jdaddressselector.BottomDialog;
+import chihane.jdaddressselector.OnAddressSelectedListener;
+import chihane.jdaddressselector.model.City;
+import chihane.jdaddressselector.model.County;
+import chihane.jdaddressselector.model.Province;
+import chihane.jdaddressselector.model.Street;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
@@ -164,20 +173,96 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     private void setListener() {
+        //设置我的房屋卡片的事件。
+        myHouseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
+
+                if (position == listMyhouses.size() - 1) {
+                    //点击的最后一个item，此时应该跳转到添加房屋界面。
+                    go2AddHouse();
+                } else {
+
+                }
+
+
+            }
+        });
+
+
+        //设置智能家居卡片事件
         smartHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
 
+                switch (position) {
+                    case 0:
+                        go2SmartDevice();
+                        break;
 
-                String token = "";
-                Intent intent = new Intent(_mActivity, WebActivity.class);
-                intent.putExtra("title", "生活超市");
-                intent.putExtra("link", ServiceApi.SMART_DEVICE + token);
-                startActivity(intent);
+                    case 1:
+
+                        go2DeviceStore();
+                        break;
+
+                    case 2:
+
+                        go2AddDevice();
+                        break;
+                }
+
+
             }
         });
 
+        smartParkAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
+                go2MyCarCard(position);
+            }
+        });
+    }
+
+    private void go2MyCarCard(int position) {
+        Intent intent = new Intent(_mActivity, ParkActivity.class);
+        intent.putExtra(Constants.FROM_TO, position);
+        startActivity(intent);
+    }
+
+    private void go2AddHouse() {
+        startActivity(new Intent(_mActivity, HouseActivity.class));
+    }
+
+    private void go2AddDevice() {
+        startActivity(new Intent(_mActivity, ScanQRCodeActivity.class));
+    }
+
+    private void go2DeviceStore() {
+        BottomDialog dialog = new BottomDialog(_mActivity);
+        dialog.setOnAddressSelectedListener(new OnAddressSelectedListener() {
+            @Override
+            public void onAddressSelected(Province province, City city, County county, Street street) {
+                String s =
+                        (province == null ? "" : province.name) +
+                                (city == null ? "" : "\n" + city.name) +
+                                (county == null ? "" : "\n" + county.name) +
+                                (street == null ? "" : "\n" + street.name);
+
+                ToastUtils.showToast(BaseApplication.mContext, s);
+            }
+        });
+        dialog.show();
+    }
+
+    private void go2SmartDevice() {
+        String token = "";
+        Intent intent = new Intent(_mActivity, WebActivity.class);
+        intent.putExtra("title", "生活超市");
+        intent.putExtra("link", ServiceApi.SMART_DEVICE + token);
+        startActivity(intent);
     }
 
     private void initPtrFrameLayout(final PtrFrameLayout ptrFrameLayout) {

@@ -16,4 +16,9 @@ public class Constants {
     public static final String PRESS_AGAIN = "再按一次退出";
     public static final String WEB_LINK = "link";
     public static final String WEB_TITLE = "title";
+    public static final String FROM_TO = "from_to";
+    public static final int MY_CARD = 0;
+    public static final int PARKING_RECORD = 1;
+    public static final int CARD_TRANSACT = 2;
+
 }

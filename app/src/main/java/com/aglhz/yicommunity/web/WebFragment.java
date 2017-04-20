@@ -63,6 +63,7 @@ public class WebFragment extends BaseFragment {
         if (args != null) {
             title = args.getString(Constants.WEB_TITLE);
             link = args.getString(Constants.WEB_LINK);
+//            link = "http://192.168.2.111:8000/sub_ysq_h5/m/html/report.html";
         }
     }
 
@@ -147,7 +148,12 @@ public class WebFragment extends BaseFragment {
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-
+        ptrFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrFrameLayout.autoRefresh();
+            }
+        }, 100);
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
@@ -161,7 +167,7 @@ public class WebFragment extends BaseFragment {
                 mWebView.loadUrl(link);
             }
         });
-        ptrFrameLayout.autoRefresh();
+//        ptrFrameLayout.autoRefresh();
     }
 
     @Override

@@ -54,4 +54,15 @@
         <item name="cardUseCompatPadding">true</item>
     </style>
 
+
+    <style name="AddHouseInfo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableRight">@drawable/ic_down_gray_56px</item>
+        <item name="android:textColor">@color/accent_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lines">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

@@ -13,7 +13,7 @@ import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
  */
 
 public class NeighbourModel extends BaseModel implements NeighbourContract.Model {
-    private final String TAG = NeighbourPresenter.class.getSimpleName();
+    private final String TAG = NeighbourModel.class.getSimpleName();
 
     @Override
     public void start() {

@@ -7,6 +7,8 @@
     <!-- 常用颜色值 -->
     <color name="base_color">#E95D5A</color>
     <color name="base_line">#E7E7E7</color>
+    <color name="base_grey">#F3F5F7</color>
+    <color name="base_black">#222222</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="gray">#808080</color>
@@ -25,10 +27,16 @@
     <color name="lightest_gray">#0a000000</color>
 
     <!-- 管家模块 -->
-    <color name="base_black">#222222</color>
 
+    <!-- 房屋模块 -->
+    <color name="default_text">#999</color>
+    <color name="accent_text">#222</color>
 
-    <!-- Material Color Palette -->
+    <!--车卡办理-->
+    <color name="green3">#0ABE9B</color>
+    <color name="orange2">#FEB953</color>
+
+    <!--—————————————————————————————————————————————————————— Material Color Palette ————————————————————————————————————————————————————————————————————————-->
     <!-- Red -->
     <color name="material_red_50">#fde0dc</color>
     <color name="material_red_100">#f9bdbb</color>
