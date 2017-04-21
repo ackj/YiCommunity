@@ -1,16 +1,27 @@
 package com.aglhz.yicommunity.steward.view;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -25,14 +36,19 @@ import com.aglhz.yicommunity.common.ServiceApi;
 import com.aglhz.yicommunity.common.bean.IconBean;
 import com.aglhz.yicommunity.house.HouseActivity;
 import com.aglhz.yicommunity.park.ParkActivity;
+import com.aglhz.yicommunity.property.PropertyActivity;
 import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.presenter.StewardPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ListHolder;
+import com.orhanobut.dialogplus.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,6 +95,8 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     private StewardRVAdapter smartParkAdapter;
     private StewardRVAdapter propertyServiceAdapter;
     private ArrayList<IconBean> listMyhouses;
+    private DialogPlus contactDialog;
+    private boolean isShow;
 
     public static StewardFragment newInstance() {
         return new StewardFragment();
@@ -116,6 +134,8 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     private void initData() {
+        ALog.e("222222222222");
+        mPresenter.start();
         initPtrFrameLayout(ptrFrameLayout);
         initRecyclerView();
         setListener();
@@ -124,14 +144,25 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     private void initRecyclerView() {
 
         //我的房屋卡片
-        rvMyHouse.setLayoutManager(new GridLayoutManager(_mActivity, 3));
+        rvMyHouse.setLayoutManager(new GridLayoutManager(_mActivity, 3) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;//禁止RecyclerView的滑动，避免嵌套ScorllView时滑动卡顿。
+            }
+        });
         rvMyHouse.setAdapter(myHouseAdapter = new StewardRVAdapter());
         listMyhouses = new ArrayList<IconBean>();
         listMyhouses.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加主机"));
         myHouseAdapter.setNewData(listMyhouses);
 
         //智能家居卡片
-        rvSmartHome.setLayoutManager(new GridLayoutManager(_mActivity, 3));
+        rvSmartHome.setLayoutManager(new GridLayoutManager(_mActivity, 3) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+
+        });
         rvSmartHome.setAdapter(smartHomeAdapter = new StewardRVAdapter());
         List<IconBean> listSmartHome = new ArrayList<IconBean>();
         listSmartHome.add(new IconBean(R.drawable.ic_smart_device_blue_140px, "智能设备"));
@@ -141,39 +172,56 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         smartHomeAdapter.setNewData(listSmartHome);
 
         //智慧门禁卡片
-        rvSmartDoor.setLayoutManager(new GridLayoutManager(_mActivity, 3));
+        rvSmartDoor.setLayoutManager(new GridLayoutManager(_mActivity, 3) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         rvSmartDoor.setAdapter(smartDoorAdapter = new StewardRVAdapter());
         List<IconBean> listSmartDoor = new ArrayList<IconBean>();
-        listSmartDoor.add(new IconBean(R.drawable.ic_bluetooth_green_140px, "蓝牙开门"));
+        listSmartDoor.add(new IconBean(R.drawable.ic_key_green_140px_140px, "设置开门"));
         listSmartDoor.add(new IconBean(R.drawable.ic_open_door_green_140px, "点击开门"));
         listSmartDoor.add(new IconBean(R.drawable.ic_password_open_door_green_140px, "密码开门"));
         listSmartDoor.add(new IconBean(R.drawable.ic_call_door_green_140px, "呼叫门禁"));
         listSmartDoor.add(new IconBean(R.drawable.ic_open_recording_green_140px, "开门记录"));
+
         smartDoorAdapter.setNewData(listSmartDoor);
 
-
         //智慧停车卡片
-        rvSmartPark.setLayoutManager(new GridLayoutManager(_mActivity, 3));
+        rvSmartPark.setLayoutManager(new GridLayoutManager(_mActivity, 3) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         rvSmartPark.setAdapter(smartParkAdapter = new StewardRVAdapter());
         List<IconBean> listSmartPark = new ArrayList<IconBean>();
         listSmartPark.add(new IconBean(R.drawable.ic_car_card_200px, "我的车卡"));
         listSmartPark.add(new IconBean(R.drawable.ic_stop_record_140px, "停车记录"));
         listSmartPark.add(new IconBean(R.drawable.ic_add_car_card_200px, "办理车卡"));
+
         smartParkAdapter.setNewData(listSmartPark);
 
         //物业服务卡片
-        rvPropertyService.setLayoutManager(new GridLayoutManager(_mActivity, 3));
+        rvPropertyService.setLayoutManager(new GridLayoutManager(_mActivity, 3) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         rvPropertyService.setAdapter(propertyServiceAdapter = new StewardRVAdapter());
         List<IconBean> listPropertyService = new ArrayList<IconBean>();
         listPropertyService.add(new IconBean(R.drawable.ic_repair_orange_140px, "物业报修"));
         listPropertyService.add(new IconBean(R.drawable.ic_call_property_orange_140px, "联系物业"));
         listPropertyService.add(new IconBean(R.drawable.ic_property_complaints_orange_140px, "管理投诉"));
+
         propertyServiceAdapter.setNewData(listPropertyService);
 
     }
 
     private void setListener() {
-        //设置我的房屋卡片的事件。
+        //设置我的房屋卡片的点击事件。
         myHouseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -185,13 +233,11 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                 } else {
 
                 }
-
-
             }
         });
 
 
-        //设置智能家居卡片事件
+        //设置智能家居卡片点击事件。
         smartHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -212,49 +258,85 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                         go2AddDevice();
                         break;
                 }
-
-
             }
         });
 
+
+        //设置智能门禁卡片点击事件。
+        smartDoorAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
+
+                switch (position) {
+                    case 0:
+                        break;
+
+                    case 1:
+                        break;
+
+                    case 2:
+                        break;
+                }
+            }
+        });
+
+        //设置智慧停车卡片点击事件。
         smartParkAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
-                go2MyCarCard(position);
+                go2Park(position);
+            }
+        });
+
+        //物业服务卡片点击事件。
+        propertyServiceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
+                if (position == 1) {
+                    if (contactDialog == null) {
+                        isShow = true;
+                        mPresenter.requestContact("KBSJ-agl-00005");
+                    } else {
+                        contactDialog.show();
+                    }
+
+                } else {
+                    go2PropertyService(position);
+                }
             }
         });
     }
 
-    private void go2MyCarCard(int position) {
+    //跳转到物业模块。
+    private void go2PropertyService(int position) {
+        Intent intent = new Intent(_mActivity, PropertyActivity.class);
+        intent.putExtra(Constants.FROM_TO, position);
+        startActivity(intent);
+    }
+
+    //跳转到停车模块。
+    private void go2Park(int position) {
         Intent intent = new Intent(_mActivity, ParkActivity.class);
         intent.putExtra(Constants.FROM_TO, position);
         startActivity(intent);
     }
 
+    //跳转到添加房屋模块。
     private void go2AddHouse() {
         startActivity(new Intent(_mActivity, HouseActivity.class));
     }
 
+    //跳转到添加设备模块。
     private void go2AddDevice() {
         startActivity(new Intent(_mActivity, ScanQRCodeActivity.class));
     }
 
-    private void go2DeviceStore() {
-        BottomDialog dialog = new BottomDialog(_mActivity);
-        dialog.setOnAddressSelectedListener(new OnAddressSelectedListener() {
-            @Override
-            public void onAddressSelected(Province province, City city, County county, Street street) {
-                String s =
-                        (province == null ? "" : province.name) +
-                                (city == null ? "" : "\n" + city.name) +
-                                (county == null ? "" : "\n" + county.name) +
-                                (street == null ? "" : "\n" + street.name);
 
-                ToastUtils.showToast(BaseApplication.mContext, s);
-            }
-        });
-        dialog.show();
+    private void go2DeviceStore() {
+
     }
 
     private void go2SmartDevice() {
@@ -274,6 +356,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
@@ -311,19 +394,44 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
 
     @Override
     public void onDestroy() {
-        /**
-         * 记得清理adapter
-         */
+        myHouseAdapter = null;
+        smartHomeAdapter = null;
+        smartDoorAdapter = null;
+        smartParkAdapter = null;
+        propertyServiceAdapter = null;
         super.onDestroy();
     }
 
     @Override
     public void responseHouses(List<IconBean> listIcons) {
         ptrFrameLayout.refreshComplete();
-        listMyhouses.addAll(0, listIcons);
-        myHouseAdapter.setNewData(listMyhouses);
+        listIcons.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加主机"));
+        myHouseAdapter.setNewData(listIcons);
+    }
 
+    @Override
+    public void responseContact(final List<String> listPhone) {
+        if (contactDialog == null) {
+            contactDialog = DialogPlus.newDialog(_mActivity)
+                    .setHeader(R.layout.dialog_header)
+                    .setFooter(R.layout.dialog_footer)
+                    .setContentHolder(new ListHolder())
+                    .setGravity(Gravity.BOTTOM)
+                    .setAdapter(new ArrayAdapter<>(_mActivity, android.R.layout.simple_list_item_1, listPhone))
+                    .setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listPhone.get(position))));
+                        }
+                    })
+                    .setCancelable(true)
+                    .create();
+//            ((TextView) ((LinearLayout) contactDialog.getHeaderView()).getChildAt(0)).setText("电话：");
+        }
 
+        if (isShow) {
+            contactDialog.show();
+        }
     }
 }
 

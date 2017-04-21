@@ -1,16 +1,27 @@
 package com.aglhz.yicommunity.common.bean;
 
 /**
- * Created by YandZD on 2017/1/16.
+ * Created by leguang on 2017/4/21 0021.
+ * Email：langmanleguang@qq.com
  */
 
-public class BaseBean {
+public class ContactBean {
 
     /**
-     * other : {"code":500,"message":"手机号 不能为空","time":"","currpage":0,"next":"","forward":"","refresh":"","first":""}
+     * data : {"fid":"5a1896b4-2458-4a4c-a240-e4bd1240e29d","mobileNo":"18676733437","telephoneNo":""}
+     * other : {"code":200,"message":"data success","time":"","currpage":0,"next":"","forward":"","refresh":"","first":""}
      */
 
+    private DataBean data;
     private OtherBean other;
+
+    public DataBean getData() {
+        return data;
+    }
+
+    public void setData(DataBean data) {
+        this.data = data;
+    }
 
     public OtherBean getOther() {
         return other;
@@ -20,10 +31,46 @@ public class BaseBean {
         this.other = other;
     }
 
+    public static class DataBean {
+        /**
+         * fid : 5a1896b4-2458-4a4c-a240-e4bd1240e29d
+         * mobileNo : 18676733437
+         * telephoneNo :
+         */
+
+        private String fid;
+        private String mobileNo;
+        private String telephoneNo;
+
+        public String getFid() {
+            return fid;
+        }
+
+        public void setFid(String fid) {
+            this.fid = fid;
+        }
+
+        public String getMobileNo() {
+            return mobileNo;
+        }
+
+        public void setMobileNo(String mobileNo) {
+            this.mobileNo = mobileNo;
+        }
+
+        public String getTelephoneNo() {
+            return telephoneNo;
+        }
+
+        public void setTelephoneNo(String telephoneNo) {
+            this.telephoneNo = telephoneNo;
+        }
+    }
+
     public static class OtherBean {
         /**
-         * code : 500
-         * message : 手机号 不能为空
+         * code : 200
+         * message : data success
          * time :
          * currpage : 0
          * next :
@@ -104,26 +151,5 @@ public class BaseBean {
         public void setFirst(String first) {
             this.first = first;
         }
-
-        @Override
-        public String toString() {
-            return "OtherBean{" +
-                    "code=" + code +
-                    ", message='" + message + '\'' +
-                    ", time='" + time + '\'' +
-                    ", currpage=" + currpage +
-                    ", next='" + next + '\'' +
-                    ", forward='" + forward + '\'' +
-                    ", refresh='" + refresh + '\'' +
-                    ", first='" + first + '\'' +
-                    '}';
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "BaseBean{" +
-                "other=" + other +
-                '}';
     }
 }

@@ -26,7 +26,7 @@ public class BaseParams {
         Map<String, Object> map = new HashMap<>();
 //        if (UserInfoHelper.getUserInfo() == null) return map;
 //        String token = UserInfoHelper.getUserInfo().getToken();
-        map.put("token", "tk_08abca84-c9a6-4e45-9c23-377b081607ae");
+        map.put("token", "tk_dbdc23df-87ec-4f8a-8956-22dd514e147a");
         return map;
     }
 

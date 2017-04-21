@@ -63,6 +63,8 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
     }
 
     public void initStateBar(View view) {
+        Log.e("状态栏：", "状态栏：" + ScreenUtils.getStatusBarHeight(_mActivity) + "");
+
         if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
             view.setPadding(view.getPaddingLeft(),
                     view.getPaddingTop() + ScreenUtils.getStatusBarHeight(_mActivity),

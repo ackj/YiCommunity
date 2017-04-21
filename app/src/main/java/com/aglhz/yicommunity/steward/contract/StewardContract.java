@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.steward.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.common.bean.IconBean;
+import com.alipay.android.phone.mrpc.core.Request;
 
 import java.util.List;
 
@@ -18,9 +19,12 @@ public interface StewardContract {
 
         void responseHouses(List<IconBean> listIcons);
 
+        void responseContact(List<String> listPhone);
+
     }
 
     interface Presenter extends BaseContract.Presenter {
+        void requestContact(String cmnt_c);
     }
 
     interface Model extends BaseContract.Model {

@@ -9,6 +9,7 @@
         <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:navigationBarColor">@color/base_color</item>
     </style>
 
     <style name="AppTheme.Transparent">

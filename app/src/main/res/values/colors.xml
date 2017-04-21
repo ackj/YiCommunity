@@ -36,6 +36,11 @@
     <color name="green3">#0ABE9B</color>
     <color name="orange2">#FEB953</color>
 
+    <!--物业报修-->
+    <color name="gary_text">#999999</color>
+    <color name="gary_edittext_bg">#F1F5F8</color>
+
+
     <!--—————————————————————————————————————————————————————— Material Color Palette ————————————————————————————————————————————————————————————————————————-->
     <!-- Red -->
     <color name="material_red_50">#fde0dc</color>

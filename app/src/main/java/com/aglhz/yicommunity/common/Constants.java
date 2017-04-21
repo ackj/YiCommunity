@@ -21,4 +21,7 @@ public class Constants {
     public static final int PARKING_RECORD = 1;
     public static final int CARD_TRANSACT = 2;
 
+    public static final int PROPERTY_REPAIR = 0;
+    public static final int COMPLAIN = 2;
+
 }

@@ -98,6 +98,9 @@
         <activity
             android:name=".park.ParkActivity"
             android:theme="@style/AppTheme.Transparent" />
+        <activity
+            android:name=".property.PropertyActivity"
+            android:theme="@style/AppTheme.Transparent" />
     </application>
 
 </manifest>

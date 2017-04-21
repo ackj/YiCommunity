@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.aglhz.abase.log.ALog;
+import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.main.view.MainFragment;
 import com.sipphone.sdk.SipCoreManager;
 import com.sipphone.sdk.SipCorePreferences;
 import com.sipphone.sdk.access.WebApiConstants;
@@ -19,7 +21,7 @@ import org.linphone.core.LinphoneCore;
 import org.linphone.core.LinphoneCoreListenerBase;
 import org.linphone.core.LinphoneProxyConfig;
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends BaseActivity {
     private LinphoneCoreListenerBase mListener;
     private WebUserApi mWebUserApi;
 
@@ -27,66 +29,9 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        WebApiConstants.setHttpServer("http://member.planidea.cn");
-
-//
-//        findViewById(R.id.bt_openserver).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                ALog.e("开启服务");
-////                startService(new Intent(Intent.ACTION_MAIN).setClass(MainActivity.this, SipService.class));
-//            }
-//        });
-//
-//        findViewById(R.id.bt_getket).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ALog.e("获取API权限");
-//
-////                mWebUserApi = new WebUserApi(MainActivity.this);
-//                mWebUserApi.setOnAccessTokenListener(new WebUserApi.onAccessTokenListener() {
-//
-//                    @Override
-//                    public void onPreAccessToken() {
-//
-//                        ALog.e("获取权限之前");
-//                    }
-//
-//                    @Override
-//                    public void onPostAccessToken(WebReponse webReponse) {
-//
-//                        ALog.e("获取权限后：" + webReponse.getStatusCode());
-//
-//                    }
-//
-//
-//                });
-//
-////                mWebUserApi.accessToken(HardwareInfo.UUID, HardwareInfo.UserName);
-//            }
-//        });
-//
-//
-//        findViewById(R.id.bt_v).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                setOutgoingListener();
-//
-//            }
-//        });
-//
-////        regiestIncomingReceived();
-//
-//        findViewById(R.id.bt_v111).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                callOutgoing();
-//
-//            }
-//        });
-
+        if (savedInstanceState == null) {
+            loadRootFragment(R.id.fl_main_activity, new MaterialStyleFragment());
+        }
     }
 
     private void setOutgoingListener() {

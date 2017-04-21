@@ -20,8 +20,8 @@
             android:id="@+id/sv_steward_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:scrollbars="none">
 
             <LinearLayout

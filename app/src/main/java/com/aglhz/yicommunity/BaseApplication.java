@@ -21,7 +21,7 @@ public class BaseApplication extends Application implements Application.Activity
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
+//        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
 //        registerActivityLifecycleCallbacks(this);
 //        ALog.init(true, "ABase");
 

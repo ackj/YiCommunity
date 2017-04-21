@@ -198,11 +198,14 @@ public class ServiceApi {
     //楼层列表
     public final static String FLOOR_LIST = "http://www.aglhz.com:8096/propertyCFG-m/client/floorList.do";
     //房间列表
-    public final static String ROOM_LIST = " http://www.aglhz.com:8096/propertyCFG-m/client/houseList.do";
+    public final static String ROOM_LIST = "http://www.aglhz.com:8096/propertyCFG-m/client/houseList.do";
 
     public static String apply(boolean b) {
         return b ? ownerApply : fmApply;
     }
+
+    public final static String CONTACT = "http://192.168.2.116:8080/sub_property_ysq/property/contact-property/to-client/contact-info";
+
 
 
 }
