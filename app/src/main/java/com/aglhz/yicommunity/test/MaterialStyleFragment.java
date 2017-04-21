@@ -75,6 +75,8 @@ public class MaterialStyleFragment extends BaseFragment {
         header1.setPtrFrameLayout(mPtrFrameLayout);
 
 
+        
+
         mPtrFrameLayout.setDurationToCloseHeader(1500);
         mPtrFrameLayout.setHeaderView(header);
         mPtrFrameLayout.addPtrUIHandler(header);
