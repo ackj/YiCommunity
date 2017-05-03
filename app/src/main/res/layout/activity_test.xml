@@ -4,34 +4,4 @@
     android:layout_height="match_parent"
    >
 
-    <in.srain.cube.views.ptr.PtrFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/material_style_ptr_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        cube_ptr:ptr_duration_to_close_either="1000"
-        cube_ptr:ptr_keep_header_when_refresh="true"
-        cube_ptr:ptr_pull_to_fresh="true"
-        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-        cube_ptr:ptr_resistance="1.7">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#00ff00"
-            android:clickable="true"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-
-            <Button
-                android:id="@+id/bt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="我的我的我的我的我的我的我的我的我的"
-                android:textSize="25sp" />
-
-
-        </LinearLayout>
-
-    </in.srain.cube.views.ptr.PtrFrameLayout>
 </RelativeLayout>

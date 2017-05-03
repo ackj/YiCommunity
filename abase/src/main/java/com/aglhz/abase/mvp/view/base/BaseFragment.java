@@ -55,13 +55,6 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
         super.onDestroy();
     }
 
-
-    public void start() {
-        if (mPresenter != null) {
-            mPresenter.start();
-        }
-    }
-
     public void initStateBar(View view) {
         Log.e("状态栏：", "状态栏：" + ScreenUtils.getStatusBarHeight(_mActivity) + "");
 

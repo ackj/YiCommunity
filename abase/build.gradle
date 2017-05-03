@@ -39,7 +39,7 @@ dependencies {
     //    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     //    compile 'com.squareup.okhttp3:logging-interceptor:3.4.0-RC1'
     //谷歌json框架
-    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.code.gson:gson:2.7'
     //Okgo网络请求框架
     compile 'com.lzy.net:okgo:2.1.4'
     //可以单独使用，不需要依赖下方的扩展包
@@ -53,5 +53,5 @@ dependencies {
     //一个不错的RecyclerViewAdapter辅助框架
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.0'
     //下拉刷新框架
-//    compile 'in.srain.cube:ultra-ptr:1.0.11'
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
 }

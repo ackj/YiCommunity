@@ -77,33 +77,33 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
         }
     }
 
-    public abstract class RxSubscriber<T> extends Subscriber<T> {
-
-        @Override
-        public void onStart() {
-            super.onStart();
-            getView().start();
-        }
-
-        @Override
-        public void onNext(T t) {
-            _onNext(t);
-        }
-
-
-        @Override
-        public void onCompleted() {
-            getView().end();
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            e.printStackTrace();
-            //此处不考虑错误类型，笼统的以错误来介绍
-            getView().error(e);
-        }
-
-        public abstract void _onNext(T t);
-
-    }
+//    public abstract class RxSubscriber<T> extends Subscriber<T> {
+//
+//        @Override
+//        public void onStart() {
+//            super.onStart();
+//            getView().start();
+//        }
+//
+//        @Override
+//        public void onNext(T t) {
+//            _onNext(t);
+//        }
+//
+//
+//        @Override
+//        public void onCompleted() {
+//            getView().end();
+//        }
+//
+//        @Override
+//        public void onError(Throwable e) {
+//            e.printStackTrace();
+//            //此处不考虑错误类型，笼统的以错误来介绍
+//            getView().error(e);
+//        }
+//
+//        public abstract void _onNext(T t);
+//
+//    }
 }

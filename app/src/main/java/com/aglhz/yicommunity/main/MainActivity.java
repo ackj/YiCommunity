@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.main.view.MainFragment;
-import com.aglhz.yicommunity.test.MaterialStyleFragment;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
