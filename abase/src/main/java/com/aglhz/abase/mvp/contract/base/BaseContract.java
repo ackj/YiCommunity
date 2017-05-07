@@ -2,6 +2,8 @@ package com.aglhz.abase.mvp.contract.base;
 
 import android.support.annotation.UiThread;
 
+import static android.R.id.message;
+
 /**
  * Author：leguang on 2016/10/10 0010 20:44
  * Email：langmanleguang@qq.com
@@ -13,7 +15,7 @@ public interface BaseContract {
 
         void start(Object response);
 
-        void error(Throwable t);
+        void error(String errorMessage);
     }
 
     interface Presenter {

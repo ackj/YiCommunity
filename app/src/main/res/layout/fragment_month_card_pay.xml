@@ -240,7 +240,7 @@
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:background="@drawable/select_submit"
+        android:background="@drawable/selector_submit"
         android:text="提交申请"
         android:textColor="@color/white" />
 </LinearLayout>

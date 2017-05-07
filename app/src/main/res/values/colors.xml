@@ -26,8 +26,6 @@
     <color name="transparent">#0000</color>
     <color name="lightest_gray">#0a000000</color>
 
-    <!-- 管家模块 -->
-
     <!-- 房屋模块 -->
     <color name="default_text">#999</color>
     <color name="accent_text">#222</color>
@@ -37,9 +35,48 @@
     <color name="orange2">#FEB953</color>
 
     <!--物业报修-->
-    <color name="gary_text">#999999</color>
+    <color name="gray_text">#999999</color>
     <color name="gary_edittext_bg">#F1F5F8</color>
 
+    <!--成员权限-->
+    <color name="green_switch_on">#4BD865</color>
+    <color name="red_remove_member_text">#E33431</color>
+
+    <!--我的-->
+    <color name="red_pointer">#E23531</color>
+    <color name="navy_blue">#5B9FC9</color>
+
+
+    <!--City Picker-->
+    <color name="cp_colorAccent">#F7F7F7</color>
+    <color name="cp_colorPrimary">@color/cp_colorAccent</color>
+    <color name="cp_colorPrimaryDark">@color/cp_colorAccent</color>
+    <color name="cp_divider">#E5E5E5</color>
+    <color name="cp_shadow">#AAEBEBEB</color>
+    <color name="cp_common_bg">#FAFAFA</color>
+    <color name="cp_content_bg">@color/cp_colorAccent</color>
+    <color name="cp_gray">#8c8c8c</color>
+    <color name="cp_gray_deep">#5c5c5c</color>
+    <color name="cp_alpha_gray">#CC646464</color>
+    <color name="cp_theme_gray">#646464</color>
+    <color name="cp_gray_round">#D5D5D5</color>
+
+    <!--首页-->
+    <color name="red_text">#E33431</color>
+    <color name="gray_comment_bg">#EBF0F3</color>
+
+    <color name="item_border_color">#666666</color>
+    <color name="item_default_color">#22EEEEEE</color>
+    <color name="item_pressed_color">#CCCCCC</color>
+    <color name="item_activated_color">#77CEEE</color>
+
+    <color name="item_service_red">#FF4141</color>
+    <color name="item_service_blue">#53B2F5</color>
+    <color name="item_service_green">#99CC00</color>
+    <color name="item_service_orange">#FF9900</color>
+
+    <!--登录模块-->
+    <color name="edit_hint">#b4b4b4</color>
 
     <!--—————————————————————————————————————————————————————— Material Color Palette ————————————————————————————————————————————————————————————————————————-->
     <!-- Red -->

@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.bean.CarCardTransactBean;
+import com.aglhz.yicommunity.bean.CarCardTransactBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;

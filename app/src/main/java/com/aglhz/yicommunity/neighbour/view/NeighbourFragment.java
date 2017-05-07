@@ -15,6 +15,7 @@ import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.neighbour.contract.NeighbourContract;
 import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
 
@@ -129,27 +130,31 @@ public class NeighbourFragment extends BaseLazyFragment<NeighbourContract.Presen
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                mPresenter.start();
+//                mPresenter.start();
 
             }
         });
     }
 
-    @Override
-    public void end() {
-        ALog.e("结束…………………………………………");
-        ptrFrameLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ptrFrameLayout.refreshComplete();
+//    @Override
+//    public void end() {
+//        ALog.e("结束…………………………………………");
+//        ptrFrameLayout.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                ptrFrameLayout.refreshComplete();
+//
+//            }
+//        }, 5000);
+//    }
 
-            }
-        }, 5000);
+    @Override
+    public void start(Object response) {
+
     }
 
     @Override
-    public void error(Throwable t) {
-
+    public void error(String errorMessage) {
     }
 
 

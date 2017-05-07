@@ -1,9 +1,7 @@
 package com.aglhz.yicommunity.neighbour.model;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.yicommunity.neighbour.contract.NeighbourContract;
-import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -15,8 +13,9 @@ import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
 public class NeighbourModel extends BaseModel implements NeighbourContract.Model {
     private final String TAG = NeighbourModel.class.getSimpleName();
 
+
     @Override
-    public void start() {
-        ALog.e(TAG + "start()");
+    public void start(Object request) {
+
     }
 }

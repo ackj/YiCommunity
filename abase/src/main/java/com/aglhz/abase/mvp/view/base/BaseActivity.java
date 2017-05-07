@@ -10,6 +10,8 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.utils.NetworkUtils;
 
+import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import me.yokeyword.fragmentation_swipeback.SwipeBackActivity;
 
 
@@ -91,5 +93,11 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
         //把每一个Activity弹出栈
         ActivityManager.getInstance().removeActivity(this);
         super.onDestroy();
+    }
+
+    @Override
+    protected FragmentAnimator onCreateFragmentAnimator() {
+        return new DefaultNoAnimator();
+//        return new FragmentAnimator(android.R.anim.fade_in, android.R.anim.fade_out, 0, 0);
     }
 }

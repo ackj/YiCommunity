@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
+    android:layout_marginRight="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_item_quality_life"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_head_item_life"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/bg_expressdelivery_345px_450px" />
+
+        <TextView
+            android:id="@+id/tv_title_item_life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="闲置交换"
+            android:textColor="@color/base_black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_desc_item_life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="社区闲置物品不得闲"
+            android:textColor="#999"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

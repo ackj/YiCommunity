@@ -27,14 +27,9 @@ public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, Ne
         return new NeighbourModel();
     }
 
+
     @Override
-    public void start() {
+    public void start(Object request) {
 
-        mModel.start();
-        ALog.e("NeighbourPresenter::start");
-
-        if (isViewAttached()) {
-            getView().end();
-        }
     }
 }

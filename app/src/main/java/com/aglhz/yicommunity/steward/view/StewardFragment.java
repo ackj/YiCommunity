@@ -1,41 +1,38 @@
 package com.aglhz.yicommunity.steward.view;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.ServiceApi;
-import com.aglhz.yicommunity.common.bean.IconBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.bean.IconBean;
+import com.aglhz.yicommunity.bean.SipBean;
+import com.aglhz.yicommunity.door.DoorActivity;
 import com.aglhz.yicommunity.house.HouseActivity;
+import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.park.ParkActivity;
+import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.property.PropertyActivity;
 import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
@@ -48,16 +45,9 @@ import com.orhanobut.dialogplus.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import chihane.jdaddressselector.BottomDialog;
-import chihane.jdaddressselector.OnAddressSelectedListener;
-import chihane.jdaddressselector.model.City;
-import chihane.jdaddressselector.model.County;
-import chihane.jdaddressselector.model.Province;
-import chihane.jdaddressselector.model.Street;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
@@ -94,9 +84,10 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     private StewardRVAdapter smartDoorAdapter;
     private StewardRVAdapter smartParkAdapter;
     private StewardRVAdapter propertyServiceAdapter;
-    private ArrayList<IconBean> listMyhouses;
+    private List<IconBean> listMyhouses;
     private DialogPlus contactDialog;
     private boolean isShow;
+    private final static int SELECT_COMMUNIT = 100;   //选择社区
 
     public static StewardFragment newInstance() {
         return new StewardFragment();
@@ -134,8 +125,6 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     private void initData() {
-        ALog.e("222222222222");
-        mPresenter.start();
         initPtrFrameLayout(ptrFrameLayout);
         initRecyclerView();
         setListener();
@@ -152,7 +141,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         });
         rvMyHouse.setAdapter(myHouseAdapter = new StewardRVAdapter());
         listMyhouses = new ArrayList<IconBean>();
-        listMyhouses.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加主机"));
+        listMyhouses.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加房屋", ""));
         myHouseAdapter.setNewData(listMyhouses);
 
         //智能家居卡片
@@ -165,9 +154,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         });
         rvSmartHome.setAdapter(smartHomeAdapter = new StewardRVAdapter());
         List<IconBean> listSmartHome = new ArrayList<IconBean>();
-        listSmartHome.add(new IconBean(R.drawable.ic_smart_device_blue_140px, "智能设备"));
-        listSmartHome.add(new IconBean(R.drawable.ic_smart_store_blue_140px, "智能设备商城"));
-        listSmartHome.add(new IconBean(R.drawable.ic_add_smart_blue_140px, "添加主机"));
+        listSmartHome.add(new IconBean(R.drawable.ic_smart_device_blue_140px, "智能设备", ""));
+        listSmartHome.add(new IconBean(R.drawable.ic_smart_store_blue_140px, "智能设备商城", ""));
+        listSmartHome.add(new IconBean(R.drawable.ic_add_smart_blue_140px, "添加主机", ""));
 
         smartHomeAdapter.setNewData(listSmartHome);
 
@@ -180,11 +169,11 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         });
         rvSmartDoor.setAdapter(smartDoorAdapter = new StewardRVAdapter());
         List<IconBean> listSmartDoor = new ArrayList<IconBean>();
-        listSmartDoor.add(new IconBean(R.drawable.ic_key_green_140px_140px, "设置开门"));
-        listSmartDoor.add(new IconBean(R.drawable.ic_open_door_green_140px, "点击开门"));
-        listSmartDoor.add(new IconBean(R.drawable.ic_password_open_door_green_140px, "密码开门"));
-        listSmartDoor.add(new IconBean(R.drawable.ic_call_door_green_140px, "呼叫门禁"));
-        listSmartDoor.add(new IconBean(R.drawable.ic_open_recording_green_140px, "开门记录"));
+        listSmartDoor.add(new IconBean(R.drawable.ic_key_green_140px_140px, "设置开门", ""));
+        listSmartDoor.add(new IconBean(R.drawable.ic_open_door_green_140px, "指定开门", ""));
+        listSmartDoor.add(new IconBean(R.drawable.ic_password_open_door_green_140px, "密码开门", ""));
+        listSmartDoor.add(new IconBean(R.drawable.ic_call_door_green_140px, "呼叫门禁", ""));
+        listSmartDoor.add(new IconBean(R.drawable.ic_open_recording_green_140px, "开门记录", ""));
 
         smartDoorAdapter.setNewData(listSmartDoor);
 
@@ -197,9 +186,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         });
         rvSmartPark.setAdapter(smartParkAdapter = new StewardRVAdapter());
         List<IconBean> listSmartPark = new ArrayList<IconBean>();
-        listSmartPark.add(new IconBean(R.drawable.ic_car_card_200px, "我的车卡"));
-        listSmartPark.add(new IconBean(R.drawable.ic_stop_record_140px, "停车记录"));
-        listSmartPark.add(new IconBean(R.drawable.ic_add_car_card_200px, "办理车卡"));
+        listSmartPark.add(new IconBean(R.drawable.ic_car_card_200px, "我的车卡", ""));
+        listSmartPark.add(new IconBean(R.drawable.ic_stop_record_140px, "停车记录", ""));
+        listSmartPark.add(new IconBean(R.drawable.ic_add_car_card_200px, "办理车卡", ""));
 
         smartParkAdapter.setNewData(listSmartPark);
 
@@ -212,9 +201,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         });
         rvPropertyService.setAdapter(propertyServiceAdapter = new StewardRVAdapter());
         List<IconBean> listPropertyService = new ArrayList<IconBean>();
-        listPropertyService.add(new IconBean(R.drawable.ic_repair_orange_140px, "物业报修"));
-        listPropertyService.add(new IconBean(R.drawable.ic_call_property_orange_140px, "联系物业"));
-        listPropertyService.add(new IconBean(R.drawable.ic_property_complaints_orange_140px, "管理投诉"));
+        listPropertyService.add(new IconBean(R.drawable.ic_repair_orange_140px, "物业报修", ""));
+        listPropertyService.add(new IconBean(R.drawable.ic_call_property_orange_140px, "联系物业", ""));
+        listPropertyService.add(new IconBean(R.drawable.ic_property_complaints_orange_140px, "管理投诉", ""));
 
         propertyServiceAdapter.setNewData(listPropertyService);
 
@@ -225,58 +214,50 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         myHouseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
+                ALog.e("adapter.getData().size()::" + adapter.getData().size());
+                ALog.e("listMyhouses::" + listMyhouses);
+                ALog.e("position::" + position);
 
-                if (position == listMyhouses.size() - 1) {
+                if (position == adapter.getData().size() - 1) {
                     //点击的最后一个item，此时应该跳转到添加房屋界面。
-                    go2AddHouse();
+                    go2House(Constants.ADD_HOUSE, "");
+                    ALog.e("1111111111");
+
                 } else {
+                    ALog.e("000000");
+                    go2House(Constants.HOUSE_RIGHTS, listMyhouses.get(position).fid);
+                    ALog.e("listMyhouses.get(position).fid::" + listMyhouses.get(position).fid);
 
                 }
             }
         });
 
-
         //设置智能家居卡片点击事件。
         smartHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
-
                 switch (position) {
                     case 0:
                         go2SmartDevice();
                         break;
-
                     case 1:
-
                         go2DeviceStore();
                         break;
-
                     case 2:
-
                         go2AddDevice();
                         break;
                 }
             }
         });
 
-
         //设置智能门禁卡片点击事件。
         smartDoorAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
-
-                switch (position) {
-                    case 0:
-                        break;
-
-                    case 1:
-                        break;
-
-                    case 2:
-                        break;
+                if (position == 3) {
+                    mPresenter.requestGetSip("");
+                } else {
+                    go2SmartDoor(position);
                 }
             }
         });
@@ -285,7 +266,6 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         smartParkAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
                 go2Park(position);
             }
         });
@@ -294,20 +274,57 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         propertyServiceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showToast(BaseApplication.mContext, "position::" + position);
                 if (position == 1) {
                     if (contactDialog == null) {
                         isShow = true;
-                        mPresenter.requestContact("KBSJ-agl-00005");
+                        mPresenter.requestContact(UserHelper.communityCode);
                     } else {
                         contactDialog.show();
                     }
 
-                } else {
+                } else if (position == 0) {
+                    if (checkToken()) {
+                        if (checkHasCommunity()) {
+//                            startActivity(new Intent(getContext(), PropertyRepairActivity.class));
+                        }
+                    }
+
+                } else if (position == 2) {
                     go2PropertyService(position);
                 }
             }
         });
+    }
+
+
+    private boolean checkToken() {
+        if (!UserHelper.isLogined()) {
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            return false;
+        }
+        return true;
+    }
+
+    //是否已经选择社区
+    private boolean checkHasCommunity() {
+        if (!UserHelper.hasCommunity()) {
+            Toast.makeText(getContext(), "需要先选择社区", Toast.LENGTH_SHORT).show();
+            onSelectCommunity(null);
+            return false;
+        }
+        return true;
+    }
+
+    public void onSelectCommunity(View view) {
+        Intent intent = new Intent(getContext(), PickerActivity.class);
+        startActivityForResult(intent, SELECT_COMMUNIT);
+    }
+
+    //跳转到智能门禁模块。
+    private void go2SmartDoor(int position) {
+        Intent intent = new Intent(_mActivity, DoorActivity.class);
+        intent.putExtra(Constants.FROM_TO, position);
+        startActivity(intent);
     }
 
     //跳转到物业模块。
@@ -325,8 +342,11 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     //跳转到添加房屋模块。
-    private void go2AddHouse() {
-        startActivity(new Intent(_mActivity, HouseActivity.class));
+    private void go2House(int position, String fid) {
+        Intent intent = new Intent(_mActivity, HouseActivity.class);
+        intent.putExtra(Constants.FROM_TO, position);
+        intent.putExtra(Constants.HOUSE_FID, fid);
+        startActivity(intent);
     }
 
     //跳转到添加设备模块。
@@ -340,10 +360,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     private void go2SmartDevice() {
-        String token = "";
         Intent intent = new Intent(_mActivity, WebActivity.class);
-        intent.putExtra("title", "生活超市");
-        intent.putExtra("link", ServiceApi.SMART_DEVICE + token);
+        intent.putExtra("title", "智能设备");
+        intent.putExtra("link", ServiceApi.SMART_DEVICE);
         startActivity(intent);
     }
 
@@ -367,20 +386,25 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                mPresenter.start();
+//                mPresenter.start();
 
             }
         });
     }
 
+//    @Override
+//    public void end() {
+//        ALog.e("end()…………………………………………");
+//        ptrFrameLayout.refreshComplete();
+//    }
+
     @Override
-    public void end() {
-        ALog.e("end()…………………………………………");
-        ptrFrameLayout.refreshComplete();
+    public void start(Object response) {
+
     }
 
     @Override
-    public void error(Throwable t) {
+    public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
         DialogHelper.warningSnackbar(rootView, "网络异常，请刷新！");
     }
@@ -405,8 +429,13 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     @Override
     public void responseHouses(List<IconBean> listIcons) {
         ptrFrameLayout.refreshComplete();
-        listIcons.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加主机"));
+        listIcons.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加房屋", ""));
+        listMyhouses.clear();
+        listMyhouses = listIcons;
         myHouseAdapter.setNewData(listIcons);
+        for (IconBean listIcon : listIcons) {
+            ALog.e("fid**" + listIcon.fid);
+        }
     }
 
     @Override
@@ -421,7 +450,8 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                     .setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
-                            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listPhone.get(position))));
+                            ALog.e("listPhone.get(position).substring(2)::" + listPhone.get(position).substring(3));
+                            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listPhone.get(position).substring(3))));
                         }
                     })
                     .setCancelable(true)
@@ -431,6 +461,36 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
 
         if (isShow) {
             contactDialog.show();
+        }
+    }
+
+    @Override
+    public void responseGetSip(SipBean mSipBean) {
+        DialogPlus.newDialog(_mActivity)
+                .setHeader(R.layout.dialog_header)
+                .setFooter(R.layout.dialog_footer)
+                .setContentHolder(new ListHolder())
+                .setGravity(Gravity.BOTTOM)
+                .setAdapter(new ArrayAdapter<>(_mActivity, android.R.layout.simple_list_item_1, mSipBean.getData().getPowers()))
+                .setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+
+                    }
+                })
+                .setCancelable(true)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            if (requestCode == SELECT_COMMUNIT) {
+                UserHelper.setCommunity(data.getStringExtra(Constants.COMMUNITY_NAME)
+                        , data.getStringExtra(Constants.COMMUNITY_CODE));
+            }
         }
     }
 }

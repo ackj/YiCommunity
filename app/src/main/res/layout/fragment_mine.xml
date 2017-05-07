@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="195dp"
+            android:background="@drawable/bg_mine_1500px_780px">
+
+            <ImageView
+                android:id="@+id/iv_head"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/ic_mine_avatar_normal_320px" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@id/iv_head"
+                android:layout_alignRight="@id/iv_head"
+                android:src="@drawable/ic_mine_change_avatar_80px" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_head"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="访客"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_personal_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="12dp"
+                android:layout_marginRight="10dp"
+                android:text="个人资料"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <View
+                style="@style/LineStyle"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_message_center"
+                style="@style/MineItemLayoutStyle">
+
+                <ImageView
+                    style="@style/MineItemIconStyle"
+                    android:src="@drawable/ic_mine_messagecenter_84px" />
+
+                <TextView
+                    style="@style/MineItemTitleStyle"
+                    android:text="消息中心" />
+
+                <!--<View style="@style/MineItemRedPointerStyle" />-->
+
+                <!--<View style="@style/MineItemHorizontalSpace" />-->
+
+                <ImageView style="@style/MineItemViewMoreStyle" />
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_my_indent"
+                style="@style/MineItemLayoutStyle">
+
+                <ImageView
+                    style="@style/MineItemIconStyle"
+                    android:src="@drawable/ic_mine_myorder_84px" />
+
+                <TextView
+                    style="@style/MineItemTitleStyle"
+                    android:text="我的订单" />
+
+                <!--<View style="@style/MineItemRedPointerStyle" />-->
+
+                <View style="@style/MineItemHorizontalSpace" />
+
+                <ImageView style="@style/MineItemViewMoreStyle" />
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_my_address"
+                style="@style/MineItemLayoutStyle">
+
+                <ImageView
+                    style="@style/MineItemIconStyle"
+                    android:src="@drawable/ic_mine_addaddress" />
+
+                <TextView
+                    style="@style/MineItemTitleStyle"
+                    android:text="我的地址" />
+
+                <View style="@style/MineItemHorizontalSpace" />
+
+                <ImageView style="@style/MineItemViewMoreStyle" />
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_make_shortcut"
+                style="@style/MineItemLayoutStyle">
+
+                <ImageView
+                    style="@style/MineItemIconStyle"
+                    android:src="@drawable/ic_mine_shortcut_84px" />
+
+                <TextView
+                    style="@style/MineItemTitleStyle"
+                    android:text="在桌面创建开门快捷方式" />
+
+                <View style="@style/MineItemHorizontalSpace" />
+
+                <ImageView style="@style/MineItemViewMoreStyle" />
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_my_publish"
+                style="@style/MineItemLayoutStyle">
+
+                <ImageView
+                    style="@style/MineItemIconStyle"
+                    android:src="@drawable/ic_mine_myrelease_84px" />
+
+                <TextView
+                    style="@style/MineItemTitleStyle"
+                    android:text="我的发布" />
+
+                <View style="@style/MineItemHorizontalSpace" />
+
+                <ImageView style="@style/MineItemViewMoreStyle" />
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_clean_cache"
+                style="@style/MineItemLayoutStyle">
+
+                <ImageView
+                    style="@style/MineItemIconStyle"
+                    android:src="@drawable/ic_mine_clearcache_84px" />
+
+                <TextView
+                    style="@style/MineItemTitleStyle"
+                    android:text="清除缓存" />
+
+                <View style="@style/MineItemHorizontalSpace" />
+
+                <TextView
+                    android:id="@+id/tv_cache_sum"
+                    style="@style/TvGreyText15sp" />
+
+                <ImageView style="@style/MineItemViewMoreStyle" />
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_about_us"
+                style="@style/MineItemLayoutStyle">
+
+                <ImageView
+                    style="@style/MineItemIconStyle"
+                    android:src="@drawable/ic_mine_aboutus_84px" />
+
+                <TextView
+                    style="@style/MineItemTitleStyle"
+                    android:text="关于我们" />
+
+                <View style="@style/MineItemHorizontalSpace" />
+
+                <ImageView style="@style/MineItemViewMoreStyle" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_logout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/base_grey"
+                android:gravity="center"
+                android:text="退出登录"
+                android:textColor="@color/red_remove_member_text"
+                android:textSize="15sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

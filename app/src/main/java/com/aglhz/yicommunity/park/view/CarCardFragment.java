@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.bean.CarCardManageBean;
+import com.aglhz.yicommunity.bean.CarCardManageBean;
 
 import java.util.ArrayList;
 import java.util.List;

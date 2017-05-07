@@ -27,14 +27,9 @@ public class CarCardManagePresenter extends BasePresenter<CarCardManageContract.
         return new CarCardManageModel();
     }
 
+
     @Override
-    public void start() {
+    public void start(Object request) {
 
-        mModel.start();
-        ALog.e("NeighbourPresenter::start");
-
-        if (isViewAttached()) {
-            getView().end();
-        }
     }
 }

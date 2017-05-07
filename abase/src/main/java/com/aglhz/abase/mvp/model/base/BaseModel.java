@@ -1,8 +1,5 @@
 package com.aglhz.abase.mvp.model.base;
 
-import com.aglhz.abase.common.RxManager;
-import com.aglhz.abase.log.ALog;
-
 /**
  * Author：leguang on 2016/10/9 0009 10:35
  * Email：langmanleguang@qq.com
@@ -12,16 +9,8 @@ import com.aglhz.abase.log.ALog;
 public abstract class BaseModel {
     private final String TAG = BaseModel.class.getSimpleName();
 
-    //每一套mvp应该拥有一个独立的RxManager
-    public RxManager mRxManager = new RxManager();
-
-
-
     //生命周期结束，用于控制Model的资源释放
     public void clear() {
-        ALog.e(TAG + "clear()");
-        if (mRxManager != null) {
-            mRxManager.clear();
-        }
+
     }
 }

@@ -13,14 +13,13 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.bean.CarCardTransactBean;
+import com.aglhz.yicommunity.bean.CarCardTransactBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Created by Administrator on 2017/4/18 17:38.

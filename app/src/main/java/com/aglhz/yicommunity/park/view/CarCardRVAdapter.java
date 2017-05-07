@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.park.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.bean.CarCardManageBean;
+import com.aglhz.yicommunity.bean.CarCardManageBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;

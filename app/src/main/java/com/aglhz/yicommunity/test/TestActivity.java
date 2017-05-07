@@ -30,7 +30,7 @@ public class TestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_main_activity, new MaterialStyleFragment());
+//            loadRootFragment(R.id.fl_main_activity, new MaterialStyleFragment());
         }
     }
 

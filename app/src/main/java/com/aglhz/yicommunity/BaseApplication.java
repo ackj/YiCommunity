@@ -4,16 +4,18 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.multidex.MultiDexApplication;
 
-import com.aglhz.abase.exception.AppExceptionHandler;
 import com.aglhz.abase.log.ALog;
+
+import me.yokeyword.fragmentation.Fragmentation;
 
 
 /**
  * Author：leguang on 2016/10/9 0009 15:49
  * Email：langmanleguang@qq.com
  */
-public class BaseApplication extends Application implements Application.ActivityLifecycleCallbacks {
+public class BaseApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
     private static final String TAG = BaseApplication.class.getSimpleName();
     public static Context mContext;
 
@@ -23,8 +25,16 @@ public class BaseApplication extends Application implements Application.Activity
         mContext = this;
 //        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
 //        registerActivityLifecycleCallbacks(this);
-//        ALog.init(true, "ABase");
+        initLog();
 
+        Fragmentation.builder()
+                // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
+                .stackViewMode(Fragmentation.BUBBLE)
+                .install();
+    }
+
+    private void initLog() {
+        ALog.init(true, "ysq");
     }
 
     @Override

@@ -2,8 +2,7 @@ package com.aglhz.yicommunity.steward.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.bean.BaseBean;
-import com.aglhz.yicommunity.common.bean.IconBean;
+import com.aglhz.yicommunity.bean.IconBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**

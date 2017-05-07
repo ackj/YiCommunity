@@ -58,8 +58,6 @@ public class ALiPayUtilsV2 {
                     break;
             }
         }
-
-        ;
     };
 
     public ALiPayUtilsV2(Activity context) {

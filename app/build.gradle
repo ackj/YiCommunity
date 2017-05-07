@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
@@ -14,7 +15,14 @@ android {
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'x86'
         }
+        multiDexEnabled true
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,6 +41,7 @@ dependencies {
     //谷歌官方依赖
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:multidex:1.0.1'
     //基础module
     compile project(':abase')
     //黄油刀系列

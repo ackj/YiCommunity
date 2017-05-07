@@ -3,14 +3,13 @@ package com.aglhz.abase.mvp.presenter.base;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 
+import com.aglhz.abase.common.RxManager;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-
-import rx.Subscriber;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:31
@@ -23,6 +22,8 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
 
     public Reference<V> mViewReference;
     public M mModel;
+    //每一套mvp应该拥有一个独立的RxManager
+    public RxManager mRxManager = new RxManager();
 
     /**
      * 创建Presenter的时候就绑定View和创建model。
@@ -30,11 +31,11 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
      * @param mView 所要绑定的view层对象，一般在View层创建Presenter的时候通过this把自己传过来。
      */
     public BasePresenter(V mView) {
-        attachView(mView);
+        setView(mView);
         mModel = createModel();
     }
 
-    public void attachView(V view) {
+    public void setView(V view) {
         mViewReference = new WeakReference<V>(view);
     }
 
@@ -52,11 +53,7 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
         return null;
     }
 
-    public M getModel() {
-        return mModel;
-    }
-
-    public void setPresenter(@NonNull M model) {
+    public void setModel(@NonNull M model) {
         this.mModel = model;
     }
 
@@ -64,10 +61,14 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
     public void clear() {
         ALog.e(TAG + "clear()");
 
-        //释放Model层对象，避免内存泄露
+        //优先释放Model层对象，避免内存泄露
         if (mModel != null) {
             mModel.clear();
             mModel = null;
+        }
+
+        if (mRxManager != null) {
+            mRxManager.clear();
         }
 
         //释放View层对象，避免内存泄露
@@ -76,34 +77,4 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
             mViewReference = null;
         }
     }
-
-//    public abstract class RxSubscriber<T> extends Subscriber<T> {
-//
-//        @Override
-//        public void onStart() {
-//            super.onStart();
-//            getView().start();
-//        }
-//
-//        @Override
-//        public void onNext(T t) {
-//            _onNext(t);
-//        }
-//
-//
-//        @Override
-//        public void onCompleted() {
-//            getView().end();
-//        }
-//
-//        @Override
-//        public void onError(Throwable e) {
-//            e.printStackTrace();
-//            //此处不考虑错误类型，笼统的以错误来介绍
-//            getView().error(e);
-//        }
-//
-//        public abstract void _onNext(T t);
-//
-//    }
 }

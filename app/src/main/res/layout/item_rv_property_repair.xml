@@ -36,7 +36,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/tv_title"
                 android:text="2017/08/05"
-                android:textColor="@color/gary_text" />
+                android:textColor="@color/gray_text" />
 
             <ImageView
                 android:id="@+id/iv_status"
@@ -55,7 +55,7 @@
             android:layout_marginRight="15dp"
             android:lineSpacingExtra="10dp"
             android:text="小区纱窗的沙破裂，前门门吸坏419 公共报修账户 2016/12/07 17:26:44 未维修 161116103825"
-            android:textColor="@color/gary_text"
+            android:textColor="@color/gray_text"
             android:textSize="15sp" />
 
     </LinearLayout>

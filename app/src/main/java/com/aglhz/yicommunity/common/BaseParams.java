@@ -4,6 +4,8 @@ package com.aglhz.yicommunity.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.aglhz.yicommunity.common.UserHelper.token;
+
 /**
  * 公共请求参数基类
  * <p>
@@ -22,12 +24,13 @@ public class BaseParams {
 //        if (UserInfoHelper.isLogin() == false) {
 //            RxBus.get().post(new NoLoginEvent());
 //        }
-
-        Map<String, Object> map = new HashMap<>();
+//
+//        Map<String, Object> map = new HashMap<>();
 //        if (UserInfoHelper.getUserInfo() == null) return map;
 //        String token = UserInfoHelper.getUserInfo().getToken();
-        map.put("token", "tk_dbdc23df-87ec-4f8a-8956-22dd514e147a");
-        return map;
+//        KLog.e("token：：" + token);
+//        map.put("token", token);
+        return new HashMap<>();
     }
 
     public static Map<String, Object> getPamras() {

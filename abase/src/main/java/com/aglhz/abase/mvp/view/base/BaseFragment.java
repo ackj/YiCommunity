@@ -11,6 +11,8 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.utils.ScreenUtils;
 
+import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 
 /**
@@ -64,5 +66,17 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
                     view.getPaddingRight(), view.getPaddingBottom());
             Log.e("状态栏：", "状态栏：" + ScreenUtils.getStatusBarHeight(_mActivity) + "");
         }
+    }
+
+    @Override
+    protected FragmentAnimator onCreateFragmentAnimator() {
+        // 设置横向(和安卓4.x动画相同)
+        // return new DefaultHorizontalAnimator();
+        // 设置无动画
+        return new DefaultNoAnimator();
+        // 设置自定义动画
+        // return new FragmentAnimator(enter,exit,popEnter,popExit);
+        // 默认竖向(和安卓5.0以上的动画相同)
+//        return super.onCreateFragmentAnimator();
     }
 }

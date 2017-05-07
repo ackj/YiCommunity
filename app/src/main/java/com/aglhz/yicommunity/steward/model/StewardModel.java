@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.steward.model;
 
+
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
@@ -15,7 +16,7 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
     private final String TAG = StewardModel.class.getSimpleName();
 
     @Override
-    public void start() {
-        ALog.e(TAG + "start()");
+    public void start(Object request) {
+        ALog.e("start");
     }
 }

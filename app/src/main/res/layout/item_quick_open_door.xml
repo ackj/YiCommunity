@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_height="60dp">
+
+    <TextView
+        android:id="@+id/tv_door_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textSize="15sp"
+        android:textColor="@color/base_black"
+        android:layout_marginLeft="15dp"
+        android:text="凯宾斯基3栋1单元门口机"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:clickable="false"
+        android:id="@+id/checkbox"
+        android:layout_marginRight="15dp"
+        android:layout_width="wrap_content"
+        android:shadowColor="@color/red"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -23,7 +23,7 @@
                 android:background="@color/base_grey"
                 android:gravity="center"
                 android:text="惠州海伦堡"
-                android:textColor="@color/gary_text"
+                android:textColor="@color/gray_text"
                 android:textSize="15sp" />
 
             <RelativeLayout
@@ -151,7 +151,7 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="20dp"
-                android:background="@drawable/select_submit"
+                android:background="@drawable/selector_submit"
                 android:text="提交"
                 android:textColor="@color/white" />
         </LinearLayout>

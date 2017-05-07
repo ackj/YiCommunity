@@ -14,8 +14,9 @@ import com.aglhz.yicommunity.park.contract.CarCardManageContract;
 public class CarCardManageModel extends BaseModel implements CarCardManageContract.Model {
     private final String TAG = CarCardManageModel.class.getSimpleName();
 
+
     @Override
-    public void start() {
-        ALog.e(TAG + "start()");
+    public void start(Object request) {
+
     }
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="17dp"
+            android:src="@mipmap/ic_app_logo" />
+
+        <TextView
+            android:id="@+id/tv_version_name"
+            style="@style/TvBaseBlack15sp"
+            android:layout_marginTop="10dp"
+            android:text="亿社区1.0" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/LineStyle"
+        android:layout_height="10dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_product_introduction"
+        style="@style/MineItemLayoutStyle">
+
+        <TextView
+            style="@style/TvBaseBlack15sp"
+            android:layout_marginLeft="20dp"
+            android:text="产品介绍" />
+
+        <View style="@style/MineItemHorizontalSpace" />
+
+        <ImageView
+            style="@style/MineItemViewMoreStyle"
+            android:layout_marginRight="10dp" />
+    </LinearLayout>
+
+    <View
+        style="@style/LineStyle"
+        android:layout_height="1dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_service_terms"
+        style="@style/MineItemLayoutStyle">
+
+        <TextView
+            style="@style/TvBaseBlack15sp"
+            android:layout_marginLeft="20dp"
+            android:text="服务条款" />
+
+        <View style="@style/MineItemHorizontalSpace" />
+
+        <ImageView
+            style="@style/MineItemViewMoreStyle"
+            android:layout_marginRight="10dp" />
+    </LinearLayout>
+
+    <View
+        style="@style/LineStyle"
+        android:layout_height="1dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_feedback"
+        style="@style/MineItemLayoutStyle">
+
+        <TextView
+            style="@style/TvBaseBlack15sp"
+            android:layout_marginLeft="20dp"
+            android:text="意见反馈" />
+
+        <View style="@style/MineItemHorizontalSpace" />
+
+        <ImageView
+            style="@style/MineItemViewMoreStyle"
+            android:layout_marginRight="10dp" />
+    </LinearLayout>
+
+    <View
+        style="@style/LineStyle"
+        android:layout_height="match_parent" />
+</LinearLayout>

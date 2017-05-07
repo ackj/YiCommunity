@@ -6,14 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
@@ -26,7 +24,7 @@ import com.aglhz.abase.widget.selector.SelectorDialog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.bean.BaseBean;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.house.contract.HouseContract;
 import com.aglhz.yicommunity.house.presenter.HousePresenter;
 
@@ -122,14 +120,16 @@ public class HouseFragment extends BaseFragment<HouseContract.Presenter> impleme
 
     }
 
+
     @Override
-    public void end() {
+    public void start(Object response) {
 
     }
 
     @Override
-    public void error(Throwable t) {
-        DialogHelper.errorSnackbar(rootView, "发生异常，请重试！");
+    public void error(String errorMessage) {
+        ALog.e("77777777");
+        DialogHelper.warningSnackbar(rootView, errorMessage);
     }
 
     @OnClick({R.id.tv_proprietor_house_fragment,

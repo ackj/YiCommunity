@@ -41,4 +41,17 @@
     <string name="parking">车位： %1$s</string>
     <string name="term_of_validity">有效期： %1$s-%2$s</string>
 
+    <!--city picker-->
+    <string name="cp_select_city">选择城市</string>
+    <string name="cp_used_city">最近访问城市</string>
+    <string name="cp_hot_city">热门城市</string>
+    <string name="cp_located_city">定位城市</string>
+    <string name="cp_hint_search_box">请输入城市名或拼音</string>
+    <string name="cp_nothing_found">没有搜索结果~</string>
+    <string name="cp_locating">正在定位…</string>
+    <string name="cp_located_failed">定位失败</string>
+
+    <!--登录模块-->
+    <string name="login">登录</string>
+
 </resources>

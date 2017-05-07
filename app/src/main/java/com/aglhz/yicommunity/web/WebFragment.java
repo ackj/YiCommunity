@@ -175,6 +175,7 @@ public class WebFragment extends BaseFragment {
         if (mWebView.canGoBack()) {
             mWebView.goBack();
         } else {
+            pop();
             _mActivity.finish();
         }
         return true;

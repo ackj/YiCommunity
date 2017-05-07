@@ -309,7 +309,7 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/select_submit"
+                android:background="@drawable/selector_submit"
                 android:text="@string/submit"
                 android:textColor="@color/white" />
 

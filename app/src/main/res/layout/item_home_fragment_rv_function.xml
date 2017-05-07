@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/base_grey" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_quick_open_door"
+            style="@style/CommunityServiceLayoutStyle"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/material_red_300">
+
+            <ImageView
+                android:id="@+id/iv_top_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_quick_open_door_150px" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/TvWhite20sp"
+                android:text="一键开门" />
+
+            <TextView
+                android:id="@+id/tv_desc"
+                style="@style/TvWhite13sp"
+                android:layout_marginTop="6dp"
+                android:text="智慧社区门禁" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_property_payment"
+                    style="@style/CommunityServiceLayoutStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/item_service_blue">
+
+                    <TextView
+                        style="@style/TvWhite20sp"
+                        android:text="物业缴费" />
+
+                    <TextView
+                        style="@style/TvWhite13sp"
+                        android:layout_marginTop="6dp"
+                        android:text="轻松线上缴费" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_temporary_parking"
+                    style="@style/CommunityServiceLayoutStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/item_service_green">
+
+                    <TextView
+                        style="@style/TvWhite20sp"
+                        android:text="临时停车" />
+
+                    <TextView
+                        style="@style/TvWhite13sp"
+                        android:layout_marginTop="6dp"
+                        android:text="一键快速缴费" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_life_supermarket"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/material_orange_300"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="19dp"
+                    android:background="@drawable/ic_market_140px" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TvWhite20sp"
+                        android:text="生活超市" />
+
+                    <TextView
+                        style="@style/TvWhite13sp"
+                        android:layout_marginTop="6dp"
+                        android:text="一键送货上门" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/base_grey" />
+</LinearLayout>
