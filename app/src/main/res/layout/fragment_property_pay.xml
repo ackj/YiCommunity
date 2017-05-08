@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/base_grey" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout_fragment_property_pay"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/white" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/base_grey" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_fragment_property_pay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

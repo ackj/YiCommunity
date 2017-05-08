@@ -2,8 +2,6 @@ package com.aglhz.abase.network.http;
 
 import android.text.TextUtils;
 
-import com.aglhz.abase.BuildConfig;
-import com.aglhz.abase.common.Configuration;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.internal.bind.TypeAdapters;
@@ -14,7 +12,6 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

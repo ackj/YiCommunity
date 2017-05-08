@@ -16,7 +16,7 @@ public class HomeBean implements MultiItemEntity {
     public static final int TYPE_COMMUNITY_QUALITY_LIFE = 104;
 
     //Banner
-    private List<String> banners;
+    private List<BannerBean.DataBean.AdvsBean> banners;
     //titile & community service
     private String title;
     private String desc;
@@ -60,11 +60,11 @@ public class HomeBean implements MultiItemEntity {
         this.notice = notice;
     }
 
-    public List<String> getBanners() {
+    public List<BannerBean.DataBean.AdvsBean> getBanners() {
         return banners;
     }
 
-    public void setBanners(List<String> banners) {
+    public void setBanners(List<BannerBean.DataBean.AdvsBean> banners) {
         this.banners = banners;
     }
 

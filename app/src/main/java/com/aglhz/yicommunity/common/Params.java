@@ -10,13 +10,15 @@ public class Params {
     public String token;
     public String cmnt_c;
     public String status;
+    public String dir;
+    public int page;
 
     public String user;
     public String pwd;
 
     public static Params getInstance() {
         Params params = new Params();
-        params.cmnt_c = UserHelper.token;
+        params.token = UserHelper.token;
         return params;
     }
 }

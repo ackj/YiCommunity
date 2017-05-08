@@ -7,9 +7,14 @@ import com.aglhz.abase.common.RxManager;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.mvp.model.base.BaseModel;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+
+import org.json.JSONException;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:31
@@ -75,6 +80,27 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
         if (mViewReference != null) {
             mViewReference.clear();
             mViewReference = null;
+        }
+    }
+
+    public void error(Throwable throwable) {
+        if (isViewAttached()) {
+            return;
+        }
+        if (throwable == null) {
+            getView().error("数据异常");
+            return;
+        }
+        if (throwable instanceof ConnectException) {
+            getView().error("网络异常");
+        } else if (throwable instanceof HttpException) {
+            getView().error("服务器异常");
+        } else if (throwable instanceof SocketTimeoutException) {
+            getView().error("连接超时");
+        } else if (throwable instanceof JSONException) {
+            getView().error("解析异常");
+        } else {
+            getView().error("数据异常");
         }
     }
 }
