@@ -2,10 +2,12 @@ package com.aglhz.yicommunity.home.presenter;
 
 import android.support.annotation.NonNull;
 
-
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.home.contract.HomeContract;
 import com.aglhz.yicommunity.home.model.HomeModel;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35
@@ -35,40 +37,45 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
 
     @Override
     public void requestBanner() {
-//        HttpClient.post(ServiceApi.indexadvs, new BeanCallback<IndexadvsBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(IndexadvsBean bean) {
-//                if (isViewAttached()) {
-//                    getView().responseBanner(bean.getData().getAdvs());
-//                }
-//            }
-//        });
+        mRxManager.add(mModel.getBanner()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bannerBean -> {
+                    if (bannerBean.getOther().getCode() == 200) {
+                        getView().responseBanner(bannerBean.getData().getAdvs());
+                    } else {
+                        getView().error(bannerBean.getOther().getMessage());
+                    }
+                }, this::error));
     }
-//
-//    @Override
-//    public void requestNotice(String token) {
-//        Map params = BaseParams.getTokenMap();
-//        HttpClient.post(ServiceApi.NOTICE_TOP, params, new BeanCallback<MsgCenterBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    getView().error(new Exception());
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(MsgCenterBean bean) {
-//                if (isViewAttached()) {
-//                    getView().responseNotice(bean.getData().getNoticeList());
-//                }
-//
-//            }
-//        });
-//    }
 
+    @Override
+    public void requestNotice() {
+        Params params = Params.getInstance();
+        params.cmnt_c = "KBSJ-agl-00005";
+        mRxManager.add(mModel.getNotice(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(noticeBean -> {
+                    if (noticeBean.getOther().getCode() == 200) {
+                        getView().responseNotice(noticeBean.getData().getNoticeList());
+                    } else {
+                        getView().error(noticeBean.getOther().getMessage());
+                    }
+                }, this::error));
+
+    }
+
+    @Override
+    public void openDoor() {
+        Params params = Params.getInstance();
+        params.dir = "6-31-1";
+        mRxManager.add(mModel.openDoor(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseOpenDoor();
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }

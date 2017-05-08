@@ -9,6 +9,7 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -23,6 +24,11 @@ import java.util.List;
 
 public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewHolder> {
 
+    HomeFragment fragment;
+
+    public void setFragment(HomeFragment fragment) {
+        this.fragment = fragment;
+    }
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -43,8 +49,12 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
     protected void convert(final BaseViewHolder helper, HomeBean item) {
         switch (helper.getItemViewType()) {
             case HomeBean.TYPE_COMMUNITY_BANNER:
-                helper.addOnClickListener(R.id.convenient_banner_item_banner)
-                        .addOnClickListener(R.id.fl_item_banner);
+                List<BannerBean.DataBean.AdvsBean> banners = item.getBanners();
+                if (banners != null && banners.size() > 0) {
+                    ViewPager viewpager = helper.getView(R.id.viewpager_item_banner);
+                    BannerVPAdapter adapter = new BannerVPAdapter(banners);
+                    viewpager.setAdapter(adapter);
+                }
                 break;
             case HomeBean.TYPE_COMMUNITY_NOTICE:
                 helper.setText(R.id.tv_notice, item.getNotice());
@@ -68,6 +78,17 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                     @Override
                     public void onItemClick(int position) {
                         ToastUtils.showToast(BaseApplication.mContext, "社区服务::" + position);
+                        switch (position) {
+                            case 0:
+                                fragment.go2Web("家政服务", "http://www.aglhz.com/sub_property_ysq/m/html/jiazheng.html");
+                                break;
+                            case 1:
+                                fragment.go2Web("家居维修", "http://www.aglhz.com/sub_property_ysq/m/html/weixiu.html");
+                                break;
+                            case 2:
+                                fragment.go2Web("送水上门", "http://www.aglhz.com/sub_property_ysq/m/html/songshui.html");
+                                break;
+                        }
                     }
                 });
                 break;
@@ -76,11 +97,19 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 RecyclerView recyclerView = helper.getView(R.id.recyclerView);
                 recyclerView.setLayoutManager(new GridLayoutManager(BaseApplication.mContext, 3, GridLayoutManager.VERTICAL, false));
                 recyclerView.setAdapter(qualityLifeAdapter);
-
                 qualityLifeAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                         ToastUtils.showToast(BaseApplication.mContext, "品质生活:" + position);
+                        switch (position) {
+                            case 0:
+                                break;
+                            case 1:
+                                fragment.go2Web("快递查询", "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?token=%@&appType=2");
+                                break;
+                            case 2:
+                                break;
+                        }
                     }
                 });
                 break;

@@ -1,15 +1,16 @@
 package com.aglhz.yicommunity.common;
 
+import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CheckTokenBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
+import com.aglhz.yicommunity.bean.NoticeBean;
+import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-
-import static com.aglhz.yicommunity.common.ServiceApi.HEADAPI_PROPERTY;
 
 /**
  * Created by YandZD on 2017/1/17.
@@ -43,4 +44,13 @@ public interface ApiService {
     @POST("/sub_property_ysq/client/info/msgList")
     Observable<MessageCenterBean> requestMessages(@Query("token") String token);
 
+    //Banner
+    @POST("/sub_property_ysq/client/info/indexadvs")
+    Observable<BannerBean> getBanners();
+
+    @POST("/sub_property_ysq/client/info/noticeList")
+    Observable<NoticeBean> getNotice(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("topnum") int topnum);
+
+    @POST("/sub_property_ysq/client/info/pptBillsWait.do")
+    Observable<PropertyPayBean> getPropertyPay(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("page") int page);
 }
