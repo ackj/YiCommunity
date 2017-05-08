@@ -48,12 +48,7 @@ public class FeedbackFragment extends BaseFragment {
         initStateBar(toolbar);
         toolbarTitle.setText("意见反馈");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
 }

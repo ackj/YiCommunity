@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <View
+        android:id="@+id/v_mark_item_message_center_fragment"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/shape_solid_red_pointer" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title_item_message_center_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:lines="1"
+            android:text="密码开锁"
+            android:textColor="@color/base_black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_description_item_message_center_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:lines="1"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:text="密码开锁"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_date_item_message_center_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="密码开锁"
+        android:textColor="@color/base_black"
+        android:textSize="14sp" />
+
+</LinearLayout>

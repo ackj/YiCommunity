@@ -22,9 +22,11 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.login.LoginActivity;
+import com.aglhz.yicommunity.main.view.MainFragment;
 import com.aglhz.yicommunity.mine.contract.MineContract;
 import com.aglhz.yicommunity.mine.presenter.MinePresenter;
 import com.aglhz.yicommunity.mypublish.MyPublishActivity;
@@ -102,8 +104,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     private void initData() {
-//        tvCacheSum.setText(DataCleanManager.getTotalCacheSize());
-
+        mPresenter.requestCache();
         //动态给“个人资料”TextView设置drawableLeft并改变其大小
         Drawable drawableLeft = ContextCompat.getDrawable(_mActivity, R.drawable.ic_oneself_info_80px);
         drawableLeft.setBounds(0, 0, DensityUtils.dp2px(BaseApplication.mContext, 16.f), DensityUtils.dp2px(BaseApplication.mContext, 16.f));
@@ -129,8 +130,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 break;
             case R.id.ll_message_center:
                 if (isLogined()) {
-//                    Intent intent = new Intent(getContext(), MsgCententActivity.class);
-//                    startActivity(intent);
+                    ((MainFragment) getParentFragment()).start(MessageCenterFragment.newInstance());
                 }
 
                 break;
@@ -147,22 +147,19 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
             case R.id.ll_my_address:
                 break;
             case R.id.ll_make_shortcut:
-                ALog.e("22222222222");
                 createShortCut();
-
                 break;
             case R.id.ll_my_publish:
-                startActivity(new Intent(_mActivity, MyPublishActivity.class));
+//                startActivity(new Intent(_mActivity, MyPublishActivity.class));
                 break;
             case R.id.ll_clean_cache:
-//                DataCleanManager.clearAllCache();
-//                tvCacheSum.setText(DataCleanManager.getTotalCacheSize());
+                mPresenter.requestClearCache();
                 break;
             case R.id.ll_about_us:
 //                startActivity(new Intent(_mActivity, AboutActivity.class));
                 break;
             case R.id.tv_logout:
-                mPresenter.logout();
+                mPresenter.requestLogout(Params.getInstance());
                 break;
         }
     }
@@ -180,25 +177,16 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @Override
     public void start(Object response) {
-
+        if (response instanceof String) {
+            tvCacheSum.setText((String) response);
+        }
     }
 
     @Override
     public void error(String errorMessage) {
-        ALog.e("77777777");
         DialogHelper.warningSnackbar(rootView, errorMessage);
     }
 
-    @Override
-    public void logoutSuccess() {
-        //清理信息
-        UserHelper.clear();
-        DialogHelper.successSnackbar(rootView, "退出登录！");
-        ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
-        tvName.setText("访客");
-        tvPhoneNumber.setText("");
-        tvLogout.setVisibility(View.GONE);
-    }
 
     @Override
     public void onDestroy() {
@@ -209,12 +197,12 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     private void createShortCut() {
         Intent shortcutIntent = new Intent();
         //设置点击快捷方式时启动的Activity,因为是从Lanucher中启动，所以包名类名要写全。
-        shortcutIntent.setComponent(new ComponentName("com.aglhz.yicommunity", "com.aglhz.yicommunity.test.QuickOpenActivity"));
+        shortcutIntent.setComponent(new ComponentName("com.aglhz.yicommunity", "com.aglhz.yicommunity.mine.QuickOpenActivity"));
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS | Intent.FLAG_ACTIVITY_NEW_TASK);
         Intent resultIntent = new Intent();
         //设置快捷方式图标
         resultIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(_mActivity, R.drawable.ic_shortcut_red_144px));
+                Intent.ShortcutIconResource.fromContext(_mActivity, R.mipmap.ic_shortcut_red_144px));
         // 不允许重建
         resultIntent.putExtra("duplicate", true);
         //启动的Intent
@@ -233,10 +221,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     private void updataView() {
-        ALog.e("11111111");
-
         if (UserHelper.userInfo != null) {
-            ALog.e("22222222222");
             Glide.with(this)
                     .load(UserHelper.userInfo.getFace())
                     .bitmapTransform(new CropCircleTransformation(_mActivity))
@@ -246,5 +231,21 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
             tvPhoneNumber.setText(UserHelper.userInfo.getMobile());
             tvLogout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void responseLogout() {
+        //清理信息
+        UserHelper.clear();
+        DialogHelper.successSnackbar(rootView, "退出登录！");
+        ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
+        tvName.setText("访客");
+        tvPhoneNumber.setText("");
+        tvLogout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void responseCache(String str) {
+        tvCacheSum.setText(str);
     }
 }

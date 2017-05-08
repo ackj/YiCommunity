@@ -44,6 +44,13 @@ public class UserHelper {
 
     //退出登录或者token失效清除信息
     public static void clear() {
+        token = "";
+        communityName = "";
+        communityCode = "";
+        account = "";
+        password = "";
+        dir = "";
+        userInfo = null;
         getEditor().clear();
     }
 
@@ -83,9 +90,6 @@ public class UserHelper {
             return userInfo;
         }
         String userInfo = getSp().getString(USER_INFO, "");
-
-        ALog.e("userInfo:" + userInfo);
-
         if (TextUtils.isEmpty(userInfo)) {
             return null;
         }

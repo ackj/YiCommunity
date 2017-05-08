@@ -14,9 +14,12 @@ public class Params {
     public String user;
     public String pwd;
 
+    private Params() {
+    }
+
     public static Params getInstance() {
         Params params = new Params();
-        params.cmnt_c = UserHelper.token;
+        params.token = UserHelper.token;
         return params;
     }
 }

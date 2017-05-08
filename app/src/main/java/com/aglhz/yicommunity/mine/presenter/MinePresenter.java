@@ -1,8 +1,20 @@
 package com.aglhz.yicommunity.mine.presenter;
 
-import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.mine.contract.MineContract;
+import android.support.annotation.NonNull;
 
+import com.aglhz.abase.log.ALog;
+import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.common.BaseParams;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.ServiceApi;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.mine.contract.MineContract;
+import com.aglhz.yicommunity.mine.model.MineModel;
+
+import org.apache.http.client.HttpClient;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 
 /**
@@ -19,31 +31,55 @@ public class MinePresenter extends BasePresenter<MineContract.View, MineContract
         super(mView);
     }
 
-
-
+    @NonNull
     @Override
-    public void start(Object request) {
-
+    protected MineContract.Model createModel() {
+        return new MineModel();
     }
 
     @Override
-    public void logout() {
-//        HttpClient.uploadFile(ServiceApi.logout, BaseParams.getTokenMap(), new BeanCallback<BaseBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//
-//                    getView().logoutSuccess();
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(BaseBean Bean) {
-//                if (isViewAttached()) {
-//
-//                    getView().logoutSuccess();
-//                }
-//            }
-//        });
+    public void start(Object request) {
+    }
+
+    @Override
+    public void requestLogout(Params params) {
+        mRxManager.add(mModel.requestLogout(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseLogout();
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error)
+        );
+    }
+
+    @Override
+    public void requestCache() {
+        mRxManager.add(mModel.requestCache()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    ALog.e("Thread.currentThread().getName()::" + Thread.currentThread().getName());
+                    if (isViewAttached()) {
+                        getView().responseCache(s);
+                    }
+
+                }, this::error)
+        );
+    }
+
+    @Override
+    public void requestClearCache() {
+        mRxManager.add(mModel.requestClearCache()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    ALog.e("Thread.currentThread().getName()::" + Thread.currentThread().getName());
+                    if (isViewAttached()) {
+                        getView().responseCache(s);
+                    }
+
+                }, this::error)
+        );
     }
 }

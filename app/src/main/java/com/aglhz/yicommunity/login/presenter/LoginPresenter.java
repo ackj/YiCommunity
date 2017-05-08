@@ -46,24 +46,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                     } else {
                         getView().error(userBean.getOther().getMessage());
                     }
-                }, throwable -> {
-                    if (throwable == null) {
-                        getView().error("数据异常");
-                        return;
-                    }
-                    if (throwable instanceof ConnectException) {
-                        getView().error("网络异常");
-                    } else if (throwable instanceof HttpException) {
-                        getView().error("服务器异常");
-                    } else if (throwable instanceof SocketTimeoutException) {
-                        getView().error("连接超时");
-                    } else if (throwable instanceof JSONException) {
-                        getView().error("解析异常");
-                    } else {
-                        getView().error("数据异常");
-                    }
-
-                })
+                }, this::error)
         );
     }
 }

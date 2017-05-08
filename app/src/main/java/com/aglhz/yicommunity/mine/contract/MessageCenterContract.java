@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.mine.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;
@@ -13,30 +13,15 @@ import io.reactivex.Observable;
  * <p>
  * 邻里模块所对应的各层对象应有的接口。
  */
-public interface MineContract {
+public interface MessageCenterContract {
 
     interface View extends BaseContract.View {
-        //退出登录成功
-        void responseLogout();
-
-        void responseCache(String str);
     }
 
     interface Presenter extends BaseContract.Presenter {
-        //退出登录
-        void requestLogout(Params params);
-
-        void requestCache();
-
-        void requestClearCache();
-
     }
 
     interface Model extends BaseContract.Model {
-        Observable<BaseBean> requestLogout(Params params);
-
-        Observable<String> requestCache();
-
-        Observable<String> requestClearCache();
+        Observable<MessageCenterBean> requestMessages(Params params);
     }
 }

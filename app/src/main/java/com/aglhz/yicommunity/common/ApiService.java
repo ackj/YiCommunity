@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.common;
 
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CheckTokenBean;
+import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
 import io.reactivex.Observable;
@@ -30,8 +31,16 @@ public interface ApiService {
     @POST("/memberSYS-m/client/login.do")
     Observable<UserBean> login(@Query("sc") String sc, @Query("user") String user, @Query("pwd") String pwd);
 
+    //登出
+    @POST("/memberSYS-m/client/logout.do")
+    Observable<BaseBean> logout(@Query("token") String token);
+
     //开门
     @POST("/sub_property_ysq/smartdoor/client/opendoor")
     Observable<BaseBean> openDoor(@Query("token") String token, @Query("dir") String dir);
+
+    //消息中心
+    @POST("/sub_property_ysq/client/info/msgList")
+    Observable<MessageCenterBean> requestMessages(@Query("token") String token);
 
 }

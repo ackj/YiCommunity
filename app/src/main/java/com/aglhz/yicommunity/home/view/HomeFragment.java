@@ -118,44 +118,41 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initListener() {
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                int viewType = adapter.getItemViewType(position);
-                switch (viewType) {
-                    case HomeBean.TYPE_COMMUNITY_BANNER:
-                        switch (view.getId()) {
-                            case R.id.convenient_banner_item_banner:
-                                ToastUtils.showToast(_mActivity, "beanner");
-                                break;
-                            case R.id.fl_item_banner:
-                                ToastUtils.showToast(_mActivity, "切换地址");
-                                break;
-                        }
+        adapter.setOnItemChildClickListener((adapter, view, position) -> {
+            int viewType = adapter.getItemViewType(position);
+            switch (viewType) {
+                case HomeBean.TYPE_COMMUNITY_BANNER:
+                    switch (view.getId()) {
+                        case R.id.convenient_banner_item_banner:
+                            ToastUtils.showToast(_mActivity, "beanner");
+                            break;
+                        case R.id.fl_item_banner:
+                            ToastUtils.showToast(_mActivity, "切换地址");
+                            break;
+                    }
 
-                        break;
-                    case HomeBean.TYPE_COMMUNITY_NOTICE:
-                        ToastUtils.showToast(_mActivity, "notice");
-                        break;
-                    case HomeBean.TYPE_COMMUNITY_FUNCTION:
-                        switch (view.getId()) {
-                            case R.id.ll_quick_open_door:
-                                ToastUtils.showToast(_mActivity, "一键开门");
-                                break;
-                            case R.id.ll_property_payment:
-                                ToastUtils.showToast(_mActivity, "物业缴费");
-                                break;
-                            case R.id.ll_temporary_parking:
-                                ToastUtils.showToast(_mActivity, "临时停车");
-                                break;
-                            case R.id.ll_life_supermarket:
-                                ToastUtils.showToast(_mActivity, "生活超市");
-                                break;
-                        }
-                        break;
-                }
-                return false;
+                    break;
+                case HomeBean.TYPE_COMMUNITY_NOTICE:
+                    ToastUtils.showToast(_mActivity, "notice");
+                    break;
+                case HomeBean.TYPE_COMMUNITY_FUNCTION:
+                    switch (view.getId()) {
+                        case R.id.ll_quick_open_door:
+                            ToastUtils.showToast(_mActivity, "一键开门");
+                            break;
+                        case R.id.ll_property_payment:
+                            ToastUtils.showToast(_mActivity, "物业缴费");
+                            break;
+                        case R.id.ll_temporary_parking:
+                            ToastUtils.showToast(_mActivity, "临时停车");
+                            break;
+                        case R.id.ll_life_supermarket:
+                            ToastUtils.showToast(_mActivity, "生活超市");
+                            break;
+                    }
+                    break;
             }
+            return false;
         });
 
 

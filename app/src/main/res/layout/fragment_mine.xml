@@ -88,7 +88,7 @@
 
                 <!--<View style="@style/MineItemRedPointerStyle" />-->
 
-                <!--<View style="@style/MineItemHorizontalSpace" />-->
+                <View style="@style/MineItemHorizontalSpace" />
 
                 <ImageView style="@style/MineItemViewMoreStyle" />
             </LinearLayout>
