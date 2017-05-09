@@ -3,6 +3,7 @@ apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
+
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
@@ -61,4 +62,6 @@ dependencies {
     compile 'com.github.chihane:JDAddressSelector:1.1.4'
     //dialog
     compile 'com.orhanobut:dialogplus:1.11@aar'
+    //图片选择器
+    compile 'com.zhihu.android:matisse:0.4.3'
 }

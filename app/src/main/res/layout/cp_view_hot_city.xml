@@ -11,7 +11,7 @@
         style="@style/LetterIndexTextViewStyle"
         android:text="@string/cp_hot_city"/>
 
-    <com.liujia95.me.yicommunity_search.citypicker.view.WrapHeightGridView
+    <com.aglhz.yicommunity.picker.view.WrapHeightGridView
         android:id="@+id/gridview_hot_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -5,9 +5,10 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.CommunityPickerBean;
+import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -16,11 +17,11 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/4/29 0029.
  */
-public class CommunityListAdapter extends BaseRecyclerViewAdapter<CommunityPickerBean, BaseViewHolder> {
+public class CommunityListAdapter extends BaseRecyclerViewAdapter<CommunitySelectBean.DataBean.CommunitiesBean, BaseViewHolder> {
 
-    private String searchKey;
+    private String searchKey = "";
 
-    public CommunityListAdapter(List<CommunityPickerBean> data) {
+    public CommunityListAdapter(List<CommunitySelectBean.DataBean.CommunitiesBean> data) {
         super(R.layout.item_community_address, data);
     }
 
@@ -29,25 +30,31 @@ public class CommunityListAdapter extends BaseRecyclerViewAdapter<CommunityPicke
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, CommunityPickerBean bean) {
+    protected void convert(BaseViewHolder helper, CommunitySelectBean.DataBean.CommunitiesBean bean) {
 //        int index = str.indexOf(searchKey);
 //        SpannableString span = new SpannableString(str);
 //        span.setSpan(new ForegroundColorSpan(Color.RED), index, index+searchKey.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (bean == null) {
+            return;
+        }
 
-        int nameIndex = bean.name.indexOf(searchKey);
-        SpannableString nameSpan = new SpannableString(bean.name);
+        ALog.d("bean getName :" + bean.getName());
+
+        int nameIndex = bean.getName().indexOf(searchKey);
+        SpannableString nameSpan = new SpannableString(bean.getName());
         if (nameIndex != -1) {
             nameSpan.setSpan(new ForegroundColorSpan(Color.RED), nameIndex, nameIndex + searchKey.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
-        int addressIndex = bean.address.indexOf(searchKey);
-        SpannableString addressSpan = new SpannableString(bean.address);
+        int addressIndex = bean.getPosition().getAddress().indexOf(searchKey);
+        SpannableString addressSpan = new SpannableString(bean.getPosition().getAddress());
         if (addressIndex != -1) {
             addressSpan.setSpan(new ForegroundColorSpan(Color.RED), addressIndex, addressIndex + searchKey.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-        helper.setText(R.id.tv_community_name, bean.name)
+        helper.setText(R.id.tv_community_name, bean.getName())
                 .setText(R.id.tv_community_name, nameSpan)
-                .setText(R.id.tv_community_address, bean.address)
-                .setText(R.id.tv_community_address, addressSpan);
+                .setText(R.id.tv_community_address, bean.getPosition().getAddress())
+                .setText(R.id.tv_community_address, addressSpan)
+                .addOnClickListener(R.id.ll_community_layout);
     }
 }

@@ -3,17 +3,19 @@ package com.aglhz.yicommunity.common;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CheckTokenBean;
+import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
+import com.aglhz.yicommunity.bean.ParkRecordBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
+import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
 import java.io.File;
+import java.util.List;
 
 import io.reactivex.Observable;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.Field;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -51,13 +53,15 @@ public interface ApiService {
     @POST("/sub_property_ysq/client/info/msgList")
     Observable<MessageCenterBean> requestMessages(@Query("token") String token);
 
-    //Banner
+    //社区Banner
     @POST("/sub_property_ysq/client/info/indexadvs")
     Observable<BannerBean> getBanners();
 
+    //社区通知列表
     @POST("/sub_property_ysq/client/info/noticeList")
     Observable<NoticeBean> getNotice(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("topnum") int topnum);
 
+    //物业缴费
     @POST("/sub_property_ysq/client/info/pptBillsWait.do")
     Observable<PropertyPayBean> getPropertyPay(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("page") int page);
 
@@ -73,5 +77,27 @@ public interface ApiService {
     @Multipart
     @POST("/memberSYS-m/client/uploadHeader2.do")
     Observable<BaseBean> updatePortrait(@Query("token") String token, @Part("file") RequestBody file);
+
+    //社区地址列表
+    @POST("/propertyCFG-m/client/communityList.do")
+    Observable<CommunitySelectBean> getCommunityList(@Query("sc") String sc, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //提交管理投诉
+    @POST("/sub_property_ysq/property/complaint/from-client/complaint-create")
+    Observable<BaseBean> postComplain(@Query("token") String token,
+                                      @Query("cmnt_c") String cmnt_c,
+                                      @Query("name") String name,
+                                      @Query("phoneNo") String phoneNo,
+                                      @Query("content") String content,
+                                      @Query("type") int type,
+                                      @Query("file") List<File> files);
+
+    //停车记录
+    @POST("/sub_property_ysq/park/record/to-client/record-list")
+    Observable<ParkRecordBean> getParkRecord(@Query("token") String token);
+
+    //物业报修列表
+    @POST("/sub_property_ysq/client/info/repairApplyList")
+    Observable<RepairApplyBean> getRepairApply(@Query("token") String token);
 
 }

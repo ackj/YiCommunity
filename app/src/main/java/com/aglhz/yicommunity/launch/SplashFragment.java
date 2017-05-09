@@ -75,6 +75,10 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         if (EasyPermissions.hasPermissions(_mActivity, perms)) {
             //有权限就直接进行定位操作
 //            ToastUtils.showToast(BaseApplication.mContext, "正在定位……");
+
+
+
+
         } else {
             EasyPermissions.requestPermissions(this, "亿社区需要定位权限", LOCATION, perms);
             ToastUtils.showToast(BaseApplication.mContext, "申请权限……");

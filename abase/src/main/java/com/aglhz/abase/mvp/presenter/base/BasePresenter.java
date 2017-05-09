@@ -102,5 +102,8 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
         } else {
             getView().error("数据异常");
         }
+        throwable.printStackTrace();
+
+        ALog.e(throwable);
     }
 }

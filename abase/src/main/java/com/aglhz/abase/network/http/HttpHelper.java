@@ -24,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HttpHelper {
     private static final String TAG = HttpHelper.class.getSimpleName();
     public static String BASE_URL = "http://www.aglhz.com";
+//    public static String BASE_URL = "http://www.aglhz.com";
     private static OkHttpClient mOkHttpClient;
     private static Retrofit mRetrofit;
 
