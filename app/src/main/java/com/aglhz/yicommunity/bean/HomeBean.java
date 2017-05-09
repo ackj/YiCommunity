@@ -16,17 +16,18 @@ public class HomeBean implements MultiItemEntity {
     public static final int TYPE_COMMUNITY_QUALITY_LIFE = 104;
 
     //Banner
-    private List<BannerBean.DataBean.AdvsBean> banners;
+    public List<BannerBean.DataBean.AdvsBean> banners;
     //titile & community service
-    private String title;
-    private String desc;
-    private String notice;
-    private int bgRes;
-    private int textColor;
-    private int type;
-    private boolean hasMore;
-    private List<ServiceBean> services;
-    private List<ServiceBean> qualityLifes;
+    public String title;
+    public String desc;
+    public String notice;
+    public String community;
+    public int bgRes;
+    public int textColor;
+    public int type;
+    public boolean hasMore;
+    public List<ServiceBean> services;
+    public List<ServiceBean> qualityLifes;
 
     public List<ServiceBean> getServices() {
         return services;

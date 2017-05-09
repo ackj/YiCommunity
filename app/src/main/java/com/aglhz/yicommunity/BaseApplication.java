@@ -8,6 +8,8 @@ import android.support.multidex.MultiDexApplication;
 
 import com.aglhz.abase.log.ALog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import me.yokeyword.fragmentation.Fragmentation;
 
 

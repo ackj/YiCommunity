@@ -224,7 +224,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     private void updataView() {
-        if (UserHelper.userInfo != null) {
+        if (UserHelper.isLogined()) {
             Glide.with(this)
                     .load(UserHelper.userInfo.getFace())
                     .bitmapTransform(new CropCircleTransformation(_mActivity))

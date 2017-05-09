@@ -57,4 +57,10 @@ public class UserDataModel extends BaseModel implements UserDataContract.Model {
         return HttpHelper.getService(ApiService.class).updateUserData(params.token, params.field, params.val)
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseBean> updatePassword(Params params) {
+        return HttpHelper.getService(ApiService.class).updatePassword(params.token, params.pwd0, params.pwd1, params.pwd2)
+                .subscribeOn(Schedulers.io());
+    }
 }

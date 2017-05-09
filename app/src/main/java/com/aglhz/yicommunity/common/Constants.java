@@ -20,6 +20,11 @@ public class Constants {
     public static final String COMMUNITY_NAME = "community_name";
 
 
+    //网络部分
+    public static final int RESPONSE_CODE_NOMAL = 200;
+    public static final int RESPONSE_CODE_LOGOUT = 123;
+
+
     //web模块
     public static final String WEB_LINK = "link";
     public static final String WEB_TITLE = "title";

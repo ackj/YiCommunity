@@ -25,6 +25,9 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
 
+import static com.aglhz.yicommunity.R.id.recyclerView;
+import static com.alipay.sdk.app.statistic.c.v;
+
 /**
  * Author：leguang on 2017/4/13 0009 15:49
  * Email：langmanleguang@qq.com
@@ -35,11 +38,6 @@ public class NeighbourFragment extends BaseLazyFragment<NeighbourContract.Presen
     private static final String TAG = NeighbourFragment.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.ptrFrameLayout)
-    PtrFrameLayout ptrFrameLayout;
-    private LinearLayoutManager mLinearLayoutManager;
     private View mFooterLoading, mFooterNotLoading, mFooterError;
 
     public static NeighbourFragment newInstance() {
@@ -73,37 +71,37 @@ public class NeighbourFragment extends BaseLazyFragment<NeighbourContract.Presen
     @Override
     protected void initLazyView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            mFooterLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_loading, (ViewGroup) recyclerView.getParent(), false);
-            mFooterNotLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_not_loading, (ViewGroup) recyclerView.getParent(), false);
-            mFooterError = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_error, (ViewGroup) recyclerView.getParent(), false);
-            mFooterError.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    mAdapter.removeAllFooterView();
-//                    mAdapter.addFooterView(mFooterLoading);
-//                    mPresenter.queryData(pagination);
-                }
-            });
+//            mFooterLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_loading, (ViewGroup) recyclerView.getParent(), false);
+//            mFooterNotLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_not_loading, (ViewGroup) recyclerView.getParent(), false);
+//            mFooterError = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_error, (ViewGroup) recyclerView.getParent(), false);
+//            mFooterError.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    mAdapter.removeAllFooterView();
+////                    mAdapter.addFooterView(mFooterLoading);
+////                    mPresenter.queryData(pagination);
+//                }
+//            });
 
             initData();
         }
     }
 
     private void initData() {
-        initPtrFrameLayout(ptrFrameLayout);
-        initRecyclerView();
+//        initPtrFrameLayout(ptrFrameLayout);
+//        initRecyclerView();
     }
 
-    private void initRecyclerView() {
-        //下拉刷新必须得在懒加载里设置，因为下拉刷新是一进来就刷新，启动start()。
-        mLinearLayoutManager = new LinearLayoutManager(_mActivity);
-        recyclerView.setLayoutManager(mLinearLayoutManager);
+//    private void initRecyclerView() {
+//        //下拉刷新必须得在懒加载里设置，因为下拉刷新是一进来就刷新，启动start()。
+//        mLinearLayoutManager = new LinearLayoutManager(_mActivity);
+//        recyclerView.setLayoutManager(mLinearLayoutManager);
 
 //        setAdapter();
 //        setLoadMore();
 
 //        recyclerView.setAdapter(mAdapter);
-    }
+//    }
 
     private void initPtrFrameLayout(final PtrFrameLayout ptrFrameLayout) {
         final MaterialHeader header = new MaterialHeader(getContext());

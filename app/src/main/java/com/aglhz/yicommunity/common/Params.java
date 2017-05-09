@@ -11,7 +11,6 @@ import java.util.List;
 public class Params {
     public String sc = "AglhzYsq";
     public String token = "";
-    public String cmnt_c = "";
     public String status = "";
     public String dir = "";
     public String des = "";
@@ -24,10 +23,21 @@ public class Params {
     public String pwd = "";
     public int pageSize;
     public List<File> files;
-    public String name;
-    public String phoneNo;
-    public String content;
+    public String name = "";
+    public String phoneNo = "";
+    public String content = "";
     public int type;
+    public String pwd0 = "";
+    public String pwd1 = "";
+    public String pwd2 = "";
+    public String province = "";
+    public String city = "";
+    public String county = "";
+    public String cmnt_c = "";
+    public String bdg_c = "";
+    public String bdg_u_c = "";
+    public String bdg_f_c = "";
+
 
     private Params() {
     }

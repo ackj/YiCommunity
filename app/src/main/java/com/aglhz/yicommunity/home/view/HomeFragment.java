@@ -78,7 +78,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        initStateBar(view);
         EventBus.getDefault().register(this);
         initData();
         initListener();
@@ -96,6 +95,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         List<HomeBean> data = new ArrayList<>();
         //Banner
         HomeBean bannerBean = new HomeBean();
+        bannerBean.community = UserHelper.communityName;
         bannerBean.setItemType(HomeBean.TYPE_COMMUNITY_BANNER);
         data.add(bannerBean);
 
@@ -158,12 +158,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         ptrFrameLayout.setDurationToCloseHeader(1500);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ptrFrameLayout.autoRefresh(true);
-            }
-        }, 100);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
 
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
@@ -180,48 +175,45 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     private void initListener() {
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                int viewType = adapter.getItemViewType(position);
-                switch (viewType) {
-                    case HomeBean.TYPE_COMMUNITY_BANNER:
-                        switch (view.getId()) {
-                            case R.id.fl_item_banner:
-                                ToastUtils.showToast(_mActivity, "切换地址");
-                                _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
-                                break;
-                        }
+        adapter.setOnItemChildClickListener((adapter1, view, position) -> {
+            int viewType = adapter1.getItemViewType(position);
+            switch (viewType) {
+                case HomeBean.TYPE_COMMUNITY_BANNER:
+                    switch (view.getId()) {
+                        case R.id.fl_item_banner:
+                            ToastUtils.showToast(_mActivity, "切换地址");
+                            _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
+                            break;
+                    }
 
-                        break;
-                    case HomeBean.TYPE_COMMUNITY_NOTICE:
-                        ToastUtils.showToast(_mActivity, "notice");
-                        break;
+                    break;
+                case HomeBean.TYPE_COMMUNITY_NOTICE:
+                    ToastUtils.showToast(_mActivity, "notice");
+                    break;
 
-                    case HomeBean.TYPE_COMMUNITY_FUNCTION:
-                        switch (view.getId()) {
-                            case R.id.ll_quick_open_door:
-                                ToastUtils.showToast(_mActivity, "一键开门");
-                                mPresenter.openDoor();
-                                break;
-                            case R.id.ll_property_payment:
-                                ToastUtils.showToast(_mActivity, "物业缴费");
-                                _mActivity.start(PropertyPayFragment.newInstance());
-                                break;
-                            case R.id.ll_temporary_parking:
-                                ToastUtils.showToast(_mActivity, "临时停车");
-                                go2Web("临时停车", "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html");
-                                break;
-                            case R.id.ll_life_supermarket:
-                                ToastUtils.showToast(_mActivity, "生活超市");
-                                go2Web("生活超市", "http://www.aglhz.com/mall/m/index.html?appType=2&token=" + UserHelper.token);
-                                break;
-                        }
-                        break;
+                case HomeBean.TYPE_COMMUNITY_FUNCTION:
+                    switch (view.getId()) {
+                        case R.id.ll_quick_open_door:
+                            ToastUtils.showToast(_mActivity, "一键开门");
+                            mPresenter.openDoor();
+                            break;
+                        case R.id.ll_property_payment:
+                            ToastUtils.showToast(_mActivity, "物业缴费");
+                            _mActivity.start(PropertyPayFragment.newInstance());
+                            break;
+                        case R.id.ll_temporary_parking:
+                            ToastUtils.showToast(_mActivity, "临时停车");
+                            go2Web("临时停车", "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html");
+                            break;
+                        case R.id.ll_life_supermarket:
+                            ToastUtils.showToast(_mActivity, "生活超市");
+                            go2Web("生活超市", "http://www.aglhz.com/mall/m/index.html?appType=2&token=" + UserHelper.token);
+                            break;
+                    }
+                    break;
 
-                }
-                return false;
             }
+            return false;
         });
     }
 
@@ -255,16 +247,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void responseBanner(List<BannerBean.DataBean.AdvsBean> banners) {
         ptrFrameLayout.refreshComplete();
-        HomeBean homeBean = adapter.getData().get(0);
-        homeBean.setBanners(banners);
+        adapter.getData().get(0).setBanners(banners);
         adapter.notifyItemChanged(0);
     }
 
     @Override
     public void responseNotice(List<NoticeBean.DataBean.NoticeListBean> notices) {
         ptrFrameLayout.refreshComplete();
-        HomeBean homeBean = adapter.getData().get(1);
-        homeBean.setNotice(notices.get(0).getTitle());
+        adapter.getData().get(1).setNotice(notices.get(0).getTitle());
         adapter.notifyItemChanged(1);
     }
 
@@ -272,7 +262,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public void onEvent(EventCommunityChange event) {
         ALog.d(TAG, "onEvent:::" + event.bean.getName());
         UserHelper.setCommunity(event.bean.getName(), event.bean.getCode());
-        recyclerView.smoothScrollToPosition(0);
+        adapter.getData().get(0).community = UserHelper.communityName;
+//        recyclerView.smoothScrollToPosition(0);
         ptrFrameLayout.autoRefresh();
     }
 

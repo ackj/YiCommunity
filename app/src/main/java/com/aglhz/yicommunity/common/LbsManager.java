@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.common;
 
 import android.content.Context;
 
+import com.aglhz.abase.log.ALog;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -60,9 +61,11 @@ public class LbsManager {
 
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
-//            System.out.println(aMapLocation.getAddress());
-//
-//            String address = aMapLocation.getDistrict() + aMapLocation.getRoad() + aMapLocation.getAoiName();
+            ALog.e(aMapLocation.getAddress());
+            String address = aMapLocation.getDistrict() + aMapLocation.getRoad() + aMapLocation.getAoiName();
+
+            ALog.e(address);
+
             mCallBack.CallBack(aMapLocation);
 
             mCallBack = null;    //回调完销毁掉，避免内存益处

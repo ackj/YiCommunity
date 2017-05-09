@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.login.contract.LoginContract;
@@ -41,7 +42,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
         mRxManager.add(mModel.login((Params) request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userBean -> {
-                    if (userBean.getOther().getCode() == 200) {
+                    if (userBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().start(UserHelper.setUserInfo(userBean.getData().getMemberInfo()));
                     } else {
                         getView().error(userBean.getOther().getMessage());

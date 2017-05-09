@@ -182,7 +182,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
     @OnClick({R.id.ll_portrait_user_data_fragment, R.id.ll_nickname_user_data_fragment
             , R.id.ll_gender_user_data_fragment, R.id.ll_phone_user_data_fragment
-            , R.id.ll_change_password_user_data_fragment, R.id.toolbar_menu})
+            , R.id.ll_change_password_user_data_fragment, R.id.toolbar_menu, R.id.bt_submit_user_data_fragment})
     public void onViewClicked(View view) {
         ALog.e("view.getId()::" + view.getId());
 
@@ -194,10 +194,9 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                 break;
             case R.id.ll_gender_user_data_fragment:
                 new AlertDialog.Builder(_mActivity).setSingleChoiceItems(arrGender, 0, (dialog, which) -> {
-//                    tvGender.setText(arrGender[which]);  不应该在这里设置值，应该是网络返回 成功后再设值
                     //网络访问
                     dialog.dismiss();
-                    params.field = "sex";
+                    params.field = "sex";//写死就好
                     params.val = which + "";
                     mPresenter.updateUserData(params);
 
@@ -211,6 +210,8 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                 break;
             case R.id.ll_change_password_user_data_fragment:
                 llChangePasswordLayout.setVisibility(llChangePasswordLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+                //添加右边箭头的动画
                 break;
 
             case R.id.toolbar_menu:
@@ -219,9 +220,28 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     return;
                 }
                 //网络请求
-                params.field = "nickName";
+                params.field = "nickName";//写死就好
                 params.val = etNickname.getText().toString();
                 mPresenter.updateUserData(params);
+                break;
+
+            case R.id.bt_submit_user_data_fragment:
+                params.pwd0 = etPresentPassword.getText().toString();
+                params.pwd1 = etNewPassword.getText().toString();
+                params.pwd2 = etReput.getText().toString();
+
+                if (TextUtils.isEmpty(params.pwd0) | TextUtils.isEmpty(params.pwd1)
+                        | TextUtils.isEmpty(params.pwd2)) {
+                    DialogHelper.warningSnackbar(rootView, "密码不能为空！");
+                    return;
+                }
+
+                if (!TextUtils.equals(params.pwd1, params.pwd2)) {
+                    DialogHelper.warningSnackbar(rootView, "两次输入密码不相同！");
+                    return;
+                }
+
+                mPresenter.updatePassword(params);
                 break;
         }
     }

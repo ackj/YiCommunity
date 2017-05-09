@@ -2,13 +2,17 @@ package com.aglhz.yicommunity.common;
 
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.BuildingBean;
 import com.aglhz.yicommunity.bean.CheckTokenBean;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.bean.FloorBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.ParkRecordBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
+import com.aglhz.yicommunity.bean.RoomBean;
+import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
 import java.io.File;
@@ -73,6 +77,12 @@ public interface ApiService {
     @POST("/memberSYS-m/client/ updateMemberFieldByToken.do")
     Observable<BaseBean> updateUserData(@Query("token") String token, @Query("field") String field, @Query("val") String val);
 
+
+    //修改密码
+    @POST("/memberSYS-m/client/updateMemberPwd.do")
+    Observable<BaseBean> updatePassword(@Query("token") String token, @Query("pwd0") String pwd0, @Query("pwd1") String pwd1, @Query("pwd2") String pwd2);
+
+
     //更新头像
     @Multipart
     @POST("/memberSYS-m/client/uploadHeader2.do")
@@ -99,5 +109,40 @@ public interface ApiService {
     //物业报修列表
     @POST("/sub_property_ysq/client/info/repairApplyList")
     Observable<RepairApplyBean> getRepairApply(@Query("token") String token);
+
+    //请求小区列表
+    @POST("/propertyCFG-m/client/communityList.do")
+    Observable<CommunitySelectBean> requestCommunitys(@Query("sc") String sc
+            , @Query("page") String page
+            , @Query("pageSize") String pageSize
+            , @Query("province") String province
+            , @Query("city") String city
+            , @Query("county") String county);
+
+    //请求楼栋列表
+    @POST("/propertyCFG-m/client/buildingList.do")
+    Observable<BuildingBean> requestBuildings(@Query("sc") String sc
+            , @Query("cmnt_c") String cmnt_c);
+
+    //请求单元列表
+    @POST("/propertyCFG-m/client/buildingUnitList.do")
+    Observable<UnitBean> requestUnits(@Query("sc") String sc
+            , @Query("cmnt_c") String cmnt_c
+            , @Query("bdg_c") String bdg_c);
+
+    //请求楼层列表
+    @POST("/propertyCFG-m/client/floorList.do")
+    Observable<FloorBean> requestFloors(@Query("sc") String sc
+            , @Query("cmnt_c") String cmnt_c
+            , @Query("bdg_c") String bdg_c
+            , @Query("bdg_u_c") String bdg_u_c);
+
+    //请求房间列表
+    @POST("/propertyCFG-m/client/houseList.do")
+    Observable<RoomBean> requestRooms(@Query("sc") String sc
+            , @Query("cmnt_c") String cmnt_c
+            , @Query("bdg_c") String bdg_c
+            , @Query("bdg_u_c") String bdg_u_c
+            , @Query("bdg_f_c") String bdg_f_c);
 
 }

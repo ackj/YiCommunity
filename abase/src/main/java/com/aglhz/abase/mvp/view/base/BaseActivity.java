@@ -1,5 +1,6 @@
 package com.aglhz.abase.mvp.view.base;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,7 +9,12 @@ import android.view.WindowManager;
 import com.aglhz.abase.common.ActivityManager;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.abase.network.http.LoginInterceptor;
 import com.aglhz.abase.utils.NetworkUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
@@ -104,5 +110,25 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
     @Override
     public boolean swipeBackPriority() {
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void go2Login(LoginInterceptor event) {
+
+        ALog.e("111");
+        Intent intent = new Intent("LoginActivity");
+        startActivity(intent);
     }
 }

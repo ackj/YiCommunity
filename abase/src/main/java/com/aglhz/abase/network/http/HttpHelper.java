@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HttpHelper {
     private static final String TAG = HttpHelper.class.getSimpleName();
     public static String BASE_URL = "http://www.aglhz.com";
-//    public static String BASE_URL = "http://www.aglhz.com";
+    //    public static String BASE_URL = "http://www.aglhz.com";
     private static OkHttpClient mOkHttpClient;
     private static Retrofit mRetrofit;
 
@@ -52,9 +52,9 @@ public class HttpHelper {
         if (null == mOkHttpClient) {
 
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            if (builder.interceptors() != null) {
-                builder.interceptors().clear();
-            }
+//            if (builder.interceptors() != null) {
+//                builder.interceptors().clear();
+//            }
 
 //            File cacheFile = new File(Constants.PATH_NET_CACHE);
 //            Cache cache = new Cache(cacheFile, 1024 * 1024 * 50);
@@ -74,12 +74,17 @@ public class HttpHelper {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(loggingInterceptor);
-//            }
+            //            }
 
-//            builder.addNetworkInterceptor();
 
+//            builder.addInterceptor(new LoginInterceptor());
+
+//            builder.addNetworkInterceptor(new LoginInterceptor());
+            builder.interceptors().add(new LoggingInterceptor());
 //            if (Configuration.isShowNetworkParams()) {
-            builder.addInterceptor(new LoggingInterceptor());
+//            builder.addInterceptor(new LoggingInterceptor());
+//
+//            builder.interceptors().add(new LoginInterceptor());
 //            }
             mOkHttpClient = builder.build();
         }

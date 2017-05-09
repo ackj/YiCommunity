@@ -75,21 +75,18 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 viewpager.setPageMargin(DensityUtils.dp2px(BaseApplication.mContext, 5));
                 viewpager.setAdapter(adapter);
                 viewpager.setCurrentItem(1);
-                adapter.setOnItemClickListener(new ServiceVPAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int position) {
-                        ToastUtils.showToast(BaseApplication.mContext, "社区服务::" + position);
-                        switch (position) {
-                            case 0:
-                                fragment.go2Web("家政服务", "http://www.aglhz.com/sub_property_ysq/m/html/jiazheng.html");
-                                break;
-                            case 1:
-                                fragment.go2Web("家居维修", "http://www.aglhz.com/sub_property_ysq/m/html/weixiu.html");
-                                break;
-                            case 2:
-                                fragment.go2Web("送水上门", "http://www.aglhz.com/sub_property_ysq/m/html/songshui.html");
-                                break;
-                        }
+                adapter.setOnItemClickListener(position -> {
+                    ToastUtils.showToast(BaseApplication.mContext, "社区服务::" + position);
+                    switch (position) {
+                        case 0:
+                            fragment.go2Web("家政服务", "http://www.aglhz.com/sub_property_ysq/m/html/jiazheng.html");
+                            break;
+                        case 1:
+                            fragment.go2Web("家居维修", "http://www.aglhz.com/sub_property_ysq/m/html/weixiu.html");
+                            break;
+                        case 2:
+                            fragment.go2Web("送水上门", "http://www.aglhz.com/sub_property_ysq/m/html/songshui.html");
+                            break;
                     }
                 });
                 break;
@@ -98,19 +95,16 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 RecyclerView recyclerView = helper.getView(R.id.recyclerView);
                 recyclerView.setLayoutManager(new GridLayoutManager(BaseApplication.mContext, 3, GridLayoutManager.VERTICAL, false));
                 recyclerView.setAdapter(qualityLifeAdapter);
-                qualityLifeAdapter.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        ToastUtils.showToast(BaseApplication.mContext, "品质生活:" + position);
-                        switch (position) {
-                            case 0:
-                                break;
-                            case 1:
-                                fragment.go2Web("快递查询", "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?token=%@&appType=2");
-                                break;
-                            case 2:
-                                break;
-                        }
+                qualityLifeAdapter.setOnItemClickListener((adapter1, view, position) -> {
+                    ToastUtils.showToast(BaseApplication.mContext, "品质生活:" + position);
+                    switch (position) {
+                        case 0:
+                            break;
+                        case 1:
+                            fragment.go2Web("快递查询", "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?token=%@&appType=2");
+                            break;
+                        case 2:
+                            break;
                     }
                 });
                 break;

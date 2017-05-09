@@ -2,18 +2,42 @@ package com.aglhz.yicommunity.house;
 
 import android.os.Bundle;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.house.view.HouseFragment;
+import com.aglhz.yicommunity.common.Constants;
 
 public class HouseActivity extends BaseActivity {
+    private static final String TAG = HouseActivity.class.getSimpleName();
+    private int intFromTo;
+    private String fid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house);
+
+        //获取上一个Activity传递过来的数据。
+        initData();
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_house_activity, HouseFragment.newInstance());
+            switch (intFromTo) {
+                case Constants.HOUSE_RIGHTS:
+//                    loadRootFragment(R.id.fl_house_activity, HouseRightsFragment.newInstance(fid));
+                    ALog.e("Constants.HOUSE_RIGHTS::" + Constants.HOUSE_RIGHTS);
+                    break;
+                case Constants.ADD_HOUSE:
+//                    loadRootFragment(R.id.fl_house_activity, AddHouseFragment.newInstance());
+                    ALog.e("Constants.ADD_HOUSE::" + Constants.ADD_HOUSE);
+
+                    break;
+            }
         }
+    }
+
+    private void initData() {
+        intFromTo = getIntent().getIntExtra(Constants.FROM_TO, 0);
+        fid = getIntent().getStringExtra(Constants.HOUSE_FID);
+        ALog.e(intFromTo);
+        ALog.e(fid);
     }
 }

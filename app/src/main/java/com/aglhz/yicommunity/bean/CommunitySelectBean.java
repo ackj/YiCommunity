@@ -6,7 +6,7 @@ import java.util.List;
  * Created by YandZD on 2017/2/16.
  */
 
-public class CommunitySelectBean extends BaseBean{
+public class CommunitySelectBean extends BaseBean {
 
 
     /**

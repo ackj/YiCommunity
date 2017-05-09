@@ -233,7 +233,8 @@
                 android:gravity="center"
                 android:text="退出登录"
                 android:textColor="@color/red_remove_member_text"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:visibility="gone" />
 
             <Space
                 android:layout_width="match_parent"

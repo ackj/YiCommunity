@@ -64,4 +64,18 @@ public class UserDataPresenter extends BasePresenter<UserDataContract.View, User
                 }, this::error)
         );
     }
+
+    @Override
+    public void updatePassword(Params params) {
+        mRxManager.add(mModel.updatePassword(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().start(baseBean.getOther().getMessage());
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error)
+        );
+    }
 }

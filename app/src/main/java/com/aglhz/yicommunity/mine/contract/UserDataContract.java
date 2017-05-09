@@ -22,13 +22,17 @@ public interface UserDataContract {
     interface Presenter extends BaseContract.Presenter {
         void changePortrait(Params params);
 
-
         void updateUserData(Params params);
+
+        void updatePassword(Params params);
     }
 
     interface Model extends BaseContract.Model {
         Observable<BaseBean> updatePortrait(Params params);
 
         Observable<BaseBean> updateUserData(Params params);
+
+        Observable<BaseBean> updatePassword(Params params);
+
     }
 }
