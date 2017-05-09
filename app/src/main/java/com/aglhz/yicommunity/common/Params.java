@@ -29,6 +29,17 @@ public class Params {
     public String content;
     public int type;
 
+    public boolean single;
+
+    public String directory;
+    public String deviceName;
+
+    public String account;
+    public String verifyCode;
+    public String verifyType;
+    public String password1;
+    public String password2;
+
     private Params() {
     }
 

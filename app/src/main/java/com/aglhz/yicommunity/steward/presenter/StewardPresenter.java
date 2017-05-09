@@ -3,8 +3,14 @@ package com.aglhz.yicommunity.steward.presenter;
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.model.StewardModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35
@@ -68,34 +74,22 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
 
     @Override
     public void requestContact(String cmnt_c) {
-//        ALog.e("111111111");
-//        Map params = BaseParams.getTokenMap();
-//        params.put("cmnt_c", cmnt_c);
-//
-//        ALog.e(params.get("cmnt_c"));
-//
-//        HttpClient.post(ServiceApi.CONTACT, params, new BeanCallback<ContactBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-////                if (isViewAttached()) {
-////                    getView().error(new Exception());
-////                }
-//            }
-//
-//            @Override
-//            public void onSuccess(ContactBean bean) {
-//                if (isViewAttached()) {
-//                    List<String> listPhone = new ArrayList();
-//                    if (!TextUtils.isEmpty(bean.getData().getTelephoneNo())) {
-//                        listPhone.add("座机：" + bean.getData().getTelephoneNo());
-//                    }
-//                    if (!TextUtils.isEmpty(bean.getData().getMobileNo())) {
-//                        listPhone.add("手机：" + bean.getData().getMobileNo());
-//                    }
-//                    getView().responseContact(listPhone);
-//                }
-//            }
-//        });
+
+        Params params = Params.getInstance();
+        params.cmnt_c = "KBSJ-agl-00005";
+
+        mRxManager.add(mModel.getContact(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(contactBean -> {
+                    if (contactBean.getOther().getCode() == 200) {
+                        List<String> listPhone = new ArrayList<>();
+                        listPhone.add("座机：" + contactBean.getData().getTelephoneNo());
+                        listPhone.add("手机：" + contactBean.getData().getMobileNo());
+                        getView().responseContact(listPhone);
+                    } else {
+                        getView().error(contactBean.getOther().getMessage());
+                    }
+                }, this::error));
     }
 
     @Override

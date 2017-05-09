@@ -2,10 +2,14 @@ package com.aglhz.yicommunity.steward.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.yicommunity.bean.ContactBean;
 import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.bean.SipBean;
+import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -19,7 +23,7 @@ public interface StewardContract {
 
         void responseHouses(List<IconBean> listIcons);
 
-        void responseContact(List<String> listPhone);
+        void responseContact(List<String> phoneList);
 
         void responseGetSip(SipBean mSipBean);
 
@@ -33,5 +37,7 @@ public interface StewardContract {
     }
 
     interface Model extends BaseContract.Model {
+        Observable<ContactBean> getContact(Params params);
+
     }
 }

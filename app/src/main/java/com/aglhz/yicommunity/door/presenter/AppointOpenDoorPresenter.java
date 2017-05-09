@@ -1,12 +1,14 @@
 package com.aglhz.yicommunity.door.presenter;
 
 
-import com.aglhz.abase.log.ALog;
-import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.common.BaseParams;
-import com.aglhz.yicommunity.door.contract.AppointOpenDoorContract;
+import android.support.annotation.NonNull;
 
-import java.util.Map;
+import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.door.contract.AppointOpenDoorContract;
+import com.aglhz.yicommunity.door.model.AppointOpenDoorModel;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35
@@ -18,68 +20,50 @@ import java.util.Map;
 public class AppointOpenDoorPresenter extends BasePresenter<AppointOpenDoorContract.View, AppointOpenDoorContract.Model> implements AppointOpenDoorContract.Presenter {
     private final String TAG = AppointOpenDoorPresenter.class.getSimpleName();
 
+    /**
+     * 创建Presenter的时候就绑定View和创建model。
+     *
+     * @param mView 所要绑定的view层对象，一般在View层创建Presenter的时候通过this把自己传过来。
+     */
     public AppointOpenDoorPresenter(AppointOpenDoorContract.View mView) {
         super(mView);
     }
 
+
     @Override
     public void start(Object request) {
-        ALog.e("NeighbourPresenter::start");
 
     }
 
+    @NonNull
     @Override
-    public void requestDoorList(String token) {
-
-//        Map params = BaseParams.getTokenMap();
-//        HttpClient.post(ServiceApi.DOORLIST, params, new BeanCallback<DoorListBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    getView().error(new Exception());
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(DoorListBean mDoorListBean) {
-//                if (isViewAttached()) {
-//
-//                    getView().responseDoorList(mDoorListBean);
-//                }
-//
-//            }
-//        });
+    protected AppointOpenDoorContract.Model createModel() {
+        return new AppointOpenDoorModel();
     }
 
     @Override
-    public void requestAppointOpenDoor(String token, String dir) {
-        ALog.e("2222222222");
+    public void requestDoorList(Params params) {
+        mRxManager.add(mModel.getDoorListBean(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(doorListBean -> {
+                    if (doorListBean.getOther().getCode() == 200) {
+                        getView().responseDoorList(doorListBean);
+                    } else {
+                        getView().error(doorListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 
-        Map params = BaseParams.getTokenMap();
-        params.put("dir", dir);
-
-        ALog.e(params.get("token"));
-        ALog.e(params.get("dir"));
-
-//        HttpClient.post(ServiceApi.APPOINT_OPEN_DOOR, params, new BeanCallback<BaseBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    ALog.e("3333333333333");
-//
-//                    getView().error(new Exception());
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(BaseBean mBaseBean) {
-//                if (isViewAttached()) {
-//                    ALog.e("444444444444");
-//
-//                    getView().responseAppointOpenDoor(mBaseBean);
-//                }
-//
-//            }
-//        });
+    @Override
+    public void requestAppointOpenDoor(Params params) {
+        mRxManager.add(mModel.appointOpenDoor(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseAppointOpenDoor(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
     }
 }

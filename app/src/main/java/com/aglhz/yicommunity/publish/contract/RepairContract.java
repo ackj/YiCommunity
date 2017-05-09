@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.publish.contract;
 
-
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.Params;
@@ -8,22 +7,22 @@ import com.aglhz.yicommunity.common.Params;
 import io.reactivex.Observable;
 
 /**
- * Author：leguang on 2017/4/12 0009 14:23
- * Email：langmanleguang@qq.com
- * <p>
- * 邻里模块所对应的各层对象应有的接口。
+ * Author: LiuJia on 2017/5/9 0009 10:30.
+ * Email: liujia95me@126.com
  */
-public interface ComplainContract {
+
+public interface RepairContract {
 
     interface View extends BaseContract.View {
-        void responseComplain(BaseBean baseBean);
+        void responseRepair(BaseBean bean);
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void postComplain(Params params);
+        void postRepair(Params params);
     }
 
     interface Model extends BaseContract.Model {
-        Observable<BaseBean> postCmplain(Params params);
+        Observable<BaseBean> postRepair(Params params);
     }
+
 }

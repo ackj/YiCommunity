@@ -188,7 +188,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     case HomeBean.TYPE_COMMUNITY_BANNER:
                         switch (view.getId()) {
                             case R.id.fl_item_banner:
-                                ToastUtils.showToast(_mActivity, "切换地址");
                                 _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
                                 break;
                         }
@@ -197,23 +196,18 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     case HomeBean.TYPE_COMMUNITY_NOTICE:
                         ToastUtils.showToast(_mActivity, "notice");
                         break;
-
                     case HomeBean.TYPE_COMMUNITY_FUNCTION:
                         switch (view.getId()) {
                             case R.id.ll_quick_open_door:
-                                ToastUtils.showToast(_mActivity, "一键开门");
                                 mPresenter.openDoor();
                                 break;
                             case R.id.ll_property_payment:
-                                ToastUtils.showToast(_mActivity, "物业缴费");
                                 _mActivity.start(PropertyPayFragment.newInstance());
                                 break;
                             case R.id.ll_temporary_parking:
-                                ToastUtils.showToast(_mActivity, "临时停车");
                                 go2Web("临时停车", "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html");
                                 break;
                             case R.id.ll_life_supermarket:
-                                ToastUtils.showToast(_mActivity, "生活超市");
                                 go2Web("生活超市", "http://www.aglhz.com/mall/m/index.html?appType=2&token=" + UserHelper.token);
                                 break;
                         }

@@ -13,16 +13,24 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.door.contract.AppointOpenDoorContract;
 import com.aglhz.yicommunity.door.presenter.AppointOpenDoorPresenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Author: LiuJia on 2017/4/21 9:14.
@@ -35,10 +43,14 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.rv_appoint_opendoor)
+    @BindView(R.id.recyclerView)
     RecyclerView rvAppointOpendoor;
+    @BindView(R.id.ptrFrameLayout)
+    PtrFrameLayout ptrFrameLayout;
+
+
     private AppointOpenDoorRVAdapter adapter;
-    private ViewGroup rootView;
+    private Unbinder unbinder;
 
 
     public static AppointOpenDoorFragment newInstance() {
@@ -54,21 +66,51 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_appoint_opendoor, container, false);
-        ButterKnife.bind(this, view);
+        View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar();
         initData();
+        initPtrFrameLayout();
+    }
+
+    private void initPtrFrameLayout() {
+        final MaterialHeader header = new MaterialHeader(getContext());
+        int[] colors = getResources().getIntArray(R.array.google_colors);
+        header.setColorSchemeColors(colors);
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
+        header.setPtrFrameLayout(ptrFrameLayout);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.autoRefresh(true);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
+
+
+
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                //判断是否滑动到顶部。
+                return ScrollingHelper.isRecyclerViewToTop(rvAppointOpendoor);
+            }
+
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                ALog.e("开始刷新了");
+//                mPresenter.start();
+                mPresenter.requestDoorList(Params.getInstance());
+            }
+        });
     }
 
     private void initToolbar() {
-        mPresenter.requestDoorList("");
+        mPresenter.requestDoorList(Params.getInstance());
         initStateBar(toolbar);
         toolbarTitle.setText("指定开门");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
@@ -88,26 +130,22 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ALog.e("111111111");
-                mPresenter.requestAppointOpenDoor("", AppointOpenDoorFragment.this.adapter.getData().get(position).getDir());
+                Params params = Params.getInstance();
+                params.dir = AppointOpenDoorFragment.this.adapter.getData().get(position).getDir();
+                mPresenter.requestAppointOpenDoor(params);
             }
         });
     }
 
     @Override
     public void responseDoorList(DoorListBean mDoorListBean) {
+        ptrFrameLayout.refreshComplete();
         adapter.setNewData(mDoorListBean.getData());
     }
 
     @Override
     public void responseAppointOpenDoor(BaseBean mBaseBean) {
-        ALog.e("8888888888");
-        if (mBaseBean.getOther().getCode() == 200) {
-            ALog.e("9999999999");
-
-            DialogHelper.successSnackbar(rootView, "开门成功！");
-        } else {
-            DialogHelper.warningSnackbar(rootView, "开门失败");
-        }
+        DialogHelper.successSnackbar(getView(), "开门成功！");
     }
 
     @Override
@@ -117,7 +155,13 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
 
     @Override
     public void error(String errorMessage) {
-        ALog.e("77777777");
-        DialogHelper.warningSnackbar(rootView, "网络异常，请重试！");
+        ptrFrameLayout.refreshComplete();
+        DialogHelper.warningSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

@@ -1,11 +1,14 @@
 package com.aglhz.yicommunity.door.presenter;
 
-import com.aglhz.abase.log.ALog;
-import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.common.BaseParams;
-import com.aglhz.yicommunity.door.contract.PasswordOpenDoorContract;
 
-import java.util.Map;
+import android.support.annotation.NonNull;
+
+import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.door.contract.PasswordOpenDoorContract;
+import com.aglhz.yicommunity.door.model.PasswordOpenDoorModel;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35
@@ -23,43 +26,26 @@ public class PasswordOpenDoorPresenter extends BasePresenter<PasswordOpenDoorCon
 
     @Override
     public void start(Object request) {
-        ALog.e("::start");
+
+    }
+
+    @NonNull
+    @Override
+    protected PasswordOpenDoorContract.Model createModel() {
+        return new PasswordOpenDoorModel();
     }
 
     @Override
-    public void requestPassword(String token, String dir) {
-        ALog.e("2222222222");
-
-        Map params = BaseParams.getTokenMap();
-        params.put("dir", dir);
-
-        ALog.e(params.get("token"));
-        ALog.e(params.get("dir"));
-
-//        HttpClient.post(ServiceApi.PASSWORD_OPEN_DOOR, params, new BeanCallback<PasswordBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    ALog.e("3333333333333");
-//
-//                    getView().error(null);
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(PasswordBean mPasswordBean) {
-//                if (isViewAttached()) {
-//                    ALog.e("444444444444");
-//
-//                    if (mPasswordBean.getOther().getCode() == 200) {
-//
-//                        getView().responsePassword(mPasswordBean);
-//                    } else {
-//                        getView().error(null);
-//                    }
-//                }
-//
-//            }
-//        });
+    public void requestPassword(Params params) {
+        params.dir = "6-31-1";
+        mRxManager.add(mModel.getPassword(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(passwordBean -> {
+                    if (passwordBean.getOther().getCode() == 200) {
+                        getView().responsePassword(passwordBean);
+                    } else {
+                        getView().error(passwordBean.getOther().getMessage());
+                    }
+                }, this::error));
     }
 }

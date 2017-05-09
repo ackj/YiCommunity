@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
+import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -142,6 +143,7 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        KeyBoardUtils.hideKeybord(getView(), _mActivity);
         unbinder.unbind();
     }
 
@@ -149,7 +151,7 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
     public void onViewClicked() {
         Params params = Params.getInstance();
         try {
-            params.name = new String(etName.getText().toString().trim().getBytes("GBK"),"utf-8");
+            params.name = new String(etName.getText().toString().trim().getBytes("GBK"), "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -204,6 +206,6 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
     }
 
     private void submit(Params params) {
-        mPresenter.requestComplain(params);//上传
+        mPresenter.postComplain(params);//上传
     }
 }

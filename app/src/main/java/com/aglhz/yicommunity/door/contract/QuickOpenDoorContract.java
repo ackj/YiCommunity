@@ -4,6 +4,9 @@ package com.aglhz.yicommunity.door.contract;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
+import com.aglhz.yicommunity.common.Params;
+
+import io.reactivex.Observable;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -24,13 +27,16 @@ public interface QuickOpenDoorContract {
 
     interface Presenter extends BaseContract.Presenter {
         //请求社区列表数据
-        void requestDoorList(String token);
+        void requestDoorList(Params params);
 
         //请求楼栋列表数据
-        void requestQuickOpenDoor(String token, String directory, String deviceName);
+        void requestQuickOpenDoor(Params params);
 
     }
 
     interface Model extends BaseContract.Model {
+        Observable<DoorListBean> getDoorListBean(Params params);
+
+        Observable<BaseBean> setQuickOpenDoor(Params params);
     }
 }

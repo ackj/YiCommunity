@@ -31,7 +31,7 @@ public class ComplainPresenter extends BasePresenter<ComplainContract.View, Comp
     }
 
     @Override
-    public void requestComplain(Params params) {
+    public void postComplain(Params params) {
         params.cmnt_c = "KBSJ-agl-00005";
         mRxManager.add(mModel.postCmplain(params)
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,13 +1,14 @@
 package com.aglhz.yicommunity.door.presenter;
 
 
-import com.aglhz.abase.log.ALog;
+import android.support.annotation.NonNull;
+
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.common.BaseParams;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.door.contract.QuickOpenDoorContract;
+import com.aglhz.yicommunity.door.model.QuickOpenDoorModel;
 
-
-import java.util.Map;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35
@@ -23,33 +24,10 @@ public class QuickOpenDoorPresenter extends BasePresenter<QuickOpenDoorContract.
         super(mView);
     }
 
-
-//    @Override
-//    public void start() {
-//        requestDoorList("");
-//    }
-
+    @NonNull
     @Override
-    public void requestDoorList(String token) {
-
-        Map params = BaseParams.getTokenMap();
-//        HttpClient.post(ServiceApi.DOORLIST, params, new BeanCallback<DoorListBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    getView().error(new Exception());
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(DoorListBean mDoorListBean) {
-//                if (isViewAttached()) {
-//
-//                    getView().responseDoorList(mDoorListBean);
-//                }
-//
-//            }
-//        });
+    protected QuickOpenDoorContract.Model createModel() {
+        return new QuickOpenDoorModel();
     }
 
     @Override
@@ -58,36 +36,28 @@ public class QuickOpenDoorPresenter extends BasePresenter<QuickOpenDoorContract.
     }
 
     @Override
-    public void requestQuickOpenDoor(String token, String directory, String deviceName) {
-        ALog.e("2222222222");
+    public void requestDoorList(Params params) {
+        mRxManager.add(mModel.getDoorListBean(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(doorListBean -> {
+                    if (doorListBean.getOther().getCode() == 200) {
+                        getView().responseDoorList(doorListBean);
+                    } else {
+                        getView().error(doorListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 
-        Map params = BaseParams.getTokenMap();
-        params.put("directory", directory);
-        params.put("deviceName", deviceName);
-
-        ALog.e(params.get("token"));
-        ALog.e(params.get("directory"));
-        ALog.e(params.get("deviceName"));
-
-//        HttpClient.post(ServiceApi.SETQUICKOPEN, params, new BeanCallback<BaseBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    ALog.e("3333333333333");
-//
-//                    getView().error(new Exception());
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(BaseBean mBaseBean) {
-//                if (isViewAttached()) {
-//                    ALog.e("444444444444");
-//
-//                    getView().responseQuickOpenDoor(mBaseBean);
-//                }
-//
-//            }
-//        });
+    @Override
+    public void requestQuickOpenDoor(Params params) {
+        mRxManager.add(mModel.setQuickOpenDoor(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseQuickOpenDoor(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
     }
 }

@@ -3,7 +3,14 @@ package com.aglhz.yicommunity.steward.model;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
+import com.aglhz.abase.network.http.HttpHelper;
+import com.aglhz.yicommunity.bean.ContactBean;
+import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
+
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -18,5 +25,11 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
     @Override
     public void start(Object request) {
         ALog.e("start");
+    }
+
+    @Override
+    public Observable<ContactBean> getContact(Params params) {
+        return HttpHelper.getService(ApiService.class).getContact(params.token, params.cmnt_c)
+                .subscribeOn(Schedulers.io());
     }
 }

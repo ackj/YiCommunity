@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.home.contract.HomeContract;
 import com.aglhz.yicommunity.home.model.HomeModel;
 
@@ -67,7 +68,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     @Override
     public void openDoor() {
         Params params = Params.getInstance();
-        params.dir = "6-31-1";
+        params.dir = UserHelper.dir;
         mRxManager.add(mModel.openDoor(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
