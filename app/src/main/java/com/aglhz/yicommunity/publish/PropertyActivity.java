@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.property;
+package com.aglhz.yicommunity.publish;
 
 import android.os.Bundle;
 
@@ -6,8 +6,8 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.property.view.ComplainFragment;
-import com.aglhz.yicommunity.property.view.RepairRecordFragment;
+import com.aglhz.yicommunity.publish.view.ComplainFragment;
+import com.aglhz.yicommunity.publish.view.RepairRecordFragment;
 
 public class PropertyActivity extends BaseActivity {
     private static final String TAG = PropertyActivity.class.getSimpleName();

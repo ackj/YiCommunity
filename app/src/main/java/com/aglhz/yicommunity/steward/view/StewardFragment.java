@@ -33,7 +33,7 @@ import com.aglhz.yicommunity.house.HouseActivity;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.park.ParkActivity;
 import com.aglhz.yicommunity.picker.PickerActivity;
-import com.aglhz.yicommunity.property.PropertyActivity;
+import com.aglhz.yicommunity.publish.PropertyActivity;
 import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.presenter.StewardPresenter;
@@ -284,9 +284,11 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
 
                 } else if (position == 0) {
                     if (checkToken()) {
-                        if (checkHasCommunity()) {
+//                        if (checkHasCommunity()) {
 //                            startActivity(new Intent(getContext(), PropertyRepairActivity.class));
-                        }
+
+//                        }
+                        go2PropertyService(position);
                     }
 
                 } else if (position == 2) {

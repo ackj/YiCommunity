@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.property.view;
+package com.aglhz.yicommunity.publish.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 
@@ -15,24 +16,25 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Administrator on 2017/4/19 16:09.
+ * Created by Administrator on 2017/4/19 16:06.
  */
-public class ComplainFragment extends BaseFragment {
-    private final String TAG = ComplainFragment.class.getSimpleName();
+public class RepairFragment extends BaseFragment {
+    private final String TAG = RepairFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    public static ComplainFragment newInstance() {
-        return new ComplainFragment();
+    public static RepairFragment newInstance() {
+        ALog.e("RepairFragment");
+        return new RepairFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_complain, container, false);
+        View view = inflater.inflate(R.layout.fragment_repair, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -45,7 +47,7 @@ public class ComplainFragment extends BaseFragment {
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText("我要投诉");
+        toolbarTitle.setText("我要报修");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

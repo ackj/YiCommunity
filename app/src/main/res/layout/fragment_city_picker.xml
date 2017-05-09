@@ -62,7 +62,7 @@
                 android:layout_height="40dp" />
         </LinearLayout>
 
-        <com.liujia95.me.yicommunity_search.citypicker.view.SideLetterBar
+        <com.aglhz.yicommunity.picker.view.SideLetterBar
             android:id="@+id/side_letter_bar"
             android:layout_width="@dimen/side_letter_bar_width"
             android:layout_height="match_parent"

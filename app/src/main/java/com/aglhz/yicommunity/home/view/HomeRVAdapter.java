@@ -49,6 +49,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
     protected void convert(final BaseViewHolder helper, HomeBean item) {
         switch (helper.getItemViewType()) {
             case HomeBean.TYPE_COMMUNITY_BANNER:
+                helper.addOnClickListener(R.id.fl_item_banner);
                 List<BannerBean.DataBean.AdvsBean> banners = item.getBanners();
                 if (banners != null && banners.size() > 0) {
                     ViewPager viewpager = helper.getView(R.id.viewpager_item_banner);

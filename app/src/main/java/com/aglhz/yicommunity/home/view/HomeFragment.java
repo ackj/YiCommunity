@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BannerBean;
@@ -18,12 +20,20 @@ import com.aglhz.yicommunity.bean.HomeBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.ServiceBean;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunityChange;
 import com.aglhz.yicommunity.home.contract.HomeContract;
 import com.aglhz.yicommunity.home.presenter.HomePresenter;
+import com.aglhz.yicommunity.home.view.header.RentalsSunHeaderView;
+import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.properypay.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * Created by Administrator on 2017/4/19 9:15.
@@ -68,9 +79,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        initStateBar(view);
+        EventBus.getDefault().register(this);
         initData();
         initListener();
+        initPtrFrameLayout();
     }
+
 
     private void initData() {
         layoutManager = new LinearLayoutManager(_mActivity);
@@ -86,7 +100,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         data.add(bannerBean);
 
         //Notice
-        String notice = "哈哈哈哈哈哈哈";
+        String notice = "";
         HomeBean noticeBean = new HomeBean();
         noticeBean.setItemType(HomeBean.TYPE_COMMUNITY_NOTICE);
         noticeBean.setNotice(notice);
@@ -133,6 +147,38 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         recyclerView.setAdapter(adapter);
     }
 
+    private void initPtrFrameLayout() {
+        // header
+        final RentalsSunHeaderView header = new RentalsSunHeaderView(getContext());
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setPadding(0, DensityUtils.dp2px(_mActivity, 15), 0, DensityUtils.dp2px(_mActivity, 10));
+        header.setUp(ptrFrameLayout);
+
+        ptrFrameLayout.setLoadingMinTime(1000);
+        ptrFrameLayout.setDurationToCloseHeader(1500);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrFrameLayout.autoRefresh(true);
+            }
+        }, 100);
+
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
+            }
+
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                mPresenter.requestBanner();
+                mPresenter.requestNotice();
+            }
+        });
+    }
+
     private void initListener() {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -143,7 +189,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                         switch (view.getId()) {
                             case R.id.fl_item_banner:
                                 ToastUtils.showToast(_mActivity, "切换地址");
-
+                                _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
                                 break;
                         }
 
@@ -190,6 +236,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
         if (adapter != null) {
             adapter = null;
         }
@@ -201,11 +248,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void error(String errorMessage) {
+        ptrFrameLayout.refreshComplete();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseBanner(List<BannerBean.DataBean.AdvsBean> banners) {
+        ptrFrameLayout.refreshComplete();
         HomeBean homeBean = adapter.getData().get(0);
         homeBean.setBanners(banners);
         adapter.notifyItemChanged(0);
@@ -213,9 +262,18 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseNotice(List<NoticeBean.DataBean.NoticeListBean> notices) {
+        ptrFrameLayout.refreshComplete();
         HomeBean homeBean = adapter.getData().get(1);
         homeBean.setNotice(notices.get(0).getTitle());
         adapter.notifyItemChanged(1);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunityChange event) {
+        ALog.d(TAG, "onEvent:::" + event.bean.getName());
+        UserHelper.setCommunity(event.bean.getName(), event.bean.getCode());
+        recyclerView.smoothScrollToPosition(0);
+        ptrFrameLayout.autoRefresh();
     }
 
     @Override

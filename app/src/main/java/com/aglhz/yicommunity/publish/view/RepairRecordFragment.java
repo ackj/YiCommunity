@@ -1,6 +1,7 @@
-package com.aglhz.yicommunity.property.view;
+package com.aglhz.yicommunity.publish.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,20 +13,26 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.bean.RepairBean;
+import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.publish.contract.RepairApplyContract;
+import com.aglhz.yicommunity.publish.presenter.RepairApplyPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/4/19 14:27.
  * <p>
  * 物业保修列表
  */
-public class RepairRecordFragment extends BaseFragment {
+public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> implements RepairApplyContract.View {
     private final String TAG = RepairRecordFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
@@ -36,16 +43,23 @@ public class RepairRecordFragment extends BaseFragment {
     TextView toolbarMenu;
     @BindView(R.id.rv_property_repair_activity)
     RecyclerView recyclerview;
+    private Unbinder unbinder;
 
     public static RepairRecordFragment newInstance() {
         return new RepairRecordFragment();
+    }
+
+    @NonNull
+    @Override
+    protected RepairApplyPresenter createPresenter() {
+        return new RepairApplyPresenter(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_repair_record, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -70,6 +84,7 @@ public class RepairRecordFragment extends BaseFragment {
     }
 
     public void initData() {
+        mPresenter.requestRepairApplyList();
 
         recyclerview.setLayoutManager(new LinearLayoutManager(_mActivity));
         List<RepairBean> datas = new ArrayList<>();
@@ -79,4 +94,29 @@ public class RepairRecordFragment extends BaseFragment {
         recyclerview.setAdapter(new RepairRecordRVAdapter(datas));
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick(R.id.toolbar_menu)
+    public void onViewClicked() {
+        start(RepairFragment.newInstance());
+    }
+
+    @Override
+    public void start(Object response) {
+
+    }
+
+    @Override
+    public void error(String errorMessage) {
+        DialogHelper.warningSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public void responseRepairApplyList(List<RepairApplyBean.DataBean.RepairApplysBean> beans) {
+        DialogHelper.successSnackbar(getView(), "请求成功 sizecount:" + beans.size());
+    }
 }

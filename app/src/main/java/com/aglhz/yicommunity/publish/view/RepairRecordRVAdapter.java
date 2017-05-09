@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.property.view;
+package com.aglhz.yicommunity.publish.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
