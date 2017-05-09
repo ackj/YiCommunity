@@ -131,9 +131,10 @@
             android:name=".door.DoorActivity"
             android:theme="@style/Transparent" />
 
-        <!--<activity-->
-        <!--android:name=".about.AboutActivity"-->
-        <!--android:theme="@style/AppTheme.Transparent" />-->
+        <activity
+            android:name=".about.AboutActivity"
+            android:theme="@style/Transparent" />
+
         <activity
             android:name=".mypublish.MyPublishActivity"
             android:theme="@style/Transparent" />

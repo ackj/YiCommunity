@@ -7,14 +7,18 @@ package com.aglhz.yicommunity.common;
 
 public class Params {
     public String sc = "AglhzYsq";
-    public String token;
-    public String cmnt_c;
-    public String status;
-    public String dir;
-    public int page;
-
-    public String user;
-    public String pwd;
+    public String token = "";
+    public String cmnt_c = "";
+    public String status = "";
+    public String dir = "";
+    public String des = "";
+    public String contact = "";
+    public int page = 0;
+    public String user = "";
+    public String field = "";
+    public String file = "";
+    public String val = "";
+    public String pwd = "";
 
     private Params() {
     }

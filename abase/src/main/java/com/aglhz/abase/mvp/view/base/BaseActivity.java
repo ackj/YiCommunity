@@ -100,4 +100,9 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
         return new DefaultNoAnimator();
 //        return new FragmentAnimator(android.R.anim.fade_in, android.R.anim.fade_out, 0, 0);
     }
+
+    @Override
+    public boolean swipeBackPriority() {
+        return true;
+    }
 }

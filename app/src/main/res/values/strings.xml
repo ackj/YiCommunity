@@ -54,4 +54,8 @@
     <!--登录模块-->
     <string name="login">登录</string>
 
+    <!--反馈-->
+    <string name="feedback">请填写反馈信息</string>
+    <string name="feedback_hint">说明您的报修详细内容和具体位置</string>
+
 </resources>

@@ -19,6 +19,7 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.about.AboutActivity;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -41,6 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import me.yokeyword.fragmentation.SupportFragment;
 
 
 /**
@@ -55,8 +57,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     TextView tvName;
     @BindView(R.id.tv_phone_number)
     TextView tvPhoneNumber;
-    @BindView(R.id.tv_personal_info)
-    TextView tvPersonalInfo;
+    @BindView(R.id.tv_user_data)
+    TextView tvUserData;
     @BindView(R.id.ll_message_center)
     LinearLayout llMessageCenter;
     @BindView(R.id.ll_my_indent)
@@ -108,11 +110,11 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         //动态给“个人资料”TextView设置drawableLeft并改变其大小
         Drawable drawableLeft = ContextCompat.getDrawable(_mActivity, R.drawable.ic_oneself_info_80px);
         drawableLeft.setBounds(0, 0, DensityUtils.dp2px(BaseApplication.mContext, 16.f), DensityUtils.dp2px(BaseApplication.mContext, 16.f));
-        tvPersonalInfo.setCompoundDrawables(drawableLeft, null, null, null);
+        tvUserData.setCompoundDrawables(drawableLeft, null, null, null);
         updataView();
     }
 
-    @OnClick({R.id.iv_head, R.id.tv_personal_info, R.id.ll_message_center,
+    @OnClick({R.id.iv_head, R.id.tv_user_data, R.id.ll_message_center,
             R.id.ll_my_indent, R.id.ll_my_address, R.id.ll_make_shortcut,
             R.id.ll_my_publish, R.id.ll_clean_cache, R.id.ll_about_us, R.id.tv_logout})
     public void onClick(View view) {
@@ -123,14 +125,14 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                     ALog.e("111111111");
                 }
                 break;
-            case R.id.tv_personal_info:
+            case R.id.tv_user_data:
                 if (isLogined()) {
-//                    startActivity(new Intent(getContext(), UserInfoMationActivity.class));
+                    ((MainFragment) getParentFragment()).start(UserDataFragment.newInstance(), SupportFragment.STANDARD);
                 }
                 break;
             case R.id.ll_message_center:
                 if (isLogined()) {
-                    ((MainFragment) getParentFragment()).start(MessageCenterFragment.newInstance());
+                    ((MainFragment) getParentFragment()).start(MessageCenterFragment.newInstance(), SupportFragment.STANDARD);
                 }
 
                 break;
@@ -156,7 +158,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 mPresenter.requestClearCache();
                 break;
             case R.id.ll_about_us:
-//                startActivity(new Intent(_mActivity, AboutActivity.class));
+                startActivity(new Intent(_mActivity, AboutActivity.class));
                 break;
             case R.id.tv_logout:
                 mPresenter.requestLogout(Params.getInstance());
@@ -197,7 +199,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     private void createShortCut() {
         Intent shortcutIntent = new Intent();
         //设置点击快捷方式时启动的Activity,因为是从Lanucher中启动，所以包名类名要写全。
-        shortcutIntent.setComponent(new ComponentName("com.aglhz.yicommunity", "com.aglhz.yicommunity.mine.QuickOpenActivity"));
+        shortcutIntent.setComponent(new ComponentName("com.aglhz.yicommunity"
+                , "com.aglhz.yicommunity.mine.QuickOpenActivity"));
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS | Intent.FLAG_ACTIVITY_NEW_TASK);
         Intent resultIntent = new Intent();
         //设置快捷方式图标

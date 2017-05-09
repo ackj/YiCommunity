@@ -61,12 +61,7 @@ public class AboutUsFragment extends BaseFragment {
         initStateBar(toolbar);
         toolbarTitle.setText("关于我们");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     @OnClick({R.id.ll_product_introduction, R.id.ll_service_terms, R.id.ll_feedback})
@@ -85,7 +80,7 @@ public class AboutUsFragment extends BaseFragment {
                 startActivity(termsIntent);
                 break;
             case R.id.ll_feedback:
-//                startActivity(new Intent(_mActivity, FeedbackActivity.class));
+                start(FeedbackFragment.newInstance());
                 break;
         }
     }

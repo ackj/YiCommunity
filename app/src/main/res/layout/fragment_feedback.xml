@@ -12,7 +12,8 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="详细说明" />
+        android:text="@string/feedback"
+        android:textSize="14sp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -21,18 +22,20 @@
         android:layout_marginRight="15dp"
         android:background="@drawable/bg_round_gray_edittext"
         android:gravity="top"
-        android:hint="说明您的报修详细内容和具体位置"
+        android:hint="@string/feedback_hint"
         android:padding="10dp"
         android:textColor="@color/accent_text"
         android:textColorHint="@color/default_text"
-        android:textSize="15sp" />
+        android:textSize="14sp" />
 
     <Button
-        android:layout_width="150dp"
+        android:id="@+id/bt_submit_feedback_fragment"
+        android:layout_width="200dp"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:background="@drawable/selector_submit"
+        android:clickable="false"
         android:text="提交"
         android:textColor="@color/white"
         android:textSize="15sp" />

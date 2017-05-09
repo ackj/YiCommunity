@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.web;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,14 +86,11 @@ public class WebFragment extends BaseFragment {
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText(title);
+        if (!TextUtils.isEmpty(title)) {
+            toolbarTitle.setText(title);
+        }
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initWebView() {
@@ -148,12 +146,7 @@ public class WebFragment extends BaseFragment {
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ptrFrameLayout.autoRefresh();
-            }
-        }, 100);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {

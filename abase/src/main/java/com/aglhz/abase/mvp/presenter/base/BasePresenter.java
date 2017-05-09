@@ -84,7 +84,7 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
     }
 
     public void error(Throwable throwable) {
-        if (isViewAttached()) {
+        if (!isViewAttached()) {
             return;
         }
         if (throwable == null) {

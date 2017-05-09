@@ -8,8 +8,15 @@ import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
+import java.io.File;
+
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.Field;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -53,4 +60,18 @@ public interface ApiService {
 
     @POST("/sub_property_ysq/client/info/pptBillsWait.do")
     Observable<PropertyPayBean> getPropertyPay(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("page") int page);
+
+    //反馈
+    @POST("/sub_property_ysq/client/feedback.do")
+    Observable<BaseBean> feedback(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("des") String des, @Query("contact") String contact);
+
+    //更新用户信息
+    @POST("/memberSYS-m/client/ updateMemberFieldByToken.do")
+    Observable<BaseBean> updateUserData(@Query("token") String token, @Query("field") String field, @Query("val") String val);
+
+    //更新头像
+    @Multipart
+    @POST("/memberSYS-m/client/uploadHeader2.do")
+    Observable<BaseBean> updatePortrait(@Query("token") String token, @Part("file") RequestBody file);
+
 }
