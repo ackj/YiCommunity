@@ -67,7 +67,8 @@ dependencies {
     //地址选择器
     compile 'com.github.chihane:JDAddressSelector:1.1.4'
 
-
     //switchbutton
     compile 'com.kyleduo.switchbutton:library:1.4.5'
+    compile 'com.github.chrisbanes.photoview:library:1.2.4'
+
 }

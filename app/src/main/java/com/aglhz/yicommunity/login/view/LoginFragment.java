@@ -125,6 +125,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_forget_password:
+                start(ForgetPasswordFragment.newInstance());
                 break;
             case R.id.cb_remember_password:
                 break;

@@ -22,6 +22,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -29,11 +30,11 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.RepairContract;
 import com.aglhz.yicommunity.publish.presenter.RepairPresenter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
     RecyclerView recyclerView;
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
+    Params params = Params.getInstance();
 
     private RepairFragment(boolean isPrivate) {
         this.isPrivate = isPrivate;
@@ -106,14 +108,11 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
     }
 
     private void initListener() {
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (position == adapter.getData().size() - 1) {
-                    selectPhoto();
-                }
-                return false;
+        adapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (position == adapter.getData().size() - 1) {
+                selectPhoto();
             }
+            return false;
         });
     }
 
@@ -151,7 +150,7 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        KeyBoardUtils.hideKeybord(getView(),_mActivity);
+        KeyBoardUtils.hideKeybord(getView(), _mActivity);
         unbinder.unbind();
     }
 
@@ -182,7 +181,6 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
 
     @OnClick(R.id.btn_submit_fragment_repair)
     public void onViewClicked() {
-        Params params = Params.getInstance();
         params.name = etName.getText().toString().trim();
         params.des = etContent.getText().toString().trim();
         params.contact = etPhone.getText().toString().trim();
@@ -216,8 +214,10 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             List<Uri> uris = Matisse.obtainResult(data);
+            params.files = new ArrayList<>();
             for (int i = 0; i < uris.size(); i++) {
                 ALog.d(TAG, "getImageAbsolutePath:" + ImageUtils.getImageAbsolutePath(_mActivity, uris.get(i)));
+                params.files.add(new File(ImageUtils.getImageAbsolutePath(BaseApplication.mContext, uris.get(i))));
             }
             uris.add(Uri.parse("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px));
             adapter.setNewData(uris);

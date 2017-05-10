@@ -51,9 +51,9 @@ public class CommunityListAdapter extends BaseRecyclerViewAdapter<CommunitySelec
         if (addressIndex != -1) {
             addressSpan.setSpan(new ForegroundColorSpan(Color.RED), addressIndex, addressIndex + searchKey.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-        helper.setText(R.id.tv_community_name, bean.getName())
+        helper//.setText(R.id.tv_community_name, bean.getName())
                 .setText(R.id.tv_community_name, nameSpan)
-                .setText(R.id.tv_community_address, bean.getPosition().getAddress())
+                //.setText(R.id.tv_community_address, bean.getPosition().getAddress())
                 .setText(R.id.tv_community_address, addressSpan)
                 .addOnClickListener(R.id.ll_community_layout);
     }

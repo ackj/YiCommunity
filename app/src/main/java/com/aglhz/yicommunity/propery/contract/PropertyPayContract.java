@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.properypay.contract;
+package com.aglhz.yicommunity.propery.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.PropertyPayBean;

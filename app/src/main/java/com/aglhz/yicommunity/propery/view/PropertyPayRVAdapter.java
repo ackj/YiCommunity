@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.properypay.view;
+package com.aglhz.yicommunity.propery.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;

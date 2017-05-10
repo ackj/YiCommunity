@@ -158,6 +158,10 @@
             android:theme="@style/Transparent" />
 
         <activity
+            android:name=".preview.PreviewActivity"
+            android:theme="@style/Transparent" />
+
+        <activity
             android:name=".mine.QuickOpenActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"

@@ -2,6 +2,7 @@ package com.aglhz.abase.utils;
 
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.WindowManager;
 
 //常用单位转换的辅助类
 public class DensityUtils {
@@ -53,6 +54,12 @@ public class DensityUtils {
      */
     public static float px2sp(Context context, float pxVal) {
         return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
+    }
+
+    //获取屏幕宽度
+    public static int getDisplayWidth(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        return wm.getDefaultDisplay().getWidth();
     }
 
 }

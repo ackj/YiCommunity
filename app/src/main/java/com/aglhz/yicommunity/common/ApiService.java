@@ -11,6 +11,7 @@ import com.aglhz.yicommunity.bean.FloorBean;
 import com.aglhz.yicommunity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.bean.MyHousesBean;
+import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.bean.ParkRecordBean;
@@ -290,4 +291,16 @@ public interface ApiService {
             , @Query("token") String token
             , @Query("mfid") String mfid
             , @Query("fid") String fid);
+    //获取物业公告
+    @POST("/sub_property_ysq/client/info/noticeList")
+    Observable<NoticeBean> getNoticeList(@Query("token") String token,
+                                         @Query("cmnt_c") String cmnt_c,
+                                         @Query("summerable") boolean summerable,
+                                         @Query("timeable") boolean timeable,
+                                         @Query("page") int page,
+                                         @Query("pageSize") int pageSize);
+
+    //获取邻里圈列表
+    @POST("/sub_property_ysq/neighbor/moments/to-client/moments-list")
+    Observable<NeighbourListBean> getNeighbourList(@Query("page") int page, @Query("pageSize") int pageSize);
 }

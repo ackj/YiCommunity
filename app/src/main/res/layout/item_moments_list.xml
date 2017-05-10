@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/base_grey" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <ImageView
+            android:id="@+id/iv_avatar_item_moments_list"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="5dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_name_item_moments_list"
+            style="@style/TvBaseBlack16sp"
+            android:layout_toRightOf="@id/iv_avatar_item_moments_list"
+            android:text="小林子" />
+
+        <TextView
+            android:id="@+id/tv_create_at_item_moments_list"
+            style="@style/TvGreyText13sp"
+            android:layout_below="@id/tv_name_item_moments_list"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/iv_avatar_item_moments_list"
+            android:text="15小时前" />
+
+        <TextView
+            android:id="@+id/tv_money_item_moments_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="800元"
+            android:textColor="@color/red_text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_content_item_moments_list"
+            style="@style/TvBaseBlack14sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/iv_avatar_item_moments_list"
+            android:layout_marginTop="10dp"
+            android:text="单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_pics_item_moments_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_content_item_moments_list"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/tv_location_item_moments_list"
+            style="@style/TvGreyText13sp"
+            android:layout_below="@id/rv_pics_item_moments_list"
+            android:drawableLeft="@drawable/ic_location_1_48px"
+            android:drawablePadding="5dp"
+            android:padding="10dp"
+            android:text="惠州 海伦堡社区" />
+
+        <TextView
+            android:id="@+id/tv_comment_count_item_moments_list"
+            style="@style/TvGreyText13sp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/rv_pics_item_moments_list"
+            android:drawableLeft="@drawable/ic_comment_60px"
+            android:drawablePadding="3dp"
+            android:padding="10dp"
+            android:text="3" />
+
+        <LinearLayout
+            android:id="@+id/ll_comment_item_moments_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_location_item_moments_list"
+            android:background="@color/gray_comment_bg"
+            android:orientation="vertical"
+            android:padding="10dp" />
+
+    </RelativeLayout>
+</LinearLayout>

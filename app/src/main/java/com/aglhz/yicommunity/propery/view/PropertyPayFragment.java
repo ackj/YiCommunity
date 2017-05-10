@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.properypay.view;
+package com.aglhz.yicommunity.propery.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,8 +15,8 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.properypay.contract.PropertyPayContract;
-import com.aglhz.yicommunity.properypay.presenter.PropertyPayPresenter;
+import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
+import com.aglhz.yicommunity.propery.presenter.PropertyPayPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +57,7 @@ public class PropertyPayFragment extends BaseFragment<PropertyPayContract.Presen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_property_pay, container, false);
         unbinder = ButterKnife.bind(this, view);
-        return view;
+        return attachToSwipeBack(view);
     }
 
     @Override

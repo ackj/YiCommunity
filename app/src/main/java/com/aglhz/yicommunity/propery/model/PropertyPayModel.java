@@ -1,11 +1,11 @@
-package com.aglhz.yicommunity.properypay.model;
+package com.aglhz.yicommunity.propery.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.properypay.contract.PropertyPayContract;
+import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;

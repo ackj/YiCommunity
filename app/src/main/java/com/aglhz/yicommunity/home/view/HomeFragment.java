@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
@@ -27,7 +26,8 @@ import com.aglhz.yicommunity.home.contract.HomeContract;
 import com.aglhz.yicommunity.home.presenter.HomePresenter;
 import com.aglhz.yicommunity.home.view.header.RentalsSunHeaderView;
 import com.aglhz.yicommunity.picker.PickerActivity;
-import com.aglhz.yicommunity.properypay.view.PropertyPayFragment;
+import com.aglhz.yicommunity.propery.view.NoticeListFragment;
+import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -182,36 +182,30 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 case HomeBean.TYPE_COMMUNITY_BANNER:
                     switch (view.getId()) {
                         case R.id.fl_item_banner:
-                            ToastUtils.showToast(_mActivity, "切换地址");
                             _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
                             break;
                     }
-
                     break;
                 case HomeBean.TYPE_COMMUNITY_NOTICE:
-                    ToastUtils.showToast(_mActivity, "notice");
+                    _mActivity.start(NoticeListFragment.newInstance());
                     break;
-
                 case HomeBean.TYPE_COMMUNITY_FUNCTION:
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
-                            ToastUtils.showToast(_mActivity, "一键开门");
                             mPresenter.openDoor();
                             break;
                         case R.id.ll_property_payment:
-                            ToastUtils.showToast(_mActivity, "物业缴费");
                             _mActivity.start(PropertyPayFragment.newInstance());
                             break;
                         case R.id.ll_temporary_parking:
-                            ToastUtils.showToast(_mActivity, "临时停车");
                             go2Web("临时停车", "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html");
                             break;
                         case R.id.ll_life_supermarket:
-                            ToastUtils.showToast(_mActivity, "生活超市");
                             go2Web("生活超市", "http://www.aglhz.com/mall/m/index.html?appType=2&token=" + UserHelper.token);
                             break;
                     }
                     break;
+
             }
             return false;
         });

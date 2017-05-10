@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.properypay.view;
+package com.aglhz.yicommunity.propery.view;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.LinearLayoutManager;
