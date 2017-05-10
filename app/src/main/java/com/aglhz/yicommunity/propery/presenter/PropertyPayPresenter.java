@@ -1,11 +1,12 @@
-package com.aglhz.yicommunity.properypay.presenter;
+package com.aglhz.yicommunity.propery.presenter;
 
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.properypay.contract.PropertyPayContract;
-import com.aglhz.yicommunity.properypay.model.PropertyPayModel;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
+import com.aglhz.yicommunity.propery.model.PropertyPayModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -39,7 +40,7 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
     @Override
     public void requestPropertyPay() {
         Params params = Params.getInstance();
-        params.token = "tk_06013f6d-cd77-4e93-a87c-5bba38dbb84d";
+        params.token = UserHelper.token;
         params.cmnt_c = "KBSJ-agl-00005";
         params.page = 1;
         mRxManager.add(mModel.getPropertyPay(params)

@@ -3,7 +3,6 @@ package com.aglhz.yicommunity.home.view;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.utils.ToastUtils;
@@ -12,7 +11,6 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -98,19 +96,16 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 RecyclerView recyclerView = helper.getView(R.id.recyclerView);
                 recyclerView.setLayoutManager(new GridLayoutManager(BaseApplication.mContext, 3, GridLayoutManager.VERTICAL, false));
                 recyclerView.setAdapter(qualityLifeAdapter);
-                qualityLifeAdapter.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        ToastUtils.showToast(BaseApplication.mContext, "品质生活:" + position);
-                        switch (position) {
-                            case 0:
-                                break;
-                            case 1:
-                                fragment.go2Web("快递查询", "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?token=%@&appType=2");
-                                break;
-                            case 2:
-                                break;
-                        }
+                qualityLifeAdapter.setOnItemClickListener((adapter1, view, position) -> {
+                    ToastUtils.showToast(BaseApplication.mContext, "品质生活:" + position);
+                    switch (position) {
+                        case 0:
+                            break;
+                        case 1:
+                            fragment.go2Web("快递查询", "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?token=%@&appType=2");
+                            break;
+                        case 2:
+                            break;
                     }
                 });
                 break;

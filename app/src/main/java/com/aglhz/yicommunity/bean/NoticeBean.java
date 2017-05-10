@@ -9,9 +9,8 @@ import java.util.List;
 
 public class NoticeBean extends BaseBean{
 
-
     /**
-     * data : {"noticeList":[{"fid":"8bcb610a-6de5-49f2-a725-316776f18f3e","title":"消杀通知"},{"fid":"d6fcb972-ff58-45d8-99ae-9216dc39251c","title":"临时停水通知"},{"fid":"2dc229ff-7557-4ba7-b548-dcf8e47f07d6","title":"青年榜样习近平"},{"fid":"85bbccb4-d36c-4c1b-be87-a3e147ceb5d2","title":"钥匙招领"},{"fid":"10de4983-f73b-4fde-b522-8c326e6356b6","title":"写好新世纪海上丝绸之路新篇章"}]}
+     * data : {"noticeList":[{"fid":"eec6cfd7-988f-4e97-954b-f3d32eae29e1","title":"小区部分停电通知","content":"停电范围：小区1栋、2栋、3栋\u2026","ctime":"2017-02-06"}]}
      */
 
     private DataBean data;
@@ -37,12 +36,16 @@ public class NoticeBean extends BaseBean{
 
         public static class NoticeListBean {
             /**
-             * fid : 8bcb610a-6de5-49f2-a725-316776f18f3e
-             * title : 消杀通知
+             * fid : eec6cfd7-988f-4e97-954b-f3d32eae29e1
+             * title : 小区部分停电通知
+             * content : 停电范围：小区1栋、2栋、3栋…
+             * ctime : 2017-02-06
              */
 
             private String fid;
             private String title;
+            private String content;
+            private String ctime;
 
             public String getFid() {
                 return fid;
@@ -58,6 +61,22 @@ public class NoticeBean extends BaseBean{
 
             public void setTitle(String title) {
                 this.title = title;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getCtime() {
+                return ctime;
+            }
+
+            public void setCtime(String ctime) {
+                this.ctime = ctime;
             }
         }
     }

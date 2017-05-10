@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
@@ -27,7 +26,8 @@ import com.aglhz.yicommunity.home.contract.HomeContract;
 import com.aglhz.yicommunity.home.presenter.HomePresenter;
 import com.aglhz.yicommunity.home.view.header.RentalsSunHeaderView;
 import com.aglhz.yicommunity.picker.PickerActivity;
-import com.aglhz.yicommunity.properypay.view.PropertyPayFragment;
+import com.aglhz.yicommunity.propery.view.NoticeListFragment;
+import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -191,10 +191,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                                 _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
                                 break;
                         }
-
                         break;
                     case HomeBean.TYPE_COMMUNITY_NOTICE:
-                        ToastUtils.showToast(_mActivity, "notice");
+                        _mActivity.start(NoticeListFragment.newInstance());
                         break;
                     case HomeBean.TYPE_COMMUNITY_FUNCTION:
                         switch (view.getId()) {

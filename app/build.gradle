@@ -64,4 +64,6 @@ dependencies {
     compile 'com.orhanobut:dialogplus:1.11@aar'
     //图片选择器
     compile 'com.zhihu.android:matisse:0.4.3'
+    compile 'com.github.chrisbanes.photoview:library:1.2.4'
+
 }

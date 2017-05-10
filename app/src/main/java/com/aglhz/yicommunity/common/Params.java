@@ -39,6 +39,9 @@ public class Params {
     public String verifyType;
     public String password1;
     public String password2;
+    public boolean summerable;
+    public boolean timeable;
+
 
     private Params() {
     }

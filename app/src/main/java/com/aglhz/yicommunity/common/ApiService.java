@@ -7,6 +7,7 @@ import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.bean.ContactBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
+import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.bean.ParkRecordBean;
@@ -140,7 +141,7 @@ public interface ApiService {
 
     //注册
     @POST("/memberSYS-m/client/register.do")
-    Observable<BaseBean> register(@Query("sc")String sc,@Query("account") String account, @Query("code") String code, @Query("Password1") String password1, @Query("Password2") String password2);
+    Observable<BaseBean> register(@Query("sc") String sc, @Query("account") String account, @Query("code") String code, @Query("Password1") String password1, @Query("Password2") String password2);
 
     //找回密码
     @POST("/memberSYS-m/client/renewMemberPwd.do")
@@ -148,5 +149,18 @@ public interface ApiService {
 
     //获取验证码
     @POST("/memberSYS-m/client/validCode.do")
-    Observable<BaseBean> getVerifyCode(@Query("sc")String sc,@Query("phone")String phone,@Query("type")String type);
+    Observable<BaseBean> getVerifyCode(@Query("sc") String sc, @Query("phone") String phone, @Query("type") String type);
+
+    //获取物业公告
+    @POST("/sub_property_ysq/client/info/noticeList")
+    Observable<NoticeBean> getNoticeList(@Query("token") String token,
+                                         @Query("cmnt_c") String cmnt_c,
+                                         @Query("summerable") boolean summerable,
+                                         @Query("timeable") boolean timeable,
+                                         @Query("page") int page,
+                                         @Query("pageSize") int pageSize);
+
+    //获取邻里圈列表
+    @POST("/sub_property_ysq/neighbor/moments/to-client/moments-list")
+    Observable<NeighbourListBean> getNeighbourList(@Query("page") int page, @Query("pageSize") int pageSize);
 }
