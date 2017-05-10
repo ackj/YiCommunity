@@ -13,9 +13,13 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.door.contract.OpenDoorRecordContract;
 import com.aglhz.yicommunity.door.presenter.OpenDoorRecordPresenter;
 
@@ -23,6 +27,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Author: LiuJia on 2017/4/21 10:31.
@@ -35,9 +43,12 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.rv_opendoor_record)
+    @BindView(R.id.recyclerView)
     RecyclerView rvOpenDoorRecord;
+    @BindView(R.id.ptrFrameLayout)
+    PtrFrameLayout ptrFrameLayout;
     private OpenDoorRecordRVAdapter mAdapter;
+    private Unbinder unbinder;
     private ViewGroup rootView;
 
 
@@ -51,25 +62,54 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         return new OpenDoorRecordPresenter(this);
     }
 
+    private void initPtrFrameLayout() {
+        final MaterialHeader header = new MaterialHeader(getContext());
+        int[] colors = getResources().getIntArray(R.array.google_colors);
+        header.setColorSchemeColors(colors);
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
+        header.setPtrFrameLayout(ptrFrameLayout);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.autoRefresh(true);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
+
+
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                //判断是否滑动到顶部。
+                return ScrollingHelper.isRecyclerViewToTop(rvOpenDoorRecord);
+            }
+
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                ALog.e("开始刷新了");
+//                mPresenter.start();
+                mPresenter.requestRecord(Params.getInstance());
+            }
+        });
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_opendoor_record, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
+        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
+
         initToolbar();
         initData();
+        initPtrFrameLayout();
     }
 
-
     private void initToolbar() {
-        mPresenter.requestRecord("");
         initStateBar(toolbar);
         toolbarTitle.setText("开门记录");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
@@ -82,14 +122,17 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     }
 
     private void initData() {
-        rvOpenDoorRecord.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mPresenter.requestRecord(Params.getInstance());
 
+        rvOpenDoorRecord.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new OpenDoorRecordRVAdapter();
         rvOpenDoorRecord.setAdapter(mAdapter);
     }
 
     @Override
     public void responseRecord(List<OpenDoorRecordBean.DataBean> listRecord) {
+        ptrFrameLayout.refreshComplete();
+        DialogHelper.successSnackbar(getView(), "请求成功：" + listRecord.size());
         mAdapter.setNewData(listRecord);
     }
 
@@ -100,8 +143,13 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
 
     @Override
     public void error(String errorMessage) {
-        ALog.e("77777777");
-        DialogHelper.warningSnackbar(rootView, errorMessage);
+        ptrFrameLayout.refreshComplete();
+        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

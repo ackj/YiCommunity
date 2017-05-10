@@ -24,6 +24,7 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ServiceApi;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.bean.IconBean;
@@ -91,6 +92,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     private List<IconBean> listMyhouses;
     private DialogPlus contactDialog;
     private boolean isShow;
+    private Params params = Params.getInstance();
     private final static int SELECT_COMMUNIT = 100;   //选择社区
 
     public static StewardFragment newInstance() {
@@ -251,7 +253,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         //设置智能门禁卡片点击事件。
         smartDoorAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == 3) {
-                mPresenter.requestGetSip("");
+//                mPresenter.requestGetSip("");
             } else {
                 go2SmartDoor(position);
             }
@@ -265,7 +267,8 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
             if (position == 1) {
                 if (contactDialog == null) {
                     isShow = true;
-                    mPresenter.requestContact(UserHelper.communityCode);
+                    params.cmnt_c = UserHelper.communityCode;
+                    mPresenter.requestContact(params);
                 } else {
                     contactDialog.show();
                 }
@@ -364,7 +367,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.autoRefresh(true);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
@@ -375,7 +378,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                mPresenter.start("");
+                mPresenter.start(Params.getInstance());
 
             }
         });
@@ -389,7 +392,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
-        DialogHelper.warningSnackbar(rootView, "网络异常，请刷新！");
+        DialogHelper.warningSnackbar(rootView, errorMessage);
     }
 
 
@@ -401,18 +404,30 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
 
     @Override
     public void onDestroy() {
-        myHouseAdapter = null;
-        smartHomeAdapter = null;
-        smartDoorAdapter = null;
-        smartParkAdapter = null;
-        propertyServiceAdapter = null;
+        if (myHouseAdapter != null) {
+            myHouseAdapter = null;
+        }
+        if (smartHomeAdapter != null) {
+            smartHomeAdapter = null;
+        }
+
+        if (smartDoorAdapter != null) {
+            smartDoorAdapter = null;
+        }
+
+        if (smartParkAdapter != null) {
+            smartParkAdapter = null;
+        }
+
+        if (propertyServiceAdapter != null) {
+            propertyServiceAdapter = null;
+        }
         super.onDestroy();
     }
 
     @Override
     public void responseHouses(List<IconBean> listIcons) {
         ptrFrameLayout.refreshComplete();
-        listIcons.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加房屋", ""));
         listMyhouses.clear();
         listMyhouses = listIcons;
         myHouseAdapter.setNewData(listIcons);

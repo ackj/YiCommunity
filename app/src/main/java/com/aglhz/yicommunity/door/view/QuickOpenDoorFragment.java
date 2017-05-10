@@ -11,15 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aglhz.abase.cache.SPCache;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
-import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.ScrollingHelper;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.door.contract.QuickOpenDoorContract;
 import com.aglhz.yicommunity.door.presenter.QuickOpenDoorPresenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -28,8 +30,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.aglhz.yicommunity.R.id.ptrFrameLayout;
+import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Author: LiuJia on 2017/4/21 10:31.
@@ -41,13 +45,15 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.rv_quick_open_door)
+    @BindView(R.id.recyclerView)
     RecyclerView rvQuickOpendoor;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
+    @BindView(R.id.ptrFrameLayout)
+    PtrFrameLayout ptrFrameLayout;
     private QuickOpenDoorRVAdapter mAdapter;
     private int prePosition;
-    private ViewGroup rootView;
+    private Unbinder unbinder;
 
     public static QuickOpenDoorFragment newInstance() {
         return new QuickOpenDoorFragment();
@@ -62,19 +68,47 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quick_open_door, container, false);
-        ButterKnife.bind(this, view);
+        View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar();
         initData();
         initListener();
-//        mPresenter.start();
+        initPtrFrameLayout();
+    }
+
+    private void initPtrFrameLayout() {
+        final MaterialHeader header = new MaterialHeader(getContext());
+        int[] colors = getResources().getIntArray(R.array.google_colors);
+        header.setColorSchemeColors(colors);
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
+        header.setPtrFrameLayout(ptrFrameLayout);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.autoRefresh(true);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
+
+
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                //判断是否滑动到顶部。
+                return ScrollingHelper.isRecyclerViewToTop(rvQuickOpendoor);
+            }
+
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                ALog.e("开始刷新了");
+//                mPresenter.start();
+                mPresenter.requestDoorList(Params.getInstance());
+            }
+        });
     }
 
     private void initToolbar() {
@@ -86,7 +120,10 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             public void onClick(View v) {
                 String dir = mAdapter.getData().get(prePosition).getDir();
                 String name = mAdapter.getData().get(prePosition).getName();
-                mPresenter.requestQuickOpenDoor("", dir, name);
+                Params params = Params.getInstance();
+                params.directory = dir;
+                params.deviceName = name;
+                mPresenter.requestQuickOpenDoor(params);
             }
         });
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
@@ -99,6 +136,8 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     }
 
     private void initData() {
+        mPresenter.requestDoorList(Params.getInstance());
+
         rvQuickOpendoor.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new QuickOpenDoorRVAdapter();
         rvQuickOpendoor.setAdapter(mAdapter);
@@ -107,10 +146,8 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
 
     private void initListener() {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
                 QuickOpenDoorFragment.this.mAdapter.getData().get(prePosition).setQuickopen(false);
                 QuickOpenDoorFragment.this.mAdapter.getData().get(position).setQuickopen(true);
                 mAdapter.notifyItemChanged(prePosition);
@@ -122,6 +159,8 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
 
     @Override
     public void responseDoorList(DoorListBean mDoorListBean) {
+        ptrFrameLayout.refreshComplete();
+
         mAdapter.setNewData(mDoorListBean.getData());
         List<DoorListBean.DataBean> list = mDoorListBean.getData();
         for (int i = 0; i < list.size(); i++) {
@@ -133,32 +172,34 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
 
     @Override
     public void responseQuickOpenDoor(BaseBean mBaseBean) {
-        ALog.e("8888888888");
-        if (mBaseBean.getOther().getCode() == 200) {
-            ALog.e("9999999999");
-            DialogHelper.successSnackbar(rootView, "设置成功！");
-            SPCache.put(BaseApplication.mContext, Constants.DOOR_DIR, mAdapter.getData().get(prePosition).getDir());
-        } else {
-            DialogHelper.warningSnackbar(rootView, "设置失败");
+        DialogHelper.successSnackbar(getView(), "设置成功！");
+        UserHelper.setDir(mAdapter.getData().get(prePosition).getDir());
+//        SPCache.put(_mActivity, Constants.DOOR_DIR, mAdapter.getData().get(prePosition).getDir());
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdapter != null) {
+            mAdapter = null;
+
         }
+        super.onDestroy();
     }
 
     @Override
     public void start(Object response) {
 
     }
+
     @Override
     public void error(String errorMessage) {
-        DialogHelper.warningSnackbar(rootView, "网络异常，请刷新！");
+        ptrFrameLayout.refreshComplete();
+        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
-    public void onDestroy() {
-
-        if (mAdapter != null) {
-            mAdapter = null;
-
-        }
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

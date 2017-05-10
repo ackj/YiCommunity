@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,31 +16,25 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.ToastUtils;
-import com.aglhz.abase.widget.selector.DataProvider;
-import com.aglhz.abase.widget.selector.ISelectAble;
-import com.aglhz.abase.widget.selector.SelectedListener;
 import com.aglhz.abase.widget.selector.SelectorDialog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.BuildingBean;
+import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.bean.FloorBean;
+import com.aglhz.yicommunity.bean.RoomBean;
+import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.house.contract.AddHouseContract;
 import com.aglhz.yicommunity.house.presenter.AddHousePresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import chihane.jdaddressselector.BottomDialog;
-import chihane.jdaddressselector.OnAddressSelectedListener;
-import chihane.jdaddressselector.model.City;
-import chihane.jdaddressselector.model.County;
-import chihane.jdaddressselector.model.Province;
-import chihane.jdaddressselector.model.Street;
 
 /**
  * Author：leguang on 2017/4/13 0009 15:49
@@ -82,11 +77,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     private String province;
     private String city;
     private String county;
-    private String communityCode;
-    private String buildingCode;
-    private String unitCode;
-    private String floorCode;
-    private String roomCode;
     private Params params = Params.getInstance();
 
     public static AddHouseFragment newInstance() {
@@ -155,7 +145,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvCommunity.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择小区！");
                 } else {
-                    params.cmnt_c = communityCode;
                     mPresenter.requestBuildings(params);
                 }
                 break;
@@ -163,8 +152,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvBuilding.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择楼栋！");
                 } else {
-                    params.cmnt_c = communityCode;
-                    params.bdg_c = buildingCode;
                     mPresenter.requestUnits(params);
                 }
                 break;
@@ -172,9 +159,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvUnit.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择单元！");
                 } else {
-                    params.cmnt_c = communityCode;
-                    params.bdg_c = buildingCode;
-                    params.bdg_u_c = unitCode;
                     mPresenter.requestFloors(params);
                 }
                 break;
@@ -182,20 +166,19 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvFloor.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择楼层！");
                 } else {
-                    params.cmnt_c = communityCode;
-                    params.bdg_c = buildingCode;
-                    params.bdg_u_c = unitCode;
-                    params.bdg_f_c = floorCode;
                     mPresenter.requestRooms(params);
                 }
                 break;
             case R.id.bt_submit_house_fragment:
-//                if (TextUtils.isEmpty(tvRoomNumber.getText().toString().trim())) {
-//                    DialogHelper.warningSnackbar(rootView, "请先选择房间！");
-//                } else {
-//                    mPresenter.requestApply(isProprietor, communityCode, buildingCode, unitCode, floorCode,
-//                            roomCode, etName.getText().toString().trim(), etIdcard.getText().toString().trim());
-//                }
+                if (TextUtils.isEmpty(tvRoomNumber.getText().toString().trim())) {
+                    DialogHelper.warningSnackbar(rootView, "请先选择房间！");
+                } else {
+                    params.isProprietor = isProprietor;
+                    params.name = etName.getText().toString().trim();
+                    params.idCard = etIdcard.getText().toString().trim();
+
+                    mPresenter.requestApply(params);
+                }
                 break;
         }
         ALog.e(isProprietor);
@@ -216,19 +199,16 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         ALog.e("1111111111111");
         if (addressSelector == null) {
             addressSelector = new BottomDialog(_mActivity);
-            addressSelector.setOnAddressSelectedListener(new OnAddressSelectedListener() {
-                @Override
-                public void onAddressSelected(Province province, City city, County county, Street street) {
-                    AddHouseFragment.this.province = province.name;
-                    AddHouseFragment.this.city = city.name;
-                    AddHouseFragment.this.county = county.name;
+            addressSelector.setOnAddressSelectedListener((province1, city1, county1, street) -> {
+                AddHouseFragment.this.province = province1.name;
+                AddHouseFragment.this.city = city1.name;
+                AddHouseFragment.this.county = county1.name;
 
-                    String s = (province == null ? "" : province.name + "　") + (city == null ? "" : city.name + "　") +
-                            (county == null ? "" : county.name + "　") + (street == null ? "" : street.name);
-                    ToastUtils.showToast(BaseApplication.mContext, s);
-                    tvArea.setText(s);
-                    addressSelector.dismiss();
-                }
+                String s = (province1 == null ? "" : province1.name + "　") + (city1 == null ? "" : city1.name + "　") +
+                        (county1 == null ? "" : county1.name + "　") + (street == null ? "" : street.name);
+
+                tvArea.setText(s);
+                addressSelector.dismiss();
             });
         }
         addressSelector.show();
@@ -247,115 +227,134 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     }
 
     @Override
-    public void responseCommunitys(final List<ISelectAble> communities) {
-        ALog.e("communities.size()::" + communities.size());
-
-        if (selector == null) {
-            selector = new SelectorDialog(_mActivity);
-//            selector.init(_mActivity, new Selector(_mActivity, 1));
+    public void responseCommunitys(final List<CommunitySelectBean.DataBean.CommunitiesBean> communities) {
+        String[] array = new String[communities.size()];
+        for (int i = 0; i < communities.size(); i++) {
+            array[i] = communities.get(i).getName();
         }
-        selector.setSelectedListener(new SelectedListener() {
-            @Override
-            public void onAddressSelected(ArrayList<ISelectAble> selectAbles) {
 
-                tvCommunity.setText(selectAbles.get(0).getName());
-                communityCode = ((String) selectAbles.get(0).getArg());
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("请选择小区")
+                .setItems(array, (dialog, which) -> {
+                    params.cmnt_c = communities.get(which).getCode();
+                    tvCommunity.setText(array[which]);
 
-                ALog.e("communityCode::" + communityCode);
-                selector.dismiss();
-            }
-        });
-        showSelector(communities);
+                    tvBuilding.setText("");
+                    tvUnit.setText("");
+                    tvFloor.setText("");
+                    tvRoomNumber.setText("");
+
+                    params.bdg_c = "";
+                    params.bdg_u_c = "";
+                    params.bdg_f_c = "";
+                    params.bdg_f_h_c = "";
+
+                    ALog.e("params.cmnt_c ::" + params.cmnt_c);
+                    ALog.e("params.cmnt_c ::" + array[which]);
+                })
+                .show();
     }
 
     @Override
-    public void responseBuildings(List<ISelectAble> buildings) {
-        ALog.e("buildings.size()::" + buildings.size());
-
-        selector.setSelectedListener(new SelectedListener() {
-            @Override
-            public void onAddressSelected(ArrayList<ISelectAble> selectAbles) {
-                tvBuilding.setText(selectAbles.get(0).getName());
-                buildingCode = ((String) selectAbles.get(0).getArg());
-
-                ALog.e("buildingCode::" + buildingCode);
-                selector.dismiss();
-            }
-        });
-        showSelector(buildings);
-    }
-
-    @Override
-    public void responseUnits(List<ISelectAble> units) {
-        ALog.e("units.size()::" + units.size());
-
-        selector.setSelectedListener(new SelectedListener() {
-            @Override
-            public void onAddressSelected(ArrayList<ISelectAble> selectAbles) {
-                tvUnit.setText(selectAbles.get(0).getName());
-                unitCode = ((String) selectAbles.get(0).getArg());
-
-                ALog.e("units::" + unitCode);
-                selector.dismiss();
-            }
-        });
-        showSelector(units);
-    }
-
-    @Override
-    public void responseFloors(List<ISelectAble> floors) {
-        ALog.e("floors.size()::" + floors.size());
-
-        selector.setSelectedListener(new SelectedListener() {
-            @Override
-            public void onAddressSelected(ArrayList<ISelectAble> selectAbles) {
-                tvFloor.setText(selectAbles.get(0).getName());
-                floorCode = ((String) selectAbles.get(0).getArg());
-
-                ALog.e("floors::" + floorCode);
-                selector.dismiss();
-            }
-        });
-        showSelector(floors);
-    }
-
-    @Override
-    public void responseRooms(List<ISelectAble> rooms) {
-        ALog.e("rooms.size()::" + rooms.size());
-
-        selector.setSelectedListener(new SelectedListener() {
-            @Override
-            public void onAddressSelected(ArrayList<ISelectAble> selectAbles) {
-                tvRoomNumber.setText(selectAbles.get(0).getName());
-                roomCode = ((String) selectAbles.get(0).getArg());
-
-                ALog.e("rooms::" + roomCode);
-                selector.dismiss();
-            }
-        });
-        showSelector(rooms);
-    }
-
-    @Override
-    public void responseApply(BaseBean mBaseBean) {
-        DialogHelper.successSnackbar(rootView, "恭喜，申请成功！");
-    }
-
-
-    private void showSelector(final List list) {
-        if (selector == null) {
-            selector = new SelectorDialog(_mActivity);
-//            selector.init(_mActivity, new Selector(_mActivity, 1));
+    public void responseBuildings(List<BuildingBean.DataBean.BuildingsBean> buildings) {
+        String[] array = new String[buildings.size()];
+        for (int i = 0; i < buildings.size(); i++) {
+            array[i] = buildings.get(i).getName();
         }
-        selector.reset();
-        selector.setDataProvider(new DataProvider() {
-            @Override
-            public void provideData(int currentDeep, int preId, DataReceiver receiver) {
-                receiver.send(list);
-            }
-        });
-        selector.show();
+
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("请选择楼栋")
+                .setItems(array, (dialog, which) -> {
+                    params.bdg_c = buildings.get(which).getCode();
+                    tvBuilding.setText(array[which]);
+
+                    tvUnit.setText("");
+                    tvFloor.setText("");
+                    tvRoomNumber.setText("");
+
+                    params.bdg_u_c = "";
+                    params.bdg_f_c = "";
+                    params.bdg_f_h_c = "";
+
+                    ALog.e("params.cmnt_c ::" + params.bdg_c);
+                    ALog.e("params.cmnt_c ::" + array[which]);
+                })
+                .show();
     }
+
+    @Override
+    public void responseUnits(List<UnitBean.DataBean.BuildingUnitsBean> units) {
+        String[] array = new String[units.size()];
+        for (int i = 0; i < units.size(); i++) {
+            array[i] = units.get(i).getName();
+        }
+
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("请选择单元")
+                .setItems(array, (dialog, which) -> {
+                    params.bdg_u_c = units.get(which).getCode();
+                    tvUnit.setText(array[which]);
+
+                    tvFloor.setText("");
+                    tvRoomNumber.setText("");
+
+                    params.bdg_f_c = "";
+                    params.bdg_f_h_c = "";
+
+                    ALog.e("params.cmnt_c ::" + params.bdg_u_c);
+                    ALog.e("params.cmnt_c ::" + array[which]);
+                })
+                .show();
+    }
+
+    @Override
+    public void responseFloors(List<FloorBean.DataBean.FloorsBean> floors) {
+        String[] array = new String[floors.size()];
+        for (int i = 0; i < floors.size(); i++) {
+            array[i] = floors.get(i).getName();
+        }
+
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("请选择楼层")
+                .setItems(array, (dialog, which) -> {
+                    params.bdg_f_c = floors.get(which).getCode();
+                    tvFloor.setText(array[which]);
+
+                    tvRoomNumber.setText("");
+
+                    params.bdg_f_h_c = "";
+
+                    ALog.e("params.cmnt_c ::" + params.bdg_f_c);
+                    ALog.e("params.cmnt_c ::" + array[which]);
+                })
+                .show();
+    }
+
+    @Override
+    public void responseRooms(List<RoomBean.DataBean.HousesBean> rooms) {
+        String[] array = new String[rooms.size()];
+        for (int i = 0; i < rooms.size(); i++) {
+            array[i] = rooms.get(i).getName();
+        }
+
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("请选择楼层")
+                .setItems(array, (dialog, which) -> {
+                    params.bdg_f_h_c = rooms.get(which).getCode();
+                    tvRoomNumber.setText(array[which]);
+
+                    ALog.e("params.cmnt_c ::" + params.bdg_f_h_c);
+                    ALog.e("params.cmnt_c ::" + array[which]);
+                })
+                .show();
+    }
+
+
+    @Override
+    public void responseApply(String message) {
+        DialogHelper.successSnackbar(rootView, message);
+    }
+
 
     @Override
     public void start(Object response) {

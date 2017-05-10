@@ -8,12 +8,14 @@ import com.aglhz.yicommunity.bean.BuildingBean;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.bean.FloorBean;
 import com.aglhz.yicommunity.bean.RoomBean;
+import com.aglhz.yicommunity.bean.SelectorBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -25,23 +27,23 @@ public interface AddHouseContract {
 
     interface View extends BaseContract.View {
         //刷新界面，响应社区返回的数据
-        void responseCommunitys(List<ISelectAble> communities);
+        void responseCommunitys(List<CommunitySelectBean.DataBean.CommunitiesBean> communities);
 
         //刷新界面，响应楼栋返回的数据
-        void responseBuildings(List<ISelectAble> buildings);
+        void responseBuildings(List<BuildingBean.DataBean.BuildingsBean> buildings);
 
         //刷新界面，响应单元返回的数据
-        void responseUnits(List<ISelectAble> units);
+        void responseUnits(List<UnitBean.DataBean.BuildingUnitsBean> units);
 
         //刷新界面，响应楼层返回的数据
-        void responseFloors(List<ISelectAble> floors);
+        void responseFloors(List<FloorBean.DataBean.FloorsBean> floors);
 
         //刷新界面，响应房间返回的数据
-        void responseRooms(List<ISelectAble> rooms);
+        void responseRooms(List<RoomBean.DataBean.HousesBean> rooms);
 
 
         //刷新界面，响应房间返回的数据
-        void responseApply(BaseBean mBaseBean);
+        void responseApply(String message);
     }
 
     interface Presenter extends BaseContract.Presenter {

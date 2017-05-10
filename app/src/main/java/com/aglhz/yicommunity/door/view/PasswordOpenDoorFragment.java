@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.door.contract.PasswordOpenDoorContract;
 import com.aglhz.yicommunity.door.presenter.PasswordOpenDoorPresenter;
 
@@ -35,11 +35,8 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
     Toolbar toolbar;
     @BindView(R.id.tv_password)
     TextView tvPassword;
-    @BindView(R.id.bt_passwor)
-    Button btPasswor;
     @BindView(R.id.bt_share)
     Button btShare;
-    private ViewGroup rootView;
 
     public static PasswordOpenDoorFragment newInstance() {
         return new PasswordOpenDoorFragment();
@@ -62,7 +59,6 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar();
     }
 
@@ -85,6 +81,18 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
         tvPassword.setText(mPasswordBean.getData().getSecretCode());
     }
 
+    @OnClick({R.id.bt_password, R.id.bt_share})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_password:
+                Params params = Params.getInstance();
+                mPresenter.requestPassword(params);
+                break;
+            case R.id.bt_share:
+                break;
+        }
+    }
+
     @Override
     public void start(Object response) {
 
@@ -92,18 +100,6 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
 
     @Override
     public void error(String errorMessage) {
-        ALog.e("77777777");
-        DialogHelper.warningSnackbar(rootView, errorMessage);
-    }
-
-    @OnClick({R.id.bt_passwor, R.id.bt_share})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.bt_passwor:
-                mPresenter.requestPassword("", "6-31-1");
-                break;
-            case R.id.bt_share:
-                break;
-        }
+        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 }

@@ -134,6 +134,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
                 mPresenter.start(mParams);
                 break;
             case R.id.bt_register:
+                start(RegisterFragment.newInstance());
                 break;
         }
     }

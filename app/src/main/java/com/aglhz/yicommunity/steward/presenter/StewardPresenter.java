@@ -2,9 +2,21 @@ package com.aglhz.yicommunity.steward.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.IconBean;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.model.StewardModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static com.alipay.sdk.app.statistic.c.u;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35
@@ -28,78 +40,35 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
 
     @Override
     public void start(Object request) {
+        mRxManager.add(mModel.requestHouses((Params) request)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(iconBeanList -> {
+                    ALog.e(Thread.currentThread().getName());
+                    iconBeanList.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加房屋", ""));
+                    getView().responseHouses(iconBeanList);
 
-    }
-
-//    @Override
-//    public void start() {
-//        ALog.e("NeighbourPresenter::start");
-//        getMyHouse();
-//        requestContact(SelectCommunityHelper.getCommunityId());
-//    }
-
-    private void getMyHouse() {
-//        Map params = BaseParams.getTokenMap();
-//        HttpClient.post(ServiceApi.authBdgs, params, new BeanCallback<MyHourseBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    getView().error(new Exception());
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(MyHourseBean bean) {
-//                if (isViewAttached()) {
-//                    List<IconBean> listIcons = new ArrayList<IconBean>();
-//                    if (bean != null && !bean.getData().getAuthBuildings().isEmpty()) {
-//                        for (MyHourseBean.DataBean.AuthBuildingsBean authBuildingsBean : bean.getData().getAuthBuildings()) {
-//                            listIcons.add(new IconBean(R.drawable.ic_my_house_red_140px, authBuildingsBean.getB_name(), authBuildingsBean.getFid()));
-//                            ALog.e("fid::" + authBuildingsBean.getFid());
-//                        }
-//                    }
-//                    getView().responseHouses(listIcons);
-//                }
-//
-//            }
-//        });
-    }
-
-
-    @Override
-    public void requestContact(String cmnt_c) {
-//        ALog.e("111111111");
-//        Map params = BaseParams.getTokenMap();
-//        params.put("cmnt_c", cmnt_c);
-//
-//        ALog.e(params.get("cmnt_c"));
-//
-//        HttpClient.post(ServiceApi.CONTACT, params, new BeanCallback<ContactBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-////                if (isViewAttached()) {
-////                    getView().error(new Exception());
-////                }
-//            }
-//
-//            @Override
-//            public void onSuccess(ContactBean bean) {
-//                if (isViewAttached()) {
-//                    List<String> listPhone = new ArrayList();
-//                    if (!TextUtils.isEmpty(bean.getData().getTelephoneNo())) {
-//                        listPhone.add("座机：" + bean.getData().getTelephoneNo());
-//                    }
-//                    if (!TextUtils.isEmpty(bean.getData().getMobileNo())) {
-//                        listPhone.add("手机：" + bean.getData().getMobileNo());
-//                    }
-//                    getView().responseContact(listPhone);
-//                }
-//            }
-//        });
+                }, this::error)
+        );
     }
 
     @Override
-    public void requestGetSip(String token) {
+    public void requestContact(Params params) {
+        mRxManager.add(mModel.requestContact(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(contactBean -> {
+                    if (contactBean.getOther().getCode() == 200) {
+                        List<String> listPhone = new ArrayList<>();
+                        listPhone.add("座机：" + contactBean.getData().getTelephoneNo());
+                        listPhone.add("手机：" + contactBean.getData().getMobileNo());
+                        getView().responseContact(listPhone);
+                    } else {
+                        getView().error(contactBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestGetSip(Params params) {
 //        ALog.e("111111111");
 //        Map params = BaseParams.getTokenMap();
 //

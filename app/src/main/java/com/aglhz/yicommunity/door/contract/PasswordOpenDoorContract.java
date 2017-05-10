@@ -3,6 +3,9 @@ package com.aglhz.yicommunity.door.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.PasswordBean;
+import com.aglhz.yicommunity.common.Params;
+
+import io.reactivex.Observable;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -18,11 +21,10 @@ public interface PasswordOpenDoorContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestPassword(String token, String dir);
-
-
+        void requestPassword(Params params);
     }
 
     interface Model extends BaseContract.Model {
+        Observable<PasswordBean> getPassword(Params params);
     }
 }

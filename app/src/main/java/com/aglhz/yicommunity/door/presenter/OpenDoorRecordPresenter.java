@@ -1,11 +1,15 @@
 package com.aglhz.yicommunity.door.presenter;
 
+
+import android.support.annotation.NonNull;
+
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.common.BaseParams;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.door.contract.OpenDoorRecordContract;
+import com.aglhz.yicommunity.door.model.OpenDoorRecordModel;
 
-import java.util.Map;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35
@@ -21,6 +25,11 @@ public class OpenDoorRecordPresenter extends BasePresenter<OpenDoorRecordContrac
         super(mView);
     }
 
+    @NonNull
+    @Override
+    protected OpenDoorRecordContract.Model createModel() {
+        return new OpenDoorRecordModel();
+    }
 
     @Override
     public void start(Object request) {
@@ -28,35 +37,18 @@ public class OpenDoorRecordPresenter extends BasePresenter<OpenDoorRecordContrac
     }
 
     @Override
-    public void requestRecord(String token) {
-        ALog.e("2222222222");
-        Map params = BaseParams.getTokenMap();
-        ALog.e(params.get("token"));
-
-//        HttpClient.post(ServiceApi.OPEN_DOOR_RECORD, params, new BeanCallback<OpenDoorRecordBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    ALog.e("3333333333333");
-//
-//                    getView().error(null);
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(OpenDoorRecordBean bean) {
-//                if (isViewAttached()) {
-//                    ALog.e("444444444444");
-//
-//                    if (bean.getOther().getCode() == 200) {
-//
-//                        getView().responseRecord(bean.getData());
-//                    } else {
-//                        getView().error(null);
-//                    }
-//                }
-//
-//            }
-//        });
+    public void requestRecord(Params params) {
+        ALog.e(TAG,"1111111111111111111111");
+        mRxManager.add(mModel.getOpenDoorRecord(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(openDoorRecordBean -> {
+                    if (openDoorRecordBean.getOther().getCode() == 200) {
+                        ALog.e(TAG,"2222222222222222222222222");
+                        getView().responseRecord(openDoorRecordBean.getData());
+                    } else {
+                        ALog.e(TAG,"333333333333333333333333");
+                        getView().error(openDoorRecordBean.getOther().getMessage());
+                    }
+                }, this::error));
     }
 }

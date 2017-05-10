@@ -3,8 +3,11 @@ package com.aglhz.yicommunity.door.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
+import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -20,9 +23,10 @@ public interface OpenDoorRecordContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestRecord(String token);
+        void requestRecord(Params params);
     }
 
     interface Model extends BaseContract.Model {
+        Observable<OpenDoorRecordBean> getOpenDoorRecord(Params params);
     }
 }

@@ -83,12 +83,7 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
         tvTitle.setText("小区名字");
         tvCity.setText("选择城市");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {

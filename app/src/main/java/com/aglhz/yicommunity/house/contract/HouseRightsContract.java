@@ -3,6 +3,9 @@ package com.aglhz.yicommunity.house.contract;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.HouseRightsBean;
+import com.aglhz.yicommunity.common.Params;
+
+import io.reactivex.Observable;
 
 
 /**
@@ -23,14 +26,19 @@ public interface HouseRightsContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestRights(String token, String fid);
+        void requestRights(Params params);
 
-        void requestUpdateRights(String url, String mfid, String fid, String picode, int status);
+        void requestUpdateRights(Params params);
 
-        void requestDelete(String token, String fid, String mfid);
+        void requestDelete(Params params);
 
     }
 
     interface Model extends BaseContract.Model {
+        Observable<HouseRightsBean> requestRights(Params params);
+
+        Observable<BaseBean> requestUpdateRights(Params params);
+
+        Observable<BaseBean> requestDelete(Params params);
     }
 }

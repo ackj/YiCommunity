@@ -6,7 +6,7 @@ import java.util.List;
  * Created by YandZD on 2017/2/23.
  */
 
-public class MyHourseBean extends BaseBean {
+public class MyHousesBean extends BaseBean {
 
     /**
      * data : {"authBuildings":[{"fid":"307afbba-abf8-4308-b17c-8c6ee8523cfd","o_name":"吴伟沅","c_name":"水北新村1期","c_code":"YSQ-SBXC-01-00001","b_name":"1单元2层2012","b_code":"YSQ-SBXC-01-001U-002-012-00012"}]}

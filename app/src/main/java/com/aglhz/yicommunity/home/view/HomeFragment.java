@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
+import retrofit2.http.HEAD;
 
 /**
  * Created by Administrator on 2017/4/19 9:15.
@@ -211,7 +212,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                             break;
                     }
                     break;
-
             }
             return false;
         });
@@ -263,7 +263,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         ALog.d(TAG, "onEvent:::" + event.bean.getName());
         UserHelper.setCommunity(event.bean.getName(), event.bean.getCode());
         adapter.getData().get(0).community = UserHelper.communityName;
-//        recyclerView.smoothScrollToPosition(0);
         ptrFrameLayout.autoRefresh();
     }
 

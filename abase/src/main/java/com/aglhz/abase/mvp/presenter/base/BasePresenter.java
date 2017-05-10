@@ -6,7 +6,6 @@ import android.support.annotation.UiThread;
 import com.aglhz.abase.common.RxManager;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import org.json.JSONException;
@@ -23,7 +22,7 @@ import java.net.SocketTimeoutException;
  * 所有Presenter类的基类，负责调度View层和Model层的交互。
  */
 public abstract class BasePresenter<V extends BaseContract.View, M extends BaseContract.Model> {
-    private final String TAG = BaseModel.class.getSimpleName();
+    private final String TAG = BasePresenter.class.getSimpleName();
 
     public Reference<V> mViewReference;
     public M mModel;
@@ -84,6 +83,7 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
     }
 
     public void error(Throwable throwable) {
+
         if (!isViewAttached()) {
             return;
         }
@@ -103,7 +103,6 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
             getView().error("数据异常");
         }
         throwable.printStackTrace();
-
-        ALog.e(throwable);
+        ALog.e(TAG,throwable);
     }
 }

@@ -161,6 +161,11 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 startActivity(new Intent(_mActivity, AboutActivity.class));
                 break;
             case R.id.tv_logout:
+                UserHelper.clear();
+                tvName.setText("访客");
+                tvPhoneNumber.setText("");
+                ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
+                tvLogout.setVisibility(View.GONE);
                 mPresenter.requestLogout(Params.getInstance());
                 break;
         }

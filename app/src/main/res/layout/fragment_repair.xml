@@ -18,6 +18,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_location_fragment_repair"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/base_grey"
@@ -25,7 +26,31 @@
                 android:text="惠州海伦堡"
                 android:textColor="@color/gray_text"
                 android:textSize="15sp" />
+            <RelativeLayout
+                android:id="@+id/rl_house_name_fragment_repair"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:visibility="gone"
+                android:gravity="center_vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="房屋名称"
+                    android:textColor="@color/base_black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:drawableRight="@drawable/ic_arrow_right_30px"
+                    android:text="请选择房屋"
+                    android:textColor="@color/gray_text"
+                    android:textSize="16sp" />
+            </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -45,8 +70,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
                     android:drawableRight="@drawable/ic_arrow_right_30px"
-                    android:text="后台配置"
-                    android:textColor="@color/base_black"
+                    android:text="请选择报修类型"
+                    android:textColor="@color/gray_text"
                     android:textSize="16sp" />
             </RelativeLayout>
 
@@ -69,6 +94,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/et_name_fragment_repair"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -100,6 +126,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/et_phone_fragment_repair"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -126,8 +153,9 @@
                 android:textSize="16sp" />
 
             <EditText
+                android:id="@+id/et_content_fragment_repair"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/bg_round_gray_edittext"
@@ -146,7 +174,15 @@
                 android:textColor="@color/base_black"
                 android:textSize="16sp" />
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView_fragment_repair"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
+
             <Button
+                android:id="@+id/btn_submit_fragment_repair"
                 android:layout_width="150dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_horizontal"

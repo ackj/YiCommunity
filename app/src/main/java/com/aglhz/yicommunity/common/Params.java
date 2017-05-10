@@ -11,7 +11,7 @@ import java.util.List;
 public class Params {
     public String sc = "AglhzYsq";
     public String token = "";
-    public String status = "";
+    public int status;
     public String dir = "";
     public String des = "";
     public String contact = "";
@@ -21,7 +21,7 @@ public class Params {
     public String file = "";
     public String val = "";
     public String pwd = "";
-    public int pageSize;
+    public int pageSize = 20;
     public List<File> files;
     public String name = "";
     public String phoneNo = "";
@@ -37,7 +37,24 @@ public class Params {
     public String bdg_c = "";
     public String bdg_u_c = "";
     public String bdg_f_c = "";
+    public String bdg_f_h_c = "";
+    public boolean isProprietor = true;
+    public String idCard = "";
+    public String fid = "";
+    public String url = "";
+    public String mfid = "";
+    public String picode = "";
 
+    public boolean single;
+
+    public String directory;
+    public String deviceName;
+
+    public String account;
+    public String verifyCode;
+    public String verifyType;
+    public String password1;
+    public String password2;
 
     private Params() {
     }

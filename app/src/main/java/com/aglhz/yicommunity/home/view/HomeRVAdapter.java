@@ -93,7 +93,12 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
             case HomeBean.TYPE_COMMUNITY_QUALITY_LIFE:
                 LifeRVAdapter qualityLifeAdapter = new LifeRVAdapter(item.getQualityLifes());
                 RecyclerView recyclerView = helper.getView(R.id.recyclerView);
-                recyclerView.setLayoutManager(new GridLayoutManager(BaseApplication.mContext, 3, GridLayoutManager.VERTICAL, false));
+                recyclerView.setLayoutManager(new GridLayoutManager(BaseApplication.mContext, 3, GridLayoutManager.VERTICAL, false) {
+                    @Override
+                    public boolean canScrollVertically() {
+                        return false;
+                    }
+                });
                 recyclerView.setAdapter(qualityLifeAdapter);
                 qualityLifeAdapter.setOnItemClickListener((adapter1, view, position) -> {
                     ToastUtils.showToast(BaseApplication.mContext, "品质生活:" + position);

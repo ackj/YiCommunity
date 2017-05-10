@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.house.model;
 
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -33,7 +34,8 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
 
     @Override
     public Observable<CommunitySelectBean> requestCommunitys(Params params) {
-        return HttpHelper.getService(ApiService.class).requestCommunitys(params.sc
+        return HttpHelper.getService(ApiService.class).requestCommunitys(ApiService.requestCommunitys
+                , params.sc
                 , params.page + ""
                 , params.pageSize + ""
                 , params.province
@@ -44,14 +46,16 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
 
     @Override
     public Observable<BuildingBean> requestBuildings(Params params) {
-        return HttpHelper.getService(ApiService.class).requestBuildings(params.sc
+        return HttpHelper.getService(ApiService.class).requestBuildings(ApiService.requestBuildings
+                , params.sc
                 , params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<UnitBean> requestUnits(Params params) {
-        return HttpHelper.getService(ApiService.class).requestUnits(params.sc
+        return HttpHelper.getService(ApiService.class).requestUnits(ApiService.requestUnits
+                , params.sc
                 , params.cmnt_c
                 , params.bdg_c)
                 .subscribeOn(Schedulers.io());
@@ -59,7 +63,8 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
 
     @Override
     public Observable<FloorBean> requestFloors(Params params) {
-        return HttpHelper.getService(ApiService.class).requestFloors(params.sc
+        return HttpHelper.getService(ApiService.class).requestFloors(ApiService.requestFloors
+                , params.sc
                 , params.cmnt_c
                 , params.bdg_c
                 , params.bdg_u_c)
@@ -68,7 +73,15 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
 
     @Override
     public Observable<RoomBean> requestRooms(Params params) {
-        return HttpHelper.getService(ApiService.class).requestRooms(params.sc
+        ALog.e(params.sc);
+        ALog.e(params.cmnt_c);
+        ALog.e(params.bdg_c);
+        ALog.e(params.bdg_u_c);
+        ALog.e(params.bdg_f_c);
+
+
+        return HttpHelper.getService(ApiService.class).requestRooms(ApiService.requestRooms
+                , params.sc
                 , params.cmnt_c
                 , params.bdg_c
                 , params.bdg_u_c
@@ -78,6 +91,19 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
 
     @Override
     public Observable<BaseBean> requestApply(Params params) {
-        return null;
+        return HttpHelper.getService(ApiService.class).requestApply(apply(params.isProprietor)
+                , params.token
+                , params.cmnt_c
+                , params.bdg_c
+                , params.bdg_u_c
+                , params.bdg_f_c
+                , params.bdg_f_h_c
+                , params.name
+                , params.idCard)
+                .subscribeOn(Schedulers.io());
+    }
+
+    String apply(boolean b) {
+        return b ? ApiService.ownerApply : ApiService.fmApply;
     }
 }

@@ -9,7 +9,7 @@
 // *
 // * 邻里模块所对应的各层对象应有的接口。
 // */
-//public interface CarCardManageContract {
+//public interface CarCardContract {
 //
 //    interface View extends BaseContract.View {
 //
