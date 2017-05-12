@@ -42,6 +42,8 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
         super(R.layout.item_moments_list, datas);
     }
 
+    private int type;
+
     @Override
     protected void convert(BaseViewHolder helper, NeighbourListBean.DataBean.MomentsListBean item) {
 
@@ -51,9 +53,19 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
                 .setText(R.id.tv_content_item_moments_list, item.getContent())
                 .setText(R.id.tv_create_at_item_moments_list, item.getCreateTime())
                 .setText(R.id.tv_location_item_moments_list, item.getCommunityName())
-                .setVisible(R.id.tv_money_item_moments_list, false)
                 .setText(R.id.tv_comment_count_item_moments_list, item.getCommentCount() + "");
 
+        helper.addOnClickListener(R.id.ll_comment_item_moments_list)
+                .addOnClickListener(R.id.tv_comment_count_item_moments_list);
+
+        //--------------- 根据type显隐------------
+        TextView tvMoney = helper.getView(R.id.tv_money_item_moments_list);
+        if (type == MessageFragment.TYPE_EXCHANGE) {
+            tvMoney.setVisibility(View.VISIBLE);
+            tvMoney.setText(item.getPrice() + "元");
+        } else {
+            tvMoney.setVisibility(View.GONE);
+        }
         //------------------ 头像 -----------------
         ImageView ivAvatar = helper.getView(R.id.iv_avatar_item_moments_list);
         Glide.with(BaseApplication.mContext)
@@ -127,5 +139,9 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
                 commentsLayout.addView(tvComment);
             }
         }
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

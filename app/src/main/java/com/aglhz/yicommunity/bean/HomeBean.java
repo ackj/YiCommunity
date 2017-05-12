@@ -20,7 +20,7 @@ public class HomeBean implements MultiItemEntity {
     //titile & community service
     public String title;
     public String desc;
-    public String notice;
+    public List<String> notices;
     public String community;
     public int bgRes;
     public int textColor;
@@ -53,12 +53,12 @@ public class HomeBean implements MultiItemEntity {
         this.hasMore = hasMore;
     }
 
-    public String getNotice() {
-        return notice;
+    public List<String> getNotice() {
+        return notices;
     }
 
-    public void setNotice(String notice) {
-        this.notice = notice;
+    public void setNotice(List<String> notice) {
+        this.notices = notice;
     }
 
     public List<BannerBean.DataBean.AdvsBean> getBanners() {

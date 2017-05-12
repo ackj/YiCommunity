@@ -55,15 +55,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
         params.cmnt_c = UserHelper.communityCode;
         mRxManager.add(mModel.requestHomeNotices(params)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(noticeBean -> {
-                    if (noticeBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-
-                        getView().responseHomeNotices(noticeBean.getData().getNoticeList());
-                    } else {
-                        getView().error(noticeBean.getOther().getMessage());
-                    }
-                }, this::error));
-
+                .subscribe(strings -> getView().responseNotice(strings), this::error));
     }
 
     @Override

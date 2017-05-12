@@ -24,13 +24,14 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.picker.model.City;
 import com.aglhz.yicommunity.common.DBManager;
 import com.aglhz.yicommunity.picker.model.LocateState;
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
 
 import java.util.List;
+
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/4/29 0029.
@@ -263,5 +264,10 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
     public void onDestroy() {
         super.onDestroy();
         LbsManager.getInstance().stopLocation();
+    }
+
+    @OnClick(R.id.ll_location)
+    public void onViewClicked() {
+        _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
     }
 }

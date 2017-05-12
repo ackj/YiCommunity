@@ -26,7 +26,7 @@ public class StewardRVAdapter extends BaseRecyclerViewAdapter<IconBean, BaseView
      */
     @Override
     protected void convert(BaseViewHolder helper, IconBean item) {
-        helper.setImageResource(R.id.iv_head, item.icon)
+        helper.setImageResource(R.id.iv_head_item_comment, item.icon)
                 .setText(R.id.tv_title, item.title);
     }
 }

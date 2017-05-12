@@ -19,13 +19,16 @@ public interface NeighbourContract {
 
     interface View extends BaseContract.View {
         void responseNeihbourList(List<NeighbourListBean.DataBean.MomentsListBean> datas);
+        void responseExchangeList(List<NeighbourListBean.DataBean.MomentsListBean> datas);
     }
 
     interface Presenter extends BaseContract.Presenter {
         void requestNeihbourList(Params params);
+        void requestExchangeList(Params params);
     }
 
     interface Model extends BaseContract.Model {
         Observable<NeighbourListBean> getNeihbourList(Params params);
+        Observable<NeighbourListBean> getExchangeList(Params params);
     }
 }

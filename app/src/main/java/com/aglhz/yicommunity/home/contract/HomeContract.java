@@ -10,6 +10,7 @@ import com.aglhz.yicommunity.common.Params;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -22,7 +23,7 @@ public interface HomeContract {
     interface View extends BaseContract.View {
         void responseBanners(List<BannerBean.DataBean.AdvsBean> banners);
 
-        void responseHomeNotices(List<NoticeBean.DataBean.NoticeListBean> notices);
+        void responseNotice(List<String> notices);
 
         void responseOpenDoor();
     }
@@ -38,7 +39,8 @@ public interface HomeContract {
     interface Model extends BaseContract.Model {
         Observable<BannerBean> requestBanners();
 
-        Observable<NoticeBean> requestHomeNotices(Params params);
+
+        Single<List<String>> requestHomeNotices(Params params);
 
         Observable<BaseBean> requestOpenDoor(Params params);
     }

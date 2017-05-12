@@ -3,16 +3,18 @@ package com.aglhz.yicommunity.home.view;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 
+import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.abase.utils.ToastUtils;
+import com.aglhz.abase.widget.AutoScrollTextView;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.neighbour.view.MessageFragment;
+import com.aglhz.yicommunity.neighbour.view.NeighbourFragment;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -56,7 +58,9 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
 
                 break;
             case HomeBean.TYPE_COMMUNITY_NOTICE:
-                helper.setText(R.id.tv_notice, item.getNotice());
+                AutoScrollTextView tv = helper.getView(R.id.tv_notice);
+                tv.setTextList(item.getNotice());
+                tv.startAutoScroll();
                 helper.addOnClickListener(R.id.ll_item_notice);
                 break;
             case HomeBean.TYPE_COMMUNITY_FUNCTION:
@@ -100,11 +104,13 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 qualityLifeAdapter.setOnItemClickListener((adapter1, view, position) -> {
                     switch (position) {
                         case 0:
+                            ((BaseActivity) fragment.getActivity()).start(NeighbourFragment.newInstance(MessageFragment.TYPE_EXCHANGE));
                             break;
                         case 1:
                             fragment.go2Web("快递查询", ApiService.WULIU_SEARCH + UserHelper.token);
                             break;
                         case 2:
+                            ((BaseActivity) fragment.getActivity()).start(NeighbourFragment.newInstance(MessageFragment.TYPE_CARPOOL));
                             break;
                     }
                 });

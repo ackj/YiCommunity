@@ -98,10 +98,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         data.add(bannerBean);
 
         //Notice
-        String notice = "";
         HomeBean noticeBean = new HomeBean();
         noticeBean.setItemType(HomeBean.TYPE_COMMUNITY_NOTICE);
-        noticeBean.setNotice(notice);
+        noticeBean.setNotice(new ArrayList<>());
         data.add(noticeBean);
 
         //CommunityService
@@ -244,16 +243,19 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         adapter.notifyItemChanged(0);
     }
 
-    @Override
-    public void responseHomeNotices(List<NoticeBean.DataBean.NoticeListBean> notices) {
+    //    @Override
+//    public void responseHomeNotices(List<NoticeBean.DataBean.NoticeListBean> notices) {
+//        ptrFrameLayout.refreshComplete();
+//        HomeBean homeBean = adapter.getData().get(1);
+//        if (notices != null && !notices.isEmpty()
+//                && !TextUtils.isEmpty(notices.get(0).getTitle())) {
+//            homeBean.setNotice(notices.get(0).getTitle());
+//        } else {
+//            homeBean.setNotice("");
+//        }
+    public void responseNotice(List<String> notices) {
         ptrFrameLayout.refreshComplete();
-        HomeBean homeBean = adapter.getData().get(1);
-        if (notices != null && !notices.isEmpty()
-                && !TextUtils.isEmpty(notices.get(0).getTitle())) {
-            homeBean.setNotice(notices.get(0).getTitle());
-        } else {
-            homeBean.setNotice("");
-        }
+        adapter.getData().get(1).setNotice(notices);
         adapter.notifyItemChanged(1);
     }
 

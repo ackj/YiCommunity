@@ -1,16 +1,20 @@
 package com.aglhz.yicommunity.home.model;
 
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.home.contract.HomeContract;
 
+import java.util.List;
+
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -35,13 +39,23 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
-    @Override
-    public Observable<NoticeBean> requestHomeNotices(Params params) {
+    //    @Override
+//    public Observable<NoticeBean> requestHomeNotices(Params params) {
+//        return HttpHelper.getService(ApiService.class)
+//                .requestHomeNotices(
+//                        ApiService.requestHomeNotices,
+//                        params.token,
+//                        params.cmnt_c)
+    public Single<List<String>> requestHomeNotices(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .requestHomeNotices(
-                        ApiService.requestHomeNotices,
-                        params.token,
-                        params.cmnt_c)
+                .requestHomeNotices(ApiService.requestHomeNotices, params.token, params.cmnt_c)
+                .map(noticeBean -> noticeBean.getData().getNoticeList())
+                .flatMap(Flowable::fromIterable)
+                .map(noticeListBean -> {
+                    ALog.e(TAG, "title::" + noticeListBean.getTitle());
+                    return noticeListBean.getTitle();
+                })
+                .toList()
                 .subscribeOn(Schedulers.io());
     }
 

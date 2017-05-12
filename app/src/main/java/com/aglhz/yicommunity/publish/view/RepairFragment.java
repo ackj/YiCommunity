@@ -94,7 +94,7 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_repair, container, false);
+        View view = inflater.inflate(R.layout.fragment_publish_repair, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -206,7 +206,6 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
     private void submit(Params params) {
         mPresenter.postRepair(params);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
