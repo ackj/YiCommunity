@@ -41,7 +41,6 @@ public class NoticeBean extends BaseBean{
              * content : 停电范围：小区1栋、2栋、3栋…
              * ctime : 2017-02-06
              */
-
             private String fid;
             private String title;
             private String content;

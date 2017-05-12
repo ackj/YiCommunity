@@ -4,6 +4,7 @@ import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.BuildingBean;
 import com.aglhz.yicommunity.bean.CheckTokenBean;
+import com.aglhz.yicommunity.bean.CommentListBean;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.bean.ContactBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -58,8 +60,9 @@ public interface ApiService {
     Observable<CheckTokenBean> checkToken(@Query("token") String token);
 
     //登录
-    @POST("/memberSYS-m/client/login.do")
-    Observable<UserBean> login(@Query("sc") String sc, @Query("user") String user, @Query("pwd") String pwd);
+//    @POST("/memberSYS-m/client/login.do")
+    @POST
+    Observable<UserBean> login(@Url String url, @Query("sc") String sc, @Query("user") String user, @Query("pwd") String pwd);
 
     //登出
     @POST("/memberSYS-m/client/logout.do")
@@ -214,15 +217,18 @@ public interface ApiService {
     //***************根据社区代号得到物业联系方式***********************
 
 
-    @POST("/sub_property_ysq/client/repair")
-    Observable<BaseBean> postRepair(@Query("token") String token,
+    //    @POST("/sub_property_ysq/client/repair")
+    @Multipart
+    @POST
+    Observable<BaseBean> postRepair(@Url String url,
+                                    @Query("token") String token,
                                     @Query("cmnt_c") String cmnt_c,
                                     @Query("contact") String contact,
                                     @Query("des") String des,
                                     @Query("name") String name,
                                     @Query("single") boolean single,
-                                    @Query("file") List<File> files,
-                                    @Query("type") int type);
+                                    @Query("type") int type,
+                                    @Part List<MultipartBody.Part> parts);
 
     //获取门禁列表
     @POST("/sub_property_ysq/smartdoor/info/doormchs")
@@ -270,7 +276,7 @@ public interface ApiService {
 
     String UPDATE_RIGHTS_OTHER = BASE_PROPERTY + "/smartdoor/client/enmemberpower";
 
-   String requestRights = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
+    String requestRights = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
 
 
     @POST
@@ -291,6 +297,7 @@ public interface ApiService {
             , @Query("token") String token
             , @Query("mfid") String mfid
             , @Query("fid") String fid);
+
     //获取物业公告
     @POST("/sub_property_ysq/client/info/noticeList")
     Observable<NoticeBean> getNoticeList(@Query("token") String token,
@@ -303,4 +310,22 @@ public interface ApiService {
     //获取邻里圈列表
     @POST("/sub_property_ysq/neighbor/moments/to-client/moments-list")
     Observable<NeighbourListBean> getNeighbourList(@Query("page") int page, @Query("pageSize") int pageSize);
+
+    //获取闲置交换
+    @POST("sub_property_ysq/neighbor/exchange/to-client/exchange-list")
+    Observable<NeighbourListBean> getExchangeList(@Query("page") int page, @Query("pageSize") int pageSize);
+
+    //获取闲置交换的评论
+    String getExchangeComments = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-comment-list";
+    @POST
+    Observable<CommentListBean> getExchangeComments(@Url String url, @Query("exchangeFid") String fid, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //首页获取公告列表
+    //    @POST("/sub_property_ysq/client/infoticeTop")
+    String requestHomeNotices = BASE_PROPERTY + "/client/info/noticeTop";
+
+    @POST
+    Flowable<NoticeBean> requestHomeNotices(@Url String url,
+                                              @Query("token") String token,
+                                              @Query("cmnt_c") String cmnt_c);
 }

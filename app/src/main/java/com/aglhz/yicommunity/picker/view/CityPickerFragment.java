@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,12 +22,15 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.picker.model.City;
 import com.aglhz.yicommunity.picker.model.DBManager;
 import com.aglhz.yicommunity.picker.model.LocateState;
 import com.amap.api.location.AMapLocationClient;
 
 import java.util.List;
+
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/4/29 0029.
@@ -226,12 +228,7 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         emptyView = (ViewGroup) view.findViewById(R.id.empty_view);
         mResultListView = (ListView) view.findViewById(R.id.listview_search_result);
         mResultListView.setAdapter(mResultAdapter);
-        mResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                back(mResultAdapter.getItem(position).getName());
-            }
-        });
+        mResultListView.setOnItemClickListener((parent, view1, position, id) -> back(mResultAdapter.getItem(position).getName()));
 
         clearBtn = (ImageView) view.findViewById(R.id.iv_search_clear);
 
@@ -259,5 +256,10 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         super.onDestroy();
 //        mLocationClient.stopLocation();
 //        mLocationClient.onDestroy();
+    }
+
+    @OnClick(R.id.ll_location)
+    public void onViewClicked() {
+        _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
     }
 }

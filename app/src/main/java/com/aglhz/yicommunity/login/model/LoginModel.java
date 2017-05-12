@@ -19,7 +19,8 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
 
     @Override
     public Observable<UserBean> login(Params params) {
-        return HttpHelper.getService(ApiService.class).login(params.sc, params.user, params.pwd)
+        String url = "http://www.aglhz.com:8076/memberSYS-m/client/login.do";
+        return HttpHelper.getService(ApiService.class).login(url,params.sc, params.user, params.pwd)
                 .subscribeOn(Schedulers.io());
     }
 

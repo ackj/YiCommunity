@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_head_item_comment"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_default_head_image_200px" />
+
+
+    <TextView
+        android:id="@+id/tv_username_item_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_head_item_comment"
+        android:layout_marginRight="15dp"
+        android:layout_toLeftOf="@+id/tv_time_item_comment"
+        android:layout_toRightOf="@+id/iv_head_item_comment"
+        android:ellipsize="end"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/tv_content_item_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_username_item_comment"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/iv_head_item_comment" />
+
+    <TextView
+        android:id="@+id/tv_time_item_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/iv_head_item_comment"
+        android:layout_marginRight="15dp" />
+
+    <View
+        android:layout_below="@id/iv_head_item_comment"
+        style="@style/base_line"
+        android:layout_alignLeft="@+id/tv_username_item_comment"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

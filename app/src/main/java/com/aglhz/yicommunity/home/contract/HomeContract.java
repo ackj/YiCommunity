@@ -4,12 +4,12 @@ package com.aglhz.yicommunity.home.contract;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -23,7 +23,7 @@ public interface HomeContract {
         //        void responseBanner(List<IndexadvsBean.DataBean.AdvsBean> bean);
         void responseBanner(List<BannerBean.DataBean.AdvsBean> banners);
 
-        void responseNotice(List<NoticeBean.DataBean.NoticeListBean> notices);
+        void responseNotice(List<String> notices);
 
         void responseOpenDoor();
     }
@@ -39,7 +39,7 @@ public interface HomeContract {
     interface Model extends BaseContract.Model {
         Observable<BannerBean> getBanner();
 
-        Observable<NoticeBean> getNotice(Params params);
+        Single<List<String>> getNotice(Params params);
 
         Observable<BaseBean> openDoor(Params params);
     }

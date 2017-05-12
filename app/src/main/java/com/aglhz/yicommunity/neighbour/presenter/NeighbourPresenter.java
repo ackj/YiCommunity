@@ -47,4 +47,17 @@ public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, Ne
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestExchangeList(Params params) {
+        mRxManager.add(mModel.getExchangeList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(neighbourListBean -> {
+                    if (neighbourListBean.getOther().getCode() == 200) {
+                        getView().responseExchangeList(neighbourListBean.getData().getExchangeList());
+                    } else {
+                        getView().error(neighbourListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }

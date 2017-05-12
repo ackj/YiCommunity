@@ -55,13 +55,9 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
         params.cmnt_c = "KBSJ-agl-00005";
         mRxManager.add(mModel.getNotice(params)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(noticeBean -> {
-                    if (noticeBean.getOther().getCode() == 200) {
-                        getView().responseNotice(noticeBean.getData().getNoticeList());
-                    } else {
-                        getView().error(noticeBean.getOther().getMessage());
-                    }
-                }, this::error));
+                .subscribe(strings ->
+                        getView().responseNotice(strings)
+                ,this::error));
 
     }
 

@@ -27,6 +27,16 @@ public class NeighbourListBean extends BaseBean {
     public static class DataBean {
         private List<MomentsListBean> momentsList;
 
+        public List<MomentsListBean> getExchangeList() {
+            return exchangeList;
+        }
+
+        public void setExchangeList(List<MomentsListBean> exchangeList) {
+            this.exchangeList = exchangeList;
+        }
+
+        private List<MomentsListBean> exchangeList;
+
         public List<MomentsListBean> getMomentsList() {
             return momentsList;
         }
@@ -55,6 +65,16 @@ public class NeighbourListBean extends BaseBean {
             private MemberBean member;
             private List<CommentBean> commentList;
             private List<PicsBean> pics;
+
+            private float price;
+
+            public float getPrice() {
+                return price;
+            }
+
+            public void setPrice(float price) {
+                this.price = price;
+            }
 
             public int getCommentCount() {
                 return commentCount;

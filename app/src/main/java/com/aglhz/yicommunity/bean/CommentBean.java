@@ -5,7 +5,7 @@ package com.aglhz.yicommunity.bean;
  * Email: liujia95me@126.com
  */
 
-public class CommentBean {
+public class CommentBean{
     /**
      * content : 时空
      * createTime : 2017-05-10 09:24:51

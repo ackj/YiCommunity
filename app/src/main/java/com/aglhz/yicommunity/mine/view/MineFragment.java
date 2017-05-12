@@ -30,7 +30,6 @@ import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
 import com.aglhz.yicommunity.mine.contract.MineContract;
 import com.aglhz.yicommunity.mine.presenter.MinePresenter;
-import com.aglhz.yicommunity.mypublish.MyPublishActivity;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
 
@@ -51,7 +50,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  */
 public class MineFragment extends BaseFragment<MineContract.Presenter> implements MineContract.View {
     private static final String TAG = MineFragment.class.getSimpleName();
-    @BindView(R.id.iv_head)
+    @BindView(R.id.iv_head_item_comment)
     ImageView ivHead;
     @BindView(R.id.tv_name)
     TextView tvName;
@@ -114,12 +113,12 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         updataView();
     }
 
-    @OnClick({R.id.iv_head, R.id.tv_user_data, R.id.ll_message_center,
+    @OnClick({R.id.iv_head_item_comment, R.id.tv_user_data, R.id.ll_message_center,
             R.id.ll_my_indent, R.id.ll_my_address, R.id.ll_make_shortcut,
             R.id.ll_my_publish, R.id.ll_clean_cache, R.id.ll_about_us, R.id.tv_logout})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_head:
+            case R.id.iv_head_item_comment:
                 if (isLogined()) {
                     //后面再改成iOS那种
                     ALog.e("111111111");

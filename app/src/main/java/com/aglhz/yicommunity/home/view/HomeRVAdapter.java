@@ -4,12 +4,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.aglhz.abase.log.ALog;
+import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.abase.utils.ToastUtils;
+import com.aglhz.abase.widget.AutoScrollTextView;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
+import com.aglhz.yicommunity.neighbour.view.MessageFragment;
+import com.aglhz.yicommunity.neighbour.view.NeighbourFragment;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -56,7 +60,9 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 }
                 break;
             case HomeBean.TYPE_COMMUNITY_NOTICE:
-                helper.setText(R.id.tv_notice, item.getNotice());
+                AutoScrollTextView tv = helper.getView(R.id.tv_notice);
+                tv.setTextList(item.getNotice());
+                tv.startAutoScroll();
                 helper.addOnClickListener(R.id.ll_item_notice);
                 break;
             case HomeBean.TYPE_COMMUNITY_FUNCTION:
@@ -74,7 +80,6 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 viewpager.setAdapter(adapter);
                 viewpager.setCurrentItem(1);
                 adapter.setOnItemClickListener(position -> {
-                    ToastUtils.showToast(BaseApplication.mContext, "社区服务::" + position);
                     switch (position) {
                         case 0:
                             fragment.go2Web("家政服务", "http://www.aglhz.com/sub_property_ysq/m/html/jiazheng.html");
@@ -99,14 +104,15 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 });
                 recyclerView.setAdapter(qualityLifeAdapter);
                 qualityLifeAdapter.setOnItemClickListener((adapter1, view, position) -> {
-                    ToastUtils.showToast(BaseApplication.mContext, "品质生活:" + position);
                     switch (position) {
                         case 0:
+                            ((BaseActivity) fragment.getActivity()).start(NeighbourFragment.newInstance(MessageFragment.TYPE_EXCHANGE));
                             break;
                         case 1:
                             fragment.go2Web("快递查询", "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?token=%@&appType=2");
                             break;
                         case 2:
+                            ((BaseActivity) fragment.getActivity()).start(NeighbourFragment.newInstance(MessageFragment.TYPE_CARPOOL));
                             break;
                     }
                 });

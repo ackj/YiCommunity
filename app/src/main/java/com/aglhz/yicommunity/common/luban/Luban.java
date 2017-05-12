@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.common.luban;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,12 +14,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.aglhz.yicommunity.common.luban.Preconditions.checkNotNull;
+
 
 public class Luban {
 
@@ -34,6 +38,7 @@ public class Luban {
 
     private OnCompressListener compressListener;
     private File mFile;
+    private List<File> mFileList;
     private int gear = THIRD_GEAR;
     private String filename;
 
@@ -46,7 +51,7 @@ public class Luban {
      * retrieved media and thumbnails.
      *
      * @param context A context.
-     * @see #getPhotoCacheDir(Context, String)
+     * @see #getPhotoCacheDir(android.content.Context, String)
      */
     private static synchronized File getPhotoCacheDir(Context context) {
         return getPhotoCacheDir(context, Luban.DEFAULT_DISK_CACHE_DIR);
@@ -58,7 +63,7 @@ public class Luban {
      *
      * @param context   A context.
      * @param cacheName The name of the subdirectory in which to store the cache.
-     * @see #getPhotoCacheDir(Context)
+     * @see #getPhotoCacheDir(android.content.Context)
      */
     private static File getPhotoCacheDir(Context context, String cacheName) {
         File cacheDir = context.getCacheDir();
@@ -92,9 +97,7 @@ public class Luban {
 
         if (compressListener != null) compressListener.onStart();
 
-        if (gear == Luban.FIRST_GEAR){
-
-
+        if (gear == Luban.FIRST_GEAR) {
             Observable.just(mFile)
                     .map(file -> firstCompress(file))
                     .subscribeOn(Schedulers.io())
@@ -107,11 +110,9 @@ public class Luban {
                     .subscribe(file -> {
                         if (compressListener != null) compressListener.onSuccess(file);
                     });
-        }
-
-        else if (gear == Luban.THIRD_GEAR)
+        } else if (gear == Luban.THIRD_GEAR) {
             Observable.just(mFile)
-            .map(file -> thirdCompress(file))
+                    .map(file -> thirdCompress(file))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError(throwable -> {
@@ -119,15 +120,21 @@ public class Luban {
                     })
                     .onErrorResumeNext(Observable.<File>empty())
                     .filter(file -> file != null)
-                    .subscribe( file -> {
+                    .subscribe(file -> {
                         if (compressListener != null) compressListener.onSuccess(file);
                     });
+        }
 
         return this;
     }
 
     public Luban load(File file) {
         mFile = file;
+        return this;
+    }
+
+    public Luban load(List<File> filePath) {
+        mFileList = filePath;
         return this;
     }
 
@@ -150,13 +157,20 @@ public class Luban {
     }
 
     public Observable<File> asObservable() {
-        if (gear == FIRST_GEAR){
-            return Observable.just(mFile).map(file -> firstCompress(file));
-        }
-        else if (gear == THIRD_GEAR){
-            return Observable.just(mFile).map(file -> thirdCompress(file));
-        }
-        else return Observable.empty();
+        if (gear == FIRST_GEAR) {
+            return Observable.just(mFile).map(this::firstCompress);
+        } else if (gear == THIRD_GEAR) {
+            return Observable.just(mFile).map(this::thirdCompress);
+        } else return Observable.empty();
+    }
+
+    public Single<List<File>> asList() {
+        if (gear == FIRST_GEAR) {
+            return Observable.fromIterable(mFileList).concatMap(file -> Observable.just(file).map(file12 -> firstCompress(file12))).toList();
+        } else if (gear == THIRD_GEAR) {
+            return Observable.fromIterable(mFileList).concatMap(file -> Observable.just(file).map(file1 -> thirdCompress(file1))).toList();
+        } else
+            return null;
     }
 
     private File thirdCompress(@NonNull File file) {

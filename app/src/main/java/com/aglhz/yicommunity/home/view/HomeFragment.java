@@ -16,7 +16,6 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
-import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.ServiceBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.ScrollingHelper;
@@ -29,7 +28,6 @@ import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.propery.view.NoticeListFragment;
 import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,7 +41,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
-import retrofit2.http.HEAD;
 
 /**
  * Created by Administrator on 2017/4/19 9:15.
@@ -101,10 +98,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         data.add(bannerBean);
 
         //Notice
-        String notice = "";
         HomeBean noticeBean = new HomeBean();
         noticeBean.setItemType(HomeBean.TYPE_COMMUNITY_NOTICE);
-        noticeBean.setNotice(notice);
+        noticeBean.setNotice(new ArrayList<>());
         data.add(noticeBean);
 
         //CommunityService
@@ -246,9 +242,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     @Override
-    public void responseNotice(List<NoticeBean.DataBean.NoticeListBean> notices) {
+    public void responseNotice(List<String> notices) {
         ptrFrameLayout.refreshComplete();
-        adapter.getData().get(1).setNotice(notices.get(0).getTitle());
+        adapter.getData().get(1).setNotice(notices);
         adapter.notifyItemChanged(1);
     }
 
