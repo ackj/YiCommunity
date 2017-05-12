@@ -1,9 +1,11 @@
-package com.aglhz.yicommunity.picker.model;
+package com.aglhz.yicommunity.common;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+
+import com.aglhz.yicommunity.picker.model.City;
 
 import java.io.File;
 import java.io.FileOutputStream;

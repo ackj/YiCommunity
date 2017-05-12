@@ -26,13 +26,10 @@ public class CarSharePresenter extends BasePresenter<CarShareContract.View, CarS
     @Override
     public void start(Object request) {
         ALog.e("1111111111111");
-        LbsManager.actionLocation(new LbsManager.LocateCallBack() {
-            @Override
-            public void CallBack(AMapLocation aMapLocation) {
-                mLat = aMapLocation.getLatitude() + "";
-                mLng = aMapLocation.getLongitude() + "";
+        LbsManager.getInstance().startLocation(aMapLocation -> {
+            mLat = aMapLocation.getLatitude() + "";
+            mLng = aMapLocation.getLongitude() + "";
 
-            }
         });
         requestData(0);
     }

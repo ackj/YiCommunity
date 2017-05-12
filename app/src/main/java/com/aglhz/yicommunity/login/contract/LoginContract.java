@@ -20,6 +20,6 @@ public interface LoginContract {
     }
 
     interface Model extends BaseContract.Model {
-        Observable<UserBean> login(Params params);
+        Observable<UserBean> requestLogin(Params params);
     }
 }

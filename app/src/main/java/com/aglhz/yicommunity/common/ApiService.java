@@ -34,52 +34,80 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
+import static com.aglhz.yicommunity.common.UserHelper.token;
+
 /**
  * Created by YandZD on 2017/1/17.
  */
 
 public interface ApiService {
 
+    //基础路径
     String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-    String BASE_User = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+    String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
-
 
     //********************以下为Web*******************************
     String PRODUCT_INTRODUCTION = "http://www.aglhz.com/sub_property_ysq/m/html/introduction.html";
 
     String SERVICE_TERMS = "http://www.aglhz.com/sub_property_ysq/m/html/userAgreement.html";
 
-    String INDENT_CENTER = "http://www.aglhz.com/mall/m/html/newPersonCenter/newOrderCenter.html?appType=2&token=";
+    String INDENT_CENTER = "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/newPersonCenter/newOrderCenter.html?appType=2&token=";
+
+    String TEMP_PARKING = "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html";
+
+    String SUPERMARKET = "http://www.aglhz.com/mall/m/index.html?appType=2&token=";
+
+    String WULIU_SEARCH = "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?appType=2&token=";
+
+    String JIAZHENG = "http://www.aglhz.com/sub_property_ysq/m/html/jiazheng.html";
+
+    String WEIXIU = "http://www.aglhz.com/sub_property_ysq/m/html/weixiu.html";
+
+    String SONGSHUI = "http://www.aglhz.com/sub_property_ysq/m/html/songshui.html";
+
+    //********************以上为Web*******************************
 
 
     //登录验证
-    @POST("/memberSYS-m/client/checkIfTokenInvalid.do")
-    Observable<CheckTokenBean> checkToken(@Query("token") String token);
+//    @POST("/memberSYS-m/client/checkIfTokenInvalid.do")
+    String checkToken = BASE_USER + "/client/checkIfTokenInvalid.do";
+
+    @POST
+    Observable<CheckTokenBean> checkToken(@Url String url, @Query("token") String token);
 
     //登录
-    @POST("/memberSYS-m/client/login.do")
-    Observable<UserBean> login(@Query("sc") String sc, @Query("user") String user, @Query("pwd") String pwd);
+//    @POST("/memberSYS-m/client/login.do")
+
+    String requestLogin = BASE_USER + "/client/login.do";
+
+    @POST
+    Observable<UserBean> requestLogin(@Url String url
+            , @Query("sc") String sc
+            , @Query("user") String user
+            , @Query("pwd") String pwd);
 
     //登出
     @POST("/memberSYS-m/client/logout.do")
-    Observable<BaseBean> logout(@Query("token") String token);
+    Observable<BaseBean> requestLogout(@Query("token") String token);
 
     //开门
-    @POST("/sub_property_ysq/smartdoor/client/opendoor")
-    Observable<BaseBean> openDoor(@Query("token") String token, @Query("dir") String dir);
+//    @POST("/sub_property_ysq/smartdoor/client/opendoor")
+    String requestOpenDoor = BASE_PROPERTY + "/smartdoor/client/opendoor";
+
+    @POST
+    Observable<BaseBean> requestOpenDoor(@Url String url, @Query("token") String token, @Query("dir") String dir);
 
     //消息中心
     @POST("/sub_property_ysq/client/info/msgList")
     Observable<MessageCenterBean> requestMessages(@Query("token") String token);
 
     //社区Banner
-    @POST("/sub_property_ysq/client/info/indexadvs")
-    Observable<BannerBean> getBanners();
+//    @POST("/sub_property_ysq/client/info/indexadvs")
+    String requestBanners = BASE_PROPERTY + "/client/info/indexadvs";
 
-    //社区通知列表
-    @POST("/sub_property_ysq/client/info/noticeList")
-    Observable<NoticeBean> getNotice(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("topnum") int topnum);
+    @POST
+    Observable<BannerBean> requestBanners(@Url String url);
 
     //物业缴费
     @POST("/sub_property_ysq/client/info/pptBillsWait.do")
@@ -103,10 +131,6 @@ public interface ApiService {
     @Multipart
     @POST("/memberSYS-m/client/uploadHeader2.do")
     Observable<BaseBean> updatePortrait(@Query("token") String token, @Part("file") RequestBody file);
-
-    //社区地址列表
-    @POST("/propertyCFG-m/client/communityList.do")
-    Observable<CommunitySelectBean> getCommunityList(@Query("sc") String sc, @Query("page") int page, @Query("pageSize") int pageSize);
 
     //提交管理投诉
     @POST("/sub_property_ysq/property/complaint/from-client/complaint-create")
@@ -256,21 +280,26 @@ public interface ApiService {
     @POST("/memberSYS-m/client/validCode.do")
     Observable<BaseBean> getVerifyCode(@Query("sc") String sc, @Query("phone") String phone, @Query("type") String type);
 
+
+    //***********以下房屋权限系列接口********************************
+
     //获取我的房屋
 //    @POST("/sub_property_ysq/client/info/authBdgs.do")
 
     String requestMyhouses = BASE_PROPERTY + "/client/info/authBdgs.do";
 
     @POST
-    Flowable<MyHousesBean> requestMyhouses(@Url String url, @Query("token") String token);
+    Flowable<MyHousesBean> requestMyhouses(
+            @Url String url,
+            @Query("token") String token,
+            @Query("cmnt_c") String cmnt_c);
 
-    //***********以下房屋权限系列接口********************************
 
     String UPDATE_RIGHTS_MYSELF = BASE_PROPERTY + "/smartdoor/client/powerset";
 
     String UPDATE_RIGHTS_OTHER = BASE_PROPERTY + "/smartdoor/client/enmemberpower";
 
-   String requestRights = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
+    String requestRights = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
 
 
     @POST
@@ -291,16 +320,34 @@ public interface ApiService {
             , @Query("token") String token
             , @Query("mfid") String mfid
             , @Query("fid") String fid);
-    //获取物业公告
-    @POST("/sub_property_ysq/client/info/noticeList")
-    Observable<NoticeBean> getNoticeList(@Query("token") String token,
-                                         @Query("cmnt_c") String cmnt_c,
-                                         @Query("summerable") boolean summerable,
-                                         @Query("timeable") boolean timeable,
-                                         @Query("page") int page,
-                                         @Query("pageSize") int pageSize);
+
+    //获取物业公告列表
+//    @POST("/sub_property_ysq/client/info/noticeList")
+    String requestNotices = BASE_PROPERTY + "/client/info/noticeList";
+
+    @POST
+    Observable<NoticeBean> requestNotices(@Url String url,
+                                          @Query("token") String token,
+                                          @Query("cmnt_c") String cmnt_c,
+                                          @Query("summerable") boolean summerable,
+                                          @Query("timeable") boolean timeable);
+
+    //物业详情
+    String requestNoticeDetail = BASE_PROPERTY + "/m/html/noticeDetail.html?fid=";
+
 
     //获取邻里圈列表
     @POST("/sub_property_ysq/neighbor/moments/to-client/moments-list")
     Observable<NeighbourListBean> getNeighbourList(@Query("page") int page, @Query("pageSize") int pageSize);
+
+
+    //首页获取公告列表
+    //    @POST("/sub_property_ysq/client/info/noticeTop")
+    String requestHomeNotices = BASE_PROPERTY + "/client/info/noticeTop";
+
+    @POST
+    Observable<NoticeBean> requestHomeNotices(@Url String url,
+                                              @Query("token") String token,
+                                              @Query("cmnt_c") String cmnt_c);
+
 }

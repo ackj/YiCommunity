@@ -43,7 +43,8 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
 
     @Override
     public Single<List<IconBean>> requestHouses(Params params) {
-        return HttpHelper.getService(ApiService.class).requestMyhouses(ApiService.requestMyhouses, params.token)
+        return HttpHelper.getService(ApiService.class)
+                .requestMyhouses(ApiService.requestMyhouses, params.token, params.cmnt_c)
                 .map(myHousesBean -> myHousesBean.getData().getAuthBuildings())
                 .flatMap(Flowable::fromIterable)
                 .map(authBuildingsBean -> new IconBean(R.drawable.ic_my_house_red_140px, authBuildingsBean.getB_name(), authBuildingsBean.getFid()))

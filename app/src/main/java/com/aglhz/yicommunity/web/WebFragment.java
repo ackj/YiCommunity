@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.web;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JsResult;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -64,7 +67,6 @@ public class WebFragment extends BaseFragment {
         if (args != null) {
             title = args.getString(Constants.WEB_TITLE);
             link = args.getString(Constants.WEB_LINK);
-//            link = "http://192.168.2.111:8000/sub_ysq_h5/m/html/report.html";
         }
     }
 
@@ -131,6 +133,14 @@ public class WebFragment extends BaseFragment {
             public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
                 callback.invoke(origin, true, true);
                 super.onGeolocationPermissionsShowPrompt(origin, callback);
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+
+                ALog.e("onReceiveValue::" + message);
+
+                return super.onJsAlert(view, url, message, result);
             }
         });
 

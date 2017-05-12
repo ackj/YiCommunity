@@ -15,8 +15,10 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.NoticeBean;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.propery.contract.NoticeListContract;
 import com.aglhz.yicommunity.propery.presenter.NoticeListPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
@@ -35,6 +37,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implements NoticeListContract.View {
+    private final String TAG = NoticeListFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -44,9 +47,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implem
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
     private Unbinder unbinder;
-
     private NoticeListRVAdapter adapter;
 
     public static NoticeListFragment newInstance() {
@@ -84,12 +85,10 @@ public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implem
 
     private void initData() {
         Params params = Params.getInstance();
-        params.cmnt_c = "KBSJ-agl-00005";
+        params.cmnt_c = UserHelper.communityCode;
         params.summerable = true;
         params.timeable = true;
-        params.page = 0;
-        params.pageSize = 10;
-        mPresenter.requestNoticeList(params);
+        mPresenter.requestNotices(params);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         ArrayList<NoticeBean.DataBean.NoticeListBean> data = new ArrayList<>();
@@ -100,7 +99,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implem
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             NoticeBean.DataBean.NoticeListBean bean = (NoticeBean.DataBean.NoticeListBean) adapter.getData().get(position);
-            go2Web("物业公告", "http://www.aglhz.com/sub_property_ysq/m/html/noticeDetail.html?fid=" + bean.getFid());
+            go2Web("物业公告", ApiService.requestNoticeDetail + bean.getFid());
             return false;
         });
     }
@@ -129,7 +128,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implem
     }
 
     @Override
-    public void responseNoticeList(List<NoticeBean.DataBean.NoticeListBean> datas) {
+    public void responseNotices(List<NoticeBean.DataBean.NoticeListBean> datas) {
         adapter.setNewData(datas);
     }
 }

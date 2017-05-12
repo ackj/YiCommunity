@@ -1,12 +1,16 @@
 package com.aglhz.yicommunity.common;
 
-import android.content.Context;
+
+import android.icu.text.SimpleDateFormat;
 
 import com.aglhz.abase.log.ALog;
+import com.aglhz.yicommunity.BaseApplication;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
+
+import java.util.Date;
+
 
 /**
  * 选择 地址 map
@@ -15,60 +19,128 @@ import com.amap.api.location.AMapLocationListener;
  */
 
 public class LbsManager {
-    public interface LocateCallBack {
-        void CallBack(AMapLocation aMapLocation);
-    }
-
+    private static final String TAG = LbsManager.class.getSimpleName();
     private static AMapLocationClient mLocationClient;
     private static LocateCallBack mCallBack;
-    private static boolean isOnceLocation = true;
-    private static int mInterval = 0;
+    private static volatile LbsManager INSTANCE;
 
-    public static void initMap(Context context) {
+    //构造方法私有
+    private LbsManager() {
+        init();
+    }
+
+    //获取单例
+    public static LbsManager getInstance() {
+        if (INSTANCE == null) {
+            synchronized (LbsManager.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new LbsManager();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+
+    private void init() {
         //初始化定位
-        mLocationClient = new AMapLocationClient(context);
+        if (mLocationClient != null) {
+            return;
+        }
+        mLocationClient = new AMapLocationClient(BaseApplication.mContext);
         //设置定位回调监听
-        mLocationClient.setLocationListener(new local());
+
         //初始化AMapLocationClientOption对象
         AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //该方法默认为false。
-        mLocationOption.setOnceLocation(isOnceLocation);
+        mLocationOption.setOnceLocation(false);
+
+        //设置setOnceLocationLatest(boolean b)接口为true，
+        // 启动定位时SDK会返回最近3s内精度最高的一次定位结果。
+        // 如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        //获取最近3s内精度最高的一次定位结果：
+        mLocationOption.setOnceLocationLatest(false);
 
         //定位的间隔
-        mLocationOption.setInterval(mInterval);
-        //获取最近3s内精度最高的一次定位结果：
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        mLocationOption.setInterval(1000);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
     }
 
-    //设置是否单次定位
-    public static void setLocationInfo(boolean isOnce, int interval) {
-        isOnceLocation = isOnce;
-        mInterval = interval;
-    }
 
-    public static void actionLocation(LocateCallBack callBack) {
-        //启动定位
-        mLocationClient.startLocation();
-        mCallBack = callBack;
-    }
+    public void startLocation(LocateCallBack callBack) {
+        ALog.e("startLocation22222222222222");//获取精度信息
 
 
-    static class local implements AMapLocationListener {
+        try {
+            if (callBack == null) {
+                throw new IllegalArgumentException("callBack参数不能为null");
+            }
 
-        @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            ALog.e(aMapLocation.getAddress());
-            String address = aMapLocation.getDistrict() + aMapLocation.getRoad() + aMapLocation.getAoiName();
+            //启动定位
+            mCallBack = callBack;
 
-            ALog.e(address);
+//            mLocationClient.re
+//
+//                    mLocationClient.getLastKnownLocation()
 
-            mCallBack.CallBack(aMapLocation);
+            mLocationClient.setLocationListener(amapLocation -> {
+                mCallBack.CallBack(amapLocation);
 
-            mCallBack = null;    //回调完销毁掉，避免内存益处
+
+                //*************以下这些调试时用，调试完了记得删掉****************
+
+                if (amapLocation != null) {
+                    if (amapLocation.getErrorCode() == 0) {
+                        ALog.e(amapLocation.toString());
+                    } else {
+                        //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                        ALog.e("AmapError", "location Error, ErrCode:"
+                                + amapLocation.getErrorCode() + ", errInfo:"
+                                + amapLocation.getErrorInfo());
+                    }
+                }
+
+                //*************以上这些调试时用，调试完了记得删掉****************
+
+
+            });
+
+            mLocationClient.startLocation();
+
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
+
+    }
+
+    public void startLocation() {
+        mLocationClient.startLocation();
+    }
+
+    public void stopLocation() {
+        if (mLocationClient == null) {
+            return;
+        }
+        mLocationClient.stopLocation();
+    }
+
+
+    //若销毁，则需要重新创建LocationClient，所以一般只要stopLocation。
+    public void clear() {
+        if (mLocationClient == null) {
+            return;
+        }
+        if (mLocationClient.isStarted()) {
+            mLocationClient.stopLocation();
+        }
+        mLocationClient.onDestroy();
+    }
+
+    public interface LocateCallBack {
+
+        void CallBack(AMapLocation aMapLocation);
     }
 }

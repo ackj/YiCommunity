@@ -17,6 +17,8 @@ import com.aglhz.yicommunity.house.contract.AddHouseContract;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.aglhz.yicommunity.common.UserHelper.city;
+
 /**
  * Author：leguang on 2017/4/12 0009 14:23
  * Email：langmanleguang@qq.com
@@ -34,6 +36,13 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
 
     @Override
     public Observable<CommunitySelectBean> requestCommunitys(Params params) {
+        ALog.e(params.sc);
+        ALog.e(params.page);
+        ALog.e(params.pageSize);
+        ALog.e(params.province);
+        ALog.e(params.city);
+        ALog.e(params.county);
+
         return HttpHelper.getService(ApiService.class).requestCommunitys(ApiService.requestCommunitys
                 , params.sc
                 , params.page + ""

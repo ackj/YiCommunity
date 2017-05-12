@@ -29,20 +29,28 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
     }
 
     @Override
-    public Observable<BannerBean> getBanner() {
-        return HttpHelper.getService(ApiService.class).getBanners()
+    public Observable<BannerBean> requestBanners() {
+        return HttpHelper.getService(ApiService.class)
+                .requestBanners(ApiService.requestBanners)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<NoticeBean> getNotice(Params params) {
-        return HttpHelper.getService(ApiService.class).getNotice(params.token,params.cmnt_c,1)
+    public Observable<NoticeBean> requestHomeNotices(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestHomeNotices(
+                        ApiService.requestHomeNotices,
+                        params.token,
+                        params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> openDoor(Params params) {
-        return HttpHelper.getService(ApiService.class).openDoor(params.token,params.dir)
+    public Observable<BaseBean> requestOpenDoor(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestOpenDoor(ApiService.requestOpenDoor,
+                        params.token,
+                        params.dir)
                 .subscribeOn(Schedulers.io());
     }
 }

@@ -39,7 +39,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
 
     @Override
     public void start(Object request) {
-        mRxManager.add(mModel.login((Params) request)
+        mRxManager.add(mModel.requestLogin((Params) request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userBean -> {
                     if (userBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {

@@ -38,12 +38,12 @@ public class QuickOpenActivity extends BaseActivity {
         UserHelper.init();
 
         rxManager = new RxManager();
-        rxManager.add(HttpHelper.getService(ApiService.class).openDoor(UserHelper.token, UserHelper.dir)
+        rxManager.add(HttpHelper.getService(ApiService.class).requestOpenDoor(ApiService.requestOpenDoor, UserHelper.token, UserHelper.dir)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     exit();
-                    if (baseBean.getOther().getCode() == 200) {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         DialogHelper.successSnackbar(rootView, "开门成功，欢迎回家，我的主人！");
                     } else {
                         DialogHelper.successSnackbar(rootView, baseBean.getOther().getMessage());
@@ -52,7 +52,6 @@ public class QuickOpenActivity extends BaseActivity {
                     exit();
                     DialogHelper.errorSnackbar(rootView, "网络异常，请重试！");
                 })
-
         );
 
 

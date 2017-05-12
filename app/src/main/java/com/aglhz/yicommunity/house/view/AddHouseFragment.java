@@ -74,9 +74,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     private ViewGroup rootView;
     private BottomDialog addressSelector;
     private SelectorDialog selector;
-    private String province;
-    private String city;
-    private String county;
     private Params params = Params.getInstance();
 
     public static AddHouseFragment newInstance() {
@@ -134,10 +131,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvArea.getText().toString())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择区域！");
                 } else {
-
-                    params.province = province;
-                    params.city = city;
-                    params.county = county;
                     mPresenter.requestCommunitys(params);
                 }
                 break;
@@ -199,13 +192,21 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         ALog.e("1111111111111");
         if (addressSelector == null) {
             addressSelector = new BottomDialog(_mActivity);
-            addressSelector.setOnAddressSelectedListener((province1, city1, county1, street) -> {
-                AddHouseFragment.this.province = province1.name;
-                AddHouseFragment.this.city = city1.name;
-                AddHouseFragment.this.county = county1.name;
+            addressSelector.setOnAddressSelectedListener((province, city, county, street) -> {
+                params.province = province.name;
+                params.city = city.name;
+                params.county = county.name;
 
-                String s = (province1 == null ? "" : province1.name + "　") + (city1 == null ? "" : city1.name + "　") +
-                        (county1 == null ? "" : county1.name + "　") + (street == null ? "" : street.name);
+                ALog.e(params.province);
+                ALog.e(params.city);
+                ALog.e(params.county);
+
+                String s = (province == null ? "" : province.name + "　")
+                        + (city == null ? "" : city.name + "　")
+                        + (county == null ? "" : county.name + "　")
+                        + (street == null ? "" : street.name);
+
+
 
                 tvArea.setText(s);
                 addressSelector.dismiss();
@@ -321,7 +322,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     tvFloor.setText(array[which]);
 
                     tvRoomNumber.setText("");
-
                     params.bdg_f_h_c = "";
 
                     ALog.e("params.cmnt_c ::" + params.bdg_f_c);

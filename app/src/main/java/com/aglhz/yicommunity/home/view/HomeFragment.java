@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.ServiceBean;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
@@ -29,7 +31,6 @@ import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.propery.view.NoticeListFragment;
 import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,7 +44,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
-import retrofit2.http.HEAD;
 
 /**
  * Created by Administrator on 2017/4/19 9:15.
@@ -90,13 +90,10 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         layoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(layoutManager);
 
-        mPresenter.requestBanner();
-        mPresenter.requestNotice();
-
         List<HomeBean> data = new ArrayList<>();
         //Banner
         HomeBean bannerBean = new HomeBean();
-        bannerBean.community = UserHelper.communityName;
+        bannerBean.community = UserHelper.city + UserHelper.communityName;
         bannerBean.setItemType(HomeBean.TYPE_COMMUNITY_BANNER);
         data.add(bannerBean);
 
@@ -169,8 +166,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
-                mPresenter.requestBanner();
-                mPresenter.requestNotice();
+                mPresenter.requestBanners();
+                mPresenter.requestHomeNotices();
             }
         });
     }
@@ -192,16 +189,16 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 case HomeBean.TYPE_COMMUNITY_FUNCTION:
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
-                            mPresenter.openDoor();
+                            mPresenter.requestOpenDoor();
                             break;
                         case R.id.ll_property_payment:
                             _mActivity.start(PropertyPayFragment.newInstance());
                             break;
                         case R.id.ll_temporary_parking:
-                            go2Web("临时停车", "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html");
+                            go2Web("临时停车", ApiService.TEMP_PARKING);
                             break;
                         case R.id.ll_life_supermarket:
-                            go2Web("生活超市", "http://www.aglhz.com/mall/m/index.html?appType=2&token=" + UserHelper.token);
+                            go2Web("生活超市", ApiService.SUPERMARKET + UserHelper.token);
                             break;
                     }
                     break;
@@ -235,28 +232,37 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        adapter.notifyItemChanged(0);
+        adapter.notifyItemChanged(1);
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
-    public void responseBanner(List<BannerBean.DataBean.AdvsBean> banners) {
+    public void responseBanners(List<BannerBean.DataBean.AdvsBean> banners) {
         ptrFrameLayout.refreshComplete();
         adapter.getData().get(0).setBanners(banners);
         adapter.notifyItemChanged(0);
     }
 
     @Override
-    public void responseNotice(List<NoticeBean.DataBean.NoticeListBean> notices) {
+    public void responseHomeNotices(List<NoticeBean.DataBean.NoticeListBean> notices) {
         ptrFrameLayout.refreshComplete();
-        adapter.getData().get(1).setNotice(notices.get(0).getTitle());
+        HomeBean homeBean = adapter.getData().get(1);
+        if (notices != null && !notices.isEmpty()
+                && !TextUtils.isEmpty(notices.get(0).getTitle())) {
+            homeBean.setNotice(notices.get(0).getTitle());
+        } else {
+            homeBean.setNotice("");
+        }
         adapter.notifyItemChanged(1);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunityChange event) {
-        ALog.d(TAG, "onEvent:::" + event.bean.getName());
+
+        ALog.e(TAG, "onEvent:::" + event.bean.getName());
         UserHelper.setCommunity(event.bean.getName(), event.bean.getCode());
-        adapter.getData().get(0).community = UserHelper.communityName;
+        adapter.getData().get(0).community = UserHelper.city + UserHelper.communityName;
         ptrFrameLayout.autoRefresh();
     }
 

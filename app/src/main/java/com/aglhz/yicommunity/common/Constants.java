@@ -56,9 +56,15 @@ public class Constants {
 
     //EventBus系列,值是随便取，只要不相同即可。**********************************************************************
     //登录成功
-    public static final int login_success = 11;
+    public static final int login = 11;
+
+    //登出，或者token失效
+    public static final int loginout = 10;
 
 
     //EventBus系列,值是随便取，只要不相同即可。**********************************************************************
+
+    public static final String CITY = "city";
+
 
 }

@@ -16,14 +16,14 @@ import io.reactivex.Observable;
 public interface NoticeListContract {
 
     interface View extends BaseContract.View {
-        void responseNoticeList(List<NoticeBean.DataBean.NoticeListBean> datas);
+        void responseNotices(List<NoticeBean.DataBean.NoticeListBean> datas);
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestNoticeList(Params params);
+        void requestNotices(Params params);
     }
 
     interface Model extends BaseContract.Model {
-        Observable<NoticeBean> getNoticeList(Params params);
+        Observable<NoticeBean> requestNotices(Params params);
     }
 }

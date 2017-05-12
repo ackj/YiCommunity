@@ -13,6 +13,8 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Author: LiuJia on 2017/5/9 0009 22:34.
  * Email: liujia95me@126.com
+ * <p>
+ * Modify by leguang in 2017.05.11
  */
 
 public class NoticeListModel extends BaseModel implements NoticeListContract.Model {
@@ -24,8 +26,14 @@ public class NoticeListModel extends BaseModel implements NoticeListContract.Mod
     }
 
     @Override
-    public Observable<NoticeBean> getNoticeList(Params params) {
-        return HttpHelper.getService(ApiService.class).getNoticeList(params.token, params.cmnt_c, params.summerable, params.timeable, params.page, params.pageSize)
+    public Observable<NoticeBean> requestNotices(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestNotices(
+                        ApiService.requestNotices,
+                        params.token,
+                        params.cmnt_c,
+                        params.summerable,
+                        params.timeable)
                 .subscribeOn(Schedulers.io());
     }
 }

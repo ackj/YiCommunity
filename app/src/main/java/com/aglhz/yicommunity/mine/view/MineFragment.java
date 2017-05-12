@@ -222,8 +222,15 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(EventData event) {
-        if (event.position == Constants.login_success) {
+    public void onLoginEvent(EventData event) {
+        if (event.position == Constants.login) {
+            updataView();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginoutEvent(EventData event) {
+        if (event.position == Constants.loginout) {
             updataView();
         }
     }

@@ -6,7 +6,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.picker.contract.CityPickerContract;
-import com.aglhz.yicommunity.picker.model.CityPickerModel;
+import com.aglhz.yicommunity.picker.model.CommunityPickerModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -29,7 +29,7 @@ public class CityPickerPresenter extends BasePresenter<CityPickerContract.View,C
     @NonNull
     @Override
     protected CityPickerContract.Model createModel() {
-        return new CityPickerModel();
+        return new CommunityPickerModel();
     }
 
     @Override
@@ -38,19 +38,15 @@ public class CityPickerPresenter extends BasePresenter<CityPickerContract.View,C
     }
 
     @Override
-    public void requestCommunityList() {
+    public void requestCommunitys(Params params) {
         ALog.d("requestCommunityList --------------");
-
-        Params params = Params.getInstance();
-        params.page = 1;
-        params.pageSize = 10;
-        mRxManager.add(mModel.getCommunityList(params)
+        mRxManager.add(mModel.requestCommunitys(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(communitySelectBean -> {
                     ALog.d("requestCommunityList 2222222");
                     if (communitySelectBean.getOther().getCode() == 200) {
                         ALog.d("requestCommunityList 4444444");
-                        getView().responseCommunityList(communitySelectBean.getData().getCommunities());
+                        getView().responseCommunitys(communitySelectBean.getData().getCommunities());
                     } else {
                         ALog.d("requestCommunityList 3333333");
                         getView().error(communitySelectBean.getOther().getMessage());

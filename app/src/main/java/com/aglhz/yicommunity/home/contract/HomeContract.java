@@ -20,27 +20,26 @@ import io.reactivex.Observable;
 public interface HomeContract {
 
     interface View extends BaseContract.View {
-        //        void responseBanner(List<IndexadvsBean.DataBean.AdvsBean> bean);
-        void responseBanner(List<BannerBean.DataBean.AdvsBean> banners);
+        void responseBanners(List<BannerBean.DataBean.AdvsBean> banners);
 
-        void responseNotice(List<NoticeBean.DataBean.NoticeListBean> notices);
+        void responseHomeNotices(List<NoticeBean.DataBean.NoticeListBean> notices);
 
         void responseOpenDoor();
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestBanner();
+        void requestBanners();
 
-        void requestNotice();
+        void requestHomeNotices();
 
-        void openDoor();
+        void requestOpenDoor();
     }
 
     interface Model extends BaseContract.Model {
-        Observable<BannerBean> getBanner();
+        Observable<BannerBean> requestBanners();
 
-        Observable<NoticeBean> getNotice(Params params);
+        Observable<NoticeBean> requestHomeNotices(Params params);
 
-        Observable<BaseBean> openDoor(Params params);
+        Observable<BaseBean> requestOpenDoor(Params params);
     }
 }

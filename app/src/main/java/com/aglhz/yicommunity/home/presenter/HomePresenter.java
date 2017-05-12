@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.home.presenter;
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.home.contract.HomeContract;
@@ -30,19 +31,18 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
         return new HomeModel();
     }
 
-
     @Override
     public void start(Object request) {
-
     }
 
     @Override
-    public void requestBanner() {
-        mRxManager.add(mModel.getBanner()
+    public void requestBanners() {
+        mRxManager.add(mModel.requestBanners()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bannerBean -> {
-                    if (bannerBean.getOther().getCode() == 200) {
-                        getView().responseBanner(bannerBean.getData().getAdvs());
+                    if (bannerBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+
+                        getView().responseBanners(bannerBean.getData().getAdvs());
                     } else {
                         getView().error(bannerBean.getOther().getMessage());
                     }
@@ -50,14 +50,15 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     }
 
     @Override
-    public void requestNotice() {
+    public void requestHomeNotices() {
         Params params = Params.getInstance();
-        params.cmnt_c = "KBSJ-agl-00005";
-        mRxManager.add(mModel.getNotice(params)
+        params.cmnt_c = UserHelper.communityCode;
+        mRxManager.add(mModel.requestHomeNotices(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(noticeBean -> {
-                    if (noticeBean.getOther().getCode() == 200) {
-                        getView().responseNotice(noticeBean.getData().getNoticeList());
+                    if (noticeBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+
+                        getView().responseHomeNotices(noticeBean.getData().getNoticeList());
                     } else {
                         getView().error(noticeBean.getOther().getMessage());
                     }
@@ -66,13 +67,13 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     }
 
     @Override
-    public void openDoor() {
+    public void requestOpenDoor() {
         Params params = Params.getInstance();
         params.dir = UserHelper.dir;
-        mRxManager.add(mModel.openDoor(params)
+        mRxManager.add(mModel.requestOpenDoor(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseOpenDoor();
                     } else {
                         getView().error(baseBean.getOther().getMessage());

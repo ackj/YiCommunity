@@ -3,7 +3,20 @@ apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-
+    signingConfigs {
+        debug {
+            keyAlias 'agl'
+            keyPassword 'aglandroid'
+            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
+            storePassword 'aglandroid'
+        }
+        release {
+            keyAlias 'agl'
+            keyPassword 'aglandroid'
+            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
+            storePassword 'aglandroid'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
@@ -18,12 +31,10 @@ android {
         }
         multiDexEnabled true
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -54,7 +65,6 @@ dependencies {
     compile 'com.google.zxing:core:3.2.1'
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
     compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
-
     //底部导航栏
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     //地址选择器
@@ -63,12 +73,9 @@ dependencies {
     compile 'com.orhanobut:dialogplus:1.11@aar'
     //图片选择器
     compile 'com.zhihu.android:matisse:0.4.3'
-
     //地址选择器
     compile 'com.github.chihane:JDAddressSelector:1.1.4'
-
     //switchbutton
     compile 'com.kyleduo.switchbutton:library:1.4.5'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
-
 }

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.picker.model.City;
 import com.aglhz.yicommunity.picker.model.LocateState;
@@ -23,7 +24,6 @@ import java.util.regex.Pattern;
  */
 public class CityListAdapter extends BaseAdapter {
     private static final int VIEW_TYPE_COUNT = 4;
-
     private Context mContext;
     private LayoutInflater inflater;
     private List<City> mCities;
@@ -125,19 +125,21 @@ public class CityListAdapter extends BaseAdapter {
                         state.setText(locatedCity);
                         break;
                 }
-                container.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (locateState == LocateState.FAILED) {
-                            //重新定位
-                            if (onCityClickListener != null) {
-                                onCityClickListener.onLocateClick();
-                            }
-                        } else if (locateState == LocateState.SUCCESS) {
-                            //返回定位城市
-                            if (onCityClickListener != null) {
-                                onCityClickListener.onCityClick(locatedCity);
-                            }
+                container.setOnClickListener(v -> {
+                    if (locateState == LocateState.FAILED) {
+                        ALog.e("  if (locateState == LocateState.FAILED) {");
+
+                        //重新定位
+                        if (onCityClickListener != null) {
+
+                            ALog.e("  if (onCityClickListener != null) {");
+
+                            onCityClickListener.onLocateClick();
+                        }
+                    } else if (locateState == LocateState.SUCCESS) {
+                        //返回定位城市
+                        if (onCityClickListener != null) {
+                            onCityClickListener.onCityClick(locatedCity);
                         }
                     }
                 });
@@ -147,12 +149,9 @@ public class CityListAdapter extends BaseAdapter {
                 WrapHeightGridView usedGridview = (WrapHeightGridView) view.findViewById(R.id.gridview_used_city);
                 final UsedCityGridAdapter usedCityGridAdapter = new UsedCityGridAdapter(mContext);
                 usedGridview.setAdapter(usedCityGridAdapter);
-                usedGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (onCityClickListener != null) {
-                            onCityClickListener.onCityClick(usedCityGridAdapter.getItem(position));
-                        }
+                usedGridview.setOnItemClickListener((parent12, view12, position12, id) -> {
+                    if (onCityClickListener != null) {
+                        onCityClickListener.onCityClick(usedCityGridAdapter.getItem(position12));
                     }
                 });
                 break;
@@ -162,12 +161,9 @@ public class CityListAdapter extends BaseAdapter {
                 WrapHeightGridView gridView = (WrapHeightGridView) view.findViewById(R.id.gridview_hot_city);
                 final HotCityGridAdapter hotCityGridAdapter = new HotCityGridAdapter(mContext);
                 gridView.setAdapter(hotCityGridAdapter);
-                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (onCityClickListener != null) {
-                            onCityClickListener.onCityClick(hotCityGridAdapter.getItem(position));
-                        }
+                gridView.setOnItemClickListener((parent1, view1, position1, id) -> {
+                    if (onCityClickListener != null) {
+                        onCityClickListener.onCityClick(hotCityGridAdapter.getItem(position1));
                     }
                 });
                 break;
@@ -192,12 +188,9 @@ public class CityListAdapter extends BaseAdapter {
                     } else {
                         holder.letter.setVisibility(View.GONE);
                     }
-                    holder.name.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (onCityClickListener != null) {
-                                onCityClickListener.onCityClick(city);
-                            }
+                    holder.name.setOnClickListener(v -> {
+                        if (onCityClickListener != null) {
+                            onCityClickListener.onCityClick(city);
                         }
                     });
                 }

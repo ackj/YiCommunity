@@ -77,8 +77,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
 //            ToastUtils.showToast(BaseApplication.mContext, "正在定位……");
 
 
-
-
         } else {
             EasyPermissions.requestPermissions(this, "亿社区需要定位权限", LOCATION, perms);
             ToastUtils.showToast(BaseApplication.mContext, "申请权限……");
@@ -86,7 +84,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void checkLogin() {
-        HttpHelper.getService(ApiService.class).checkToken(UserHelper.token)
+        HttpHelper.getService(ApiService.class).checkToken(ApiService.checkToken, UserHelper.token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(checkTokenBean -> {

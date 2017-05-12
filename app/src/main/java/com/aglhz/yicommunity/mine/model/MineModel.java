@@ -31,7 +31,7 @@ public class MineModel extends BaseModel implements MineContract.Model {
 
     @Override
     public Observable<BaseBean> requestLogout(Params params) {
-        return HttpHelper.getService(ApiService.class).logout(params.token)
+        return HttpHelper.getService(ApiService.class).requestLogout(params.token)
                 .subscribeOn(Schedulers.io());
     }
 

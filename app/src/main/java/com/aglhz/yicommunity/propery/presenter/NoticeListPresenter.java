@@ -36,12 +36,12 @@ public class NoticeListPresenter extends BasePresenter<NoticeListContract.View, 
     }
 
     @Override
-    public void requestNoticeList(Params params) {
-        mRxManager.add(mModel.getNoticeList(params)
+    public void requestNotices(Params params) {
+        mRxManager.add(mModel.requestNotices(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(noticeBean -> {
                     if (noticeBean.getOther().getCode() == 200) {
-                        getView().responseNoticeList(noticeBean.getData().getNoticeList());
+                        getView().responseNotices(noticeBean.getData().getNoticeList());
                     } else {
                         getView().error(noticeBean.getOther().getMessage());
                     }

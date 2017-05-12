@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,9 +22,12 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.LbsManager;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.picker.model.City;
-import com.aglhz.yicommunity.picker.model.DBManager;
+import com.aglhz.yicommunity.common.DBManager;
 import com.aglhz.yicommunity.picker.model.LocateState;
+import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 
 import java.util.List;
@@ -34,10 +36,8 @@ import java.util.List;
  * Created by Administrator on 2017/4/29 0029.
  */
 public class CityPickerFragment extends BaseFragment implements View.OnClickListener {
-
     private static final String TAG = CityPickerFragment.class.getSimpleName();
-    public static final String KEY_PICKED_CITY = "picked_city";
-
+    public static final String CITY = "city";
     private ListView mListView;
     private ListView mResultListView;
     private SideLetterBar mLetterBar;
@@ -49,8 +49,6 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
     private ResultListAdapter mResultAdapter;
     private List<City> mAllCities;
     private DBManager dbManager;
-
-    private AMapLocationClient mLocationClient;
     private TextView floatTitle;
     private LinearLayout llFloatTitle;
     private TextView tvTitle;
@@ -74,6 +72,33 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         initView(view);
         initToolbar();
         initListener();
+        initLocate();
+    }
+
+    private void initLocate() {
+
+
+        LbsManager.getInstance().startLocation(aMapLocation -> {
+
+            mCityAdapter.updateLocateState(LocateState.FAILED, null);
+
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+
+                    String city = aMapLocation.getCity();
+                    if (!TextUtils.isEmpty(city)) {
+                        if (mCityAdapter != null) {
+                            mCityAdapter.updateLocateState(LocateState.SUCCESS, city);
+                        }
+                        UserHelper.setCity(city);
+                        LbsManager.getInstance().stopLocation();
+                    }
+                } else {
+                    mCityAdapter.updateLocateState(LocateState.FAILED, null);
+                }
+            }
+        });
+
     }
 
     private void initToolbar() {
@@ -88,19 +113,6 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         dbManager.copyDBFile();
         mAllCities = dbManager.getAllCities();
         mCityAdapter = new CityListAdapter(_mActivity, mAllCities);
-        mCityAdapter.setOnCityClickListener(new CityListAdapter.OnCityClickListener() {
-            @Override
-            public void onCityClick(String name) {
-                back(name);
-            }
-
-            @Override
-            public void onLocateClick() {
-                mCityAdapter.updateLocateState(LocateState.LOCATING, null);
-                mLocationClient.startLocation();
-            }
-        });
-
         mResultAdapter = new ResultListAdapter(_mActivity, null);
     }
 
@@ -129,16 +141,13 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         mCityAdapter.setOnCityClickListener(new CityListAdapter.OnCityClickListener() {
             @Override
             public void onCityClick(String name) {
-                saveUsedCity2Local(name);
-                Bundle bundle = new Bundle();
-                bundle.putString("city", name);
-                setFragmentResult(RESULT_OK, bundle);
-                pop();
+                back(name);
             }
 
             @Override
             public void onLocateClick() {
-
+                mCityAdapter.updateLocateState(LocateState.LOCATING, null);
+                LbsManager.getInstance().startLocation();
             }
         });
     }
@@ -182,12 +191,9 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         TextView overlay = (TextView) view.findViewById(R.id.tv_letter_overlay);
         mLetterBar = (SideLetterBar) view.findViewById(R.id.side_letter_bar);
         mLetterBar.setOverlay(overlay);
-        mLetterBar.setOnLetterChangedListener(new SideLetterBar.OnLetterChangedListener() {
-            @Override
-            public void onLetterChanged(String letter) {
-                int position = mCityAdapter.getLetterPosition(letter);
-                mListView.setSelection(position);
-            }
+        mLetterBar.setOnLetterChangedListener(letter -> {
+            int position = mCityAdapter.getLetterPosition(letter);
+            mListView.setSelection(position);
         });
 
         searchBox = (EditText) view.findViewById(R.id.et_search);
@@ -226,12 +232,7 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         emptyView = (ViewGroup) view.findViewById(R.id.empty_view);
         mResultListView = (ListView) view.findViewById(R.id.listview_search_result);
         mResultListView.setAdapter(mResultAdapter);
-        mResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                back(mResultAdapter.getItem(position).getName());
-            }
-        });
+        mResultListView.setOnItemClickListener((parent, view1, position, id) -> back(mResultAdapter.getItem(position).getName()));
 
         clearBtn = (ImageView) view.findViewById(R.id.iv_search_clear);
 
@@ -239,8 +240,12 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void back(String city) {
-        Intent data = new Intent();
-        data.putExtra(KEY_PICKED_CITY, city);
+        saveUsedCity2Local(city);
+        UserHelper.setCity(city);
+        Bundle bundle = new Bundle();
+        bundle.putString(CITY, city);
+        setFragmentResult(RESULT_OK, bundle);
+        pop();
     }
 
     @Override
@@ -257,7 +262,6 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        mLocationClient.stopLocation();
-//        mLocationClient.onDestroy();
+        LbsManager.getInstance().stopLocation();
     }
 }

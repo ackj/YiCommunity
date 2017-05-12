@@ -24,8 +24,10 @@ public class UserHelper {
     private static final String PASSWORD = "password";
     private static final String USER_INFO = "user_info";
     private static final String DIR = "dir";
+    private static final String CITY = "city";
     public static String token = "";
     public static String communityName = "";
+    public static String city = "";
     public static String communityCode = "";
     public static String account = "";
     public static String password = "";
@@ -50,6 +52,7 @@ public class UserHelper {
         account = "";
         password = "";
         dir = "";
+        city = "";
         userInfo = null;
         getEditor().clear();
     }
@@ -114,6 +117,7 @@ public class UserHelper {
         communityName = getSp().getString(COMMUNITY_NAME, "");
         communityCode = getSp().getString(COMMUNITY_CODE, "");
         dir = getSp().getString(DIR, "");
+        city = getSp().getString(CITY, "");
         getUserInfo();
     }
 
@@ -122,6 +126,14 @@ public class UserHelper {
         UserHelper.dir = dir;
         SharedPreferences.Editor editor = getEditor();
         editor.putString(DIR, dir);
+        return editor.commit();
+    }
+
+    //更新社区名称和社区代码
+    public static boolean setCity(String city) {
+        UserHelper.city = city;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(CITY, city);
         return editor.commit();
     }
 

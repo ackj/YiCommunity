@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,11 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.LbsManager;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunityChange;
 import com.aglhz.yicommunity.picker.contract.CityPickerContract;
 import com.aglhz.yicommunity.picker.presenter.CityPickerPresenter;
@@ -34,9 +39,7 @@ import java.util.List;
  * Created by Administrator on 2017/4/29 0029.
  */
 public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Presenter> implements CityPickerContract.View {
-
     private static final String TAG = CommunityPickerFragment.class.getSimpleName();
-
     private RecyclerView recyclerView;
     private List<CommunitySelectBean.DataBean.CommunitiesBean> mDatas;
     private List<CommunitySelectBean.DataBean.CommunitiesBean> resultData;
@@ -45,6 +48,8 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
     private TextView tvCity;
     private TextView tvTitle;
     private Toolbar toolbar;
+    private Params params = Params.getInstance();
+    public static final int REQUEST_CODE_CITY = 100;
 
     public static CommunityPickerFragment newInstance() {
         return new CommunityPickerFragment();
@@ -74,8 +79,19 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
         initToolbar();
         initData();
         initListener();
+        initLocate();
     }
 
+    private void initLocate() {
+        LbsManager.getInstance().startLocation(aMapLocation -> {
+            String city = aMapLocation.getCity();
+            if (!TextUtils.isEmpty(city)) {
+                tvCity.setText(city);
+                UserHelper.setCity(city);
+                LbsManager.getInstance().stopLocation();
+            }
+        });
+    }
 
 
     private void initToolbar() {
@@ -87,7 +103,8 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
     }
 
     private void initData() {
-        mPresenter.requestCommunityList();
+        params.city = UserHelper.city;
+        mPresenter.requestCommunitys(params);
 
         etSearchCommunity.setHint("请输入城市名或小区名");
         //造假数据
@@ -125,30 +142,22 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
             }
         });
 
-        tvCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startForResult(CityPickerFragment.newInstance(), 100);
-            }
-        });
+        tvCity.setOnClickListener(v -> startForResult(CityPickerFragment.newInstance(), REQUEST_CODE_CITY));
 
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                CommunitySelectBean.DataBean.CommunitiesBean communitiesBean = mDatas.get(position);
-                EventBus.getDefault().post(new EventCommunityChange(communitiesBean));
-                _mActivity.finish();
-                return false;
-            }
+        adapter.setOnItemChildClickListener((adapter1, view, position) -> {
+            CommunitySelectBean.DataBean.CommunitiesBean communitiesBean = mDatas.get(position);
+            EventBus.getDefault().post(new EventCommunityChange(communitiesBean));
+            _mActivity.finish();
+            return false;
         });
     }
 
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 100) {
-            String city = data.getString("city");
-            tvCity.setText(city);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CITY) {
+            tvCity.setText(params.city = data.getString(Constants.CITY));
+            mPresenter.requestCommunitys(params);
         }
     }
 
@@ -163,9 +172,15 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
     }
 
     @Override
-    public void responseCommunityList(List<CommunitySelectBean.DataBean.CommunitiesBean> beans) {
+    public void responseCommunitys(List<CommunitySelectBean.DataBean.CommunitiesBean> beans) {
         ALog.d("CommunityList bpeans size:" + beans.size());
         mDatas = beans;
         adapter.setNewData(mDatas);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LbsManager.getInstance().stopLocation();
     }
 }

@@ -15,15 +15,15 @@ import io.reactivex.Observable;
 
 public interface CityPickerContract {
 
-    interface Model extends BaseContract.Model{
-        Observable<CommunitySelectBean> getCommunityList(Params params);
+    interface View extends BaseContract.View {
+        void responseCommunitys(List<CommunitySelectBean.DataBean.CommunitiesBean> bean);
     }
 
-    interface Presenter extends BaseContract.Presenter{
-        void requestCommunityList();
+    interface Presenter extends BaseContract.Presenter {
+        void requestCommunitys(Params params);
     }
 
-    interface View extends BaseContract.View{
-        void responseCommunityList(List<CommunitySelectBean.DataBean.CommunitiesBean> bean);
+    interface Model extends BaseContract.Model {
+        Observable<CommunitySelectBean> requestCommunitys(Params params);
     }
 }

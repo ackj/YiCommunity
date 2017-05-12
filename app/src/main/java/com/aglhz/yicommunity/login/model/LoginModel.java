@@ -18,8 +18,8 @@ import io.reactivex.schedulers.Schedulers;
 public class LoginModel extends BaseModel implements LoginContract.Model {
 
     @Override
-    public Observable<UserBean> login(Params params) {
-        return HttpHelper.getService(ApiService.class).login(params.sc, params.user, params.pwd)
+    public Observable<UserBean> requestLogin(Params params) {
+        return HttpHelper.getService(ApiService.class).requestLogin(ApiService.requestLogin, params.sc, params.user, params.pwd)
                 .subscribeOn(Schedulers.io());
     }
 

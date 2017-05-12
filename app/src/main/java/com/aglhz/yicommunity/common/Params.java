@@ -15,7 +15,7 @@ public class Params {
     public String dir = "";
     public String des = "";
     public String contact = "";
-    public int page = 0;
+    public int page = 1;
     public String user = "";
     public String field = "";
     public String file = "";
