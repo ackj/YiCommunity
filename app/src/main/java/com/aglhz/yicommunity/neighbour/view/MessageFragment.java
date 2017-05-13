@@ -19,6 +19,7 @@ import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.neighbour.contract.NeighbourContract;
 import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
 import com.aglhz.yicommunity.publish.view.CommentFragment;
@@ -133,7 +134,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             NeighbourListBean.DataBean.MomentsListBean bean = (NeighbourListBean.DataBean.MomentsListBean) adapter.getData().get(position);
-            _mActivity.start(CommentFragment.newInstance(bean.getFid()));
+            _mActivity.start(CommentFragment.newInstance(bean.getFid(),type));
             return false;
         });
     }
@@ -171,8 +172,13 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         params.pageSize = 10;
         if (type == TYPE_EXCHANGE) {
             mPresenter.requestExchangeList(params);
-        } else {
+        } else if(type == TYPE_NEIGHBOUR){
             mPresenter.requestNeihbourList(params);
+        }else if(type == TYPE_CARPOOL){
+            params.currentPositionLat = UserHelper.currentPositionLat;
+            params.currentPostionLng = UserHelper.currentPositionLng;
+            params.carpoolType = 1;
+            mPresenter.requestCarpoolList(params);
         }
     }
 
@@ -202,6 +208,12 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 
     @Override
     public void responseExchangeList(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
+        ptrFrameLayout.refreshComplete();
+        adapter.setNewData(datas);
+    }
+
+    @Override
+    public void responseCarpoolList(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
         ptrFrameLayout.refreshComplete();
         adapter.setNewData(datas);
     }

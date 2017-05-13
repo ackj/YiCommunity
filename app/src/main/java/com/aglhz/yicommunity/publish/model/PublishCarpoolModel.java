@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.publish.model;
 
-
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -12,15 +11,11 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Author：leguang on 2017/4/12 0009 14:23
- * Email：langmanleguang@qq.com
- * <p>
- * 负责邻里模块的Model层内容。
+ * Author: LiuJia on 2017/5/12 0012 14:57.
+ * Email: liujia95me@126.com
  */
 
-public class ComplainModel extends BaseModel implements PublishContract.Model {
-    private final String TAG = ComplainModel.class.getSimpleName();
-
+public class PublishCarpoolModel extends BaseModel implements PublishContract.Model {
     @Override
     public void start(Object request) {
 
@@ -28,10 +23,8 @@ public class ComplainModel extends BaseModel implements PublishContract.Model {
 
     @Override
     public Observable<BaseBean> post(Params params) {
-        return HttpHelper.getService(ApiService.class).postComplain(params.token, params.cmnt_c,
-                params.name, params.phoneNo, params.content, params.type, params.files)
+        return HttpHelper.getService(ApiService.class).postCarpoolMessage(ApiService.postCarpoolMessage,
+                params.token,params.carpoolType,params.startPlace,params.endPlace,params.outTime,params.content,params.positionType,params.type)
                 .subscribeOn(Schedulers.io());
     }
-
-
 }

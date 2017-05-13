@@ -33,10 +33,9 @@ import okhttp3.RequestBody;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-
-import static com.aglhz.yicommunity.common.UserHelper.token;
 
 /**
  * Created by YandZD on 2017/1/17.
@@ -353,6 +352,17 @@ public interface ApiService {
     @POST("/sub_property_ysq/neighbor/moments/to-client/moments-list")
     Observable<NeighbourListBean> getNeighbourList(@Query("page") int page, @Query("pageSize") int pageSize);
 
+    //获取闲置交换
+    @POST("sub_property_ysq/neighbor/exchange/to-client/exchange-list")
+    Observable<NeighbourListBean> getExchangeList(@Query("page") int page, @Query("pageSize") int pageSize);
+
+    //获取拼车服务
+    @POST("sub_property_ysq/neighbor/carpool/to-client/carpool-list/{carpoolType}")
+    Observable<NeighbourListBean> getCarpoolList(@Path("carpoolType") int carpoolType,
+                                                 @Query("currentPositionLat") String currentPositionLat,
+                                                 @Query("currentPositionLng") String currentPositionLng,
+                                                 @Query("page") int page, @Query("pageSize") int pageSize);
+
 
     //首页获取公告列表
     //    @POST("/sub_property_ysq/client/info/noticeTop")
@@ -360,16 +370,83 @@ public interface ApiService {
 
     @POST
     Flowable<NoticeBean> requestHomeNotices(@Url String url,
-                                              @Query("token") String token,
-                                              @Query("cmnt_c") String cmnt_c);
+                                            @Query("token") String token,
+                                            @Query("cmnt_c") String cmnt_c);
 
-    //获取闲置交换
-    @POST("sub_property_ysq/neighbor/exchange/to-client/exchange-list")
-    Observable<NeighbourListBean> getExchangeList(@Query("page") int page, @Query("pageSize") int pageSize);
 
     //获取闲置交换的评论
     String getExchangeComments = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-comment-list";
+
     @POST
     Observable<CommentListBean> getExchangeComments(@Url String url, @Query("exchangeFid") String fid, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //获取拼车服务的评论
+    String getCarpoolComments = BASE_PROPERTY + "/neighbor/carpool/to-client/carpool-comment-list";
+
+    @POST
+    Observable<CommentListBean> getCarpoolComments(@Url String url, @Query("carpoolFid") String fid, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //获取左邻右里的评论
+    String getNeighbourComments = BASE_PROPERTY + "/neighbor/moments/to-client/moments-comment-list";
+
+    @POST
+    Observable<CommentListBean> getNeighbourComments(@Url String url, @Query("momentsFid") String fid, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //发送 邻里圈评论
+    String postNeighbourComment = BASE_PROPERTY + "/neighbor/moments/from-client/moments-comment-create";
+
+    @POST
+    Observable<BaseBean> postNeighbourComment(@Url String url, @Query("token") String token, @Query("momentsFid") String fid, @Query("content") String content);
+
+    //发送 闲置交换评论
+    String postExchangeComment = BASE_PROPERTY + "/neighbor/exchange/from-client/exchange-comment-create";
+
+    @POST
+    Observable<BaseBean> postExchangeComment(@Url String url, @Query("token") String token, @Query("exchangeFid") String fid, @Query("content") String content);
+
+    //发送 拼车服务评论
+    String postCarpoolComment = BASE_PROPERTY + "/neighbor/carpool/from-client/carpool-comment-create";
+
+    @POST
+    Observable<BaseBean> postCarpoolComment(@Url String url, @Query("token") String token, @Query("carpoolFid") String fid, @Query("content") String content);
+
+
+    //发送拼车服务信息
+    String postExchangeMessage = BASE_PROPERTY + "/neighbor/exchange/from-client/exchange-create";
+
+    @POST
+    Observable<BaseBean> postExchangeMessage(@Url String url,
+                                             @Query("token") String token,
+                                             @Query("cmnt_c") String cmnt_c,
+                                             @Query("content") String content,
+                                             @Query("price") String price,
+                                             @Query("type") int type//附件类型（1=图片, 大小不能超过300K，2=视频，大小不能超过10M）
+    );
+
+
+    //发送拼车服务信息
+    String postCarpoolMessage = BASE_PROPERTY + "/neighbor/carpool/from-client/carpool-create";
+
+    @POST
+    Observable<BaseBean> postCarpoolMessage(@Url String url,
+                                            @Query("token") String token,
+                                            @Query("carpoolType") int carpoolType,//拼车类型（1=我有车，2=我没车）
+                                            @Query("startPlace") String startPlace,
+                                            @Query("endPlace") String endPlace,
+                                            @Query("setOutTime") String setOutTime,//出发时间, 格式类型：yyyy-MM-dd HH:mm:ss，如果精确到分钟ss就加00
+                                            @Query("content") String content,
+                                            @Query("positionType") int positionType,//定位类型（1=当前定位，2=社区定位）
+                                            @Query("type") int type);//附件类型（1=图片,大小不能超过300K，2=视频，大小不能超过10M）
+
+    //发送邻里圈信息
+    String postNeighbourMessage = BASE_PROPERTY + "/neighbor/moments/from-client/moments-create";
+
+    @POST
+    Observable<BaseBean> postNeighbourMessage(@Url String url,
+                                              @Query("token") String token,
+                                              @Query("cmnt_c") String cmnt_c,
+                                              @Query("content") String content,
+                                              @Query("stype") int type//附件类型（1=图片, 大小不能超过300K，2=视频，大小不能超过10M）
+    );
 
 }

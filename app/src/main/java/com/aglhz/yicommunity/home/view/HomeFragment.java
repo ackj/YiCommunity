@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
-import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.ServiceBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -261,7 +259,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunityChange event) {
-
         ALog.e(TAG, "onEvent:::" + event.bean.getName());
         UserHelper.setCommunity(event.bean.getName(), event.bean.getCode());
         adapter.getData().get(0).community = UserHelper.city + UserHelper.communityName;

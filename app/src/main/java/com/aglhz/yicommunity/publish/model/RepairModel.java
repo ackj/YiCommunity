@@ -5,7 +5,7 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.publish.contract.RepairContract;
+import com.aglhz.yicommunity.publish.contract.PublishContract;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import okhttp3.RequestBody;
  * Email: liujia95me@126.com
  */
 
-public class RepairModel extends BaseModel implements RepairContract.Model {
+public class RepairModel extends BaseModel implements PublishContract.Model {
 
     @Override
     public void start(Object request) {
@@ -58,7 +58,7 @@ public class RepairModel extends BaseModel implements RepairContract.Model {
 //    }
 
     @Override
-    public Observable<BaseBean> postRepair(Params params) {
+    public Observable<BaseBean> post(Params params) {
         String url = "http://www.aglhz.com:8090/sub_property_ysq/client/repair";
         List<MultipartBody.Part> parts = new ArrayList<>();
 

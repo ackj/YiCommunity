@@ -27,6 +27,18 @@ public class NeighbourListBean extends BaseBean {
     public static class DataBean {
         private List<MomentsListBean> momentsList;
 
+        private List<MomentsListBean> exchangeList;
+
+        private List<MomentsListBean> carpoolList;
+
+        public List<MomentsListBean> getCarpoolList() {
+            return carpoolList;
+        }
+
+        public void setCarpoolList(List<MomentsListBean> carpoolList) {
+            this.carpoolList = carpoolList;
+        }
+
         public List<MomentsListBean> getExchangeList() {
             return exchangeList;
         }
@@ -34,8 +46,6 @@ public class NeighbourListBean extends BaseBean {
         public void setExchangeList(List<MomentsListBean> exchangeList) {
             this.exchangeList = exchangeList;
         }
-
-        private List<MomentsListBean> exchangeList;
 
         public List<MomentsListBean> getMomentsList() {
             return momentsList;
@@ -65,8 +75,80 @@ public class NeighbourListBean extends BaseBean {
             private MemberBean member;
             private List<CommentBean> commentList;
             private List<PicsBean> pics;
-
             private float price;
+
+            private String endPlace;
+            private int positionType;
+            private String publishPositionAddress;
+            private String publishPositionLat;
+            private String publishPositionLng;
+            private String setOutTime;
+            private String startPlace;
+            private String type;
+
+            public String getEndPlace() {
+                return endPlace;
+            }
+
+            public void setEndPlace(String endPlace) {
+                this.endPlace = endPlace;
+            }
+
+            public int getPositionType() {
+                return positionType;
+            }
+
+            public void setPositionType(int positionType) {
+                this.positionType = positionType;
+            }
+
+            public String getPublishPositionAddress() {
+                return publishPositionAddress;
+            }
+
+            public void setPublishPositionAddress(String publishPositionAddress) {
+                this.publishPositionAddress = publishPositionAddress;
+            }
+
+            public String getPublishPositionLat() {
+                return publishPositionLat;
+            }
+
+            public void setPublishPositionLat(String publishPositionLat) {
+                this.publishPositionLat = publishPositionLat;
+            }
+
+            public String getPublishPositionLng() {
+                return publishPositionLng;
+            }
+
+            public void setPublishPositionLng(String publishPositionLng) {
+                this.publishPositionLng = publishPositionLng;
+            }
+
+            public String getSetOutTime() {
+                return setOutTime;
+            }
+
+            public void setSetOutTime(String setOutTime) {
+                this.setOutTime = setOutTime;
+            }
+
+            public String getStartPlace() {
+                return startPlace;
+            }
+
+            public void setStartPlace(String startPlace) {
+                this.startPlace = startPlace;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
 
             public float getPrice() {
                 return price;

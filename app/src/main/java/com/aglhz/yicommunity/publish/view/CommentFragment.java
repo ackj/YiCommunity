@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -16,8 +18,10 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CommentBean;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.KeyboardChangeListener;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.publish.contract.CommentContract;
@@ -27,10 +31,15 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
+
+import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_CARPOOL;
+import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_EXCHANGE;
+import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_NEIGHBOUR;
 
 /**
  * Author: LiuJia on 2017/5/11 0011 15:52.
@@ -49,15 +58,25 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
+    @BindView(R.id.et_input_fragment_comment)
+    EditText etInputFragmentComment;
+    @BindView(R.id.toolbar_menu)
+    TextView toolbarMenu;
+
+
     private Unbinder unbinder;
     private CommentRVAdapter adapter;
-    private String fid;
-    private Params params = Params.getInstance();
+    private Params commentListParams = Params.getInstance();
+    private Params commentPostParams = Params.getInstance();
 
-    public static CommentFragment newInstance(String fid) {
+    private String fid;
+    private int type;
+
+    public static CommentFragment newInstance(String fid, int type) {
         CommentFragment fragment = new CommentFragment();
         Bundle bundle = new Bundle();
         bundle.putString("fid", fid);
+        bundle.putInt("type", type);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -71,7 +90,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        View view = inflater.inflate(R.layout.fragment_comment, container, false);
         unbinder = ButterKnife.bind(this, view);
         return attachToSwipeBack(view);
     }
@@ -79,10 +98,13 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fid = getArguments().getString("fid");
+        Bundle bundle = getArguments();
+        fid = bundle.getString("fid");
+        type = bundle.getInt("type");
         initToolbar();
         initData();
         initPtrFrameLayout();
+        initListener();
     }
 
     private void initToolbar() {
@@ -119,6 +141,18 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
         });
     }
 
+    private KeyboardChangeListener mKeyboardChangeListener;
+
+    private void initListener() {
+        mKeyboardChangeListener = new KeyboardChangeListener(_mActivity);
+        mKeyboardChangeListener.setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
+            @Override
+            public void onKeyboardChange(boolean isShow, int keyboardHeight) {
+                ALog.d(TAG, "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]");
+            }
+        });
+    }
+
     private void initData() {
         requestComments();
 
@@ -128,10 +162,20 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     }
 
     private void requestComments() {
-        params.fid = this.fid;
-        params.page = 1;
-        params.pageSize = 10;
-        mPresenter.requestCommentList(params);
+        commentListParams.fid = this.fid;
+        commentListParams.page = 1;
+        commentListParams.pageSize = 10;
+        switch (type) {
+            case TYPE_EXCHANGE:
+                mPresenter.requestExchangeCommentList(commentListParams);
+                break;
+            case TYPE_CARPOOL:
+                mPresenter.requestCarpoolCommentList(commentListParams);
+                break;
+            case TYPE_NEIGHBOUR:
+                mPresenter.requestNeighbourCommentList(commentListParams);
+                break;
+        }
     }
 
     @Override
@@ -155,5 +199,37 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     public void responseCommentList(List<CommentBean> datas) {
         ptrFrameLayout.refreshComplete();
         adapter.setNewData(datas);
+    }
+
+    @Override
+    public void responseCommentSuccess(BaseBean bean) {
+        etInputFragmentComment.setText("");
+        ptrFrameLayout.autoRefresh();
+    }
+
+    @OnClick(R.id.tv_send_fragment_comment)
+    public void onViewClicked() {
+        sendComment();
+    }
+
+    private void sendComment() {
+        String comment = etInputFragmentComment.getText().toString().trim();
+        if (TextUtils.isEmpty(comment)) {
+            DialogHelper.warningSnackbar(getView(), "请输入评论内容！不能为空");
+            return;
+        }
+        commentPostParams.fid = fid;
+        commentPostParams.content = comment;
+        switch (type) {
+            case TYPE_EXCHANGE:
+                mPresenter.postExchangeComment(commentPostParams);
+                break;
+            case TYPE_CARPOOL:
+                mPresenter.postCarpoolComment(commentPostParams);
+                break;
+            case TYPE_NEIGHBOUR:
+                mPresenter.postNeighbourComment(commentPostParams);
+                break;
+        }
     }
 }

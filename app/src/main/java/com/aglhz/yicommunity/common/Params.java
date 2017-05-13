@@ -57,7 +57,14 @@ public class Params {
     public String password2;
     public boolean summerable;
     public boolean timeable;
-
+    public String price;
+    public int carpoolType;
+    public String startPlace;
+    public String endPlace;
+    public String outTime;
+    public int positionType;
+    public String currentPositionLat;
+    public String currentPostionLng;
 
     private Params() {
     }

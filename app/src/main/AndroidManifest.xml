@@ -86,7 +86,6 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:theme">
 
-
         <!-- 友盟推送 -->
         <meta-data
             android:name="UMENG_APPKEY"
@@ -112,6 +111,7 @@
         </activity>
 
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".main.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/Transparent" />

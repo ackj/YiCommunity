@@ -49,14 +49,31 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         ALog.e(">>>>>>>>>>>>>>", "position:" + helper.getLayoutPosition());
 
-        helper.setText(R.id.tv_name_item_moments_list, item.getMember().getMemberNickName())
-                .setText(R.id.tv_content_item_moments_list, item.getContent())
-                .setText(R.id.tv_create_at_item_moments_list, item.getCreateTime())
-                .setText(R.id.tv_location_item_moments_list, item.getCommunityName())
+        helper.setText(R.id.tv_create_at_item_moments_list, item.getCreateTime())
+                .setText(R.id.tv_name_item_moments_list, item.getMember().getMemberNickName())
                 .setText(R.id.tv_comment_count_item_moments_list, item.getCommentCount() + "");
 
         helper.addOnClickListener(R.id.ll_comment_item_moments_list)
                 .addOnClickListener(R.id.tv_comment_count_item_moments_list);
+
+        //-------------- 当前地址 --------------
+        TextView tvAddress = helper.getView(R.id.tv_location_item_moments_list);
+        if (type == MessageFragment.TYPE_CARPOOL) {
+            tvAddress.setText(item.getPublishPositionAddress());
+        } else {
+            tvAddress.setText(item.getCommunityName());
+        }
+
+        //--------------- 内容 ------------
+        TextView tvContent = helper.getView(R.id.tv_content_item_moments_list);
+        if (type == MessageFragment.TYPE_CARPOOL) {
+            String route = item.getStartPlace() + "——" + item.getEndPlace() + "\n";
+            String outTime = item.getSetOutTime() + "\n";
+            String content = item.getContent();
+            tvContent.setText(route + outTime + content);
+        } else {
+            tvContent.setText(item.getContent());
+        }
 
         //--------------- 根据type显隐------------
         TextView tvMoney = helper.getView(R.id.tv_money_item_moments_list);
@@ -124,11 +141,11 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
                 String text = name + ":" + content;
 
                 TextView tvComment = new TextView(BaseApplication.mContext);
-                tvComment.setTextSize(15);
+                tvComment.setTextSize(13);
                 tvComment.setTextColor(0xBB222222);
 
                 LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                int marginValue = DensityUtils.dp2px(BaseApplication.mContext, 2);
+                int marginValue = DensityUtils.dp2px(BaseApplication.mContext, 1);
                 tvLp.setMargins(marginValue, marginValue, marginValue, marginValue);
                 tvComment.setLayoutParams(tvLp);
 

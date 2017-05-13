@@ -7,7 +7,7 @@ import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.luban.Luban;
-import com.aglhz.yicommunity.publish.contract.RepairContract;
+import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.model.RepairModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers;
  * Email: liujia95me@126.com
  */
 
-public class RepairPresenter extends BasePresenter<RepairContract.View, RepairContract.Model> implements RepairContract.Presenter {
+public class RepairPresenter extends BasePresenter<PublishContract.View, PublishContract.Model> implements PublishContract.Presenter {
 
     private static final String TAG = RepairPresenter.class.getSimpleName();
 
@@ -27,13 +27,13 @@ public class RepairPresenter extends BasePresenter<RepairContract.View, RepairCo
      *
      * @param mView 所要绑定的view层对象，一般在View层创建Presenter的时候通过this把自己传过来。
      */
-    public RepairPresenter(RepairContract.View mView) {
+    public RepairPresenter(PublishContract.View mView) {
         super(mView);
     }
 
     @NonNull
     @Override
-    protected RepairContract.Model createModel() {
+    protected PublishContract.Model createModel() {
         return new RepairModel();
     }
 
@@ -43,7 +43,7 @@ public class RepairPresenter extends BasePresenter<RepairContract.View, RepairCo
     }
 
     @Override
-    public void postRepair(Params params) {
+    public void post(Params params) {
         params.cmnt_c = "KBSJ-agl-00005";
         compress(params);
 
@@ -71,12 +71,12 @@ public class RepairPresenter extends BasePresenter<RepairContract.View, RepairCo
     }
 
     private void beginPost(Params params) {
-        mRxManager.add(mModel.postRepair(params)
+        mRxManager.add(mModel.post(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {
                         ALog.e(TAG,"上传成功了！！");
-                        getView().responseRepair(baseBean);
+                        getView().responseSuccess(baseBean);
                     } else {
                         ALog.e(TAG,"上传失败了！！");
                         getView().error(baseBean.getOther().getMessage());

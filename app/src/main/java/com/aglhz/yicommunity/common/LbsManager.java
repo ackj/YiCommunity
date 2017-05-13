@@ -1,15 +1,11 @@
 package com.aglhz.yicommunity.common;
 
 
-import android.icu.text.SimpleDateFormat;
-
 import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-
-import java.util.Date;
 
 
 /**
@@ -89,12 +85,16 @@ public class LbsManager {
             mLocationClient.setLocationListener(amapLocation -> {
                 mCallBack.CallBack(amapLocation);
 
-
                 //*************以下这些调试时用，调试完了记得删掉****************
 
                 if (amapLocation != null) {
                     if (amapLocation.getErrorCode() == 0) {
                         ALog.e(amapLocation.toString());
+                        UserHelper.setCity(amapLocation.getCity());
+                        UserHelper.setCurrentPositionLat(String.valueOf(amapLocation.getLatitude()));
+                        UserHelper.setCurrentPositionLng(String.valueOf(amapLocation.getLongitude()));
+                        ALog.e("getLatitude:"+String.valueOf(amapLocation.getLatitude()));
+                        ALog.e("getLongitude:"+String.valueOf(amapLocation.getLongitude()));
                     } else {
                         //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                         ALog.e("AmapError", "location Error, ErrCode:"
@@ -102,9 +102,7 @@ public class LbsManager {
                                 + amapLocation.getErrorInfo());
                     }
                 }
-
                 //*************以上这些调试时用，调试完了记得删掉****************
-
 
             });
 

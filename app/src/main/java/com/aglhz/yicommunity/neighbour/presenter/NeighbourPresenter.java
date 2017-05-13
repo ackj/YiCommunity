@@ -60,4 +60,17 @@ public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, Ne
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestCarpoolList(Params params) {
+        mRxManager.add(mModel.getCarpoolList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(neighbourListBean -> {
+                    if (neighbourListBean.getOther().getCode() == 200) {
+                        getView().responseCarpoolList(neighbourListBean.getData().getCarpoolList());
+                    } else {
+                        getView().error(neighbourListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }
