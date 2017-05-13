@@ -31,14 +31,9 @@ public class CommunityListAdapter extends BaseRecyclerViewAdapter<CommunitySelec
 
     @Override
     protected void convert(BaseViewHolder helper, CommunitySelectBean.DataBean.CommunitiesBean bean) {
-//        int index = str.indexOf(searchKey);
-//        SpannableString span = new SpannableString(str);
-//        span.setSpan(new ForegroundColorSpan(Color.RED), index, index+searchKey.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         if (bean == null) {
             return;
         }
-
-        ALog.d("bean getName :" + bean.getName());
 
         int nameIndex = bean.getName().indexOf(searchKey);
         SpannableString nameSpan = new SpannableString(bean.getName());

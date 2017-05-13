@@ -90,7 +90,6 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
 
     @Override
     protected void onDestroy() {
-        ALog.e(TAG + "onDestroy()");
 
         if (mPresenter != null) {
             mPresenter.clear();
@@ -127,7 +126,6 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void go2Login(LoginInterceptor event) {
 
-        ALog.e("111");
         Intent intent = new Intent("LoginActivity");
         startActivity(intent);
     }

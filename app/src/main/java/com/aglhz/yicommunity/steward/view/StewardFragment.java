@@ -218,20 +218,11 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     private void setListener() {
         //设置我的房屋卡片的点击事件。
         myHouseAdapter.setOnItemClickListener((adapter, view, position) -> {
-            ALog.e("adapter.getData().size()::" + adapter.getData().size());
-            ALog.e("listMyhouses::" + listMyhouses);
-            ALog.e("position::" + position);
-
             if (position == adapter.getData().size() - 1) {
                 //点击的最后一个item，此时应该跳转到添加房屋界面。
                 go2House(Constants.ADD_HOUSE, "");
-                ALog.e("1111111111");
-
             } else {
-                ALog.e("000000");
                 go2House(Constants.HOUSE_RIGHTS, listMyhouses.get(position).fid);
-                ALog.e("listMyhouses.get(position).fid::" + listMyhouses.get(position).fid);
-
             }
         });
 
@@ -253,7 +244,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         //设置智能门禁卡片点击事件。
         smartDoorAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == 3) {
-//                mPresenter.requestGetSip("");
+                mPresenter.requestSip(params);
             } else {
                 go2SmartDoor(position);
             }
@@ -273,43 +264,27 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                     contactDialog.show();
                 }
 
-            } else if (position == 0) {
-                if (checkToken()) {
-//                        if (checkHasCommunity()) {
-//                            startActivity(new Intent(getContext(), PropertyRepairActivity.class));
-
-//                        }
+            } else {
+                if (checkTokenAndCommunity()) {
                     go2PropertyService(position);
                 }
-
-            } else if (position == 2) {
-                go2PropertyService(position);
             }
         });
     }
 
 
-    private boolean checkToken() {
+    private boolean checkTokenAndCommunity() {
         if (!UserHelper.isLogined()) {
             startActivity(new Intent(getContext(), LoginActivity.class));
             return false;
-        }
-        return true;
-    }
+        } else if (!UserHelper.hasCommunity()) {
+            DialogHelper.warningSnackbar(rootView, "需要先选择社区！");
 
-    //是否已经选择社区
-    private boolean checkHasCommunity() {
-        if (!UserHelper.hasCommunity()) {
-            Toast.makeText(getContext(), "需要先选择社区", Toast.LENGTH_SHORT).show();
-            onSelectCommunity(null);
+            Intent intent = new Intent(getContext(), PickerActivity.class);
+            startActivityForResult(intent, SELECT_COMMUNIT);
             return false;
         }
         return true;
-    }
-
-    public void onSelectCommunity(View view) {
-        Intent intent = new Intent(getContext(), PickerActivity.class);
-        startActivityForResult(intent, SELECT_COMMUNIT);
     }
 
     //跳转到智能门禁模块。
@@ -462,7 +437,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     @Override
-    public void responseGetSip(SipBean mSipBean) {
+    public void responseSip(SipBean mSipBean) {
         ptrFrameLayout.refreshComplete();
 
         DialogPlus.newDialog(_mActivity)
@@ -471,11 +446,8 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                 .setContentHolder(new ListHolder())
                 .setGravity(Gravity.BOTTOM)
                 .setAdapter(new ArrayAdapter<>(_mActivity, android.R.layout.simple_list_item_1, mSipBean.getData().getPowers()))
-                .setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                .setOnItemClickListener((dialog, item, view, position) -> {
 
-                    }
                 })
                 .setCancelable(true)
                 .create()

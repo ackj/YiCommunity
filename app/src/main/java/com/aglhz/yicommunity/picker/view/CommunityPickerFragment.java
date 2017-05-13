@@ -34,6 +34,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aglhz.yicommunity.common.UserHelper.city;
+
 
 /**
  * Created by Administrator on 2017/4/29 0029.
@@ -84,11 +86,15 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
 
     private void initLocate() {
         LbsManager.getInstance().startLocation(aMapLocation -> {
-            String city = aMapLocation.getCity();
-            if (!TextUtils.isEmpty(city)) {
-                tvCity.setText(city);
-                UserHelper.setCity(city);
-                LbsManager.getInstance().stopLocation();
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    String city = aMapLocation.getCity();
+                    if (!TextUtils.isEmpty(city)) {
+                        tvCity.setText(city);
+                        UserHelper.setCity(city);
+                        LbsManager.getInstance().stopLocation();
+                    }
+                }
             }
         });
     }
@@ -103,11 +109,10 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
     }
 
     private void initData() {
-        params.city = UserHelper.city;
+        params.city = city;
         mPresenter.requestCommunitys(params);
 
         etSearchCommunity.setHint("请输入城市名或小区名");
-        //造假数据
         mDatas = new ArrayList<>();
 
         resultData = new ArrayList<>();
@@ -173,7 +178,6 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
 
     @Override
     public void responseCommunitys(List<CommunitySelectBean.DataBean.CommunitiesBean> beans) {
-        ALog.d("CommunityList bpeans size:" + beans.size());
         mDatas = beans;
         adapter.setNewData(mDatas);
     }

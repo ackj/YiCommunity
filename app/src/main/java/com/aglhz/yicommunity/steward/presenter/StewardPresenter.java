@@ -6,16 +6,24 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.IconBean;
+import com.aglhz.yicommunity.bean.SipBean;
+import com.aglhz.yicommunity.common.BaseParams;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.ServiceApi;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.model.StewardModel;
 
+import org.apache.http.client.HttpClient;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
+import static com.alipay.sdk.app.statistic.c.b;
 import static com.alipay.sdk.app.statistic.c.u;
 
 /**
@@ -68,26 +76,16 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
     }
 
     @Override
-    public void requestGetSip(Params params) {
-//        ALog.e("111111111");
-//        Map params = BaseParams.getTokenMap();
-//
-//        HttpClient.post(ServiceApi.GET_SIP, params, new BeanCallback<SipBean>() {
-//            @Override
-//            public void onError(String errMsg) {
-//                if (isViewAttached()) {
-//                    getView().error(null);
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(SipBean mSipBean) {
-//                if (isViewAttached()) {
-//
-//                    getView().responseGetSip(mSipBean);
-//                }
-//            }
-//        });
+    public void requestSip(Params params) {
+        mRxManager.add(mModel.requestSip(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> {
+                    if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseSip(bean);
+                    } else {
+                        getView().error(bean.getOther().getMessage());
+                    }
+                }, this::error));
     }
 
 

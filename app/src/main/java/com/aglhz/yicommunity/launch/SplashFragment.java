@@ -19,7 +19,7 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.door.sdk.DoorManager;
+import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.main.MainActivity;
 
 import java.util.List;
@@ -66,7 +66,8 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void initDoorManager() {
-        DoorManager.getInstance();
+        DoorManager.getInstance().init();
+        DoorManager.getInstance().initWebUserApi();
     }
 
     @AfterPermissionGranted(LOCATION)

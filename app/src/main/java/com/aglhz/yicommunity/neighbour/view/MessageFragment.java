@@ -75,7 +75,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getArguments().getInt("type");
-        ALog.d(TAG, "type------>>>" + type);
 
     }
 

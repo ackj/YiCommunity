@@ -45,7 +45,7 @@ public class UserHelper {
     }
 
     //退出登录或者token失效清除信息
-    public static void clear() {
+    public static boolean clear() {
         token = "";
         communityName = "";
         communityCode = "";
@@ -54,7 +54,7 @@ public class UserHelper {
         dir = "";
         city = "";
         userInfo = null;
-        getEditor().clear();
+        return getEditor().clear().commit();
     }
 
     //更新Token
@@ -82,7 +82,6 @@ public class UserHelper {
         SharedPreferences.Editor editor = getEditor();
         Gson gson = new Gson();
         String info = gson.toJson(memberInfo);
-        ALog.e("info::" + info);
         editor.putString(USER_INFO, info);
         return editor.commit();
     }

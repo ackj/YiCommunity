@@ -28,14 +28,14 @@ public interface StewardContract {
 
         void responseContact(List<String> phoneList);
 
-        void responseGetSip(SipBean mSipBean);
+        void responseSip(SipBean mSipBean);
 
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestContact(Params cmnt_c);
+        void requestContact(Params params);
 
-        void requestGetSip(Params token);
+        void requestSip(Params params);
 
     }
 
@@ -44,5 +44,6 @@ public interface StewardContract {
 
         Single<List<IconBean>> requestHouses(Params params);
 
+        Observable<SipBean> requestSip(Params params);
     }
 }

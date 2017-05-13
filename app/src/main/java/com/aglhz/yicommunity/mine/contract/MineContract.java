@@ -17,9 +17,9 @@ public interface MineContract {
 
     interface View extends BaseContract.View {
         //退出登录成功
-        void responseLogout();
+        void responseLogout(String message);
 
-        void responseCache(String str);
+        void responseCache(String message);
     }
 
     interface Presenter extends BaseContract.Presenter {

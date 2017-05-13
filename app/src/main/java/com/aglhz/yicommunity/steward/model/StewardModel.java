@@ -7,6 +7,7 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.ContactBean;
 import com.aglhz.yicommunity.bean.IconBean;
+import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
@@ -49,6 +50,13 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
                 .flatMap(Flowable::fromIterable)
                 .map(authBuildingsBean -> new IconBean(R.drawable.ic_my_house_red_140px, authBuildingsBean.getB_name(), authBuildingsBean.getFid()))
                 .toList()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<SipBean> requestSip(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestSip(ApiService.requestSip, params.token)
                 .subscribeOn(Schedulers.io());
     }
 }

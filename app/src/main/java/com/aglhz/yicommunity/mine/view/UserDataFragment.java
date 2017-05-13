@@ -182,9 +182,9 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
     @OnClick({R.id.ll_portrait_user_data_fragment, R.id.ll_nickname_user_data_fragment
             , R.id.ll_gender_user_data_fragment, R.id.ll_phone_user_data_fragment
-            , R.id.ll_change_password_user_data_fragment, R.id.toolbar_menu, R.id.bt_submit_user_data_fragment})
+            , R.id.ll_change_password_user_data_fragment, R.id.toolbar_menu
+            , R.id.bt_submit_user_data_fragment})
     public void onViewClicked(View view) {
-        ALog.e("view.getId()::" + view.getId());
 
         switch (view.getId()) {
             case R.id.ll_portrait_user_data_fragment:
@@ -201,7 +201,6 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     mPresenter.updateUserData(params);
 
                 }).show();
-
 
                 break;
             case R.id.ll_phone_user_data_fragment:

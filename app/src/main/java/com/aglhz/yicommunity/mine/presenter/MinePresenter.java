@@ -47,7 +47,7 @@ public class MinePresenter extends BasePresenter<MineContract.View, MineContract
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {
-                        getView().responseLogout();
+                        getView().responseLogout(baseBean.getOther().getMessage());
                     } else {
                         getView().error(baseBean.getOther().getMessage());
                     }
@@ -60,7 +60,6 @@ public class MinePresenter extends BasePresenter<MineContract.View, MineContract
         mRxManager.add(mModel.requestCache()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    ALog.e("Thread.currentThread().getName()::" + Thread.currentThread().getName());
                     if (isViewAttached()) {
                         getView().responseCache(s);
                     }

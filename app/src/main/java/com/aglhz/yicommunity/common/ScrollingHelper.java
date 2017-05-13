@@ -1,15 +1,11 @@
 package com.aglhz.yicommunity.common;
 
-import android.content.Context;
 import android.graphics.Rect;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewParent;
-import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.ScrollView;

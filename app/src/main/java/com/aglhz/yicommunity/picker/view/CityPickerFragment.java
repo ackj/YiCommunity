@@ -77,12 +77,7 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void initLocate() {
-
-
         LbsManager.getInstance().startLocation(aMapLocation -> {
-
-            mCityAdapter.updateLocateState(LocateState.FAILED, null);
-
             if (aMapLocation != null) {
                 if (aMapLocation.getErrorCode() == 0) {
 

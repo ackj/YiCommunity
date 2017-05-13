@@ -23,8 +23,10 @@ import com.aglhz.yicommunity.about.AboutActivity;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.door.call.CallActivity;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
@@ -36,6 +38,8 @@ import com.bumptech.glide.Glide;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.linphone.core.LinphoneCall;
+import org.linphone.core.LinphoneCore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,6 +109,20 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     private void initData() {
+
+        DoorManager.getInstance().initWebUserApi().setCallListener((lc, call, state, message) -> {
+
+            ALog.e("1111111111::" + state.toString());
+            if (state == LinphoneCall.State.OutgoingInit ||
+                    state == LinphoneCall.State.OutgoingProgress) {
+                // 启动CallOutgoingActivity
+                _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
+
+            }
+
+        });
+
+
         mPresenter.requestCache();
         //动态给“个人资料”TextView设置drawableLeft并改变其大小
         Drawable drawableLeft = ContextCompat.getDrawable(_mActivity, R.drawable.ic_oneself_info_80px);
@@ -146,6 +164,9 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
                 break;
             case R.id.ll_my_address:
+                DoorManager.getInstance().callOut("sip:D6-31-1@member");
+
+
                 break;
             case R.id.ll_make_shortcut:
                 createShortCut();
@@ -248,14 +269,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     @Override
-    public void responseLogout() {
-        //清理信息
-        UserHelper.clear();
-        DialogHelper.successSnackbar(rootView, "退出登录！");
-        ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
-        tvName.setText("访客");
-        tvPhoneNumber.setText("");
-        tvLogout.setVisibility(View.GONE);
+    public void responseLogout(String message) {
+        DialogHelper.successSnackbar(rootView, message);
     }
 
     @Override

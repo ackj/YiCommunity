@@ -63,7 +63,6 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
 
     @UiThread
     public void clear() {
-        ALog.e(TAG + "clear()");
 
         //优先释放Model层对象，避免内存泄露
         if (mModel != null) {

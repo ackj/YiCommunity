@@ -20,6 +20,7 @@ import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.bean.RoomBean;
+import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
@@ -90,8 +91,14 @@ public interface ApiService {
             , @Query("pwd") String pwd);
 
     //登出
-    @POST("/memberSYS-m/client/logout.do")
-    Observable<BaseBean> requestLogout(@Query("token") String token);
+    String requestLogout = BASE_USER + "/client/logout.do";
+
+
+    //    @POST("/memberSYS-m/client/logout.do")
+    @POST
+    Observable<BaseBean> requestLogout(
+            @Url String url,
+            @Query("token") String token);
 
     //开门
 //    @POST("/sub_property_ysq/smartdoor/client/opendoor")
@@ -120,13 +127,26 @@ public interface ApiService {
     Observable<BaseBean> feedback(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("des") String des, @Query("contact") String contact);
 
     //更新用户信息
-    @POST("/memberSYS-m/client/ updateMemberFieldByToken.do")
-    Observable<BaseBean> updateUserData(@Query("token") String token, @Query("field") String field, @Query("val") String val);
+//    @POST("/memberSYS-m/client/updateMemberFieldByToken.do")
+    String updateUserData = BASE_USER + "/client/updateMemberFieldByToken.do";
+
+    @POST
+    Observable<BaseBean> updateUserData(@Url String url,
+                                        @Query("token") String token,
+                                        @Query("field") String field,
+                                        @Query("val") String val);
 
 
     //修改密码
-    @POST("/memberSYS-m/client/updateMemberPwd.do")
-    Observable<BaseBean> updatePassword(@Query("token") String token, @Query("pwd0") String pwd0, @Query("pwd1") String pwd1, @Query("pwd2") String pwd2);
+//    @POST("/memberSYS-m/client/updateMemberPwd.do")
+    String updatePassword = BASE_USER + "/client/updateMemberPwd.do";
+
+    @POST
+    Observable<BaseBean> updatePassword(@Url String url,
+                                        @Query("token") String token,
+                                        @Query("pwd0") String pwd0,
+                                        @Query("pwd1") String pwd1,
+                                        @Query("pwd2") String pwd2);
 
 
     //更新头像
@@ -360,8 +380,8 @@ public interface ApiService {
 
     @POST
     Flowable<NoticeBean> requestHomeNotices(@Url String url,
-                                              @Query("token") String token,
-                                              @Query("cmnt_c") String cmnt_c);
+                                            @Query("token") String token,
+                                            @Query("cmnt_c") String cmnt_c);
 
     //获取闲置交换
     @POST("sub_property_ysq/neighbor/exchange/to-client/exchange-list")
@@ -369,7 +389,14 @@ public interface ApiService {
 
     //获取闲置交换的评论
     String getExchangeComments = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-comment-list";
+
     @POST
     Observable<CommentListBean> getExchangeComments(@Url String url, @Query("exchangeFid") String fid, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //获取Sip账号，用户拨打门禁的电话。
+    String requestSip = BASE_PROPERTY + "/smartdoor/client/cngsip";
+
+    @POST
+    Observable<SipBean> requestSip(@Url String url, @Query("token") String token);
 
 }
