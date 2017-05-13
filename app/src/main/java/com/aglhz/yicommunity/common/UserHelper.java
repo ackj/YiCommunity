@@ -25,8 +25,8 @@ public class UserHelper {
     private static final String USER_INFO = "user_info";
     private static final String DIR = "dir";
     private static final String CITY = "city";
-    private static final String CURRENT_POSITION_LAT = "current_position_lat";
-    private static final String CURRENT_POSITION_LNG = "current_position_lng";
+    private static final String LATITUDE = "current_position_lat";
+    private static final String LONGITUDE = "current_position_lng";
 
     public static String token = "";
     public static String communityName = "";
@@ -35,22 +35,22 @@ public class UserHelper {
     public static String account = "";
     public static String password = "";
     public static String dir = "";//默认设置的一键开门的设备路径。
-    public static String currentPositionLat;//纬度
-    public static String currentPositionLng;//经度
+    public static String latitude;//纬度
+    public static String longitude;//经度
 
     public static UserBean.DataBean.MemberInfoBean userInfo;
 
-    public static boolean setCurrentPositionLat(String currentPositionLat) {
-        UserHelper.currentPositionLat = currentPositionLat;
+    public static boolean setLatitude(String latitude) {
+        UserHelper.latitude = latitude;
         SharedPreferences.Editor editor = getEditor();
-        editor.putString(CURRENT_POSITION_LAT, currentPositionLat);
+        editor.putString(LATITUDE, latitude);
         return editor.commit();
     }
 
-    public static boolean setCurrentPositionLng(String currentPositionLng) {
-        UserHelper.currentPositionLat = currentPositionLng;
+    public static boolean setLongitude(String longitude) {
+        UserHelper.longitude = longitude;
         SharedPreferences.Editor editor = getEditor();
-        editor.putString(CURRENT_POSITION_LNG, currentPositionLng);
+        editor.putString(LONGITUDE, longitude);
         return editor.commit();
     }
 
@@ -74,6 +74,8 @@ public class UserHelper {
         dir = "";
         city = "";
         userInfo = null;
+        latitude = "";
+        longitude = "";
         return getEditor().clear().commit();
     }
 
@@ -137,8 +139,8 @@ public class UserHelper {
         communityCode = getSp().getString(COMMUNITY_CODE, "");
         dir = getSp().getString(DIR, "");
         city = getSp().getString(CITY, "");
-        currentPositionLat = getSp().getString(CURRENT_POSITION_LAT, "");
-        currentPositionLng = getSp().getString(CURRENT_POSITION_LNG, "");
+        latitude = getSp().getString(LATITUDE, "");
+        longitude = getSp().getString(LONGITUDE, "");
         getUserInfo();
     }
 
