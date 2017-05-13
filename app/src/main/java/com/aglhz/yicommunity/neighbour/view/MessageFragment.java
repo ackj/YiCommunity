@@ -174,8 +174,8 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         } else if(type == TYPE_NEIGHBOUR){
             mPresenter.requestNeihbourList(params);
         }else if(type == TYPE_CARPOOL){
-            params.currentPositionLat = UserHelper.currentPositionLat;
-            params.currentPostionLng = UserHelper.currentPositionLng;
+            params.currentPositionLat = UserHelper.latitude;
+            params.currentPostionLng = UserHelper.longitude;
             params.carpoolType = 1;
             mPresenter.requestCarpoolList(params);
         }

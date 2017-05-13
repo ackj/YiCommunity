@@ -91,8 +91,8 @@ public class LbsManager {
                     if (amapLocation.getErrorCode() == 0) {
                         ALog.e(amapLocation.toString());
                         UserHelper.setCity(amapLocation.getCity());
-                        UserHelper.setCurrentPositionLat(String.valueOf(amapLocation.getLatitude()));
-                        UserHelper.setCurrentPositionLng(String.valueOf(amapLocation.getLongitude()));
+                        UserHelper.setLatitude(String.valueOf(amapLocation.getLatitude()));
+                        UserHelper.setLongitude(String.valueOf(amapLocation.getLongitude()));
                         ALog.e("getLatitude:"+String.valueOf(amapLocation.getLatitude()));
                         ALog.e("getLongitude:"+String.valueOf(amapLocation.getLongitude()));
                     } else {
