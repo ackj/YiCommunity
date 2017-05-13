@@ -28,7 +28,7 @@ import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.picker.PickerActivity;
-import com.aglhz.yicommunity.publish.contract.RepairContract;
+import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.RepairPresenter;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -49,7 +49,7 @@ import static com.aglhz.yicommunity.publish.view.ComplainFragment.REQUEST_CODE_C
  * Created by Administrator on 2017/4/19 16:06.
  */
 @SuppressLint("ValidFragment")
-public class RepairFragment extends BaseFragment<RepairContract.Presenter> implements RepairContract.View {
+public class RepairFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = RepairFragment.class.getSimpleName();
     @BindView(R.id.rl_house_name_fragment_repair)
     RelativeLayout rlHouseName;
@@ -87,7 +87,7 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
 
     @NonNull
     @Override
-    protected RepairContract.Presenter createPresenter() {
+    protected PublishContract.Presenter createPresenter() {
         return new RepairPresenter(this);
     }
 
@@ -204,7 +204,7 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
     }
 
     private void submit(Params params) {
-        mPresenter.postRepair(params);
+        mPresenter.post(params);
     }
 
     @Override
@@ -234,7 +234,7 @@ public class RepairFragment extends BaseFragment<RepairContract.Presenter> imple
     }
 
     @Override
-    public void responseRepair(BaseBean bean) {
+    public void responseSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), "提交成功!");
         setFragmentResult(RESULT_OK, null);
         pop();

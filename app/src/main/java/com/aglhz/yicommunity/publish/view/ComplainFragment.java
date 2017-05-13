@@ -19,17 +19,19 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.publish.contract.ComplainContract;
+import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.ComplainPresenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2017/4/19 16:09.
  */
-public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> implements ComplainContract.View {
+public class ComplainFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = ComplainFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
@@ -60,6 +62,7 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
+    Params params = Params.getInstance();
 
     public static ComplainFragment newInstance() {
         return new ComplainFragment();
@@ -67,7 +70,7 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
 
     @NonNull
     @Override
-    protected ComplainContract.Presenter createPresenter() {
+    protected PublishContract.Presenter createPresenter() {
         return new ComplainPresenter(this);
     }
 
@@ -136,7 +139,7 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
     }
 
     @Override
-    public void responseComplain(BaseBean baseBean) {
+    public void responseSuccess(BaseBean baseBean) {
         DialogHelper.successSnackbar(getView(), "提交成功!");
     }
 
@@ -149,7 +152,6 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
 
     @OnClick(R.id.btn_submit_fragment_complain)
     public void onViewClicked() {
-        Params params = Params.getInstance();
         try {
             params.name = new String(etName.getText().toString().trim().getBytes("GBK"), "utf-8");
         } catch (UnsupportedEncodingException e) {
@@ -197,8 +199,10 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             List<Uri> uris = Matisse.obtainResult(data);
+            params.files = new ArrayList<>();
             for (int i = 0; i < uris.size(); i++) {
                 ALog.d(TAG, "getImageAbsolutePath:" + ImageUtils.getImageAbsolutePath(_mActivity, uris.get(i)));
+                params.files.add(new File(ImageUtils.getImageAbsolutePath(BaseApplication.mContext, uris.get(i))));
             }
             uris.add(Uri.parse("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px));
             adapter.setNewData(uris);
@@ -206,6 +210,6 @@ public class ComplainFragment extends BaseFragment<ComplainContract.Presenter> i
     }
 
     private void submit(Params params) {
-        mPresenter.postComplain(params);//上传
+        mPresenter.post(params);//上传
     }
 }

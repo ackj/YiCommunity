@@ -11,18 +11,18 @@ import io.reactivex.Observable;
  * Email: liujia95me@126.com
  */
 
-public interface RepairContract {
+public interface PublishContract {
 
     interface View extends BaseContract.View {
-        void responseRepair(BaseBean bean);
+        void responseSuccess(BaseBean bean);
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void postRepair(Params params);
+        void post(Params params);
     }
 
     interface Model extends BaseContract.Model {
-        Observable<BaseBean> postRepair(Params params);
+        Observable<BaseBean> post(Params params);
     }
 
 }

@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -18,11 +21,21 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunityChange;
 import com.aglhz.yicommunity.picker.PickerActivity;
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.aglhz.yicommunity.publish.contract.PublishContract;
+import com.aglhz.yicommunity.publish.presenter.PublishExchangePresenter;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +50,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class PublishExchangeFragment extends BaseFragment {
+public class PublishExchangeFragment extends BaseFragment<PublishExchangePresenter> implements PublishContract.View {
     private final String TAG = PublishExchangeFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
@@ -46,21 +59,36 @@ public class PublishExchangeFragment extends BaseFragment {
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.et_input_money)
+    EditText etInputMoney;
+    @BindView(R.id.toolbar_menu)
+    TextView toolbarMenu;
+    @BindView(R.id.et_input_content)
+    EditText etInputContent;
+    @BindView(R.id.tv_community_address)
+    TextView tvCommunityAddress;
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
+    private Params params = Params.getInstance();
 
     public static PublishExchangeFragment newInstance() {
         return new PublishExchangeFragment();
     }
 
+    @NonNull
+    @Override
+    protected PublishExchangePresenter createPresenter() {
+        return new PublishExchangePresenter(this);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_publish_exchange, container, false);
         unbinder = ButterKnife.bind(this, view);
-        return view;
+        EventBus.getDefault().register(this);
+        return attachToSwipeBack(view);
     }
 
     @Override
@@ -79,6 +107,7 @@ public class PublishExchangeFragment extends BaseFragment {
     }
 
     private void initData() {
+        tvCommunityAddress.setText(UserHelper.communityName);
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
             @Override
             public boolean canScrollVertically() {
@@ -92,14 +121,11 @@ public class PublishExchangeFragment extends BaseFragment {
     }
 
     private void initListener() {
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (position == adapter.getData().size() - 1) {
-                    selectPhoto();
-                }
-                return false;
+        adapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (position == adapter.getData().size() - 1) {
+                selectPhoto();
             }
+            return false;
         });
     }
 
@@ -135,11 +161,59 @@ public class PublishExchangeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         KeyBoardUtils.hideKeybord(getView(), _mActivity);
+        EventBus.getDefault().unregister(this);
         unbinder.unbind();
     }
 
-    @OnClick(R.id.ll_location)
-    public void onViewClicked() {
-        _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
+
+    @Override
+    public void start(Object response) {
+
+    }
+
+    @Override
+    public void error(String errorMessage) {
+        DialogHelper.errorSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public void responseSuccess(BaseBean bean) {
+        DialogHelper.successSnackbar(getView(), "提交成功!");
+    }
+
+    @OnClick({R.id.ll_location, R.id.btn_submit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_location:
+                _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
+                break;
+            case R.id.btn_submit:
+                String money = etInputMoney.getText().toString().trim();
+                if (TextUtils.isEmpty(money)) {
+                    DialogHelper.errorSnackbar(getView(), "请输入金额");
+                    return;
+                }
+                String content = etInputContent.getText().toString().trim();
+                if (TextUtils.isEmpty(content)) {
+                    DialogHelper.errorSnackbar(getView(), "请输入内容");
+                    return;
+                }
+                submit(money, content);
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunityChange event) {
+        ALog.e(TAG, "onEvent:::" + event.bean.getName());
+        tvCommunityAddress.setText(event.bean.getName());
+        params.cmnt_c = event.bean.getCode();
+    }
+
+    private void submit(String money, String content) {
+        params.cmnt_c = UserHelper.communityCode;
+        params.content = content;
+        params.price = money;
+        mPresenter.post(params);
     }
 }

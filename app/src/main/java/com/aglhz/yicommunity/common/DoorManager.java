@@ -188,7 +188,18 @@ public class DoorManager {
         LinphoneCore lc = SipCoreManager.getLcIfManagerNotDestroyedOrNull();
         if (lc != null) {
             lc.addListener(mListener);
-            SipCorePreferences.instance().setAccountOutboundProxyEnabled(0, true);
+
+            /**
+             * 这里总是报空指针，干脆让这个代码运行多次注册，同时捕获异常。
+             */
+
+            try {
+
+                SipCorePreferences.instance().setAccountOutboundProxyEnabled(0, true);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return this;

@@ -78,4 +78,8 @@ dependencies {
     //switchbutton
     compile 'com.kyleduo.switchbutton:library:1.4.5'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
+    //键盘冲突
+    compile 'cn.dreamtobe.kpswitch:library:1.6.0'
+    //时间选择器
+    compile 'com.contrarywind:Android-PickerView:3.2.4'
 }

@@ -36,8 +36,8 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
     }
 
     @Override
-    public void requestCommentList(Params params) {
-        mRxManager.add(mModel.getCommentList(params)
+    public void requestExchangeCommentList(Params params) {
+        mRxManager.add(mModel.requestExchangeCommentList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(commentListBean -> {
                     if (commentListBean.getOther().getCode() == 200) {
@@ -47,4 +47,70 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestCarpoolCommentList(Params params) {
+        mRxManager.add(mModel.requestCarpoolCommentList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(commentListBean -> {
+                    if (commentListBean.getOther().getCode() == 200) {
+                        getView().responseCommentList(commentListBean.getData().getCommentList());
+                    } else {
+                        getView().error(commentListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestNeighbourCommentList(Params params) {
+        mRxManager.add(mModel.requestNeighbourCommentList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(commentListBean -> {
+                    if (commentListBean.getOther().getCode() == 200) {
+                        getView().responseCommentList(commentListBean.getData().getCommentList());
+                    } else {
+                        getView().error(commentListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void postExchangeComment(Params params) {
+        mRxManager.add(mModel.postExchangeComment(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseCommentSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void postCarpoolComment(Params params) {
+        mRxManager.add(mModel.postCarpoolComment(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseCommentSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void postNeighbourComment(Params params) {
+        mRxManager.add(mModel.postNeighbourComment(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseCommentSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
 }
