@@ -92,7 +92,6 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
         ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
 
-
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {

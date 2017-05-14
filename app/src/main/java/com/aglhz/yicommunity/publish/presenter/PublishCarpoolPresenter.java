@@ -2,12 +2,16 @@ package com.aglhz.yicommunity.publish.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.luban.Luban;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.model.PublishCarpoolModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author: LiuJia on 2017/5/12 0012 15:03.
@@ -37,6 +41,37 @@ public class PublishCarpoolPresenter extends BasePresenter<PublishContract.View,
 
     @Override
     public void post(Params params) {
+        switch (params.type){
+            case 1:
+                compress(params);
+                break;
+            case 2:
+                //上传视频
+                break;
+            default:
+                beginPost(params);
+                break;
+        }
+    }
+
+    public void compress(Params params){
+        for (int i = 0;i<params.files.size();i++){
+        }
+        Luban.get(BaseApplication.mContext)
+                .load(params.files)
+                .putGear(Luban.THIRD_GEAR)
+                .asList()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        files -> {
+                            ALog.e(Thread.currentThread().getName());
+                            params.files = files;
+                            beginPost(params);
+                        });
+    }
+
+    private void beginPost(Params params) {
         mRxManager.add(mModel.post(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {

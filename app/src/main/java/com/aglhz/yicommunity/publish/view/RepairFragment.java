@@ -169,7 +169,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         Matisse.from(this)
                 .choose(MimeType.allOf())
                 .countable(true)
-                .maxSelectable(100)
+                .maxSelectable(3)
 //                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
 //                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
@@ -184,7 +184,6 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         params.name = etName.getText().toString().trim();
         params.des = etContent.getText().toString().trim();
         params.contact = etPhone.getText().toString().trim();
-        params.type = 1;
         params.single = isPrivate;
         if (params.name.isEmpty()) {
             DialogHelper.errorSnackbar(getView(), "请输入联系人");
@@ -217,6 +216,9 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
             for (int i = 0; i < uris.size(); i++) {
                 ALog.d(TAG, "getImageAbsolutePath:" + ImageUtils.getImageAbsolutePath(_mActivity, uris.get(i)));
                 params.files.add(new File(ImageUtils.getImageAbsolutePath(BaseApplication.mContext, uris.get(i))));
+            }
+            if (params.files.size() > 0) {
+                params.type = 1;
             }
             uris.add(Uri.parse("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px));
             adapter.setNewData(uris);

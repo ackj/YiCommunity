@@ -10,6 +10,7 @@ import com.aglhz.yicommunity.publish.contract.CommentContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MultipartBody;
 
 /**
  * Author: LiuJia on 2017/5/11 0011 16:36.
@@ -45,22 +46,35 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
 
     @Override
     public Observable<BaseBean> postExchangeComment(Params params) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.addFormDataPart("token", params.token);
+        builder.addFormDataPart("exchangeFid", params.fid);
+        builder.addFormDataPart("content", params.content);
+
         return HttpHelper.getService(ApiService.class)
-                .postExchangeComment(ApiService.postExchangeComment, params.token, params.fid, params.content)
+                .postExchangeComment(ApiService.postExchangeComment, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<BaseBean> postCarpoolComment(Params params) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.addFormDataPart("token", params.token);
+        builder.addFormDataPart("carpoolFid", params.fid);
+        builder.addFormDataPart("content", params.content);
         return HttpHelper.getService(ApiService.class)
-                .postCarpoolComment(ApiService.postCarpoolComment, params.token, params.fid, params.content)
+                .postCarpoolComment(ApiService.postCarpoolComment,builder.build())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<BaseBean> postNeighbourComment(Params params) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.addFormDataPart("token", params.token);
+        builder.addFormDataPart("momentsFid", params.fid);
+        builder.addFormDataPart("content", params.content);
         return HttpHelper.getService(ApiService.class)
-                .postNeighbourComment(ApiService.postNeighbourComment, params.token, params.fid, params.content)
+                .postNeighbourComment(ApiService.postNeighbourComment, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 }

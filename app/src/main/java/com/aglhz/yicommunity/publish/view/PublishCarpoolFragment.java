@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -38,6 +40,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +76,8 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     EditText etInputContent;
     @BindView(R.id.tv_community_address)
     TextView tvCommunityAddress;
+    @BindView(R.id.toolbar_menu)
+    TextView toolbarMenu;
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
@@ -141,7 +146,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         Matisse.from(this)
                 .choose(MimeType.allOf())
                 .countable(true)
-                .maxSelectable(100)
+                .maxSelectable(3)
 //                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
 //                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
@@ -157,8 +162,13 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (requestCode == 100 && resultCode == RESULT_OK) {
             List<Uri> uris = Matisse.obtainResult(data);
+            params.files = new ArrayList<>();
             for (int i = 0; i < uris.size(); i++) {
                 ALog.d(TAG, "getImageAbsolutePath:" + ImageUtils.getImageAbsolutePath(_mActivity, uris.get(i)));
+                params.files.add(new File(ImageUtils.getImageAbsolutePath(BaseApplication.mContext, uris.get(i))));
+            }
+            if (params.files.size() > 0) {
+                params.type = 1;
             }
             uris.add(Uri.parse("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px));
             adapter.setNewData(uris);
@@ -188,12 +198,13 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         DialogHelper.successSnackbar(getView(), "提交成功!");
     }
 
-    @OnClick({R.id.btn_submit, R.id.ll_location, R.id.tv_select_start_point, R.id.tv_select_end_point, R.id.tv_select_go_time})
+    @OnClick({R.id.btn_submit, R.id.ll_location, R.id.tv_select_start_point, R.id.tv_select_end_point, R.id.tv_select_go_time, R.id.rb_carpool_has_car, R.id.rb_carpool_hasnot_car})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_submit:
                 String content = etInputContent.getText().toString().trim();
-                submit(content);
+                params.content = content;
+                submit();
                 break;
             case R.id.ll_location:
                 _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
@@ -207,6 +218,12 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
             case R.id.tv_select_go_time:
                 selectTogoTime();
                 break;
+            case R.id.rb_carpool_has_car:
+                params.carpoolType = 1;
+                break;
+            case R.id.rb_carpool_hasnot_car:
+                params.carpoolType = 2;
+                break;
         }
     }
 
@@ -214,7 +231,8 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         TimePickerView pvTime = new TimePickerView.Builder(_mActivity, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                tvSelectGoTime.setText(getTime(date));
+                params.outTime = getTime(date);
+                tvSelectGoTime.setText(params.outTime);
             }
         })
                 .setType(TimePickerView.Type.YEAR_MONTH_DAY_HOUR_MIN)
@@ -235,9 +253,11 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_END_POINT_CODE) {
                 ALog.d(TAG, "onFragmentResult end code:" + data.getString("city"));
+                params.endPlace = data.getString("city");
                 tvSelectEndPoint.setText(data.getString("city"));
             } else if (requestCode == REQUEST_START_POINT_CODE) {
                 ALog.d(TAG, "onFragmentResult start code:" + data.getString("city"));
+                params.startPlace = data.getString("city");
                 tvSelectStartPoint.setText(data.getString("city"));
             }
         }
@@ -250,9 +270,29 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         params.cmnt_c = event.bean.getCode();
     }
 
-    private void submit(String content) {
-        params.content = content;
-
+    private void submit() {
+        if (TextUtils.isEmpty(params.startPlace)) {
+            DialogHelper.errorSnackbar(getView(), "请选择起点城市!");
+            return;
+        }
+        if (TextUtils.isEmpty(params.endPlace)) {
+            DialogHelper.errorSnackbar(getView(), "请选择终点城市!");
+            return;
+        }
+        if (TextUtils.isEmpty(params.outTime)) {
+            DialogHelper.errorSnackbar(getView(), "请选择出发时间!");
+            return;
+        }
+        if (params.carpoolType == 0) {
+            DialogHelper.errorSnackbar(getView(), "请选择拼车类型!!");
+            return;
+        }
+        if (TextUtils.isEmpty(params.content)) {
+            DialogHelper.errorSnackbar(getView(), "请输入留言!!");
+            return;
+        }
+        params.positionType = 1;
         mPresenter.post(params);
     }
+
 }

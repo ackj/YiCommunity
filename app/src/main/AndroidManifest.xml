@@ -109,10 +109,10 @@
         </activity>
 
         <activity
-            android:windowSoftInputMode="adjustResize"
             android:name=".main.MainActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Transparent" />
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <activity android:name=".test.TestActivity" />
 
