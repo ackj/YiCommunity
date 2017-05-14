@@ -49,6 +49,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                 .subscribe(userBean -> {
                     if (userBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         UserHelper.setUserInfo(userBean.getData().getMemberInfo());
+
                         requestSip();
                     } else {
                         getView().error(userBean.getOther().getMessage());
@@ -64,7 +65,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
 
                     if (sipBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         UserHelper.setSip(sipBean.getData().getAccount());
-                        ALog.e("11111"+UserHelper.string());
+                        ALog.e("11111" + UserHelper.string());
 
                         DoorManager.getInstance().initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
                             @Override

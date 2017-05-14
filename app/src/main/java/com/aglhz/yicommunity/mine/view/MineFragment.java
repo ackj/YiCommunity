@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.network.http.LoginInterceptor;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
@@ -234,13 +235,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onLoginoutEvent(EventData event) {
-        if (event.position == Constants.loginout) {
-            updataView();
-        }
-    }
-
     private void updataView() {
         if (UserHelper.isLogined()) {
             Glide.with(this)
@@ -262,5 +256,14 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     @Override
     public void responseCache(String str) {
         tvCacheSum.setText(str);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginoutEvent(LoginInterceptor event) {
+        UserHelper.clear();
+        tvName.setText("访客");
+        tvPhoneNumber.setText("");
+        ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
+        tvLogout.setVisibility(View.GONE);
     }
 }

@@ -35,7 +35,6 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
         super.onCreate(savedInstanceState);
         initActivity();
         initStateBar();
-        netWorkTips();
         mPresenter = createPresenter();
     }
 
@@ -59,23 +58,6 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
 
         //一旦启动某个Activity就打印Log，方便找到该类
         ALog.e(TAG);
-    }
-
-    public void netWorkTips() {
-        if (!NetworkUtils.isConnected(getApplicationContext())) {
-//            View view = getWindow().getDecorView();
-//            Snackbar mSnackbar = Snackbar.make(view, "当前网络已断开！", Snackbar.LENGTH_LONG)
-//                    .setAction("设置网络", new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            // 跳转到系统的网络设置界面
-//                            NetworkUtils.openSetting(BaseActivity.this);
-//                        }
-//                    });
-//            View v = mSnackbar.getView();
-//            v.setBackgroundColor(Color.parseColor("#FFCC00"));
-//            mSnackbar.show();
-        }
     }
 
     @Override
@@ -103,7 +85,6 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
     @Override
     protected FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultNoAnimator();
-//        return new FragmentAnimator(android.R.anim.fade_in, android.R.anim.fade_out, 0, 0);
     }
 
     @Override
@@ -124,7 +105,7 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void go2Login(LoginInterceptor event) {
+    public void onLoginoutEvent(LoginInterceptor event) {
 
         Intent intent = new Intent("LoginActivity");
         startActivity(intent);

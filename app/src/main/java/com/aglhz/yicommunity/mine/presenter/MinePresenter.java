@@ -4,15 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.common.BaseParams;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ServiceApi;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.mine.contract.MineContract;
 import com.aglhz.yicommunity.mine.model.MineModel;
-
-import org.apache.http.client.HttpClient;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

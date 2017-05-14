@@ -29,7 +29,6 @@ public class MyPublishVPAdapter extends FragmentPagerAdapter {
                 fragment = UnusedExchangeFragment.newInstance();
                 break;
             case 1:
-                fragment = CarShareFragment.newInstance();
                 break;
             case 2:
                 fragment = UnusedExchangeFragment.newInstance();

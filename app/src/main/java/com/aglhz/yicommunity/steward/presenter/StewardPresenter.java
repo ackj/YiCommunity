@@ -2,29 +2,18 @@ package com.aglhz.yicommunity.steward.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.IconBean;
-import com.aglhz.yicommunity.bean.SipBean;
-import com.aglhz.yicommunity.common.BaseParams;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ServiceApi;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.model.StewardModel;
 
-import org.apache.http.client.HttpClient;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-
-import static com.alipay.sdk.app.statistic.c.b;
-import static com.alipay.sdk.app.statistic.c.u;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35

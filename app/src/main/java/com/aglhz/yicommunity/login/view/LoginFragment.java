@@ -57,7 +57,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    private Params mParams = Params.getInstance();
+    private Params params = Params.getInstance();
     private ViewGroup rootView;
 
     public static LoginFragment newInstance() {
@@ -130,9 +130,9 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
             case R.id.cb_remember_password:
                 break;
             case R.id.bt_login:
-                mParams.user = etUsername.getText().toString().trim();
-                mParams.pwd = etPassword.getText().toString().trim();
-                mPresenter.start(mParams);
+                params.user = etUsername.getText().toString().trim();
+                params.pwd = etPassword.getText().toString().trim();
+                mPresenter.start(params);
                 break;
             case R.id.bt_register:
                 start(RegisterFragment.newInstance());

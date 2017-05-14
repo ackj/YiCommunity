@@ -82,4 +82,12 @@ dependencies {
     compile 'cn.dreamtobe.kpswitch:library:1.6.0'
     //时间选择器
     compile 'com.contrarywind:Android-PickerView:3.2.4'
+
+    //监测内存泄漏
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    //监测卡顿
+    debugCompile 'com.github.markzhai:blockcanary-android:1.5.0'
+
+    //友盟推送
+    compile project(':PushSDK')
 }

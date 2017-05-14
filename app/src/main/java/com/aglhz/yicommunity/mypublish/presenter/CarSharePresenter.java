@@ -4,7 +4,6 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.mypublish.contract.CarShareContract;
-import com.amap.api.location.AMapLocation;
 
 
 /**
@@ -44,7 +43,7 @@ public class CarSharePresenter extends BasePresenter<CarShareContract.View, CarS
 //            URL = ServiceApi.carpoolMineList;
 //        }
 //
-//        Map params = BaseParams.getTokenMap();
+//
 //        HttpClient.post(URL, params, new BeanCallback<CarpoolServiceListBean>() {
 //            @Override
 //            public void onError(String errMsg) {

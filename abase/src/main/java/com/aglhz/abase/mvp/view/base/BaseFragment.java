@@ -54,6 +54,7 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
             mPresenter.clear();
             mPresenter = null;
         }
+
         super.onDestroy();
     }
 

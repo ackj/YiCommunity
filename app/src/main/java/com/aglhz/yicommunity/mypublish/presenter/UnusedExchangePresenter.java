@@ -41,7 +41,6 @@ public class UnusedExchangePresenter extends BasePresenter<UnusedExchangeContrac
 //        if (goodsChangeUrl.isEmpty()) {
 //            return false;
 //        }
-//        Map params = BaseParams.getPamras();
 //        HttpClient.post(goodsChangeUrl, params, new BeanCallback<GoodsChangeListBean>() {
 //            @Override
 //            public void onError(String errMsg) {
@@ -62,7 +61,6 @@ public class UnusedExchangePresenter extends BasePresenter<UnusedExchangeContrac
 //    @Override
 //    public void refreshGoodsChange() {
 //        initGoodsChangeUrl();
-//        Map params = BaseParams.getPamras();
 //        HttpClient.post(goodsChangeUrl, params, new BeanCallback<GoodsChangeListBean>() {
 //            @Override
 //            public void onError(String errMsg) {

@@ -173,14 +173,4 @@ public class HttpHelper {
 
         return mRetrofit.create(t);
     }
-
-//    public static void setBaseUrl(String baseUrl) {
-//        BASE_URL = baseUrl;
-//        if (mRetrofit == null) {
-//            initRetrofit();
-//        }
-//
-//        mRetrofit.baseUrl() =  HttpUrl.parse(baseUrl);
-//
-//    }
 }
