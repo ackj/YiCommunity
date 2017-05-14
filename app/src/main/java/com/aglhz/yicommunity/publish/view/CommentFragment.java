@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.publish.view;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,12 +11,15 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.abase.utils.ScreenUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -62,6 +66,8 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     EditText etInputFragmentComment;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
+    @BindView(R.id.view_bottom_space)
+    View viewBottomSpace;
 
 
     private Unbinder unbinder;
@@ -143,6 +149,8 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
 
     private KeyboardChangeListener mKeyboardChangeListener;
 
+    private boolean isVisiableForLast;
+
     private void initListener() {
         mKeyboardChangeListener = new KeyboardChangeListener(_mActivity);
         mKeyboardChangeListener.setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
@@ -151,6 +159,43 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
                 ALog.d(TAG, "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]");
             }
         });
+
+        final View decorView = _mActivity.getWindow().getDecorView();
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect rect = new Rect();
+                decorView.getWindowVisibleDisplayFrame(rect);
+                //计算出可见屏幕的高度
+                int displayHight = rect.bottom - rect.top;
+                //获得屏幕整体的高度
+                int hight = decorView.getHeight();
+                //获得键盘高度
+                int keyboardHeight = hight - displayHight;
+                boolean visible = (double) displayHight / hight < 0.8;
+                if (visible != isVisiableForLast) {
+                    listener.onSoftKeyBoardVisible(visible, keyboardHeight);
+
+                }
+                isVisiableForLast = visible;
+            }
+        });
+    }
+
+    IKeyBoardVisibleListener listener = (visible, windowBottom) -> {
+        windowBottom -= ScreenUtils.getStatusBarHeight(_mActivity);
+        if (visible) {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowBottom);
+            viewBottomSpace.setLayoutParams(lp);
+        } else {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+            viewBottomSpace.setLayoutParams(lp);
+        }
+        ALog.d("onSoftKeyBoardVisible ---- visible:" + visible + " windowBottom:" + windowBottom);
+    };
+
+    interface IKeyBoardVisibleListener {
+        void onSoftKeyBoardVisible(boolean visible, int windowBottom);
     }
 
     private void initData() {
