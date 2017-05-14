@@ -53,4 +53,10 @@
             android:textColor="@color/red_text"
             android:textSize="15sp" />
     </LinearLayout>
+
+    <View
+        android:background="#F0F0F0"
+        android:id="@+id/view_bottom_space"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
 </LinearLayout>
