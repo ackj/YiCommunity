@@ -55,12 +55,13 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                     BannerVPAdapter adapter = new BannerVPAdapter(banners);
                     viewpager.setAdapter(adapter);
                 }
-
                 break;
             case HomeBean.TYPE_COMMUNITY_NOTICE:
                 AutoScrollTextView tv = helper.getView(R.id.tv_notice);
                 tv.setTextList(item.getNotice());
-                tv.startAutoScroll();
+                if(!tv.isStart()){
+                    tv.startAutoScroll();
+                }
                 helper.addOnClickListener(R.id.ll_item_notice);
                 break;
             case HomeBean.TYPE_COMMUNITY_FUNCTION:

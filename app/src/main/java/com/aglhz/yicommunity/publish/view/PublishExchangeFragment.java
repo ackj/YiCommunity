@@ -20,6 +20,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -37,6 +38,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +135,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
         Matisse.from(this)
                 .choose(MimeType.allOf())
                 .countable(true)
-                .maxSelectable(100)
+                .maxSelectable(3)
 //                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
 //                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
@@ -149,8 +151,13 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (requestCode == 100 && resultCode == RESULT_OK) {
             List<Uri> uris = Matisse.obtainResult(data);
+            params.files = new ArrayList<>();
             for (int i = 0; i < uris.size(); i++) {
                 ALog.d(TAG, "getImageAbsolutePath:" + ImageUtils.getImageAbsolutePath(_mActivity, uris.get(i)));
+                params.files.add(new File(ImageUtils.getImageAbsolutePath(BaseApplication.mContext, uris.get(i))));
+            }
+            if (params.files.size() > 0) {
+                params.type = 1;
             }
             uris.add(Uri.parse("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px));
             adapter.setNewData(uris);

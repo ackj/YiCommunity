@@ -183,7 +183,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         Matisse.from(this)
                 .choose(MimeType.allOf())
                 .countable(true)
-                .maxSelectable(100)
+                .maxSelectable(3)
 //                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
 //                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)

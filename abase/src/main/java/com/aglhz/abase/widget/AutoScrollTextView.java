@@ -53,6 +53,8 @@ public class AutoScrollTextView extends TextSwitcher implements
      */
     private int textColor = 0xDE000000;
 
+    private boolean isStart;
+
     private OnItemClickListener itemClickListener;
     private Context mContext;
     /**
@@ -91,9 +93,11 @@ public class AutoScrollTextView extends TextSwitcher implements
                             currentId++;
                             setText(textList.get(currentId % textList.size()));
                         }
+                        isStart = true;
                         handler.sendEmptyMessageDelayed(FLAG_START_AUTO_SCROLL, scrollDuration);
                         break;
                     case FLAG_STOP_AUTO_SCROLL:
+                        isStart = false;
                         handler.removeMessages(FLAG_START_AUTO_SCROLL);
                         break;
                 }
@@ -127,6 +131,10 @@ public class AutoScrollTextView extends TextSwitcher implements
      */
     public void startAutoScroll() {
         handler.sendEmptyMessage(FLAG_START_AUTO_SCROLL);
+    }
+
+    public boolean isStart() {
+        return isStart;
     }
 
     /**

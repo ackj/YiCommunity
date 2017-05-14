@@ -146,7 +146,7 @@
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/rb_carpool_"
+                        android:id="@+id/rb_carpool_has_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
@@ -158,6 +158,7 @@
                         android:textSize="13sp" />
 
                     <RadioButton
+                        android:id="@+id/rb_carpool_hasnot_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?android:attr/selectableItemBackground"
