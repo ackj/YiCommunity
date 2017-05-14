@@ -1,11 +1,11 @@
-package com.aglhz.yicommunity.publish.presenter;
+package com.aglhz.yicommunity.propery.presenter;
 
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.publish.contract.RepairApplyContract;
-import com.aglhz.yicommunity.publish.model.RepairApplyModel;
+import com.aglhz.yicommunity.propery.contract.RepairApplyContract;
+import com.aglhz.yicommunity.propery.model.RepairApplyModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

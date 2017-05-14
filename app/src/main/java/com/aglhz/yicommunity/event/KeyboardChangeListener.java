@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.common;
+package com.aglhz.yicommunity.event;
 
 import android.app.Activity;
 import android.os.Build;

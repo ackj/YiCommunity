@@ -55,18 +55,13 @@ public class MyPublishFragment extends BaseFragment {
         initStateBar(toolbar);
         toolbarTitle.setText("我的发布");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initView() {
         viewpager.setAdapter(new MyPublishVPAdapter(getFragmentManager()));
         tablayout.setupWithViewPager(viewpager);
-
+        viewpager.setOffscreenPageLimit(3);
     }
 
 }

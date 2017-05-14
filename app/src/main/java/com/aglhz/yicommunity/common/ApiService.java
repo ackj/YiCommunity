@@ -24,9 +24,6 @@ import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
-import java.io.File;
-import java.util.List;
-
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -70,6 +67,9 @@ public interface ApiService {
     String WEIXIU = "http://www.aglhz.com/sub_property_ysq/m/html/weixiu.html";
 
     String SONGSHUI = "http://www.aglhz.com/sub_property_ysq/m/html/songshui.html";
+
+    //智能设备
+    String SMART_DEVICE = "http://www.aglhz.com/sub_property_ysq/m/html/zhinengshebei.html";
 
     //********************以上为Web*******************************
 
@@ -156,15 +156,6 @@ public interface ApiService {
     @POST("/memberSYS-m/client/uploadHeader2.do")
     Observable<BaseBean> updatePortrait(@Query("token") String token, @Part("file") RequestBody file);
 
-    //提交管理投诉
-    @POST("/sub_property_ysq/property/complaint/from-client/complaint-create")
-    Observable<BaseBean> postComplain(@Query("token") String token,
-                                      @Query("cmnt_c") String cmnt_c,
-                                      @Query("name") String name,
-                                      @Query("phoneNo") String phoneNo,
-                                      @Query("content") String content,
-                                      @Query("type") int type,
-                                      @Query("file") List<File> files);
 
     //停车记录
     @POST("/sub_property_ysq/park/record/to-client/record-list")
@@ -263,17 +254,17 @@ public interface ApiService {
 
 
     //    @POST("/sub_property_ysq/client/repair")
-    @Multipart
+    String postRepair = BASE_PROPERTY + "/client/repair";
+
     @POST
-    Observable<BaseBean> postRepair(@Url String url,
-                                    @Query("token") String token,
-                                    @Query("cmnt_c") String cmnt_c,
-                                    @Query("contact") String contact,
-                                    @Query("des") String des,
-                                    @Query("name") String name,
-                                    @Query("single") boolean single,
-                                    @Query("type") int type,
-                                    @Part List<MultipartBody.Part> parts);
+    Observable<BaseBean> postRepair(@Url String url, @Body MultipartBody file);
+
+
+    String postComplain = BASE_PROPERTY + "/property/complaint/from-client/complaint-create";
+
+    //提交管理投诉
+    @POST
+    Observable<BaseBean> postComplain(@Url String url, @Body MultipartBody file);
 
     //获取门禁列表
 //    @POST("/sub_property_ysq/smartdoor/info/doormchs")
@@ -391,6 +382,18 @@ public interface ApiService {
                                                  @Query("currentPositionLng") String currentPositionLng,
                                                  @Query("page") int page, @Query("pageSize") int pageSize);
 
+    //获取我发布的闲置交换
+    @POST("sub_property_ysq/neighbor/exchange/to-client/exchange-mine-list")
+    Observable<NeighbourListBean> getMyExchangeList(@Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //获取我发布的邻里圈列表
+    @POST("/sub_property_ysq/neighbor/moments/to-client/moments-mine-list")
+    Observable<NeighbourListBean> getMyNeighbourList(@Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //获取我发布的拼车服务列表
+    @POST("/sub_property_ysq/neighbor/carpool/to-client/carpool-mine-list")
+    Observable<NeighbourListBean> getMyCarpoolList(@Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+
 
     //首页获取公告列表
     //    @POST("/sub_property_ysq/client/info/noticeTop")
@@ -436,7 +439,7 @@ public interface ApiService {
     String postExchangeComment = BASE_PROPERTY + "/neighbor/exchange/from-client/exchange-comment-create";
 
     @POST
-    Observable<BaseBean> postExchangeComment(@Url String url,@Body MultipartBody file);
+    Observable<BaseBean> postExchangeComment(@Url String url, @Body MultipartBody file);
 
     //发送 拼车服务评论
     String postCarpoolComment = BASE_PROPERTY + "/neighbor/carpool/from-client/carpool-comment-create";

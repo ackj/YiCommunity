@@ -2,12 +2,16 @@ package com.aglhz.yicommunity.publish.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.luban.Luban;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.model.ComplainModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -32,8 +36,41 @@ public class ComplainPresenter extends BasePresenter<PublishContract.View, Publi
 
     @Override
     public void post(Params params) {
+        switch (params.type) {
+            case 1:
+                compress(params);
+                break;
+            case 2:
+                //上传视频
+                break;
+            default:
+                beginPost(params);
+                break;
+        }
+    }
 
-        params.cmnt_c = "KBSJ-agl-00005";
+    public void compress(Params params) {
+        for (int i = 0; i < params.files.size(); i++) {
+            ALog.d(TAG, params.files.get(i).getAbsoluteFile() + " --- length----" + params.files.get(i).length());
+        }
+        Luban.get(BaseApplication.mContext)
+                .load(params.files)
+                .putGear(Luban.THIRD_GEAR)
+                .asList()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        files -> {
+                            ALog.e(Thread.currentThread().getName());
+                            for (int i = 0; i < files.size(); i++) {
+                                ALog.d(TAG, files.get(i).getAbsoluteFile() + " --- length----" + files.get(i).length());
+                            }
+                            params.files = files;
+                            beginPost(params);
+                        });
+    }
+
+    private void beginPost(Params params) {
         mRxManager.add(mModel.post(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
@@ -43,7 +80,6 @@ public class ComplainPresenter extends BasePresenter<PublishContract.View, Publi
                         getView().error(baseBean.getOther().getMessage());
                     }
                 }, this::error));
-
     }
 
     @Override

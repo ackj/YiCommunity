@@ -27,10 +27,8 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.common.ServiceApi;
 import com.aglhz.yicommunity.house.contract.HouseRightsContract;
 import com.aglhz.yicommunity.house.presenter.HouseRightsPresenter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kyleduo.switchbutton.SwitchButton;
 
 import butterknife.BindView;

@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.house.model;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -11,8 +10,6 @@ import com.aglhz.yicommunity.house.contract.HouseRightsContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.aglhz.yicommunity.common.ServiceApi.apply;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23

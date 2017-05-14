@@ -22,6 +22,11 @@ public class ImagesGridRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBe
 
     int displayWidth = DensityUtils.getDisplayWidth(BaseApplication.mContext);
 
+    @Override
+    public int getItemCount() {
+        return getData().size() > 3 ? 3 : getData().size();
+    }
+
     public ImagesGridRVAdapter(List<NeighbourListBean.DataBean.PicsBean> data) {
         super(R.layout.item_image, data);
     }

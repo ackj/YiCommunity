@@ -44,7 +44,6 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
 
     @Override
     public void post(Params params) {
-        params.cmnt_c = "KBSJ-agl-00005";
         switch (params.type){
             case 1:
                 compress(params);

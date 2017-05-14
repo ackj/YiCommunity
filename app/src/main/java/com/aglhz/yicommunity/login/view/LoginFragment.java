@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.login.view;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -59,6 +60,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     Toolbar toolbar;
     private Params params = Params.getInstance();
     private ViewGroup rootView;
+    private Dialog loadingDialog;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -101,6 +103,10 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
 
     @Override
     public void start(Object response) {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+
         if (cbRememberPassword.isChecked()) {
             UserHelper.setAccount(etUsername.getText().toString().trim()
                     , etPassword.getText().toString().trim());
@@ -112,6 +118,9 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
 
     @Override
     public void error(String errorMessage) {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
         DialogHelper.warningSnackbar(rootView, errorMessage);
     }
 
@@ -130,6 +139,10 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
             case R.id.cb_remember_password:
                 break;
             case R.id.bt_login:
+                if (loadingDialog == null) {
+                    loadingDialog = DialogHelper.loading(_mActivity);
+                }
+                loadingDialog.show();
                 params.user = etUsername.getText().toString().trim();
                 params.pwd = etPassword.getText().toString().trim();
                 mPresenter.start(params);

@@ -23,6 +23,7 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.neighbour.contract.NeighbourContract;
 import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
 import com.aglhz.yicommunity.publish.view.CommentFragment;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,9 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public static final int TYPE_EXCHANGE = 100;
     public static final int TYPE_CARPOOL = 101;
     public static final int TYPE_NEIGHBOUR = 102;
+    public static final int TYPE_MY_EXCHANGE = 103;
+    public static final int TYPE_MY_CARPOOL = 104;
+    public static final int TYPE_MY_NEIGHBOUR = 105;
     private int type;
 
 
@@ -126,6 +130,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         mLinearLayoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         adapter = new NeighbourRVAdapter(new ArrayList<>());
+//        adapter = new NeighbourRVAdapter(momentsList);
         adapter.setType(type);
         recyclerView.setAdapter(adapter);
     }
@@ -133,8 +138,21 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             NeighbourListBean.DataBean.MomentsListBean bean = (NeighbourListBean.DataBean.MomentsListBean) adapter.getData().get(position);
-            _mActivity.start(CommentFragment.newInstance(bean.getFid(),type));
+            _mActivity.start(CommentFragment.newInstance(bean.getFid(), type));
             return false;
+        });
+
+        //滑动时不让图片加载
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Glide.with(_mActivity).resumeRequests();
+                } else {
+                    Glide.with(_mActivity).pauseRequests();
+                }
+            }
         });
     }
 
@@ -171,13 +189,19 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         params.pageSize = 10;
         if (type == TYPE_EXCHANGE) {
             mPresenter.requestExchangeList(params);
-        } else if(type == TYPE_NEIGHBOUR){
+        } else if (type == TYPE_NEIGHBOUR) {
             mPresenter.requestNeihbourList(params);
-        }else if(type == TYPE_CARPOOL){
+        } else if (type == TYPE_CARPOOL) {
             params.currentPositionLat = UserHelper.latitude;
             params.currentPostionLng = UserHelper.longitude;
             params.carpoolType = 1;
             mPresenter.requestCarpoolList(params);
+        } else if (type == TYPE_MY_CARPOOL) {
+            mPresenter.requestMyCarpoolList(params);
+        } else if (type == TYPE_MY_EXCHANGE) {
+            mPresenter.requestMyExchangeList(params);
+        } else if (type == TYPE_MY_NEIGHBOUR) {
+            mPresenter.requestMyNeihbourList(params);
         }
     }
 
@@ -188,6 +212,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 
     @Override
     public void error(String errorMessage) {
+        ALog.e("error:"+errorMessage);
         ptrFrameLayout.refreshComplete();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
@@ -200,19 +225,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     }
 
     @Override
-    public void responseNeihbourList(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
-        ptrFrameLayout.refreshComplete();
-        adapter.setNewData(datas);
-    }
-
-    @Override
-    public void responseExchangeList(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
-        ptrFrameLayout.refreshComplete();
-        adapter.setNewData(datas);
-    }
-
-    @Override
-    public void responseCarpoolList(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
+    public void responseSuccess(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
         ptrFrameLayout.refreshComplete();
         adapter.setNewData(datas);
     }

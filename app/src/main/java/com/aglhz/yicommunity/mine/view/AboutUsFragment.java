@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
-import com.aglhz.yicommunity.common.ServiceApi;
 import com.aglhz.yicommunity.web.WebActivity;
 
 import butterknife.BindView;

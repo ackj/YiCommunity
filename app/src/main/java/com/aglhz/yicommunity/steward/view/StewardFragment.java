@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
@@ -24,14 +23,13 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.DoorListBean;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ServiceApi;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.bean.IconBean;
-import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.door.DoorActivity;
 import com.aglhz.yicommunity.door.call.CallActivity;
 import com.aglhz.yicommunity.event.EventCommunityChange;
@@ -44,10 +42,8 @@ import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.presenter.StewardPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
-import com.orhanobut.dialogplus.OnItemClickListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -356,7 +352,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     private void go2SmartDevice() {
         Intent intent = new Intent(_mActivity, WebActivity.class);
         intent.putExtra("title", "智能设备");
-        intent.putExtra("link", ServiceApi.SMART_DEVICE);
+        intent.putExtra("link", ApiService.SMART_DEVICE);
         startActivity(intent);
     }
 

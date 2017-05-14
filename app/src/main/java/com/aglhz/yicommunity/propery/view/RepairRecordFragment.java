@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.publish.view;
+package com.aglhz.yicommunity.propery.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,8 +20,9 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.publish.contract.RepairApplyContract;
-import com.aglhz.yicommunity.publish.presenter.RepairApplyPresenter;
+import com.aglhz.yicommunity.propery.contract.RepairApplyContract;
+import com.aglhz.yicommunity.propery.presenter.RepairApplyPresenter;
+import com.aglhz.yicommunity.publish.view.RepairFragment;
 
 import java.util.ArrayList;
 import java.util.List;

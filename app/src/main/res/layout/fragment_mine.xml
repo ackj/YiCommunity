@@ -13,7 +13,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="195dp"
-            android:background="@drawable/bg_mine_1500px_780px">
+            android:background="@drawable/bg_mine_1920px_1080px">
 
             <ImageView
                 android:id="@+id/iv_head_item_comment"

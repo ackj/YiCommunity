@@ -182,7 +182,7 @@
                 android:paddingRight="15dp" />
 
             <Button
-                android:id="@+id/btn_submit_fragment_repair"
+                android:id="@+id/bt_submit_fragment_repair"
                 android:layout_width="150dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_horizontal"

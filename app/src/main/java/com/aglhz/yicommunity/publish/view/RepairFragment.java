@@ -27,6 +27,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.RepairPresenter;
@@ -53,8 +54,8 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     private final String TAG = RepairFragment.class.getSimpleName();
     @BindView(R.id.rl_house_name_fragment_repair)
     RelativeLayout rlHouseName;
-    @BindView(R.id.btn_submit_fragment_repair)
-    Button btnSubmitFragmentRepair;
+    @BindView(R.id.bt_submit_fragment_repair)
+    Button btSubmit;
 
     private boolean isPrivate;//是否是私人报修
 
@@ -154,13 +155,13 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         unbinder.unbind();
     }
 
-    @OnClick({R.id.tv_location_fragment_repair, R.id.btn_submit_fragment_repair})
+    @OnClick({R.id.tv_location_fragment_repair, R.id.bt_submit_fragment_repair})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_location_fragment_repair:
                 _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
                 break;
-            case R.id.btn_submit_fragment_repair:
+            case R.id.bt_submit_fragment_repair:
                 break;
         }
     }
@@ -179,7 +180,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
                 .forResult(REQUEST_CODE_CHOOSE);
     }
 
-    @OnClick(R.id.btn_submit_fragment_repair)
+    @OnClick(R.id.bt_submit_fragment_repair)
     public void onViewClicked() {
         params.name = etName.getText().toString().trim();
         params.des = etContent.getText().toString().trim();
@@ -203,6 +204,8 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     }
 
     private void submit(Params params) {
+        btSubmit.setClickable(false);
+        params.cmnt_c = UserHelper.communityCode;
         mPresenter.post(params);
     }
 
@@ -232,11 +235,13 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     @Override
     public void error(String errorMessage) {
+        btSubmit.setClickable(true);
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
+        btSubmit.setClickable(true);
         DialogHelper.successSnackbar(getView(), "提交成功!");
         setFragmentResult(RESULT_OK, null);
         pop();
