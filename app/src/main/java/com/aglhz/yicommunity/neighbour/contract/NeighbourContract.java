@@ -18,20 +18,34 @@ import io.reactivex.Observable;
 public interface NeighbourContract {
 
     interface View extends BaseContract.View {
-        void responseNeihbourList(List<NeighbourListBean.DataBean.MomentsListBean> datas);
-        void responseExchangeList(List<NeighbourListBean.DataBean.MomentsListBean> datas);
-        void responseCarpoolList(List<NeighbourListBean.DataBean.MomentsListBean> datas);
+        void responseSuccess(List<NeighbourListBean.DataBean.MomentsListBean> datas);
     }
 
     interface Presenter extends BaseContract.Presenter {
         void requestNeihbourList(Params params);
+
         void requestExchangeList(Params params);
+
         void requestCarpoolList(Params params);
+
+        void requestMyNeihbourList(Params params);
+
+        void requestMyExchangeList(Params params);
+
+        void requestMyCarpoolList(Params params);
     }
 
     interface Model extends BaseContract.Model {
         Observable<NeighbourListBean> getNeihbourList(Params params);
+
         Observable<NeighbourListBean> getExchangeList(Params params);
+
         Observable<NeighbourListBean> getCarpoolList(Params params);
+
+        Observable<NeighbourListBean> getMyNeihbourList(Params params);
+
+        Observable<NeighbourListBean> getMyExchangeList(Params params);
+
+        Observable<NeighbourListBean> getMyCarpoolList(Params params);
     }
 }

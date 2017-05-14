@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.publish.view;
 
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.ScreenUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
@@ -77,6 +79,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
 
     private String fid;
     private int type;
+    private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
 
     public static CommentFragment newInstance(String fid, int type) {
         CommentFragment fragment = new CommentFragment();
@@ -161,25 +164,26 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
         });
 
         final View decorView = _mActivity.getWindow().getDecorView();
-        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect rect = new Rect();
-                decorView.getWindowVisibleDisplayFrame(rect);
-                //计算出可见屏幕的高度
-                int displayHight = rect.bottom - rect.top;
-                //获得屏幕整体的高度
-                int hight = decorView.getHeight();
-                //获得键盘高度
-                int keyboardHeight = hight - displayHight;
-                boolean visible = (double) displayHight / hight < 0.8;
-                if (visible != isVisiableForLast) {
-                    listener.onSoftKeyBoardVisible(visible, keyboardHeight);
-
-                }
-                isVisiableForLast = visible;
+        //计算出可见屏幕的高度
+        //获得屏幕整体的高度
+        //获得键盘高度
+        globalLayoutListener = () -> {
+            Rect rect = new Rect();
+            decorView.getWindowVisibleDisplayFrame(rect);
+            //计算出可见屏幕的高度
+            int displayHight = rect.bottom - rect.top;
+            //获得屏幕整体的高度
+            int hight = decorView.getHeight();
+            //获得键盘高度
+            int keyboardHeight = hight - displayHight;
+            boolean visible = (double) displayHight / hight < 0.8;
+            if (visible != isVisiableForLast) {
+                listener.onSoftKeyBoardVisible(visible, keyboardHeight);
             }
-        });
+            isVisiableForLast = visible;
+        };
+        //注册布局变化监听
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
     }
 
     IKeyBoardVisibleListener listener = (visible, windowBottom) -> {
@@ -227,6 +231,13 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        KeyBoardUtils.hideKeybord(getView(), _mActivity);
+        //移除布局变化监听
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            _mActivity.getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(globalLayoutListener);
+        } else {
+            _mActivity.getWindow().getDecorView().getViewTreeObserver().removeGlobalOnLayoutListener(globalLayoutListener);
+        }
     }
 
     @Override

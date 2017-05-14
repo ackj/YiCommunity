@@ -28,21 +28,40 @@ public class NeighbourModel extends BaseModel implements NeighbourContract.Model
 
     @Override
     public Observable<NeighbourListBean> getNeihbourList(Params params) {
-        return HttpHelper.getService(ApiService.class).getNeighbourList(params.page,params.pageSize)
+        return HttpHelper.getService(ApiService.class).getNeighbourList(params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<NeighbourListBean> getExchangeList(Params params) {
-        return HttpHelper.getService(ApiService.class).getExchangeList(params.page,params.pageSize)
+        return HttpHelper.getService(ApiService.class).getExchangeList(params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<NeighbourListBean> getCarpoolList(Params params) {
         return HttpHelper.getService(ApiService.class).getCarpoolList(params.carpoolType,
-                params.currentPositionLat,params.currentPostionLng,params.page,params.pageSize)
+                params.currentPositionLat, params.currentPostionLng, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<NeighbourListBean> getMyNeihbourList(Params params) {
+        return HttpHelper.getService(ApiService.class).getMyNeighbourList(params.token, params.page, params.pageSize)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<NeighbourListBean> getMyExchangeList(Params params) {
+        return HttpHelper.getService(ApiService.class).getMyExchangeList(params.token, params.page, params.pageSize)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<NeighbourListBean> getMyCarpoolList(Params params) {
+        return HttpHelper.getService(ApiService.class).getMyCarpoolList(params.token, params.page, params.pageSize)
+                .subscribeOn(Schedulers.io());
+    }
+
 
 }

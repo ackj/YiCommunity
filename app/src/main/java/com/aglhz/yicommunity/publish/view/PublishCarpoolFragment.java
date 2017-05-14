@@ -32,6 +32,7 @@ import com.aglhz.yicommunity.picker.view.CityPickerFragment;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishCarpoolPresenter;
 import com.bigkoo.pickerview.TimePickerView;
+import com.bumptech.glide.Glide;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -140,6 +141,8 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
             }
             return false;
         });
+
+
     }
 
     private void selectPhoto() {
@@ -196,6 +199,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     @Override
     public void responseSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), "提交成功!");
+        pop();
     }
 
     @OnClick({R.id.btn_submit, R.id.ll_location, R.id.tv_select_start_point, R.id.tv_select_end_point, R.id.tv_select_go_time, R.id.rb_carpool_has_car, R.id.rb_carpool_hasnot_car})

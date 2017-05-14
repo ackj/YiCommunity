@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.yicommunity.neighbour.view.MessageFragment;
 
 
 /**
@@ -26,13 +27,13 @@ public class MyPublishVPAdapter extends FragmentPagerAdapter {
         BaseFragment fragment = null;
         switch (position) {
             case 0:
-                fragment = UnusedExchangeFragment.newInstance();
+                fragment = MessageFragment.newInstance(MessageFragment.TYPE_MY_EXCHANGE);
                 break;
             case 1:
-                fragment = CarShareFragment.newInstance();
+                fragment = MessageFragment.newInstance(MessageFragment.TYPE_MY_CARPOOL);
                 break;
             case 2:
-                fragment = UnusedExchangeFragment.newInstance();
+                fragment = MessageFragment.newInstance(MessageFragment.TYPE_MY_NEIGHBOUR);
                 break;
         }
         return fragment;

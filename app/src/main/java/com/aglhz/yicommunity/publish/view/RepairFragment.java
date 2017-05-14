@@ -27,6 +27,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.RepairPresenter;
@@ -203,6 +204,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     }
 
     private void submit(Params params) {
+        params.cmnt_c = UserHelper.communityCode;
         mPresenter.post(params);
     }
 

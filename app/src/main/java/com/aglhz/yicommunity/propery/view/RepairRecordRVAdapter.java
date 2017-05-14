@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.publish.view;
+package com.aglhz.yicommunity.propery.view;
 
 import android.widget.ImageView;
 

@@ -41,7 +41,7 @@ public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, Ne
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseNeihbourList(neighbourListBean.getData().getMomentsList());
+                        getView().responseSuccess(neighbourListBean.getData().getMomentsList());
                     } else {
                         getView().error(neighbourListBean.getOther().getMessage());
                     }
@@ -54,7 +54,7 @@ public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, Ne
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseExchangeList(neighbourListBean.getData().getExchangeList());
+                        getView().responseSuccess(neighbourListBean.getData().getExchangeList());
                     } else {
                         getView().error(neighbourListBean.getOther().getMessage());
                     }
@@ -67,7 +67,46 @@ public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, Ne
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseCarpoolList(neighbourListBean.getData().getCarpoolList());
+                        getView().responseSuccess(neighbourListBean.getData().getCarpoolList());
+                    } else {
+                        getView().error(neighbourListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestMyNeihbourList(Params params) {
+        mRxManager.add(mModel.getMyNeihbourList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(neighbourListBean -> {
+                    if (neighbourListBean.getOther().getCode() == 200) {
+                        getView().responseSuccess(neighbourListBean.getData().getMomentsList());
+                    } else {
+                        getView().error(neighbourListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestMyExchangeList(Params params) {
+        mRxManager.add(mModel.getMyExchangeList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(neighbourListBean -> {
+                    if (neighbourListBean.getOther().getCode() == 200) {
+                        getView().responseSuccess(neighbourListBean.getData().getExchangeList());
+                    } else {
+                        getView().error(neighbourListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestMyCarpoolList(Params params) {
+        mRxManager.add(mModel.getMyCarpoolList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(neighbourListBean -> {
+                    if (neighbourListBean.getOther().getCode() == 200) {
+                        getView().responseSuccess(neighbourListBean.getData().getCarpoolList());
                     } else {
                         getView().error(neighbourListBean.getOther().getMessage());
                     }

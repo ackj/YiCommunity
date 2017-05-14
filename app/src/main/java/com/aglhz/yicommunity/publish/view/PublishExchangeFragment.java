@@ -30,6 +30,7 @@ import com.aglhz.yicommunity.event.EventCommunityChange;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishExchangePresenter;
+import com.bumptech.glide.Glide;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -129,6 +130,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
             }
             return false;
         });
+
     }
 
     private void selectPhoto() {
@@ -186,6 +188,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
     @Override
     public void responseSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), "提交成功!");
+        pop();
     }
 
     @OnClick({R.id.ll_location, R.id.btn_submit})

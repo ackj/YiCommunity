@@ -32,6 +32,7 @@ public class NeighbourFragment extends BaseFragment {
     Toolbar toolbar;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
+
     private Unbinder unbinder;
     private int type;
 

@@ -32,6 +32,7 @@ import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
 import com.aglhz.yicommunity.mine.contract.MineContract;
 import com.aglhz.yicommunity.mine.presenter.MinePresenter;
+import com.aglhz.yicommunity.mypublish.MyPublishActivity;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
 
@@ -39,7 +40,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.linphone.core.LinphoneCall;
-import org.linphone.core.LinphoneCore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -172,7 +172,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 createShortCut();
                 break;
             case R.id.ll_my_publish:
-//                startActivity(new Intent(_mActivity, MyPublishActivity.class));
+                startActivity(new Intent(_mActivity, MyPublishActivity.class));
                 break;
             case R.id.ll_clean_cache:
                 mPresenter.requestClearCache();

@@ -28,6 +28,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishNeighbourPresenter;
+import com.bumptech.glide.Glide;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -115,6 +116,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
             }
             return false;
         });
+
     }
 
     private void selectPhoto() {
@@ -170,6 +172,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     @Override
     public void responseSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), "提交成功!");
+        pop();
     }
 
     @OnClick(R.id.btn_submit)

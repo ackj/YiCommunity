@@ -24,6 +24,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.ComplainPresenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -141,6 +142,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     @Override
     public void responseSuccess(BaseBean baseBean) {
         DialogHelper.successSnackbar(getView(), "提交成功!");
+        _mActivity.finish();
     }
 
     @Override
@@ -210,6 +212,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     }
 
     private void submit(Params params) {
+        params.cmnt_c = UserHelper.communityCode;
         mPresenter.post(params);//上传
     }
 }
