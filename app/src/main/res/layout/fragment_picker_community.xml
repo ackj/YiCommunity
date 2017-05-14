@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
-    <!---->
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <View
         android:layout_width="match_parent"
@@ -20,10 +19,12 @@
         android:layout_height="1dp"
         android:background="@color/cp_gray_round" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_search_community"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         />
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/rv_search_community"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
+    <include layout="@layout/recyclerview" />
+
 
 </LinearLayout>

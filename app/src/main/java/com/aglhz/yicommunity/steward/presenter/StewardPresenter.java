@@ -51,7 +51,6 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
         mRxManager.add(mModel.requestHouses((Params) request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(iconBeanList -> {
-                    ALog.e(Thread.currentThread().getName());
                     iconBeanList.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加房屋", ""));
                     getView().responseHouses(iconBeanList);
 
@@ -76,12 +75,12 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
     }
 
     @Override
-    public void requestSip(Params params) {
-        mRxManager.add(mModel.requestSip(params)
+    public void requestDoors(Params params) {
+        mRxManager.add(mModel.requestDoors(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bean -> {
                     if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-                        getView().responseSip(bean);
+                        getView().responseDoors(bean);
                     } else {
                         getView().error(bean.getOther().getMessage());
                     }

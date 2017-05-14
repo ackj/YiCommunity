@@ -9,6 +9,8 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.bean.UserBean;
 import com.google.gson.Gson;
 
+import mlxy.utils.S;
+
 
 /**
  * Author：leguang on 2016/5/4 0009 15:49
@@ -25,8 +27,9 @@ public class UserHelper {
     private static final String USER_INFO = "user_info";
     private static final String DIR = "dir";
     private static final String CITY = "city";
-    private static final String LATITUDE = "current_position_lat";
-    private static final String LONGITUDE = "current_position_lng";
+    private static final String LATITUDE = "latitude";
+    private static final String LONGITUDE = "longitude";
+    private static final String SIP = "sip";
 
     public static String token = "";
     public static String communityName = "";
@@ -35,8 +38,9 @@ public class UserHelper {
     public static String account = "";
     public static String password = "";
     public static String dir = "";//默认设置的一键开门的设备路径。
-    public static String latitude;//纬度
-    public static String longitude;//经度
+    public static String latitude = "";//纬度
+    public static String longitude = "";//经度
+    public static String sip = "";
 
     public static UserBean.DataBean.MemberInfoBean userInfo;
 
@@ -76,6 +80,7 @@ public class UserHelper {
         userInfo = null;
         latitude = "";
         longitude = "";
+        sip = "";
         return getEditor().clear().commit();
     }
 
@@ -100,11 +105,19 @@ public class UserHelper {
     //更新用户信息
     public static boolean setUserInfo(UserBean.DataBean.MemberInfoBean memberInfo) {
         setToken(memberInfo.getToken());
-        userInfo = memberInfo;
+        UserHelper.userInfo = memberInfo;
         SharedPreferences.Editor editor = getEditor();
         Gson gson = new Gson();
         String info = gson.toJson(memberInfo);
         editor.putString(USER_INFO, info);
+        return editor.commit();
+    }
+
+    //更新sip账号
+    public static boolean setSip(String sip) {
+        UserHelper.sip = sip;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(SIP, sip);
         return editor.commit();
     }
 
@@ -121,7 +134,7 @@ public class UserHelper {
         return UserHelper.userInfo;
     }
 
-    //更新社区名称和社区代码
+    //更新账号密码
     public static boolean setAccount(String account, String password) {
         UserHelper.account = account;
         UserHelper.password = password;
@@ -141,6 +154,7 @@ public class UserHelper {
         city = getSp().getString(CITY, "");
         latitude = getSp().getString(LATITUDE, "");
         longitude = getSp().getString(LONGITUDE, "");
+        sip = getSp().getString(SIP, "");
         getUserInfo();
     }
 
@@ -167,5 +181,13 @@ public class UserHelper {
 
     private static SharedPreferences.Editor getEditor() {
         return getSp().edit();
+    }
+
+    public static String string() {
+        return "UserHelper{" +
+                "token=" + token +
+                ", sip='" + sip + '\'' +
+                ", dir='" + dir + '\'' +
+                '}';
     }
 }

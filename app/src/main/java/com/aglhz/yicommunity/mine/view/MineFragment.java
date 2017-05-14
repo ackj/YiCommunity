@@ -109,20 +109,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     private void initData() {
-
-        DoorManager.getInstance().initWebUserApi().setCallListener((lc, call, state, message) -> {
-
-            ALog.e("1111111111::" + state.toString());
-            if (state == LinphoneCall.State.OutgoingInit ||
-                    state == LinphoneCall.State.OutgoingProgress) {
-                // 启动CallOutgoingActivity
-                _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
-
-            }
-
-        });
-
-
         mPresenter.requestCache();
         //动态给“个人资料”TextView设置drawableLeft并改变其大小
         Drawable drawableLeft = ContextCompat.getDrawable(_mActivity, R.drawable.ic_oneself_info_80px);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
@@ -35,6 +36,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 import mlxy.utils.S;
 
+import static com.aglhz.yicommunity.R.string.member;
 import static com.alipay.sdk.app.statistic.c.w;
 
 /**
@@ -67,14 +69,19 @@ public class DoorManager {
 
     public void init() {
         WebApiConstants.setHttpServer("http://member.planidea.cn");
+
+        // 检查是否已经初始化SipCoreManager是否初始化。
+        if (SipCoreManager.isInstanciated()) {
+            ALog.e("SipCoreManager已经初始化");
+            return;
+        }
+
         BaseApplication.mContext.startService(new Intent(android.content.Intent.ACTION_MAIN)
                 .setClass(BaseApplication.mContext, SipService.class));
 
         Observable.create(o -> {
             try {
                 while (!SipService.isReady()) {
-                    ALog.e("Thread.currentThread().getName():" + Thread.currentThread().getName());
-
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -87,60 +94,45 @@ public class DoorManager {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> {
-                    ALog.e("Thread.currentThread().getName():" + Thread.currentThread().getName());
-
-
-                    SipService.instance().setNotificationIcon(R.mipmap.ic_app_logo);
-                    SipService.instance().setActivityToLaunchOnIncomingReceived(CallActivity.class);
-                });
-
-
-/**
- * 记得要改这个要启动的Activity，暂时先站个位置。
- */
-
+                .subscribe(o -> SipService.instance().setActivityToLaunchOnIncomingReceived(CallActivity.class));
     }
 
-    public DoorManager initWebUserApi() {
-        if (mWebUserApi != null) {
-            return this;
-        }
+    public DoorManager initWebUserApi(String userName, AccessCallBack accessCallBack) {
 
         mWebUserApi = new WebUserApi(BaseApplication.mContext);
         mWebUserApi.setOnAccessTokenListener(new WebUserApi.onAccessTokenListener() {
             @Override
             public void onPreAccessToken() {
-
+                if (accessCallBack != null) {
+                    accessCallBack.onPreAccess();
+                }
             }
 
             @Override
             public void onPostAccessToken(WebReponse webReponse) {
-
-                ALog.e("1111111111::" + webReponse.getStatusCode());
+                if (accessCallBack != null) {
+                    accessCallBack.onPostAccess(webReponse);
+                }
 
                 if (webReponse != null && webReponse.getStatusCode() == 200) {
                     // 登陆成功，启动对讲服务
-
-                    /**
-                     * 看后期要做什么
-                     */
-
-
+                    ALog.e("111111111111111111" + userName);
+                    UserHelper.setSip(userName);
+                    // 登陆失败，显示提示信息
+                    Toast.makeText(BaseApplication.mContext, "对讲服务启动成功", Toast.LENGTH_LONG).show();
                 } else {
                     // 登陆失败，显示提示信息
                     Toast.makeText(BaseApplication.mContext, "对讲服务启动失败", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
-        mWebUserApi.accessToken(Device.UUID, Device.UserName);
+        mWebUserApi.accessToken(Device.UUID, userName);
 
         return this;
     }
 
 
-    public DoorManager setCallListener(CallBack callBack) {
+    public DoorManager setCallListener(LinphoneCallBack callBack) {
 
         if (callBack == null) {
             throw new IllegalArgumentException("callBack参数不能为null");
@@ -153,33 +145,7 @@ public class DoorManager {
 
                 callBack.callState(lc, call, state, message);
 
-                ALog.e("1111111111" + state.toString());
-
-//                if (LinphoneCall.State.Connected == state || LinphoneCall.State.StreamsRunning == state) {
-//                    // 启动CallOutgoingActivity
-//
-////                    RxBus.get().post(new StartCallActivityEvent());
-//                }
-//                if (LinphoneCall.State.CallEnd == state) {    // 当前的Call状态为End
-////                    RxBus.get().post(new HardWareCallEnd());
-//                }
-
-                //以下为判断的参考，实际使用在外部。
-                if (state == LinphoneCall.State.IncomingReceived) {
-                    // 启动CallIncomingActivity
-
-
-                } else if (state == LinphoneCall.State.OutgoingInit ||
-                        state == LinphoneCall.State.OutgoingProgress) {
-                    // 启动CallOutgoingActivity
-
-
-                } else if (state == LinphoneCall.State.CallEnd || state ==
-                        LinphoneCall.State.Error || state == LinphoneCall.State.CallReleased) {
-
-                    // 通话结束/出错的处理
-                }
-
+                ALog.e("1111111111" + state.toString() + "：：：" + message);
 
             }
         };
@@ -188,20 +154,17 @@ public class DoorManager {
         LinphoneCore lc = SipCoreManager.getLcIfManagerNotDestroyedOrNull();
         if (lc != null) {
             lc.addListener(mListener);
-
             /**
              * 这里总是报空指针，干脆让这个代码运行多次注册，同时捕获异常。
              */
-
             try {
 
                 SipCorePreferences.instance().setAccountOutboundProxyEnabled(0, true);
-
+                ALog.e("成功注册代理服务器…………………………………………");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
         return this;
     }
 
@@ -213,18 +176,28 @@ public class DoorManager {
 
         try {
             if (!SipCoreManager.getInstance().acceptCallIfIncomingPending()) {
-                ALog.e("1111111111" + to);
+                ALog.e("77777777:" + to);
 
-                SipCoreManager.getInstance().newOutgoingCall(to);
+                ALog.e("77777777:" + "sip:D" + to + "@member");
+
+
+                SipCoreManager.getInstance().newOutgoingCall("sip:D" + to + "@member");
             }
         } catch (LinphoneCoreException e) {    // 呼叫发生异常，终止当前的Call
             SipCoreManager.getInstance().terminateCall();
         }
     }
 
-    public interface CallBack {
+    public interface LinphoneCallBack {
 
         void callState(LinphoneCore lc, LinphoneCall call, LinphoneCall.State state, String message);
+    }
+
+    public interface AccessCallBack {
+
+        void onPreAccess();
+
+        void onPostAccess(WebReponse webReponse);
     }
 
 

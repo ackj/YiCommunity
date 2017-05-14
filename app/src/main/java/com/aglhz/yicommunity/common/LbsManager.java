@@ -67,25 +67,14 @@ public class LbsManager {
 
 
     public void startLocation(LocateCallBack callBack) {
-        ALog.e("startLocation22222222222222");//获取精度信息
-
-
         try {
-            if (callBack == null) {
-                throw new IllegalArgumentException("callBack参数不能为null");
-            }
-
             //启动定位
             mCallBack = callBack;
 
-//            mLocationClient.re
-//
-//                    mLocationClient.getLastKnownLocation()
-
             mLocationClient.setLocationListener(amapLocation -> {
-                mCallBack.CallBack(amapLocation);
-
-                //*************以下这些调试时用，调试完了记得删掉****************
+                if (mCallBack != null) {
+                    mCallBack.CallBack(amapLocation);
+                }
 
                 if (amapLocation != null) {
                     if (amapLocation.getErrorCode() == 0) {
@@ -93,8 +82,6 @@ public class LbsManager {
                         UserHelper.setCity(amapLocation.getCity());
                         UserHelper.setLatitude(String.valueOf(amapLocation.getLatitude()));
                         UserHelper.setLongitude(String.valueOf(amapLocation.getLongitude()));
-                        ALog.e("getLatitude:"+String.valueOf(amapLocation.getLatitude()));
-                        ALog.e("getLongitude:"+String.valueOf(amapLocation.getLongitude()));
                     } else {
                         //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                         ALog.e("AmapError", "location Error, ErrCode:"
@@ -102,8 +89,6 @@ public class LbsManager {
                                 + amapLocation.getErrorInfo());
                     }
                 }
-                //*************以上这些调试时用，调试完了记得删掉****************
-
             });
 
             mLocationClient.startLocation();
@@ -111,7 +96,6 @@ public class LbsManager {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-
     }
 
     public void startLocation() {

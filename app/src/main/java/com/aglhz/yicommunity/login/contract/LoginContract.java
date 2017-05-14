@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.login.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.UserBean;
 import com.aglhz.yicommunity.common.Params;
 
@@ -21,5 +22,7 @@ public interface LoginContract {
 
     interface Model extends BaseContract.Model {
         Observable<UserBean> requestLogin(Params params);
+
+        Observable<SipBean> requestSip(Params params);
     }
 }

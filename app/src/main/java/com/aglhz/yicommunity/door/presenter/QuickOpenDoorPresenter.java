@@ -36,12 +36,12 @@ public class QuickOpenDoorPresenter extends BasePresenter<QuickOpenDoorContract.
     }
 
     @Override
-    public void requestDoorList(Params params) {
-        mRxManager.add(mModel.getDoorListBean(params)
+    public void requestDoors(Params params) {
+        mRxManager.add(mModel.requestDoors(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(doorListBean -> {
                     if (doorListBean.getOther().getCode() == 200) {
-                        getView().responseDoorList(doorListBean);
+                        getView().responseDoors(doorListBean);
                     } else {
                         getView().error(doorListBean.getOther().getMessage());
                     }

@@ -6,6 +6,7 @@ import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.ContactBean;
+import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.common.ApiService;
@@ -19,6 +20,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.alipay.sdk.app.statistic.c.x;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -38,7 +40,11 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
 
     @Override
     public Observable<ContactBean> requestContact(Params params) {
-        return HttpHelper.getService(ApiService.class).requestContact(ApiService.CONTACT, params.token, params.cmnt_c)
+        ALog.e(params.token);
+        ALog.e(params.cmnt_c);
+
+        return HttpHelper.getService(ApiService.class)
+                .requestContact(ApiService.CONTACT, params.token, params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 
@@ -48,15 +54,17 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
                 .requestMyhouses(ApiService.requestMyhouses, params.token, params.cmnt_c)
                 .map(myHousesBean -> myHousesBean.getData().getAuthBuildings())
                 .flatMap(Flowable::fromIterable)
-                .map(authBuildingsBean -> new IconBean(R.drawable.ic_my_house_red_140px, authBuildingsBean.getB_name(), authBuildingsBean.getFid()))
+                .map(bean -> new IconBean(R.drawable.ic_my_house_red_140px, bean.getB_name(), bean.getFid()))
                 .toList()
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<SipBean> requestSip(Params params) {
+    public Observable<DoorListBean> requestDoors(Params params) {
+        ALog.e("params.token::" + params.token);
+
         return HttpHelper.getService(ApiService.class)
-                .requestSip(ApiService.requestSip, params.token)
+                .requestDoors(ApiService.requestDoors, params.token)
                 .subscribeOn(Schedulers.io());
     }
 }

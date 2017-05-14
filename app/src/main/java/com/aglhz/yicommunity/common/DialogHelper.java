@@ -1,7 +1,10 @@
 package com.aglhz.yicommunity.common;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.view.View;
 
+import com.aglhz.abase.widget.Dialog.LoadingDialog;
 import com.trycatch.mysnackbar.Prompt;
 import com.trycatch.mysnackbar.TSnackbar;
 
@@ -26,11 +29,8 @@ public class DialogHelper {
 
     public static void loadingSnackbar(View view, CharSequence text) {
         TSnackbar.make(view, text, TSnackbar.LENGTH_INDEFINITE, TSnackbar.APPEAR_FROM_TOP_TO_DOWN)
-                .setAction("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                .setAction("取消", v -> {
 
-                    }
                 })
                 .setPromptThemBackground(Prompt.SUCCESS)
                 .addIconProgressLoading(0, true, false)
@@ -41,6 +41,10 @@ public class DialogHelper {
         TSnackbar.make(view, text, TSnackbar.LENGTH_SHORT, TSnackbar.APPEAR_FROM_TOP_TO_DOWN)
                 .setPromptThemBackground(Prompt.WARNING)
                 .show();
+    }
+
+    public static Dialog loading(Activity activity) {
+        return new LoadingDialog(activity);
     }
 
 }

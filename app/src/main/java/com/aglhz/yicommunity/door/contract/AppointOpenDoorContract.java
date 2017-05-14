@@ -18,7 +18,7 @@ public interface AppointOpenDoorContract {
 
     interface View extends BaseContract.View {
         //刷新界面，响应社区返回的数据
-        void responseDoorList(DoorListBean mDoorListBean);
+        void responseDoors(DoorListBean mDoorListBean);
 
         //刷新界面，响应楼栋返回的数据
         void responseAppointOpenDoor(BaseBean mBaseBean);
@@ -27,7 +27,7 @@ public interface AppointOpenDoorContract {
 
     interface Presenter extends BaseContract.Presenter {
         //请求社区列表数据
-        void requestDoorList(Params params);
+        void requestDoors(Params params);
 
         //请求楼栋列表数据
         void requestAppointOpenDoor(Params params);
@@ -35,7 +35,9 @@ public interface AppointOpenDoorContract {
     }
 
     interface Model extends BaseContract.Model {
-        Observable<DoorListBean> getDoorListBean(Params params);
+
+        Observable<DoorListBean> requestDoors(Params params);
+
         Observable<BaseBean> appointOpenDoor(Params params);
     }
 }

@@ -17,11 +17,11 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/4/29 0029.
  */
-public class CommunityListAdapter extends BaseRecyclerViewAdapter<CommunitySelectBean.DataBean.CommunitiesBean, BaseViewHolder> {
+public class CommunityRVAdapter extends BaseRecyclerViewAdapter<CommunitySelectBean.DataBean.CommunitiesBean, BaseViewHolder> {
 
     private String searchKey = "";
 
-    public CommunityListAdapter(List<CommunitySelectBean.DataBean.CommunitiesBean> data) {
+    public CommunityRVAdapter(List<CommunitySelectBean.DataBean.CommunitiesBean> data) {
         super(R.layout.item_community_address, data);
     }
 

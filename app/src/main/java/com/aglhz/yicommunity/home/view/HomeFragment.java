@@ -260,7 +260,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunityChange event) {
         ALog.e(TAG, "onEvent:::" + event.bean.getName());
-        UserHelper.setCommunity(event.bean.getName(), event.bean.getCode());
         adapter.getData().get(0).community = UserHelper.city + UserHelper.communityName;
         ptrFrameLayout.autoRefresh();
     }

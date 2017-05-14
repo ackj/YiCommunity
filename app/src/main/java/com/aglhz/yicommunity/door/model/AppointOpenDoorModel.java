@@ -28,14 +28,16 @@ public class AppointOpenDoorModel extends BaseModel implements AppointOpenDoorCo
     }
 
     @Override
-    public Observable<DoorListBean> getDoorListBean(Params params) {
-        return HttpHelper.getService(ApiService.class).getDoorList(params.token)
+    public Observable<DoorListBean> requestDoors(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestDoors(ApiService.requestDoors, params.token)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<BaseBean> appointOpenDoor(Params params) {
-        return HttpHelper.getService(ApiService.class).appointOpenDoor(params.token,params.dir)
+        return HttpHelper.getService(ApiService.class)
+                .appointOpenDoor(params.token, params.dir)
                 .subscribeOn(Schedulers.io());
     }
 }

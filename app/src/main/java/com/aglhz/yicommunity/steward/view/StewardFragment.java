@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.steward.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,14 +23,17 @@ import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ServiceApi;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.door.DoorActivity;
+import com.aglhz.yicommunity.door.call.CallActivity;
 import com.aglhz.yicommunity.event.EventCommunityChange;
 import com.aglhz.yicommunity.house.HouseActivity;
 import com.aglhz.yicommunity.login.LoginActivity;
@@ -47,6 +51,7 @@ import com.orhanobut.dialogplus.OnItemClickListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.linphone.core.LinphoneCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +99,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     private boolean isShow;
     private Params params = Params.getInstance();
     private final static int SELECT_COMMUNIT = 100;   //选择社区
+    private Dialog loadingDialog;
 
     public static StewardFragment newInstance() {
         return new StewardFragment();
@@ -118,6 +124,22 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         super.onViewCreated(view, savedInstanceState);
         rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar(toolbar);
+
+        DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
+
+            ALog.e("1111111111::" + state.toString());
+
+            if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
+                // 启动CallOutgoingActivity
+                _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
+
+                ALog.e("1111111111::" + state.toString());
+
+            }
+
+        });
+
+
     }
 
     /**
@@ -244,7 +266,11 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         //设置智能门禁卡片点击事件。
         smartDoorAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == 3) {
-                mPresenter.requestSip(params);
+                if (loadingDialog == null) {
+                    loadingDialog = DialogHelper.loading(_mActivity);
+                }
+                loadingDialog.show();
+                mPresenter.requestDoors(params);
             } else {
                 go2SmartDoor(position);
             }
@@ -255,6 +281,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
 
         //物业服务卡片点击事件。
         propertyServiceAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (!hasTokenAndCommunity()) {
+                return;
+            }
             if (position == 1) {
                 if (contactDialog == null) {
                     isShow = true;
@@ -265,22 +294,20 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                 }
 
             } else {
-                if (checkTokenAndCommunity()) {
-                    go2PropertyService(position);
-                }
+                go2PropertyService(position);
             }
         });
     }
 
 
-    private boolean checkTokenAndCommunity() {
+    private boolean hasTokenAndCommunity() {
         if (!UserHelper.isLogined()) {
-            startActivity(new Intent(getContext(), LoginActivity.class));
+            startActivity(new Intent(_mActivity, LoginActivity.class));
             return false;
         } else if (!UserHelper.hasCommunity()) {
             DialogHelper.warningSnackbar(rootView, "需要先选择社区！");
 
-            Intent intent = new Intent(getContext(), PickerActivity.class);
+            Intent intent = new Intent(_mActivity, PickerActivity.class);
             startActivityForResult(intent, SELECT_COMMUNIT);
             return false;
         }
@@ -367,6 +394,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
         DialogHelper.warningSnackbar(rootView, errorMessage);
     }
 
@@ -413,7 +443,6 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
 
     @Override
     public void responseContact(final List<String> listPhone) {
-        ptrFrameLayout.refreshComplete();
 
         if (contactDialog == null) {
             contactDialog = DialogPlus.newDialog(_mActivity)
@@ -423,7 +452,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                     .setGravity(Gravity.BOTTOM)
                     .setAdapter(new ArrayAdapter<>(_mActivity, android.R.layout.simple_list_item_1, listPhone))
                     .setOnItemClickListener((dialog, item, view, position) -> {
-                        ALog.e("listPhone.get(position).substring(2)::" + listPhone.get(position).substring(3));
+                        dialog.dismiss();
                         startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listPhone.get(position).substring(3))));
                     })
                     .setCancelable(true)
@@ -437,17 +466,24 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     @Override
-    public void responseSip(SipBean mSipBean) {
-        ptrFrameLayout.refreshComplete();
+    public void responseDoors(DoorListBean bean) {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < bean.getData().size(); i++) {
+            list.add(0, bean.getData().get(i).getName());
+        }
 
         DialogPlus.newDialog(_mActivity)
                 .setHeader(R.layout.dialog_header)
                 .setFooter(R.layout.dialog_footer)
                 .setContentHolder(new ListHolder())
                 .setGravity(Gravity.BOTTOM)
-                .setAdapter(new ArrayAdapter<>(_mActivity, android.R.layout.simple_list_item_1, mSipBean.getData().getPowers()))
+                .setAdapter(new ArrayAdapter<>(_mActivity, android.R.layout.simple_list_item_1, list))
                 .setOnItemClickListener((dialog, item, view, position) -> {
-
+                    dialog.dismiss();
+                    DoorManager.getInstance().callOut(bean.getData().get(position).getDir());
                 })
                 .setCancelable(true)
                 .create()
@@ -470,7 +506,6 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunityChange event) {
         ALog.d(TAG, "onEvent:::" + event.bean.getName());
-        UserHelper.setCommunity(event.bean.getName(), event.bean.getCode());
         svSteward.fullScroll(ScrollView.FOCUS_UP);
         ptrFrameLayout.autoRefresh();
     }

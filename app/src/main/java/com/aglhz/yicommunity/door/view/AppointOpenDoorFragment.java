@@ -88,11 +88,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
-
-
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
@@ -103,42 +99,33 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-//                mPresenter.start();
-                mPresenter.requestDoorList(Params.getInstance());
+                mPresenter.requestDoors(Params.getInstance());
+
             }
         });
     }
 
     private void initToolbar() {
-        mPresenter.requestDoorList(Params.getInstance());
         initStateBar(toolbar);
         toolbarTitle.setText("指定开门");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
         rvAppointOpendoor.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new AppointOpenDoorRVAdapter();
         rvAppointOpendoor.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ALog.e("111111111");
-                Params params = Params.getInstance();
-                params.dir = AppointOpenDoorFragment.this.adapter.getData().get(position).getDir();
-                mPresenter.requestAppointOpenDoor(params);
-            }
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            ALog.e("111111111");
+            Params params = Params.getInstance();
+            params.dir = AppointOpenDoorFragment.this.adapter.getData().get(position).getDir();
+            mPresenter.requestAppointOpenDoor(params);
         });
     }
 
     @Override
-    public void responseDoorList(DoorListBean mDoorListBean) {
+    public void responseDoors(DoorListBean mDoorListBean) {
         ptrFrameLayout.refreshComplete();
         adapter.setNewData(mDoorListBean.getData());
     }

@@ -91,10 +91,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
-
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
@@ -105,8 +102,8 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-//                mPresenter.start();
-                mPresenter.requestDoorList(Params.getInstance());
+                mPresenter.requestDoors(Params.getInstance());
+
             }
         });
     }
@@ -115,29 +112,19 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         initStateBar(toolbar);
         toolbarTitle.setText("设置一键开门");
         toolbarMenu.setText("保存");
-        toolbarMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String dir = mAdapter.getData().get(prePosition).getDir();
-                String name = mAdapter.getData().get(prePosition).getName();
-                Params params = Params.getInstance();
-                params.directory = dir;
-                params.deviceName = name;
-                mPresenter.requestQuickOpenDoor(params);
-            }
+        toolbarMenu.setOnClickListener(v -> {
+            String dir = mAdapter.getData().get(prePosition).getDir();
+            String name = mAdapter.getData().get(prePosition).getName();
+            Params params = Params.getInstance();
+            params.directory = dir;
+            params.deviceName = name;
+            mPresenter.requestQuickOpenDoor(params);
         });
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
-        mPresenter.requestDoorList(Params.getInstance());
-
         rvQuickOpendoor.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new QuickOpenDoorRVAdapter();
         rvQuickOpendoor.setAdapter(mAdapter);
@@ -145,20 +132,17 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     }
 
     private void initListener() {
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                QuickOpenDoorFragment.this.mAdapter.getData().get(prePosition).setQuickopen(false);
-                QuickOpenDoorFragment.this.mAdapter.getData().get(position).setQuickopen(true);
-                mAdapter.notifyItemChanged(prePosition);
-                mAdapter.notifyItemChanged(position);
-                prePosition = position;
-            }
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            QuickOpenDoorFragment.this.mAdapter.getData().get(prePosition).setQuickopen(false);
+            QuickOpenDoorFragment.this.mAdapter.getData().get(position).setQuickopen(true);
+            mAdapter.notifyItemChanged(prePosition);
+            mAdapter.notifyItemChanged(position);
+            prePosition = position;
         });
     }
 
     @Override
-    public void responseDoorList(DoorListBean mDoorListBean) {
+    public void responseDoors(DoorListBean mDoorListBean) {
         ptrFrameLayout.refreshComplete();
 
         mAdapter.setNewData(mDoorListBean.getData());
@@ -174,14 +158,12 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     public void responseQuickOpenDoor(BaseBean mBaseBean) {
         DialogHelper.successSnackbar(getView(), "设置成功！");
         UserHelper.setDir(mAdapter.getData().get(prePosition).getDir());
-//        SPCache.put(_mActivity, Constants.DOOR_DIR, mAdapter.getData().get(prePosition).getDir());
     }
 
     @Override
     public void onDestroy() {
         if (mAdapter != null) {
             mAdapter = null;
-
         }
         super.onDestroy();
     }

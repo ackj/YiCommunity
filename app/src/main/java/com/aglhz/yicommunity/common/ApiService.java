@@ -38,6 +38,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
+import static com.aglhz.yicommunity.common.UserHelper.token;
+
 /**
  * Created by YandZD on 2017/1/17.
  */
@@ -273,8 +275,13 @@ public interface ApiService {
                                     @Part List<MultipartBody.Part> parts);
 
     //获取门禁列表
-    @POST("/sub_property_ysq/smartdoor/info/doormchs")
-    Observable<DoorListBean> getDoorList(@Query("token") String token);
+//    @POST("/sub_property_ysq/smartdoor/info/doormchs")
+
+    String requestDoors = BASE_PROPERTY + "/smartdoor/info/doormchs";
+
+
+    @POST
+    Observable<DoorListBean> requestDoors(@Url String url, @Query("token") String token);
 
     //指定开门
     @POST("/sub_property_ysq/smartdoor/client/opendoor")
@@ -405,6 +412,7 @@ public interface ApiService {
 
     @POST
     Observable<SipBean> requestSip(@Url String url, @Query("token") String token);
+
     //获取拼车服务的评论
     String getCarpoolComments = BASE_PROPERTY + "/neighbor/carpool/to-client/carpool-comment-list";
 

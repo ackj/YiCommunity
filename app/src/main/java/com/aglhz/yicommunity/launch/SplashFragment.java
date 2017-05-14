@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +18,26 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.CheckTokenBean;
+import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.main.MainActivity;
+import com.aglhz.yicommunity.picker.view.CommunityPickerFragment;
+import com.sipphone.sdk.access.WebReponse;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -60,14 +72,17 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
 
     private void initData() {
         UserHelper.init();
+
+        ALog.e(UserHelper.string());
+
         location();
-        checkLogin();
         initDoorManager();
+        checkLogin();
     }
+
 
     private void initDoorManager() {
         DoorManager.getInstance().init();
-        DoorManager.getInstance().initWebUserApi();
     }
 
     @AfterPermissionGranted(LOCATION)
@@ -76,7 +91,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         if (EasyPermissions.hasPermissions(_mActivity, perms)) {
             //有权限就直接进行定位操作
 //            ToastUtils.showToast(BaseApplication.mContext, "正在定位……");
-
+            initLocate();
 
         } else {
             EasyPermissions.requestPermissions(this, "亿社区需要定位权限", LOCATION, perms);
@@ -85,19 +100,40 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void checkLogin() {
-        HttpHelper.getService(ApiService.class).checkToken(ApiService.checkToken, UserHelper.token)
+        HttpHelper.getService(ApiService.class)
+                .checkToken(ApiService.checkToken, UserHelper.token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(checkTokenBean -> {
-                    ALog.e(checkTokenBean.getOther().getCode());
-                    if (checkTokenBean.getData().getStatus() == 1) {
+                .subscribe(bean -> {
+                    if (bean.getData().getStatus() == 1) {
                         UserHelper.clear();
+                        go2Main();
+                    } else if (bean.getData().getStatus() == 0) {
+                        checkSip();
                     }
-                    go2Main();
+
                 }, throwable -> {
                     ALog.e(throwable);
                     go2Main();
                 });
+    }
+
+
+    private void checkSip() {
+        DoorManager.getInstance().initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
+            @Override
+            public void onPreAccess() {
+                ALog.e("onPreAccess");
+                go2Main();
+            }
+
+            @Override
+            public void onPostAccess(WebReponse webReponse) {
+                ALog.e("onPostAccess");
+
+                go2Main();
+            }
+        });
     }
 
     private void go2Main() {
@@ -133,5 +169,15 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
             Log.e(TAG, "onPermissionsGranted:" + requestCode + ":" + resultCode);
         }
+    }
+
+    private void initLocate() {
+        LbsManager.getInstance().startLocation(null);
+    }
+
+    @Override
+    public void onStop() {
+        LbsManager.getInstance().stopLocation();
+        super.onStop();
     }
 }

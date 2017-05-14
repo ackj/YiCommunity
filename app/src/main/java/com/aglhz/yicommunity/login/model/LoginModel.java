@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.login.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
+import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.UserBean;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ApiService;
@@ -27,5 +28,12 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
     @Override
     public void start(Object request) {
 
+    }
+
+    @Override
+    public Observable<SipBean> requestSip(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestSip(ApiService.requestSip, params.token)
+                .subscribeOn(Schedulers.io());
     }
 }

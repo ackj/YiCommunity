@@ -14,4 +14,13 @@ public class IconBean {
         this.title = title;
         this.fid = fid;
     }
+
+    @Override
+    public String toString() {
+        return "IconBean{" +
+                "icon=" + icon +
+                ", title='" + title + '\'' +
+                ", fid='" + fid + '\'' +
+                '}';
+    }
 }
