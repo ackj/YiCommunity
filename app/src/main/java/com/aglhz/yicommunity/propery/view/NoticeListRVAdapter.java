@@ -13,6 +13,7 @@ import java.util.List;
  */
 
 public class NoticeListRVAdapter extends BaseRecyclerViewAdapter<NoticeBean.DataBean.NoticeListBean, BaseViewHolder> {
+    public static final String TAG = NoticeListRVAdapter.class.getSimpleName();
 
     public NoticeListRVAdapter(List<NoticeBean.DataBean.NoticeListBean> data) {
         super(R.layout.item_property_notice, data);

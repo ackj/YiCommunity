@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.common;
+package com.aglhz.yicommunity.payment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

@@ -111,7 +111,6 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
             UserHelper.setAccount(etUsername.getText().toString().trim()
                     , etPassword.getText().toString().trim());
         }
-        ALog.e("222222222222");
         EventBus.getDefault().post(new EventData(Constants.login));
         _mActivity.finish();
     }

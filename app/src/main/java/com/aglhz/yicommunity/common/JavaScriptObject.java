@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
+import com.aglhz.yicommunity.payment.ALiPayUtilsV2;
+
 /**
  * Created by YandZD on 2017/1/22.
  */

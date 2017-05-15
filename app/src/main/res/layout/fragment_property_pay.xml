@@ -7,12 +7,17 @@
     <include layout="@layout/toolbar" />
 
     <TextView
+        android:id="@+id/tv_community_property_pay_fragment"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/base_grey" />
+        android:layout_height="wrap_content"
+        android:background="@color/base_grey"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="@color/black_54_percent_alpha"
+        android:textSize="15sp" />
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout_fragment_property_pay"
+        android:id="@+id/tablayout_property_pay_fragment"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="@color/white" />
@@ -23,7 +28,7 @@
         android:background="@color/base_grey" />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager_fragment_property_pay"
+        android:id="@+id/viewpager_property_pay_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

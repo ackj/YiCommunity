@@ -37,7 +37,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implements NoticeListContract.View {
-    private final String TAG = NoticeListFragment.class.getSimpleName();
+    public static final String TAG = NoticeListFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;

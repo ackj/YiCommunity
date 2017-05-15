@@ -23,7 +23,7 @@ public interface HomeContract {
     interface View extends BaseContract.View {
         void responseBanners(List<BannerBean.DataBean.AdvsBean> banners);
 
-        void responseNotice(List<String> notices);
+        void responseHomeNotices(List<String> notices);
 
         void responseOpenDoor();
     }
@@ -38,7 +38,6 @@ public interface HomeContract {
 
     interface Model extends BaseContract.Model {
         Observable<BannerBean> requestBanners();
-
 
         Single<List<String>> requestHomeNotices(Params params);
 

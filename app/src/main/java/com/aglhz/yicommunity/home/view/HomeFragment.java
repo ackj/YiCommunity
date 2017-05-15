@@ -65,6 +65,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -77,7 +78,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EventBus.getDefault().register(this);
         initData();
         initListener();
         initPtrFrameLayout();
@@ -241,17 +241,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         adapter.notifyItemChanged(0);
     }
 
-    //    @Override
-//    public void responseHomeNotices(List<NoticeBean.DataBean.NoticeListBean> notices) {
-//        ptrFrameLayout.refreshComplete();
-//        HomeBean homeBean = adapter.getData().get(1);
-//        if (notices != null && !notices.isEmpty()
-//                && !TextUtils.isEmpty(notices.get(0).getTitle())) {
-//            homeBean.setNotice(notices.get(0).getTitle());
-//        } else {
-//            homeBean.setNotice("");
-//        }
-    public void responseNotice(List<String> notices) {
+    @Override
+    public void responseHomeNotices(List<String> notices) {
         ptrFrameLayout.refreshComplete();
         adapter.getData().get(1).setNotice(notices);
         adapter.notifyItemChanged(1);
