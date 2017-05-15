@@ -20,6 +20,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -28,7 +29,6 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishNeighbourPresenter;
-import com.bumptech.glide.Glide;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -62,6 +62,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private Params params = Params.getInstance();
+    private boolean requesting;
 
     public static PublishNeighbourFragment newInstance() {
         return new PublishNeighbourFragment();
@@ -166,11 +167,13 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
 
     @Override
     public void error(String errorMessage) {
+        requesting = false;
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
+        requesting = false;
         DialogHelper.successSnackbar(getView(), "提交成功!");
         pop();
     }
@@ -186,8 +189,13 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     }
 
     private void submit(String content) {
+        if (requesting) {
+            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
+            return;
+        }
         params.cmnt_c = UserHelper.communityCode;
         params.content = content;
         mPresenter.post(params);
+        requesting = true;
     }
 }

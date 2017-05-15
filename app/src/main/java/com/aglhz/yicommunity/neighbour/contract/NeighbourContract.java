@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.neighbour.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.common.Params;
 
@@ -19,6 +20,8 @@ public interface NeighbourContract {
 
     interface View extends BaseContract.View {
         void responseSuccess(List<NeighbourListBean.DataBean.MomentsListBean> datas);
+
+        void removeSuccess(BaseBean bean);
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -33,6 +36,12 @@ public interface NeighbourContract {
         void requestMyExchangeList(Params params);
 
         void requestMyCarpoolList(Params params);
+
+        void removeMyCarpool(Params params);
+
+        void removeMyExchange(Params params);
+
+        void removeMyNeighbour(Params params);
     }
 
     interface Model extends BaseContract.Model {
@@ -47,5 +56,13 @@ public interface NeighbourContract {
         Observable<NeighbourListBean> getMyExchangeList(Params params);
 
         Observable<NeighbourListBean> getMyCarpoolList(Params params);
+
+        Observable<BaseBean> removeMyCarpool(Params params);
+
+        Observable<BaseBean> removeMyExchange(Params params);
+
+        Observable<BaseBean> removeMyNeighbour(Params params);
+
+
     }
 }

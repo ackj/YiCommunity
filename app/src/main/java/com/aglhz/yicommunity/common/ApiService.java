@@ -36,8 +36,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
-import static com.aglhz.yicommunity.common.UserHelper.token;
-
 /**
  * Created by YandZD on 2017/1/17.
  */
@@ -475,6 +473,24 @@ public interface ApiService {
 //                                              @Query("content") String content,
 //                                              @Query("stype") int type, //附件类型（1=图片, 大小不能超过300K，2=视频，大小不能超过10M）
                                               @Body MultipartBody file);
+
+    //移除左邻右里我发布的信息
+    String removeNeighbourMessage = BASE_PROPERTY + "/neighbor/moments/from-client/moments-delete";
+
+    @POST
+    Observable<BaseBean> removeNeighbourMessage(@Url String url, @Query("token") String token, @Query("momentsFids") String fid);
+
+    //移除闲置交换我发布的信息
+    String removeExchangeMessage = BASE_PROPERTY + "/neighbor/exchange/from-client/exchange-delete";
+
+    @POST
+    Observable<BaseBean> removeExchangeMessage(@Url String url, @Query("token") String token, @Query("exchangeFids") String fid);
+
+    //移除闲置交换我发布的信息
+    String removeCarpoolMessage = BASE_PROPERTY + "/neighbor/carpool/from-client/carpool-delete";
+
+    @POST
+    Observable<BaseBean> removeCarpoolMessage(@Url String url, @Query("token") String token, @Query("carpoolFids") String fid);
 
 
 }

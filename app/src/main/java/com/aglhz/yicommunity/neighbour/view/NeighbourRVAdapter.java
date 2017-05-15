@@ -54,11 +54,20 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
                 .setText(R.id.tv_comment_count_item_moments_list, item.getCommentCount() + "");
 
         helper.addOnClickListener(R.id.ll_comment_item_moments_list)
+                .addOnClickListener(R.id.tv_remove_item_moments_list)
                 .addOnClickListener(R.id.tv_comment_count_item_moments_list);
+
+        //-------------- 删除 ---------------
+        TextView tvRemove = helper.getView(R.id.tv_remove_item_moments_list);
+        if (type == MessageFragment.TYPE_MY_CARPOOL || type == MessageFragment.TYPE_MY_EXCHANGE || type == MessageFragment.TYPE_MY_NEIGHBOUR) {
+            tvRemove.setVisibility(View.VISIBLE);
+        } else {
+            tvRemove.setVisibility(View.GONE);
+        }
 
         //-------------- 当前地址 --------------
         TextView tvAddress = helper.getView(R.id.tv_location_item_moments_list);
-        if (type == MessageFragment.TYPE_CARPOOL) {
+        if (type == MessageFragment.TYPE_CARPOOL || type == MessageFragment.TYPE_MY_CARPOOL) {
             tvAddress.setText(item.getPublishPositionAddress());
         } else {
             tvAddress.setText(item.getCommunityName());
@@ -66,7 +75,7 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //--------------- 内容 ------------
         TextView tvContent = helper.getView(R.id.tv_content_item_moments_list);
-        if (type == MessageFragment.TYPE_CARPOOL) {
+        if (type == MessageFragment.TYPE_CARPOOL || type == MessageFragment.TYPE_MY_CARPOOL) {
             String route = item.getStartPlace() + "——" + item.getEndPlace() + "\n";
             String outTime = item.getSetOutTime() + "\n";
             String content = item.getContent();
@@ -77,7 +86,7 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //--------------- 根据type显隐------------
         TextView tvMoney = helper.getView(R.id.tv_money_item_moments_list);
-        if (type == MessageFragment.TYPE_EXCHANGE) {
+        if (type == MessageFragment.TYPE_EXCHANGE || type == MessageFragment.TYPE_MY_EXCHANGE) {
             tvMoney.setVisibility(View.VISIBLE);
             tvMoney.setText(item.getPrice() + "元");
         } else {

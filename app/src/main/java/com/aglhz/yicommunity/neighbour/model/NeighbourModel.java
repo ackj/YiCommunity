@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.neighbour.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
@@ -60,6 +61,24 @@ public class NeighbourModel extends BaseModel implements NeighbourContract.Model
     @Override
     public Observable<NeighbourListBean> getMyCarpoolList(Params params) {
         return HttpHelper.getService(ApiService.class).getMyCarpoolList(params.token, params.page, params.pageSize)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseBean> removeMyCarpool(Params params) {
+        return HttpHelper.getService(ApiService.class).removeCarpoolMessage(ApiService.removeCarpoolMessage, params.token, params.fid)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseBean> removeMyExchange(Params params) {
+        return HttpHelper.getService(ApiService.class).removeExchangeMessage(ApiService.removeExchangeMessage, params.token, params.fid)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseBean> removeMyNeighbour(Params params) {
+        return HttpHelper.getService(ApiService.class).removeNeighbourMessage(ApiService.removeNeighbourMessage, params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }
 

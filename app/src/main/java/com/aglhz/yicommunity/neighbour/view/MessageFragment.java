@@ -1,9 +1,11 @@
 package com.aglhz.yicommunity.neighbour.view;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
@@ -48,19 +51,19 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
 
-    private LinearLayoutManager mLinearLayoutManager;
-    private View mFooterLoading, mFooterNotLoading, mFooterError;
-    private Unbinder unbinder;
-    private NeighbourRVAdapter adapter;
-
     public static final int TYPE_EXCHANGE = 100;
     public static final int TYPE_CARPOOL = 101;
     public static final int TYPE_NEIGHBOUR = 102;
     public static final int TYPE_MY_EXCHANGE = 103;
     public static final int TYPE_MY_CARPOOL = 104;
     public static final int TYPE_MY_NEIGHBOUR = 105;
-    private int type;
 
+    private LinearLayoutManager mLinearLayoutManager;
+    private View mFooterLoading, mFooterNotLoading, mFooterError;
+    private Unbinder unbinder;
+    private NeighbourRVAdapter adapter;
+    private int type;
+    private int removePosition;
 
     public static MessageFragment newInstance(int type) {
         MessageFragment fragment = new MessageFragment();
@@ -138,7 +141,32 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             NeighbourListBean.DataBean.MomentsListBean bean = (NeighbourListBean.DataBean.MomentsListBean) adapter.getData().get(position);
-            _mActivity.start(CommentFragment.newInstance(bean.getFid(), type));
+            switch (view.getId()) {
+                case R.id.ll_comment_item_moments_list:
+                case R.id.tv_comment_count_item_moments_list:
+                    _mActivity.start(CommentFragment.newInstance(bean.getFid(), type));
+                    break;
+                case R.id.tv_remove_item_moments_list:
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(_mActivity);
+                    builder.setMessage("确认删除吗？");
+                    builder.setTitle("提示");
+                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            removePosition = position;
+                            removeMessage(bean.getFid());
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                    break;
+            }
             return false;
         });
 
@@ -154,6 +182,22 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
                 }
             }
         });
+    }
+
+    private void removeMessage(String fid) {
+        Params params = Params.getInstance();
+        params.fid = fid;
+        switch (type) {
+            case TYPE_MY_CARPOOL:
+                mPresenter.removeMyCarpool(params);
+                break;
+            case TYPE_MY_EXCHANGE:
+                mPresenter.removeMyExchange(params);
+                break;
+            case TYPE_MY_NEIGHBOUR:
+                mPresenter.removeMyNeighbour(params);
+                break;
+        }
     }
 
     private void initPtrFrameLayout(final PtrFrameLayout ptrFrameLayout) {
@@ -212,7 +256,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 
     @Override
     public void error(String errorMessage) {
-        ALog.e("error:"+errorMessage);
+        ALog.e("error:" + errorMessage);
         ptrFrameLayout.refreshComplete();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
@@ -228,6 +272,12 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public void responseSuccess(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
         ptrFrameLayout.refreshComplete();
         adapter.setNewData(datas);
+    }
+
+    @Override
+    public void removeSuccess(BaseBean bean) {
+        DialogHelper.successSnackbar(getView(), "删除成功");
+        adapter.remove(removePosition);
     }
 
 }
