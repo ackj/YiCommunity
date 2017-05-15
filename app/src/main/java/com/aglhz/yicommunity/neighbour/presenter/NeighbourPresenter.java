@@ -112,4 +112,45 @@ public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, Ne
                     }
                 }, this::error));
     }
+
+    @Override
+    public void removeMyCarpool(Params params) {
+        mRxManager.add(mModel.removeMyCarpool(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().removeSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void removeMyExchange(Params params) {
+        mRxManager.add(mModel.removeMyExchange(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().removeSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void removeMyNeighbour(Params params) {
+        mRxManager.add(mModel.removeMyNeighbour(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().removeSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+
 }

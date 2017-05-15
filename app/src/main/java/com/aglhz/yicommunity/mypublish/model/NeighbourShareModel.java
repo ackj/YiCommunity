@@ -13,7 +13,6 @@ import com.aglhz.yicommunity.mypublish.contract.NeighbourContract;
 public class NeighbourShareModel extends BaseModel implements NeighbourContract.Model {
     private final String TAG = NeighbourShareModel.class.getSimpleName();
 
-
     @Override
     public void start(Object request) {
 

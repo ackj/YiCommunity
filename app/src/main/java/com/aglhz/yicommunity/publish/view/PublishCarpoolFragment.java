@@ -20,6 +20,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -32,7 +33,6 @@ import com.aglhz.yicommunity.picker.view.CityPickerFragment;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishCarpoolPresenter;
 import com.bigkoo.pickerview.TimePickerView;
-import com.bumptech.glide.Glide;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -85,6 +85,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     private Params params = Params.getInstance();
     private int REQUEST_START_POINT_CODE = 100;
     private int REQUEST_END_POINT_CODE = 101;
+    private boolean requesting;
 
     public static PublishCarpoolFragment newInstance() {
         return new PublishCarpoolFragment();
@@ -193,11 +194,13 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
 
     @Override
     public void error(String errorMessage) {
+        requesting = false;
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
+        requesting = false;
         DialogHelper.successSnackbar(getView(), "提交成功!");
         pop();
     }
@@ -275,6 +278,10 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     }
 
     private void submit() {
+        if (requesting) {
+            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
+            return;
+        }
         if (TextUtils.isEmpty(params.startPlace)) {
             DialogHelper.errorSnackbar(getView(), "请选择起点城市!");
             return;
@@ -292,11 +299,12 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
             return;
         }
         if (TextUtils.isEmpty(params.content)) {
-            DialogHelper.errorSnackbar(getView(), "请输入留言!!");
+            DialogHelper.errorSnackbar(getView(), "请输入留言!");
             return;
         }
         params.positionType = 1;
         mPresenter.post(params);
+        requesting = true;
     }
 
 }

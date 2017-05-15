@@ -19,6 +19,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -64,6 +65,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     Params params = Params.getInstance();
+    private boolean requesting;
 
     public static ComplainFragment newInstance() {
         return new ComplainFragment();
@@ -136,11 +138,13 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
 
     @Override
     public void error(String errorMessage) {
+        requesting = false;
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean baseBean) {
+        requesting = false;
         DialogHelper.successSnackbar(getView(), "提交成功!");
         _mActivity.finish();
     }
@@ -212,7 +216,12 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     }
 
     private void submit(Params params) {
+        if (requesting) {
+            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
+            return;
+        }
         params.cmnt_c = UserHelper.communityCode;
         mPresenter.post(params);//上传
+        requesting = true;
     }
 }

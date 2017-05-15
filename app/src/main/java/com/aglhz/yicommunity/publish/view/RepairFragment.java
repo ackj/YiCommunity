@@ -22,6 +22,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -52,13 +53,11 @@ import static com.aglhz.yicommunity.publish.view.ComplainFragment.REQUEST_CODE_C
 @SuppressLint("ValidFragment")
 public class RepairFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = RepairFragment.class.getSimpleName();
+
     @BindView(R.id.rl_house_name_fragment_repair)
     RelativeLayout rlHouseName;
     @BindView(R.id.bt_submit_fragment_repair)
     Button btSubmit;
-
-    private boolean isPrivate;//是否是私人报修
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -73,8 +72,11 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     EditText etContent;
     @BindView(R.id.recyclerView_fragment_repair)
     RecyclerView recyclerView;
+
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
+    private boolean isPrivate;//是否是私人报修
+    private boolean requesting;
     Params params = Params.getInstance();
 
     private RepairFragment(boolean isPrivate) {
@@ -204,9 +206,13 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     }
 
     private void submit(Params params) {
-        btSubmit.setClickable(false);
+        if (requesting) {
+            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
+            return;
+        }
         params.cmnt_c = UserHelper.communityCode;
         mPresenter.post(params);
+        requesting = true;
     }
 
     @Override
@@ -235,13 +241,13 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     @Override
     public void error(String errorMessage) {
-        btSubmit.setClickable(true);
+        requesting = false;
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
-        btSubmit.setClickable(true);
+        requesting = false;
         DialogHelper.successSnackbar(getView(), "提交成功!");
         setFragmentResult(RESULT_OK, null);
         pop();
