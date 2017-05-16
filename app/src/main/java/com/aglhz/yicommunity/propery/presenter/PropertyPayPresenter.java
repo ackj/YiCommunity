@@ -1,12 +1,24 @@
 package com.aglhz.yicommunity.propery.presenter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.abase.network.http.LoginInterceptor;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.payment.WxPayHelper;
 import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
 import com.aglhz.yicommunity.propery.model.PropertyPayModel;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -17,11 +29,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View, PropertyPayContract.Model> implements PropertyPayContract.Presenter {
 
-    /**
-     * 创建Presenter的时候就绑定View和创建model。
-     *
-     * @param mView 所要绑定的view层对象，一般在View层创建Presenter的时候通过this把自己传过来。
-     */
     public PropertyPayPresenter(PropertyPayContract.View mView) {
         super(mView);
     }
@@ -38,18 +45,75 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
     }
 
     @Override
-    public void requestPropertyPay() {
-        Params params = Params.getInstance();
-        params.token = UserHelper.token;
-        params.cmnt_c = "KBSJ-agl-00005";
-        params.page = 1;
-        mRxManager.add(mModel.getPropertyPay(params)
+    public void requestPropertyNotPay(Params params) {
+        mRxManager.add(mModel.requestPropertyNotPay(params)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(propertyPayBean -> {
-                    if (propertyPayBean.getOther().getCode() == 200) {
-                        getView().responsePropertyPay(propertyPayBean);
+                .subscribe(bean -> {
+                    if (bean.getOther().getCode() == 200) {
+                        getView().start(bean);
                     } else {
-                        getView().error(propertyPayBean.getOther().getMessage());
+                        getView().error(bean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+
+    @Override
+    public void requestPropertyPayed(Params params) {
+        mRxManager.add(mModel.requestPropertyPayed(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> {
+                    if (bean.getOther().getCode() == 200) {
+                        getView().start(bean);
+                    } else {
+                        getView().error(bean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestPropertyPayDetail(Params params) {
+        mRxManager.add(mModel.requestPropertyPayDetail(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> {
+                    if (bean.getOther().getCode() == 200) {
+                        getView().start(bean);
+                    } else {
+                        getView().error(bean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestOrder(Params params) {
+        mRxManager.add(mModel.requestOrder(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseBody -> {
+                    ALog.e("bean::" + responseBody);
+
+                    JSONObject jsonObject;
+                    try {
+                        jsonObject = new JSONObject(responseBody.string());
+                        JSONObject jsonOther = jsonObject.optJSONObject("other");
+
+                        String code = jsonOther.optString("code");
+                        if ("200".equals(code)) {
+
+                            if (params.payType == 1) {
+                                //支付宝
+                                ALog.e("支付宝支付宝支付宝支付宝支付宝支付宝");
+
+                            } else if (params.payType == 2) {
+                                ALog.e("微信微信微信微信微信微信");
+                                //微信
+                                WxPayHelper.WxPay(jsonObject.optJSONObject("data").toString());
+                            }
+                        } else {
+                            getView().error(jsonOther.optString("message"));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }, this::error));
     }

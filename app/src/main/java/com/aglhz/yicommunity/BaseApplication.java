@@ -30,7 +30,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        initLog();
         initPush();
 
         registerActivityLifecycleCallbacks(this);
@@ -51,13 +50,10 @@ public class BaseApplication extends MultiDexApplication implements Application.
         BlockCanary.install(this, new AppContext()).start();
 
         //  Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
-
-    }
-
-
-    private void initLog() {
         ALog.init(true, "ysq");
+
     }
+
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {

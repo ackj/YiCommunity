@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.common;
 
+import com.aglhz.yicommunity.bean.ALiPayBean;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.BuildingBean;
@@ -23,11 +24,13 @@ import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
+import com.aglhz.yicommunity.bean.WxPayBean;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -117,10 +120,6 @@ public interface ApiService {
 
     @POST
     Observable<BannerBean> requestBanners(@Url String url);
-
-    //物业缴费
-    @POST("/sub_property_ysq/client/info/pptBillsWait.do")
-    Observable<PropertyPayBean> getPropertyPay(@Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("page") int page);
 
     //反馈
     @POST("/sub_property_ysq/client/feedback.do")
@@ -492,5 +491,43 @@ public interface ApiService {
     @POST
     Observable<BaseBean> removeCarpoolMessage(@Url String url, @Query("token") String token, @Query("carpoolFids") String fid);
 
+
+    //******************************以下为物业部分****************************
+    //待缴费账单
+    String requestPropertyNotPay = BASE_PROPERTY + "/client/info/pptBillsWait.do";
+
+    //物业缴费
+//    @POST("/sub_property_ysq/client/info/pptBillsWait.do")
+    @POST
+    Observable<PropertyPayBean> requestPropertyNotPay(@Url String url,
+                                                      @Query("token") String token,
+                                                      @Query("cmnt_c") String cmnt_c,
+                                                      @Query("page") int page);
+
+
+    //已缴费账单
+    String requestPropertyPayed = BASE_PROPERTY + "/client/info/pptBillsFinished.do";
+
+    @POST
+    Observable<PropertyPayBean> requestPropertyPayed(@Url String url,
+                                                     @Query("token") String token,
+                                                     @Query("cmnt_c") String cmnt_c,
+                                                     @Query("page") int page);
+
+    //物业账单详情
+    String requestPropertyPayDetail = BASE_PROPERTY + "/client/info/pptBillDet";
+
+    @POST
+    Observable<PropertyPayBean> requestPropertyPayDetail(@Url String url,
+                                                         @Query("token") String token,
+                                                         @Query("fid") String fid);
+
+    //微信、支付宝等第三方支付物业缴费订单 type为1.支付宝;2.微信
+    String requestOrder = BASE_PROPERTY + "/client/pay/generatePayJSON";
+
+    @POST
+    Observable<ResponseBody> requestOrder(@Url String url,
+                                          @Query("type") int type,
+                                          @Query("billFids") String billFids);
 
 }

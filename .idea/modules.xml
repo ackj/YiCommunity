@@ -3,9 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PushSDK/PushSDK.iml" filepath="$PROJECT_DIR$/PushSDK/PushSDK.iml" />
-      <module fileurl="file://$PROJECT_DIR$/YiCommunity.iml" filepath="$PROJECT_DIR$/YiCommunity.iml" />
       <module fileurl="file://$PROJECT_DIR$/abase/abase.iml" filepath="$PROJECT_DIR$/abase/abase.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yicommunity.iml" filepath="$PROJECT_DIR$/yicommunity.iml" />
     </modules>
   </component>
 </project>

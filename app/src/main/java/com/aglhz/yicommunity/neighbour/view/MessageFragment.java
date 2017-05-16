@@ -102,7 +102,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     protected void initLazyView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             mFooterLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_loading, (ViewGroup) recyclerView.getParent(), false);
-            mFooterNotLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_not_loading, (ViewGroup) recyclerView.getParent(), false);
+            mFooterNotLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_end, (ViewGroup) recyclerView.getParent(), false);
             mFooterError = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_error, (ViewGroup) recyclerView.getParent(), false);
             mFooterError.setOnClickListener(v -> {
 //                    mAdapter.removeAllFooterView();
@@ -132,7 +132,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         //下拉刷新必须得在懒加载里设置，因为下拉刷新是一进来就刷新，启动start()。
         mLinearLayoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(mLinearLayoutManager);
-        adapter = new NeighbourRVAdapter(new ArrayList<>());
+        adapter = new NeighbourRVAdapter();
 //        adapter = new NeighbourRVAdapter(momentsList);
         adapter.setType(type);
         recyclerView.setAdapter(adapter);
@@ -151,19 +151,11 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
                     AlertDialog.Builder builder = new AlertDialog.Builder(_mActivity);
                     builder.setMessage("确认删除吗？");
                     builder.setTitle("提示");
-                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            removePosition = position;
-                            removeMessage(bean.getFid());
-                        }
+                    builder.setPositiveButton("确认", (dialog, which) -> {
+                        removePosition = position;
+                        removeMessage(bean.getFid());
                     });
-                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                    builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
                     builder.create().show();
                     break;
             }

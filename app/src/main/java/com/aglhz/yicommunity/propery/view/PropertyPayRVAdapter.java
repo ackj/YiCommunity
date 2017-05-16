@@ -14,8 +14,8 @@ import java.util.List;
 
 public class PropertyPayRVAdapter extends BaseRecyclerViewAdapter<PropertyPayBean.DataBean.ObpptBillsBean, BaseViewHolder> {
 
-    public PropertyPayRVAdapter(List<PropertyPayBean.DataBean.ObpptBillsBean> data) {
-        super(R.layout.item_property_pay, data);
+    public PropertyPayRVAdapter() {
+        super(R.layout.item_property_pay);
     }
 
     @Override

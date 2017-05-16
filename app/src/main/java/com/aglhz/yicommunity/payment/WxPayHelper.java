@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.payment;
 
 import android.util.Log;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -23,10 +24,11 @@ import mlxy.utils.MD5;
 public class WxPayHelper {
     public static String appId;
 
-    public static void WxPay(String a) {
+    public static void WxPay(String string) {
+        ALog.e("微信支付：：" + string);
         JSONObject json;
         try {
-            json = new JSONObject(a);
+            json = new JSONObject(string);
             JSONObject payData = json.getJSONObject("data");
             Log.e("json", json.toString());
 

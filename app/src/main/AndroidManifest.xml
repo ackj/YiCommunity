@@ -216,6 +216,12 @@
 
         </activity>
 
+        <!--微信支付回调页面-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:theme="@style/Transparent" />
+
+
     </application>
 
 </manifest>

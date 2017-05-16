@@ -38,7 +38,7 @@
 
                         <TextView
                             style="@style/StewardCardTitle"
-                            android:text="@string/my_house" />
+                            android:text="@string/add_house" />
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/rv_my_house"

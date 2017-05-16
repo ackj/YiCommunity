@@ -32,14 +32,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.aglhz.yicommunity.R.id.ptrFrameLayout;
+import static com.aglhz.yicommunity.R.id.tablayout;
 
 /**
  * Author: LiuJia on 2017/5/7 0007 20:16.
  * Email: liujia95me@126.com
  */
 
-public class PropertyPayFragment extends BaseFragment<PropertyPayContract.Presenter> implements PropertyPayContract.View {
+public class PropertyPayFragment extends BaseFragment {
     public static final String TAG = PropertyPayFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -51,19 +51,10 @@ public class PropertyPayFragment extends BaseFragment<PropertyPayContract.Presen
     ViewPager viewpager;
     @BindView(R.id.tv_community_property_pay_fragment)
     TextView tvCommunity;
-
     private Unbinder unbinder;
-    private PropertyPayVPAdapter adapter;
-
 
     public static PropertyPayFragment newInstance() {
         return new PropertyPayFragment();
-    }
-
-    @NonNull
-    @Override
-    protected PropertyPayContract.Presenter createPresenter() {
-        return new PropertyPayPresenter(this);
     }
 
     @Nullable
@@ -90,9 +81,7 @@ public class PropertyPayFragment extends BaseFragment<PropertyPayContract.Presen
     }
 
     private void initData() {
-        mPresenter.requestPropertyPay();
-        adapter = new PropertyPayVPAdapter();
-        viewpager.setAdapter(adapter);
+        viewpager.setAdapter(new PropertyPayVPAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewpager);
         tvCommunity.setText(UserHelper.city + "　" + UserHelper.communityName);
     }
@@ -102,21 +91,6 @@ public class PropertyPayFragment extends BaseFragment<PropertyPayContract.Presen
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
         unbinder.unbind();
-    }
-
-    @Override
-    public void start(Object response) {
-
-    }
-
-    @Override
-    public void error(String errorMessage) {
-        DialogHelper.warningSnackbar(getView(), errorMessage);
-    }
-
-    @Override
-    public void responsePropertyPay(PropertyPayBean bean) {
-        adapter.setPropertyPayBean(bean);
     }
 
     @OnClick(R.id.tv_community_property_pay_fragment)

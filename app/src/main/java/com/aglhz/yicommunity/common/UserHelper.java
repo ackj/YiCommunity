@@ -41,6 +41,7 @@ public class UserHelper {
     public static String latitude = "";//纬度
     public static String longitude = "";//经度
     public static String sip = "";
+    public static String WXAPPID = "";
 
     public static UserBean.DataBean.MemberInfoBean userInfo;
 

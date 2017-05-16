@@ -54,6 +54,7 @@ public class Params {
     public String outTime;
     public String currentPositionLat;
     public String currentPostionLng;
+    public String billFids;
     public boolean isProprietor = true;
     public boolean single;
     public boolean timeable;
@@ -65,6 +66,7 @@ public class Params {
     public int page = 1;
     public int carpoolType;
     public List<File> files;
+    public int payType;  //1.支付宝;2.微信
 
 
     private Params() {
@@ -83,7 +85,7 @@ public class Params {
     }
 
     private static void init() {
-        token=UserHelper.token;
+        token = UserHelper.token;
     }
 
     @Override

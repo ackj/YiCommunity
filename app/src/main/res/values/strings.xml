@@ -11,7 +11,7 @@
 
 
     <!-- 管家模块 -->
-    <string name="my_house">我的房屋</string>
+    <string name="add_house">添加房屋</string>
     <string name="smart_home">智能家居</string>
     <string name="smart_door">智慧门禁</string>
     <string name="smart_park">智慧停车</string>

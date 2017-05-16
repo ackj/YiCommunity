@@ -156,12 +156,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
 
     private void initListener() {
         mKeyboardChangeListener = new KeyboardChangeListener(_mActivity);
-        mKeyboardChangeListener.setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
-            @Override
-            public void onKeyboardChange(boolean isShow, int keyboardHeight) {
-                ALog.d(TAG, "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]");
-            }
-        });
+        mKeyboardChangeListener.setKeyBoardListener((isShow, keyboardHeight) -> ALog.d(TAG, "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]"));
 
         final View decorView = _mActivity.getWindow().getDecorView();
         //计算出可见屏幕的高度
@@ -207,6 +202,8 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
 
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new CommentRVAdapter();
+        adapter.setEnableLoadMore(true);
+        adapter.loadMoreFail();
         recyclerView.setAdapter(adapter);
     }
 

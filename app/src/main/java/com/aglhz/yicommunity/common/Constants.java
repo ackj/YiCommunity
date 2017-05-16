@@ -66,5 +66,14 @@ public class Constants {
 
     public static final String CITY = "city";
 
+    public static final String PAY_POSITION = "pay_position";
+
+    //********************以下为支付类型************************
+    public static final int ALIPAY = 1;
+    public static final int WXPAY = 2;
+
+
+    //********************以上为支付类型************************
+
 
 }

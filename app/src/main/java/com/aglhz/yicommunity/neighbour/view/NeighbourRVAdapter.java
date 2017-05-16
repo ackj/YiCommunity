@@ -38,8 +38,8 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBean.DataBean.MomentsListBean, BaseViewHolder> {
     private static final String TAG = NeighbourRVAdapter.class.getSimpleName();
 
-    public NeighbourRVAdapter(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
-        super(R.layout.item_moments_list, datas);
+    public NeighbourRVAdapter() {
+        super(R.layout.item_moments_list);
     }
 
     private int type;
@@ -47,7 +47,7 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
     @Override
     protected void convert(BaseViewHolder helper, NeighbourListBean.DataBean.MomentsListBean item) {
 
-        ALog.e(">>>>>>>>>>>>>>", "position:" + helper.getLayoutPosition());
+//        ALog.e(">>>>>>>>>>>>>>", "position:" + helper.getLayoutPosition());
 
         helper.setText(R.id.tv_create_at_item_moments_list, item.getCreateTime())
                 .setText(R.id.tv_name_item_moments_list, item.getMember().getMemberNickName())
