@@ -19,12 +19,11 @@ public class OpenDoorRecordModel extends BaseModel implements OpenDoorRecordCont
 
     @Override
     public void start(Object request) {
-
     }
 
     @Override
     public Observable<OpenDoorRecordBean> getOpenDoorRecord(Params params) {
-        return HttpHelper.getService(ApiService.class).getOpenDoorRecord(params.token)
+        return HttpHelper.getService(ApiService.class).requestOpenDoorRecord(ApiService.requestOpenDoorRecord, params.token)
                 .subscribeOn(Schedulers.io());
     }
 }

@@ -43,7 +43,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
 
-import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_CARPOOL;
+import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_CARPOOL_OWNER;
+import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_CARPOOL_passenger;
 import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_EXCHANGE;
 import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_MY_CARPOOL;
 import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_MY_EXCHANGE;
@@ -85,7 +86,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
 
     public static CommentFragment newInstance(String fid, int type) {
-        ALog.e(TAG,"newInstance type:"+type);
+        ALog.e(TAG, "newInstance type:" + type);
         CommentFragment fragment = new CommentFragment();
         Bundle bundle = new Bundle();
         bundle.putString("fid", fid);
@@ -103,7 +104,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ALog.e(TAG,"onCreateView type:"+type);
+        ALog.e(TAG, "onCreateView type:" + type);
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
         unbinder = ButterKnife.bind(this, view);
         return attachToSwipeBack(view);
@@ -112,7 +113,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ALog.e(TAG,"onViewCreated type:"+type);
+        ALog.e(TAG, "onViewCreated type:" + type);
         Bundle bundle = getArguments();
         fid = bundle.getString("fid");
         type = bundle.getInt("type");
@@ -222,7 +223,8 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
             case TYPE_MY_EXCHANGE:
                 mPresenter.requestExchangeCommentList(commentListParams);
                 break;
-            case TYPE_CARPOOL:
+            case TYPE_CARPOOL_OWNER:
+            case TYPE_CARPOOL_passenger:
             case TYPE_MY_CARPOOL:
                 mPresenter.requestCarpoolCommentList(commentListParams);
                 break;
@@ -287,7 +289,8 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
             case TYPE_MY_EXCHANGE:
                 mPresenter.postExchangeComment(commentPostParams);
                 break;
-            case TYPE_CARPOOL:
+            case TYPE_CARPOOL_OWNER:
+            case TYPE_CARPOOL_passenger:
             case TYPE_MY_CARPOOL:
                 mPresenter.postCarpoolComment(commentPostParams);
                 break;

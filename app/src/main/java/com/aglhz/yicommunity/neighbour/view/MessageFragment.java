@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.neighbour.view;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +25,7 @@ import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.neighbour.contract.NeighbourContract;
 import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
-import com.aglhz.yicommunity.publish.view.CommentFragment;
+import com.aglhz.yicommunity.publish.CommentActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -50,7 +51,8 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     PtrFrameLayout ptrFrameLayout;
 
     public static final int TYPE_EXCHANGE = 100;
-    public static final int TYPE_CARPOOL = 101;
+    public static final int TYPE_CARPOOL_OWNER = 101;
+    public static final int TYPE_CARPOOL_passenger = 106;
     public static final int TYPE_NEIGHBOUR = 102;
     public static final int TYPE_MY_EXCHANGE = 103;
     public static final int TYPE_MY_CARPOOL = 104;
@@ -142,7 +144,10 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             switch (view.getId()) {
                 case R.id.ll_comment_item_moments_list:
                 case R.id.tv_comment_count_item_moments_list:
-                    _mActivity.start(CommentFragment.newInstance(bean.getFid(), type));
+                    Intent intent = new Intent(_mActivity, CommentActivity.class);
+                    intent.putExtra("fid",bean.getFid());
+                    intent.putExtra("type",type);
+                    _mActivity.startActivity(intent);
                     break;
                 case R.id.tv_remove_item_moments_list:
 
@@ -225,10 +230,10 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             mPresenter.requestExchangeList(params);
         } else if (type == TYPE_NEIGHBOUR) {
             mPresenter.requestNeihbourList(params);
-        } else if (type == TYPE_CARPOOL) {
+        } else if (type == TYPE_CARPOOL_OWNER || type == TYPE_CARPOOL_passenger) {
             params.currentPositionLat = UserHelper.latitude;
             params.currentPositionLng = UserHelper.longitude;
-            params.carpoolType = 1;
+            params.carpoolType = type == TYPE_CARPOOL_OWNER ? 1 : 2;
             mPresenter.requestCarpoolList(params);
         } else if (type == TYPE_MY_CARPOOL) {
             mPresenter.requestMyCarpoolList(params);

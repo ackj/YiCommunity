@@ -197,6 +197,7 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
     @Override
     public void registerSuccess(BaseBean baseBean) {
         DialogHelper.successSnackbar(getView(), "注册成功！");
+        pop();
     }
 
     @Override

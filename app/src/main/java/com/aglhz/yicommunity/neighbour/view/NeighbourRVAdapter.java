@@ -67,7 +67,9 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //-------------- 当前地址 --------------
         TextView tvAddress = helper.getView(R.id.tv_location_item_moments_list);
-        if (type == MessageFragment.TYPE_CARPOOL || type == MessageFragment.TYPE_MY_CARPOOL) {
+        if (type == MessageFragment.TYPE_CARPOOL_OWNER
+                || type == MessageFragment.TYPE_CARPOOL_passenger
+                || type == MessageFragment.TYPE_MY_CARPOOL) {
             tvAddress.setText(item.getPublishPositionAddress());
         } else {
             tvAddress.setText(item.getCommunityName());
@@ -75,7 +77,9 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //--------------- 内容 ------------
         TextView tvContent = helper.getView(R.id.tv_content_item_moments_list);
-        if (type == MessageFragment.TYPE_CARPOOL || type == MessageFragment.TYPE_MY_CARPOOL) {
+        if (type == MessageFragment.TYPE_CARPOOL_OWNER
+                || type == MessageFragment.TYPE_CARPOOL_passenger
+                || type == MessageFragment.TYPE_MY_CARPOOL) {
             String route = item.getStartPlace() + "——" + item.getEndPlace() + "\n";
             String outTime = item.getSetOutTime() + "\n";
             String content = item.getContent();

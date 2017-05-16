@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 
 import com.aglhz.abase.log.ALog;
+import com.aglhz.yicommunity.boxingimpl.BoxingGlideLoader;
 import com.aglhz.yicommunity.common.AppContext;
+import com.bilibili.boxing.BoxingMediaLoader;
+import com.bilibili.boxing.loader.IBoxingMediaLoader;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -35,6 +38,15 @@ public class BaseApplication extends MultiDexApplication implements Application.
         registerActivityLifecycleCallbacks(this);
 
         tempInit();
+
+        initBoxing();
+
+    }
+
+    private void initBoxing() {
+        IBoxingMediaLoader loader = new BoxingGlideLoader();
+        BoxingMediaLoader.getInstance().init(loader);
+//        BoxingCrop.getInstance().init(new BoxingUcrop());初始化图片裁剪（可选）
 
     }
 

@@ -30,6 +30,8 @@ import com.aglhz.yicommunity.house.contract.AddHouseContract;
 import com.aglhz.yicommunity.house.presenter.AddHousePresenter;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -168,8 +170,15 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 } else {
                     params.isProprietor = isProprietor;
                     params.name = etName.getText().toString().trim();
-                    params.idCard = etIdcard.getText().toString().trim();
-
+                    String regEx = "(^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}$)";
+                    String idCard = etIdcard.getText().toString().trim();
+                    Pattern pattern = Pattern.compile(regEx);
+                    Matcher matcher = pattern.matcher(idCard);
+                    if (!matcher.matches()) {
+                        DialogHelper.warningSnackbar(rootView, "请输入正确的身份证号码!");
+                        return;
+                    }
+                    params.idCard = idCard;
                     mPresenter.requestApply(params);
                 }
                 break;
@@ -205,7 +214,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                         + (city == null ? "" : city.name + "　")
                         + (county == null ? "" : county.name + "　")
                         + (street == null ? "" : street.name);
-
 
 
                 tvArea.setText(s);
@@ -353,8 +361,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     @Override
     public void responseApply(String message) {
         DialogHelper.successSnackbar(rootView, message);
+        getView().postDelayed(() -> _mActivity.finish(), 1000);
     }
-
 
     @Override
     public void start(Object response) {

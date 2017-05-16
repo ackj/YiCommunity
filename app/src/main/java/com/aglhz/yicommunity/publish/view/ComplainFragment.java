@@ -1,8 +1,6 @@
 package com.aglhz.yicommunity.publish.view;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,10 +15,8 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.ImageUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.ToastUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -28,10 +24,11 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.ComplainPresenter;
+import com.bilibili.boxing.Boxing;
+import com.bilibili.boxing.model.config.BoxingConfig;
+import com.bilibili.boxing.model.entity.BaseMedia;
+import com.bilibili.boxing_impl.ui.BoxingActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -66,6 +63,12 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     private PublishImageRVAdapter adapter;
     Params params = Params.getInstance();
     private boolean requesting;
+    BaseMedia addMedia = new BaseMedia() {
+        @Override
+        public TYPE getType() {
+            return TYPE.IMAGE;
+        }
+    };
 
     public static ComplainFragment newInstance() {
         return new ComplainFragment();
@@ -98,12 +101,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         initStateBar(toolbar);
         toolbarTitle.setText("我要投诉");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
@@ -113,8 +111,9 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
                 return false;
             }
         });
-        List<Uri> datas = new ArrayList<>();
-        datas.add(Uri.parse("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px));
+        List<BaseMedia> datas = new ArrayList<>();
+        addMedia.setPath("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px);
+        datas.add(addMedia);
         adapter = new PublishImageRVAdapter(datas);
         recyclerView.setAdapter(adapter);
     }
@@ -185,35 +184,27 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     public static final int REQUEST_CODE_CHOOSE = 100;
 
     private void selectPhoto() {
-        Matisse.from(this)
-                .choose(MimeType.allOf())
-                .countable(true)
-                .maxSelectable(3)
-//                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-//                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                .thumbnailScale(0.85f)
-                .theme(R.style.Matisse_Dracula)
-                .imageEngine(new GlideEngine())
-                .forResult(REQUEST_CODE_CHOOSE);
+        BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
+        config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
+                .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
+        Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
-        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            List<Uri> uris = Matisse.obtainResult(data);
+        if (resultCode == RESULT_OK && requestCode == 100) {
+            ArrayList<BaseMedia> medias = Boxing.getResult(data);
             params.files = new ArrayList<>();
-            for (int i = 0; i < uris.size(); i++) {
-                ALog.d(TAG, "getImageAbsolutePath:" + ImageUtils.getImageAbsolutePath(_mActivity, uris.get(i)));
-                params.files.add(new File(ImageUtils.getImageAbsolutePath(BaseApplication.mContext, uris.get(i))));
+            for (int i = 0; i < medias.size(); i++) {
+                params.files.add(new File(medias.get(i).getPath()));
             }
             if (params.files.size() > 0) {
                 params.type = 1;
             }
-            uris.add(Uri.parse("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px));
-            adapter.setNewData(uris);
+            medias.add(addMedia);
+            adapter.setNewData(medias);
         }
     }
 

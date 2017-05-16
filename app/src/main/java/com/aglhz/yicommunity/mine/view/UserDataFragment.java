@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.UserBean;
@@ -199,7 +198,6 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     params.field = "sex";//写死就好
                     params.val = which + "";
                     mPresenter.updateUserData(params);
-
                 }).show();
 
                 break;

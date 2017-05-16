@@ -16,8 +16,7 @@ import com.aglhz.yicommunity.house.contract.AddHouseContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.aglhz.yicommunity.common.UserHelper.city;
+import okhttp3.MultipartBody;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -100,15 +99,17 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
 
     @Override
     public Observable<BaseBean> requestApply(Params params) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.addFormDataPart("token", params.token);
+        builder.addFormDataPart("cmnt_c", params.cmnt_c);
+        builder.addFormDataPart("bdg_c", params.bdg_c);
+        builder.addFormDataPart("bdg_u_c", params.bdg_u_c);
+        builder.addFormDataPart("bdg_f_c", params.bdg_f_c);
+        builder.addFormDataPart("bdg_f_h_c", params.bdg_f_h_c);
+        builder.addFormDataPart("applyName", params.name);
+        builder.addFormDataPart("idNO", params.idCard);
         return HttpHelper.getService(ApiService.class).requestApply(apply(params.isProprietor)
-                , params.token
-                , params.cmnt_c
-                , params.bdg_c
-                , params.bdg_u_c
-                , params.bdg_f_c
-                , params.bdg_f_h_c
-                , params.name
-                , params.idCard)
+                , builder.build())
                 .subscribeOn(Schedulers.io());
     }
 
