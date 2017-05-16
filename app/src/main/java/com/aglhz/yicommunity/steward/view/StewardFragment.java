@@ -290,9 +290,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                     contactDialog.show();
                 }
 
-            } else if(position ==2){
+            } else if (position == 2) {
                 start(ComplainFragment.newInstance());
-            }else{
+            } else {
                 go2PropertyService(position);
             }
         });
@@ -379,8 +379,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                mPresenter.start(Params.getInstance());
-
+                params.token = UserHelper.token;
+                params.cmnt_c = UserHelper.communityCode;
+                mPresenter.start(params);
             }
         });
     }

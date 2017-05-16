@@ -66,7 +66,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     private LinearLayoutManager mLinearLayoutManager;
     private PropertyPayRVAdapter adapter;
     private Params params = Params.getInstance();
-    private String[] arrPayType = {"支付宝支付", "微信微信"};
+    private String[] arrPayType = {"支付宝支付", "微信支付"};
 
     public static PropertyPayListFragment newInstance(int position) {
         Bundle bundle = new Bundle();
