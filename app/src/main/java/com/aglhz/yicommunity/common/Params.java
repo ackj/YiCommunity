@@ -53,8 +53,9 @@ public class Params {
     public String endPlace;
     public String outTime;
     public String currentPositionLat;
-    public String currentPostionLng;
     public String billFids;
+    public String currentPositionLng;
+    public String positionAddress;
     public boolean isProprietor = true;
     public boolean single;
     public boolean timeable;
@@ -131,7 +132,7 @@ public class Params {
                 ", endPlace='" + endPlace + '\'' +
                 ", outTime='" + outTime + '\'' +
                 ", currentPositionLat='" + currentPositionLat + '\'' +
-                ", currentPostionLng='" + currentPostionLng + '\'' +
+                ", currentPostionLng='" + currentPositionLng + '\'' +
                 ", isProprietor=" + isProprietor +
                 ", single=" + single +
                 ", timeable=" + timeable +

@@ -42,7 +42,7 @@ public class NeighbourModel extends BaseModel implements NeighbourContract.Model
     @Override
     public Observable<NeighbourListBean> getCarpoolList(Params params) {
         return HttpHelper.getService(ApiService.class).getCarpoolList(params.carpoolType,
-                params.currentPositionLat, params.currentPostionLng, params.page, params.pageSize)
+                params.currentPositionLat, params.currentPositionLng, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 

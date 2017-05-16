@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.bean.UserBean;
 import com.google.gson.Gson;
-
-import mlxy.utils.S;
 
 
 /**
@@ -29,6 +26,7 @@ public class UserHelper {
     private static final String CITY = "city";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
+    private static final String POSITION_ADDRESS = "position_address";
     private static final String SIP = "sip";
 
     public static String token = "";
@@ -42,6 +40,7 @@ public class UserHelper {
     public static String longitude = "";//经度
     public static String sip = "";
     public static String WXAPPID = "";
+    public static String positionAddress = "";//定位的位置地址
 
     public static UserBean.DataBean.MemberInfoBean userInfo;
 
@@ -56,6 +55,13 @@ public class UserHelper {
         UserHelper.longitude = longitude;
         SharedPreferences.Editor editor = getEditor();
         editor.putString(LONGITUDE, longitude);
+        return editor.commit();
+    }
+
+    public static boolean setLocationAddress(String address){
+        UserHelper.positionAddress = address;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(POSITION_ADDRESS, address);
         return editor.commit();
     }
 

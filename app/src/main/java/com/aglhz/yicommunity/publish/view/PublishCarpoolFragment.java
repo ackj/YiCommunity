@@ -302,6 +302,9 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
             DialogHelper.errorSnackbar(getView(), "请输入留言!");
             return;
         }
+        params.currentPositionLat = UserHelper.latitude;
+        params.currentPositionLng = UserHelper.longitude;
+        params.positionAddress = UserHelper.positionAddress;
         params.positionType = 1;
         mPresenter.post(params);
         requesting = true;

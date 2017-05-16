@@ -1,7 +1,6 @@
 package com.aglhz.yicommunity.neighbour.view;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,7 +27,6 @@ import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
 import com.aglhz.yicommunity.publish.view.CommentFragment;
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -229,7 +227,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             mPresenter.requestNeihbourList(params);
         } else if (type == TYPE_CARPOOL) {
             params.currentPositionLat = UserHelper.latitude;
-            params.currentPostionLng = UserHelper.longitude;
+            params.currentPositionLng = UserHelper.longitude;
             params.carpoolType = 1;
             mPresenter.requestCarpoolList(params);
         } else if (type == TYPE_MY_CARPOOL) {

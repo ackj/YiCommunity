@@ -67,8 +67,11 @@
             android:id="@+id/tv_location_item_moments_list"
             style="@style/TvGreyText13sp"
             android:layout_below="@id/rv_pics_item_moments_list"
+            android:layout_marginRight="100dp"
             android:drawableLeft="@drawable/ic_location_1_48px"
             android:drawablePadding="5dp"
+            android:ellipsize="end"
+            android:lines="1"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:text="惠州 海伦堡社区" />
@@ -90,9 +93,8 @@
                 android:text="3" />
 
             <TextView
+                style="@style/TvGreyText13sp"
                 android:id="@+id/tv_remove_item_moments_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
