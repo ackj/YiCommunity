@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
 import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -144,6 +145,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             switch (view.getId()) {
                 case R.id.ll_comment_item_moments_list:
                 case R.id.tv_comment_count_item_moments_list:
+                    ToastUtils.showToast(_mActivity,"点击了评论");
                     _mActivity.start(CommentFragment.newInstance(bean.getFid(), type));
                     break;
                 case R.id.tv_remove_item_moments_list:
@@ -237,7 +239,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             mPresenter.requestNeihbourList(params);
         } else if (type == TYPE_CARPOOL) {
             params.currentPositionLat = UserHelper.latitude;
-            params.currentPostionLng = UserHelper.longitude;
+            params.currentPositionLng = UserHelper.longitude;
             params.carpoolType = 1;
             mPresenter.requestCarpoolList(params);
         } else if (type == TYPE_MY_CARPOOL) {

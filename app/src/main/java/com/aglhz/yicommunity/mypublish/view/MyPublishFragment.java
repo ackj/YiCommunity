@@ -59,7 +59,7 @@ public class MyPublishFragment extends BaseFragment {
     }
 
     private void initView() {
-        viewpager.setAdapter(new MyPublishVPAdapter(getFragmentManager()));
+        viewpager.setAdapter(new MyPublishVPAdapter(getChildFragmentManager()));
         tablayout.setupWithViewPager(viewpager);
         viewpager.setOffscreenPageLimit(3);
     }

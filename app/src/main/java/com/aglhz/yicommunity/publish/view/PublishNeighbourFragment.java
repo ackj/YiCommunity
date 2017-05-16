@@ -129,6 +129,8 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
 //                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                 .thumbnailScale(0.85f)
+//                .capture(true)
+//                .captureStrategy(new CaptureStrategy(true,"com.zhihu.matisse.sample.fileprovider"))
                 .theme(R.style.Matisse_Dracula)
                 .imageEngine(new GlideEngine())
                 .forResult(100);

@@ -146,7 +146,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     public void responseSuccess(BaseBean baseBean) {
         requesting = false;
         DialogHelper.successSnackbar(getView(), "提交成功!");
-        _mActivity.finish();
+        pop();
     }
 
     @Override
@@ -165,7 +165,6 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         }
         params.phoneNo = etPhone.getText().toString().trim();
         params.content = etContent.getText().toString().trim();
-        params.type = 1;
         if (params.name.isEmpty()) {
             DialogHelper.errorSnackbar(getView(), "请输入联系人");
             return;
@@ -209,6 +208,9 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
             for (int i = 0; i < uris.size(); i++) {
                 ALog.d(TAG, "getImageAbsolutePath:" + ImageUtils.getImageAbsolutePath(_mActivity, uris.get(i)));
                 params.files.add(new File(ImageUtils.getImageAbsolutePath(BaseApplication.mContext, uris.get(i))));
+            }
+            if (params.files.size() > 0) {
+                params.type = 1;
             }
             uris.add(Uri.parse("android.resource://" + _mActivity.getPackageName() + "/" + R.drawable.ic_image_add_tian_80px));
             adapter.setNewData(uris);

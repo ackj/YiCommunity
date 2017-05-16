@@ -23,13 +23,13 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.DoorListBean;
+import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.door.DoorActivity;
 import com.aglhz.yicommunity.door.call.CallActivity;
 import com.aglhz.yicommunity.event.EventCommunityChange;
@@ -38,6 +38,7 @@ import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.park.ParkActivity;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.PropertyActivity;
+import com.aglhz.yicommunity.publish.view.ComplainFragment;
 import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.presenter.StewardPresenter;
@@ -289,7 +290,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                     contactDialog.show();
                 }
 
-            } else {
+            } else if(position ==2){
+                start(ComplainFragment.newInstance());
+            }else{
                 go2PropertyService(position);
             }
         });
