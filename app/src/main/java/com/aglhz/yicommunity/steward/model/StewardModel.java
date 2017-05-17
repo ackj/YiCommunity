@@ -50,6 +50,8 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
 
     @Override
     public Single<List<IconBean>> requestHouses(Params params) {
+        ALog.e("requestHouses::" + params.token);
+        ALog.e("requestHouses::" + params.cmnt_c);
         return HttpHelper.getService(ApiService.class)
                 .requestMyhouses(ApiService.requestMyhouses, params.token, params.cmnt_c)
                 .map(myHousesBean -> myHousesBean.getData().getAuthBuildings())

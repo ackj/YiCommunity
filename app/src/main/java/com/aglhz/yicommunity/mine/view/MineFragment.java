@@ -149,15 +149,15 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
             case R.id.ll_my_indent:
                 if (isLogined()) {
                     String url = ApiService.INDENT_CENTER + UserHelper.token;
-                    Intent intent = new Intent(getContext(), WebActivity.class);
-                    intent.putExtra("title", "订单中心");
-                    intent.putExtra("link", url);
-                    startActivity(intent);
+                    go2Web("我的订单", url);
                 }
 
                 break;
             case R.id.ll_my_address:
-                DoorManager.getInstance().callOut("sip:D6-31-1@member");
+                if (isLogined()) {
+                    String url = ApiService.MY_ADDRESS + UserHelper.token;
+                    go2Web("我的地址", url);
+                }
                 break;
             case R.id.ll_make_shortcut:
                 createShortCut();
@@ -301,4 +301,12 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    private void go2Web(String title, String link) {
+        Intent intent = new Intent(getContext(), WebActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("link", link);
+        startActivity(intent);
+    }
+
 }

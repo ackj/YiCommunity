@@ -46,6 +46,7 @@ import com.aglhz.yicommunity.web.WebActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.linphone.core.LinphoneCall;
@@ -112,6 +113,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_steward, container, false);
+        EventBus.getDefault().register(this);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -427,6 +429,8 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         if (propertyServiceAdapter != null) {
             propertyServiceAdapter = null;
         }
+
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 

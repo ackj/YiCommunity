@@ -70,6 +70,9 @@ public interface ApiService {
     //智能设备
     String SMART_DEVICE = "http://www.aglhz.com/sub_property_ysq/m/html/zhinengshebei.html";
 
+    //我的地址
+    String MY_ADDRESS = "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/addressee_list.html?appType=2&token=";
+
     //********************以上为Web*******************************
 
 

@@ -18,11 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.sipphone.sdk.BluetoothManager;
 import com.sipphone.sdk.SipCoreManager;
 import com.sipphone.sdk.SipCoreUtils;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.linphone.core.LinphoneCall;
 import org.linphone.core.LinphoneCall.State;
 import org.linphone.core.LinphoneCallParams;
@@ -31,69 +33,32 @@ import org.linphone.core.LinphoneCoreException;
 import org.linphone.core.LinphoneCoreListenerBase;
 import org.linphone.mediastream.video.capture.hwconf.AndroidCameraConfiguration;
 
-public class CallActivity extends Activity implements View.OnClickListener {
+public class CallActivity extends BaseActivity implements View.OnClickListener {
     public static final String TAG = "CallActivity";
 
-    private final static int SECONDS_BEFORE_HIDING_CONTROLS = 4000;
-    private final static int SECONDS_BEFORE_DENYING_CALL_UPDATE = 30000;
-
-    public static CallActivity instance;
-
-    private Handler mControlsHandler = new Handler();
-    private Runnable mControls;
-    private ImageView switchCamera;
-    private RelativeLayout mActiveCallHeader, sideMenuContent, avatar_layout;
-    private ImageView pause, hangUp, acceptCall, dialer, video, micro, speaker, options, addCall, transfer, conference, conferenceStatus, contactPicture;
+    private ImageView micro;
     private ImageView unlock;
-    private ImageView audioRoute, routeSpeaker, routeEarpiece, routeBluetooth, menu, chat;
-    private LinearLayout mNoCurrentCall, callInfo, mCallPaused;
-    private ProgressBar videoProgress;
     private View mBottomView;
-
     private CallVideoFragment videoCallFragment;
-    private boolean isSpeakerEnabled = false, isMicMuted = false, isTransferAllowed, isAnimationDisabled;
-    private LinearLayout mControlsLayout;
-    private int cameraNumber;
-    private Animation slideOutLeftToRight, slideInRightToLeft, slideInBottomToTop, slideInTopToBottom, slideOutBottomToTop, slideOutTopToBottom;
-    private CountDownTimer timer;
-    private boolean isVideoCallPaused = false;
     private CallAudioFragment audioCallFragment;
-    private LinearLayout callsList, conferenceList;
-    private LayoutInflater inflater;
-    private ViewGroup container;
-    private boolean isConferenceRunning = false;
+    private boolean isSpeakerEnabled = false, isMicMuted = false, isTransferAllowed, isAnimationDisabled;
+    private boolean isVideoCallPaused = false;
+    private int cameraNumber;
     private LinphoneCoreListenerBase mListener;
-    private DrawerLayout sideMenu;
 
-    public static CallActivity instance() {
-        return instance;
-    }
-
-    public static boolean isInstanciated() {
-        return instance != null;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        instance = this;
-
-
-//        RxBus.get().post(new CallingEvent());
-
-
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        setContentView(R.layout.activity_call);
-        // 默认定义为true，即isTransferAllowed = true
-        // 蓝牙耳机检测
+        setContentView(R.layout.activity_call1);
+
         if (!BluetoothManager.getInstance().isBluetoothHeadsetAvailable()) {    // true
             BluetoothManager.getInstance().initBluetooth();
         }
 
-        // 界面切换动画，默认是false，即isAnimationDisabled = false;
-//		isAnimationDisabled = getApplicationContext().getResources().getBoolean(R.bool.disable_animations) || !LinphonePreferences.instance().areAnimationsEnabled();
         isAnimationDisabled = false;
         // 设备摄像头的个数，通常由前置和后置两个摄像头
         cameraNumber = AndroidCameraConfiguration.retrieveCameras().length;
@@ -111,8 +76,6 @@ public class CallActivity extends Activity implements View.OnClickListener {
             }
         };
         mBottomView = findViewById(R.id.menu);
-        videoProgress = (ProgressBar) findViewById(R.id.video_in_progress);
-        videoProgress.setVisibility(View.GONE);
 
         micro = (ImageView) findViewById(R.id.micro);
         unlock = (ImageView) findViewById(R.id.unlock);
@@ -123,7 +86,6 @@ public class CallActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.video).setOnClickListener(this);
 
         micro.setOnClickListener(this);
-        unlock.setOnClickListener(this);
 
         if (findViewById(R.id.fragmentContainer) != null) {
 
@@ -165,10 +127,6 @@ public class CallActivity extends Activity implements View.OnClickListener {
         }
         registerCallDurationTimer();
 
-
-
-
-//        RxBus.get().register(this);
     }
 
     @Override
@@ -176,7 +134,7 @@ public class CallActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.hang_up:
 
-//                hangUp(null);
+                hangUp();
                 break;
 
             case R.id.switchCamera:
@@ -202,7 +160,7 @@ public class CallActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        hangUp(null);
+        hangUp();
     }
 
     public void displayVideoCall(boolean display) {
@@ -213,20 +171,19 @@ public class CallActivity extends Activity implements View.OnClickListener {
         }
     }
 
-//    @Subscribe
-//    public void hangUp(HardWareCallEnd event) {
-//        LinphoneCore lc = SipCoreManager.getLc();
-//        LinphoneCall currentCall = lc.getCurrentCall();
-//
-//        if (currentCall != null) {
-//            lc.terminateCall(currentCall);
-//        } else if (lc.isInConference()) {
-//            lc.terminateConference();
-//        } else {
-//            lc.terminateAllCalls();
-//        }
-//        finish();
-//    }
+    public void hangUp() {
+        LinphoneCore lc = SipCoreManager.getLc();
+        LinphoneCall currentCall = lc.getCurrentCall();
+
+        if (currentCall != null) {
+            lc.terminateCall(currentCall);
+        } else if (lc.isInConference()) {
+            lc.terminateConference();
+        } else {
+            lc.terminateAllCalls();
+        }
+        finish();
+    }
 
     private void accept() {
         LinphoneCore lCore = SipCoreManager.getLc();
@@ -251,7 +208,6 @@ public class CallActivity extends Activity implements View.OnClickListener {
             params.setVideoEnabled(false);
             SipCoreManager.getLc().updateCall(call, params);
         } else {    // 如果当前是非视频通话，点击后切换到视频通话
-            videoProgress.setVisibility(View.VISIBLE);
             // 检查是否低带宽使能视频通话
             if (!call.getRemoteParams().isLowBandwidthEnabled()) {
                 SipCoreManager.getInstance().addVideo();
@@ -265,9 +221,9 @@ public class CallActivity extends Activity implements View.OnClickListener {
         isMicMuted = !isMicMuted;
         lc.muteMic(isMicMuted);
         if (isMicMuted) {
-            micro.setImageResource(R.drawable.ic_micro_selected);
+            micro.setImageResource(R.drawable.ic_not_mute_white_240px);
         } else {
-            micro.setImageResource(R.drawable.ic_micro_default);
+            micro.setImageResource(R.drawable.ic_mute_white_240px);
         }
     }
 

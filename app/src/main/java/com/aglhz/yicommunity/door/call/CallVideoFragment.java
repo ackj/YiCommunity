@@ -85,12 +85,16 @@ public class CallVideoFragment extends Fragment implements OnGestureListener, On
 
                 mGestureDetector.onTouchEvent(event);
                 if (inCallActivity != null) {
-                    if (event.getAction() == MotionEvent.ACTION_UP)
-                        inCallActivity.displayVideoCall(false);
+                    if (event.getAction() == MotionEvent.ACTION_UP){
+//                        inCallActivity.displayVideoCall(false);
+                    }
                 }
                 return true;
             }
         });
+
+        mCaptureView.setOnClickListener(v -> switchCamera());
+
 
         return view;
     }
@@ -150,7 +154,7 @@ public class CallVideoFragment extends Fragment implements OnGestureListener, On
         if (androidVideoWindowImpl != null) {
             synchronized (androidVideoWindowImpl) {
                 /*
-				 * this call will destroy native opengl renderer which is used by
+                 * this call will destroy native opengl renderer which is used by
 				 * androidVideoWindowImpl
 				 */
                 SipCoreManager.getLc().setVideoWindow(null);
