@@ -306,11 +306,7 @@ public interface ApiService {
     String requestMyhouses = BASE_PROPERTY + "/client/info/authBdgs.do";
 
     @POST
-    Flowable<MyHousesBean> requestMyhouses(
-            @Url String url,
-            @Query("token") String token,
-            @Query("cmnt_c") String cmnt_c);
-
+    Flowable<MyHousesBean> requestMyhouses(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c);
 
     String UPDATE_RIGHTS_MYSELF = BASE_PROPERTY + "/smartdoor/client/powerset";
 

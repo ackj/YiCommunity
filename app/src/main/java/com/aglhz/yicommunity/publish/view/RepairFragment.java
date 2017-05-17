@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,9 +23,11 @@ import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunityChange;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.RepairPresenter;
@@ -32,6 +35,10 @@ import com.bilibili.boxing.Boxing;
 import com.bilibili.boxing.model.config.BoxingConfig;
 import com.bilibili.boxing.model.entity.BaseMedia;
 import com.bilibili.boxing_impl.ui.BoxingActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,7 +56,7 @@ import butterknife.Unbinder;
 public class RepairFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = RepairFragment.class.getSimpleName();
 
-    @BindView(R.id.rl_house_name_fragment_repair)
+    @BindView(R.id.rl_house_name)
     RelativeLayout rlHouseName;
     @BindView(R.id.bt_submit_fragment_repair)
     Button btSubmit;
@@ -67,12 +74,19 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     EditText etContent;
     @BindView(R.id.recyclerView_fragment_repair)
     RecyclerView recyclerView;
+    @BindView(R.id.tv_house_name)
+    TextView tvHouseName;
+    @BindView(R.id.tv_repair_type)
+    TextView tvRepairType;
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private boolean isPrivate;//是否是私人报修
     private boolean requesting;
-    Params params = Params.getInstance();
+    private Params params = Params.getInstance();
+    private List<IconBean> houseBeans;
+    private String[] houseTitles;
+
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
@@ -100,6 +114,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_publish_repair, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -123,10 +138,13 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     private void initData() {
         if (isPrivate) {
             rlHouseName.setVisibility(View.VISIBLE);
+            params.cmnt_c = UserHelper.communityCode;
+            ((RepairPresenter) mPresenter).requestMyhouse(params);
         } else {
             rlHouseName.setVisibility(View.GONE);
         }
 
+        tvLocation.setText(UserHelper.communityName);
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
             @Override
             public boolean canScrollVertically() {
@@ -156,18 +174,8 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     public void onDestroyView() {
         super.onDestroyView();
         KeyBoardUtils.hideKeybord(getView(), _mActivity);
+        EventBus.getDefault().unregister(this);
         unbinder.unbind();
-    }
-
-    @OnClick({R.id.tv_location_fragment_repair, R.id.bt_submit_fragment_repair})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_location_fragment_repair:
-                _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
-                break;
-            case R.id.bt_submit_fragment_repair:
-                break;
-        }
     }
 
     private void selectPhoto() {
@@ -177,27 +185,58 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
     }
 
-    @OnClick(R.id.bt_submit_fragment_repair)
-    public void onViewClicked() {
-        params.name = etName.getText().toString().trim();
-        params.des = etContent.getText().toString().trim();
-        params.contact = etPhone.getText().toString().trim();
-        params.single = isPrivate;
-        if (params.name.isEmpty()) {
-            DialogHelper.errorSnackbar(getView(), "请输入联系人");
-            return;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunityChange event) {
+        params.cmnt_c = event.bean.getCode();
+        tvLocation.setText(event.bean.getName());
+        if (isPrivate) {
+            ((RepairPresenter) mPresenter).requestMyhouse(params);
         }
+    }
 
-        if (params.contact.isEmpty()) {
-            DialogHelper.errorSnackbar(getView(), "请输入您的联系方式");
-            return;
+    @OnClick({R.id.bt_submit_fragment_repair, R.id.tv_location_fragment_repair, R.id.rl_house_name, R.id.tl_repair_type})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_house_name:
+                new AlertDialog.Builder(_mActivity).setItems(houseTitles, (dialog, which) -> {
+                    //网络访问
+                    dialog.dismiss();
+                    ALog.e("AlertDialog which:::" + which);
+                    tvHouseName.setText(houseBeans.get(which).title);
+                }).setTitle("请选择").setPositiveButton("取消", null).show();
+                break;
+            case R.id.tl_repair_type:
+                String[] arr = {"水电", "水管", "门窗"};
+                new AlertDialog.Builder(_mActivity).setItems(arr, (dialog, which) -> {
+                    //网络访问
+                    dialog.dismiss();
+                    ALog.e("AlertDialog which:::" + which);
+                    tvRepairType.setText(arr[which]);
+                }).setTitle("请选择").setPositiveButton("取消", null).show();
+                break;
+            case R.id.tv_location_fragment_repair:
+                _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
+                break;
+            case R.id.bt_submit_fragment_repair:
+                params.name = etName.getText().toString().trim();
+                params.des = etContent.getText().toString().trim();
+                params.contact = etPhone.getText().toString().trim();
+                params.single = isPrivate;
+                if (params.name.isEmpty()) {
+                    DialogHelper.errorSnackbar(getView(), "请输入联系人");
+                    return;
+                }
+                if (params.contact.isEmpty()) {
+                    DialogHelper.errorSnackbar(getView(), "请输入您的联系方式");
+                    return;
+                }
+                if (params.des.isEmpty()) {
+                    DialogHelper.errorSnackbar(getView(), "请输入详情");
+                    return;
+                }
+                submit(params);
+                break;
         }
-
-        if (params.des.isEmpty()) {
-            DialogHelper.errorSnackbar(getView(), "请输入详情");
-            return;
-        }
-        submit(params);
     }
 
     private void submit(Params params) {
@@ -214,7 +253,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
-        if (resultCode == RESULT_OK &&requestCode == 100 ) {
+        if (resultCode == RESULT_OK && requestCode == 100) {
             ArrayList<BaseMedia> medias = Boxing.getResult(data);
             params.files = new ArrayList<>();
             for (int i = 0; i < medias.size(); i++) {
@@ -228,6 +267,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         }
     }
 
+
     @Override
     public void start(Object response) {
 
@@ -237,6 +277,14 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     public void error(String errorMessage) {
         requesting = false;
         DialogHelper.warningSnackbar(getView(), errorMessage);
+    }
+
+    public void responseMyHouse(List<IconBean> iconBeans) {
+        houseBeans = iconBeans;
+        houseTitles = new String[iconBeans.size()];
+        for (int i = 0; i < iconBeans.size(); i++) {
+            houseTitles[i] = iconBeans.get(i).title;
+        }
     }
 
     @Override

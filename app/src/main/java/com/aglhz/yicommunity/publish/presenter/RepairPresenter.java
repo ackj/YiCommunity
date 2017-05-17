@@ -9,6 +9,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.luban.Luban;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.model.RepairModel;
+import com.aglhz.yicommunity.publish.view.RepairFragment;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -42,9 +43,19 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
 
     }
 
+    //请求我的房屋
+    public void requestMyhouse(Params params) {
+        mRxManager.add(((RepairModel) mModel).requestHouses(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(beanList -> {
+                    ((RepairFragment) getView()).responseMyHouse(beanList);
+                }, this::error));
+
+    }
+
     @Override
     public void post(Params params) {
-        switch (params.type){
+        switch (params.type) {
             case 1:
                 compress(params);
                 break;
@@ -55,13 +66,11 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
                 beginPost(params);
                 break;
         }
-
-
     }
 
-    public void compress(Params params){
-        for (int i = 0;i<params.files.size();i++){
-            ALog.d(TAG,params.files.get(i).getAbsoluteFile()+" --- length----"+params.files.get(i).length());
+    public void compress(Params params) {
+        for (int i = 0; i < params.files.size(); i++) {
+            ALog.d(TAG, params.files.get(i).getAbsoluteFile() + " --- length----" + params.files.get(i).length());
         }
         Luban.get(BaseApplication.mContext)
                 .load(params.files)
@@ -85,10 +94,10 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {
-                        ALog.e(TAG,"上传成功了！！");
+                        ALog.e(TAG, "上传成功了！！");
                         getView().responseSuccess(baseBean);
                     } else {
-                        ALog.e(TAG,"上传失败了！！");
+                        ALog.e(TAG, "上传失败了！！");
                         getView().error(baseBean.getOther().getMessage());
                     }
                 }, this::error));

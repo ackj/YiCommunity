@@ -57,7 +57,9 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Email: liujia95me@126.com
  */
 public class MineFragment extends BaseFragment<MineContract.Presenter> implements MineContract.View {
+
     private static final String TAG = MineFragment.class.getSimpleName();
+
     @BindView(R.id.iv_head_item_comment)
     ImageView ivHead;
     @BindView(R.id.tv_name)
@@ -86,6 +88,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     TextView tvCacheSum;
     @BindView(R.id.iv_header_background)
     ImageView ivHeaderBackground;
+
     private ViewGroup rootView;
     private Unbinder unbinder;
 
@@ -126,13 +129,18 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @OnClick({R.id.iv_head_item_comment, R.id.tv_user_data, R.id.ll_message_center,
             R.id.ll_my_indent, R.id.ll_my_address, R.id.ll_make_shortcut,
-            R.id.ll_my_publish, R.id.ll_clean_cache, R.id.ll_about_us, R.id.tv_logout})
+            R.id.ll_my_publish, R.id.ll_clean_cache, R.id.ll_about_us, R.id.tv_logout, R.id.ll_my_house})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_head_item_comment:
                 if (isLogined()) {
                     //后面再改成iOS那种
                     ALog.e("111111111");
+                }
+                break;
+            case R.id.ll_my_house:
+                if (isLogined()) {
+                    ((MainFragment) getParentFragment()).start(MineHouseFragment.newInstance(), SupportFragment.STANDARD);
                 }
                 break;
             case R.id.tv_user_data:
@@ -154,7 +162,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                     intent.putExtra("link", url);
                     startActivity(intent);
                 }
-
                 break;
             case R.id.ll_my_address:
                 DoorManager.getInstance().callOut("sip:D6-31-1@member");
@@ -192,7 +199,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
             return false;
         }
     }
-
 
     @Override
     public void start(Object response) {

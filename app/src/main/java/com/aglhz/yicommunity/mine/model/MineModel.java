@@ -1,21 +1,17 @@
 package com.aglhz.yicommunity.mine.model;
 
 import com.aglhz.abase.cache.CacheManager;
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.ApiService;
-import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.mine.contract.MineContract;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.aglhz.abase.cache.CacheManager.getTotalCacheSize;
 
 
 /**
@@ -26,8 +22,8 @@ import static com.aglhz.abase.cache.CacheManager.getTotalCacheSize;
  */
 
 public class MineModel extends BaseModel implements MineContract.Model {
-    private final String TAG = MineModel.class.getSimpleName();
 
+    private final String TAG = MineModel.class.getSimpleName();
 
     @Override
     public Observable<BaseBean> requestLogout(Params params) {

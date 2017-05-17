@@ -51,17 +51,29 @@
             android:lineSpacingExtra="5dp"
             android:text="单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_pics_item_moments_list"
+        <FrameLayout
+            android:id="@+id/fl_video_pics_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_content_item_moments_list"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_pics_item_moments_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+                android:id="@+id/videoplayer"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/tv_location_item_moments_list"
             style="@style/TvGreyText13sp"
-            android:layout_below="@id/rv_pics_item_moments_list"
+            android:layout_below="@id/fl_video_pics_layout"
             android:layout_marginRight="100dp"
             android:drawableLeft="@drawable/ic_location_1_48px"
             android:drawablePadding="5dp"
@@ -75,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/rv_pics_item_moments_list"
+            android:layout_below="@+id/fl_video_pics_layout"
             android:orientation="horizontal">
 
             <TextView
@@ -94,9 +106,7 @@
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 android:text="删除" />
-
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/ll_comment_item_moments_list"

@@ -28,6 +28,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
@@ -56,6 +57,15 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
         helper.addOnClickListener(R.id.ll_comment_item_moments_list)
                 .addOnClickListener(R.id.tv_remove_item_moments_list)
                 .addOnClickListener(R.id.tv_comment_count_item_moments_list);
+
+        //-------------- 视频 ---------------
+        JCVideoPlayerStandard jcVideoPlayerStandard = helper.getView(R.id.videoplayer);
+        jcVideoPlayerStandard.setUp("http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4"
+                , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "嫂子闭眼睛");
+
+        Glide.with(BaseApplication.mContext)
+                .load("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640")
+                .into(jcVideoPlayerStandard.thumbImageView);
 
         //-------------- 删除 ---------------
         TextView tvRemove = helper.getView(R.id.tv_remove_item_moments_list);

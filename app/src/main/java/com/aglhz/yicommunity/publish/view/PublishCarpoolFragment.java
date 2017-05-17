@@ -146,8 +146,6 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
             }
             return false;
         });
-
-
     }
 
     private void selectPhoto() {
@@ -306,5 +304,4 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         mPresenter.post(params);
         requesting = true;
     }
-
 }

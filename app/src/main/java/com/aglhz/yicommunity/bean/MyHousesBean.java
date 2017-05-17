@@ -8,8 +8,9 @@ import java.util.List;
 
 public class MyHousesBean extends BaseBean {
 
+
     /**
-     * data : {"authBuildings":[{"fid":"307afbba-abf8-4308-b17c-8c6ee8523cfd","o_name":"吴伟沅","c_name":"水北新村1期","c_code":"YSQ-SBXC-01-00001","b_name":"1单元2层2012","b_code":"YSQ-SBXC-01-001U-002-012-00012"}]}
+     * data : {"authBuildings":[{"address":"广东省惠州市惠城区凯宾斯基3栋1单元8层5房","b_code":"KBSJ-agl-00005-003-001-008-05","b_name":"5房","c_code":"KBSJ-agl-00005","c_name":"凯宾斯基","fid":"d325d4d4-8de7-4cce-b0c4-f39c5b8af00f","members":[{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170425090419463319.jpg","isOwner":1,"mname":"rnzbr8008","name":""}],"o_name":"张三"},{"address":"广东省惠州市惠城区凯宾斯基3栋1单元16层6房","b_code":"KBSJ-agl-00005-003-001-016-06","b_name":"6房","c_code":"KBSJ-agl-00005","c_name":"凯宾斯基","fid":"ebd4cb41-0500-4254-a1be-45cee1054930","members":[],"o_name":"刘嘉"},{"address":"广东省惠州市惠城区凯宾斯基3栋1单元1层1房","b_code":"KBSJ-agl-00005-003-001-001-01","b_name":"1房","c_code":"KBSJ-agl-00005","c_name":"凯宾斯基","fid":"0b93e5a9-f3dd-42bc-a69c-cd43e803b9c6","members":[],"o_name":"刘佳1房"}]}
      */
 
     private DataBean data;
@@ -35,20 +36,64 @@ public class MyHousesBean extends BaseBean {
 
         public static class AuthBuildingsBean {
             /**
-             * fid : 307afbba-abf8-4308-b17c-8c6ee8523cfd
-             * o_name : 吴伟沅
-             * c_name : 水北新村1期
-             * c_code : YSQ-SBXC-01-00001
-             * b_name : 1单元2层2012
-             * b_code : YSQ-SBXC-01-001U-002-012-00012
+             * address : 广东省惠州市惠城区凯宾斯基3栋1单元8层5房
+             * b_code : KBSJ-agl-00005-003-001-008-05
+             * b_name : 5房
+             * c_code : KBSJ-agl-00005
+             * c_name : 凯宾斯基
+             * fid : d325d4d4-8de7-4cce-b0c4-f39c5b8af00f
+             * members : [{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170425090419463319.jpg","isOwner":1,"mname":"rnzbr8008","name":""}]
+             * o_name : 张三
              */
 
+            private String address;
+            private String b_code;
+            private String b_name;
+            private String c_code;
+            private String c_name;
             private String fid;
             private String o_name;
-            private String c_name;
-            private String c_code;
-            private String b_name;
-            private String b_code;
+            private List<MembersBean> members;
+
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
+
+            public String getB_code() {
+                return b_code;
+            }
+
+            public void setB_code(String b_code) {
+                this.b_code = b_code;
+            }
+
+            public String getB_name() {
+                return b_name;
+            }
+
+            public void setB_name(String b_name) {
+                this.b_name = b_name;
+            }
+
+            public String getC_code() {
+                return c_code;
+            }
+
+            public void setC_code(String c_code) {
+                this.c_code = c_code;
+            }
+
+            public String getC_name() {
+                return c_name;
+            }
+
+            public void setC_name(String c_name) {
+                this.c_name = c_name;
+            }
 
             public String getFid() {
                 return fid;
@@ -66,36 +111,68 @@ public class MyHousesBean extends BaseBean {
                 this.o_name = o_name;
             }
 
-            public String getC_name() {
-                return c_name;
+            public List<MembersBean> getMembers() {
+                return members;
             }
 
-            public void setC_name(String c_name) {
-                this.c_name = c_name;
+            public void setMembers(List<MembersBean> members) {
+                this.members = members;
             }
 
-            public String getC_code() {
-                return c_code;
-            }
+            public static class MembersBean {
+                /**
+                 * fid : a40c120a-4107-4af8-ac25-f999ebce5363
+                 * icon : http://aglhzmall.image.alimmdn.com/member/20170425090419463319.jpg
+                 * isOwner : 1
+                 * mname : rnzbr8008
+                 * name :
+                 */
 
-            public void setC_code(String c_code) {
-                this.c_code = c_code;
-            }
+                private String fid;
+                private String icon;
+                private int isOwner;
+                private String mname;
+                private String name;
 
-            public String getB_name() {
-                return b_name;
-            }
+                public String getFid() {
+                    return fid;
+                }
 
-            public void setB_name(String b_name) {
-                this.b_name = b_name;
-            }
+                public void setFid(String fid) {
+                    this.fid = fid;
+                }
 
-            public String getB_code() {
-                return b_code;
-            }
+                public String getIcon() {
+                    return icon;
+                }
 
-            public void setB_code(String b_code) {
-                this.b_code = b_code;
+                public void setIcon(String icon) {
+                    this.icon = icon;
+                }
+
+                public int getIsOwner() {
+                    return isOwner;
+                }
+
+                public void setIsOwner(int isOwner) {
+                    this.isOwner = isOwner;
+                }
+
+                public String getMname() {
+                    return mname;
+                }
+
+                public void setMname(String mname) {
+                    this.mname = mname;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
             }
         }
     }

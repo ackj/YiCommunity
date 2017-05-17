@@ -7,7 +7,7 @@ android {
         debug {
             keyAlias 'agl'
             keyPassword 'aglandroid'
-            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
+            storeFile file('F:/gaocheng/agl.keystore')
             storePassword 'aglandroid'
         }
         release {
@@ -87,4 +87,6 @@ dependencies {
     debugCompile 'com.github.markzhai:blockcanary-android:1.5.0'
     //友盟推送
     compile project(':PushSDK')
+    //视频播放
+    compile 'fm.jiecao:jiecaovideoplayer:5.5.4'
 }

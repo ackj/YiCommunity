@@ -33,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
@@ -83,7 +84,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getArguments().getInt("type");
-
     }
 
     @Nullable
@@ -145,8 +145,8 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
                 case R.id.ll_comment_item_moments_list:
                 case R.id.tv_comment_count_item_moments_list:
                     Intent intent = new Intent(_mActivity, CommentActivity.class);
-                    intent.putExtra("fid",bean.getFid());
-                    intent.putExtra("type",type);
+                    intent.putExtra("fid", bean.getFid());
+                    intent.putExtra("type", type);
                     _mActivity.startActivity(intent);
                     break;
                 case R.id.tv_remove_item_moments_list:
@@ -275,4 +275,17 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         adapter.remove(removePosition);
     }
 
+    @Override
+    public boolean onBackPressedSupport() {
+        if (JCVideoPlayer.backPress()) {
+            return false;
+        }
+        return super.onBackPressedSupport();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        JCVideoPlayer.releaseAllVideos();
+    }
 }
