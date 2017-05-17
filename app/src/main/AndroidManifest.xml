@@ -102,15 +102,15 @@
             android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <activity
             android:name=".main.MainActivity"
             android:launchMode="singleTop"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="adjustPan" />
 
@@ -206,7 +206,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-
         </activity>
 
         <activity
@@ -223,7 +222,6 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:theme="@style/Transparent" />
-
 
         <provider
             android:name="android.support.v4.content.FileProvider"

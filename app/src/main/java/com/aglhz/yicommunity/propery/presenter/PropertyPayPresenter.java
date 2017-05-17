@@ -1,22 +1,14 @@
 package com.aglhz.yicommunity.propery.presenter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.abase.network.http.LoginInterceptor;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.payment.WxPayHelper;
 import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
 import com.aglhz.yicommunity.propery.model.PropertyPayModel;
-import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -111,7 +103,6 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
                         } else {
                             getView().error(jsonOther.optString("message"));
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

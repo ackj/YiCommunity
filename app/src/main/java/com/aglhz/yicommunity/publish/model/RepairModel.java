@@ -3,14 +3,19 @@ package com.aglhz.yicommunity.publish.model;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
+import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 
 import java.io.File;
+import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -36,7 +41,7 @@ public class RepairModel extends BaseModel implements PublishContract.Model {
         builder.addFormDataPart("contact", params.contact);
         builder.addFormDataPart("des", params.des);
         builder.addFormDataPart("name", params.name);
-        builder.addFormDataPart("single", params.single+"");
+        builder.addFormDataPart("single", params.single + "");
         builder.addFormDataPart("type", params.type + "");
         ALog.d("PublishNeighbourModel", "上传=============");
         if (params.files != null && params.files.size() > 0) {
@@ -48,6 +53,16 @@ public class RepairModel extends BaseModel implements PublishContract.Model {
         }
         return HttpHelper.getService(ApiService.class).postRepair(ApiService.postRepair,
                 builder.build())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Single<List<IconBean>> requestHouses(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestMyhouses(ApiService.requestMyhouses, params.token, params.cmnt_c)
+                .map(myHousesBean -> myHousesBean.getData().getAuthBuildings())
+                .flatMap(Flowable::fromIterable)
+                .map(bean -> new IconBean(R.drawable.ic_my_house_red_140px, bean.getB_name(), bean.getFid()))
+                .toList()
                 .subscribeOn(Schedulers.io());
     }
 }

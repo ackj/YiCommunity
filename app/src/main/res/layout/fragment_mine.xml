@@ -103,6 +103,27 @@
                 android:layout_height="1dp" />
 
             <LinearLayout
+                android:id="@+id/ll_my_house"
+                style="@style/MineItemLayoutStyle">
+
+                <ImageView
+                    style="@style/MineItemIconStyle"
+                    android:src="@drawable/ic_minehome_84px" />
+
+                <TextView
+                    style="@style/MineItemTitleStyle"
+                    android:text="我的房屋" />
+
+                <View style="@style/MineItemHorizontalSpace" />
+
+                <ImageView style="@style/MineItemViewMoreStyle" />
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_height="1dp" />
+
+            <LinearLayout
                 android:id="@+id/ll_my_indent"
                 style="@style/MineItemLayoutStyle">
 

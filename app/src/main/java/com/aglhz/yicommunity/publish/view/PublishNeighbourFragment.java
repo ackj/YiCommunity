@@ -133,19 +133,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     }
 
     private void selectPhoto() {
-//        Matisse.from(this)
-//                .choose(MimeType.allOf())
-//                .countable(true)
-//                .maxSelectable(3)
-////                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-////                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-//                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-//                .thumbnailScale(0.85f)
-////                .capture(true)
-////                .captureStrategy(new CaptureStrategy(true,"com.zhihu.matisse.sample.fileprovider"))
-//                .theme(R.style.Matisse_Dracula)
-//                .imageEngine(new GlideEngine())
-//                .forResult(100);
         if(which == 0){
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
             config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
