@@ -95,7 +95,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         if (EasyPermissions.hasPermissions(_mActivity, perms)) {
             //有权限就直接进行定位操作
 //            ToastUtils.showToast(BaseApplication.mContext, "正在定位……");
-            initLocate();
+//            initLocate();最好还是不需要定位，只记录手动选择的城市和小区。定位只是辅助筛选。
 
         } else {
             EasyPermissions.requestPermissions(this, "亿社区需要定位权限", LOCATION, perms);
@@ -176,9 +176,9 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         }
     }
 
-    private void initLocate() {
-        LbsManager.getInstance().startLocation(null);
-    }
+//    private void initLocate() {
+//        LbsManager.getInstance().startLocation(null);
+//    }
 
     @Override
     public void onStop() {
