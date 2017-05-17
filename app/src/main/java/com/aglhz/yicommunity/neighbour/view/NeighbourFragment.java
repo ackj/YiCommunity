@@ -2,15 +2,16 @@ package com.aglhz.yicommunity.neighbour.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.publish.view.PublishCarpoolFragment;
 import com.aglhz.yicommunity.publish.view.PublishExchangeFragment;
 import com.aglhz.yicommunity.publish.view.PublishNeighbourFragment;
 
@@ -50,7 +51,7 @@ public class NeighbourFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
         int type = getArguments().getInt("type");
-        if (type == MessageFragment.TYPE_CARPOOL || type == MessageFragment.TYPE_EXCHANGE) {
+        if (type == MessageFragment.TYPE_EXCHANGE) {
             view = attachToSwipeBack(view);
         }
         return view;
@@ -70,15 +71,12 @@ public class NeighbourFragment extends BaseFragment {
             case MessageFragment.TYPE_EXCHANGE:
                 toolbarTitle.setText("闲置交换");
                 break;
-            case MessageFragment.TYPE_CARPOOL:
-                toolbarTitle.setText("拼车服务");
-                break;
             case MessageFragment.TYPE_NEIGHBOUR:
                 toolbarTitle.setText("左邻右里");
                 break;
         }
         toolbarMenu.setText("发布");
-        if (type == MessageFragment.TYPE_CARPOOL || type == MessageFragment.TYPE_EXCHANGE) {
+        if (type == MessageFragment.TYPE_EXCHANGE) {
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
             toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         }
@@ -96,11 +94,14 @@ public class NeighbourFragment extends BaseFragment {
             case MessageFragment.TYPE_EXCHANGE:
                 start(PublishExchangeFragment.newInstance());
                 break;
-            case MessageFragment.TYPE_CARPOOL:
-                start(PublishCarpoolFragment.newInstance());
-                break;
             case MessageFragment.TYPE_NEIGHBOUR:
-                _mActivity.start(PublishNeighbourFragment.newInstance());
+                String[] arr = {"发布照片", "发布视频"};
+                new AlertDialog.Builder(_mActivity).setItems(arr, (dialog, which) -> {
+                    //网络访问
+                    dialog.dismiss();
+                    ALog.e("AlertDialog which:::" + which);
+                    _mActivity.start(PublishNeighbourFragment.newInstance(which));
+                }).setTitle("请选择").setPositiveButton("取消", null).show();
                 break;
         }
     }

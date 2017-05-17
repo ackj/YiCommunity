@@ -72,12 +72,11 @@ dependencies {
     //dialog
     compile 'com.orhanobut:dialogplus:1.11@aar'
     //图片选择器
-    compile 'com.zhihu.android:matisse:0.4.3'
+    compile 'com.bilibili:boxing-impl:0.7.0'
     //地址选择器
     compile 'com.github.chihane:JDAddressSelector:1.1.4'
     //switchbutton
     compile 'com.kyleduo.switchbutton:library:1.4.5'
-    compile 'com.github.chrisbanes.photoview:library:1.2.4'
     //键盘冲突
     compile 'cn.dreamtobe.kpswitch:library:1.6.0'
     //时间选择器

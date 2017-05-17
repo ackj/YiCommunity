@@ -244,6 +244,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void responseHomeNotices(List<String> notices) {
         ptrFrameLayout.refreshComplete();
+        if (notices.size() == 0) {
+            notices.add("欢迎来到亿社区！");
+        }
         adapter.getData().get(1).setNotice(notices);
         adapter.notifyItemChanged(1);
     }

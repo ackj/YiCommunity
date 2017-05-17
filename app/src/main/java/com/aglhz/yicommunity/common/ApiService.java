@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.common;
 
-import com.aglhz.yicommunity.bean.ALiPayBean;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.BuildingBean;
@@ -24,7 +23,6 @@ import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
-import com.aglhz.yicommunity.bean.WxPayBean;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -228,14 +226,7 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> requestApply(@Url String url
-            , @Query("token") String token
-            , @Query("cmnt_c") String cmnt_c
-            , @Query("bdg_c") String bdg_c
-            , @Query("bdg_u_c") String bdg_u_c
-            , @Query("bdg_f_c") String bdg_f_c
-            , @Query("bdg_f_h_c") String bdg_f_h_c
-            , @Query("applyName") String applyName
-            , @Query("idNO") String idNO);
+            , @Body MultipartBody file);
 
 
     //****************获取小区，楼栋，单元，楼层，房间等**********************************
@@ -285,20 +276,26 @@ public interface ApiService {
     Observable<BaseBean> setQuickOpenDoor(@Query("token") String token, @Query("directory") String directory, @Query("deviceName") String deviceName);
 
     //获取开门记录
-    @POST("/sub_property_ysq/smartdoor/info/dooropenlog")
-    Observable<OpenDoorRecordBean> getOpenDoorRecord(@Query("token") String token);
+    String requestOpenDoorRecord = BASE_PROPERTY + "/smartdoor/info/dooropenlog";
+
+    @POST
+    Observable<OpenDoorRecordBean> requestOpenDoorRecord(@Url String url, @Query("token") String token);
+
+    String register = BASE_USER + "/client/register.do";
 
     //注册
-    @POST("/memberSYS-m/client/register.do")
-    Observable<BaseBean> register(@Query("sc") String sc, @Query("account") String account, @Query("code") String code, @Query("Password1") String password1, @Query("Password2") String password2);
+    @POST
+    Observable<BaseBean> register(@Url String url, @Query("sc") String sc, @Query("account") String account, @Query("code") String code, @Query("Password1") String password1, @Query("Password2") String password2);
 
     //找回密码
     @POST("/memberSYS-m/client/renewMemberPwd.do")
     Observable<BaseBean> forgetPwd();
 
     //获取验证码
-    @POST("/memberSYS-m/client/validCode.do")
-    Observable<BaseBean> getVerifyCode(@Query("sc") String sc, @Query("phone") String phone, @Query("type") String type);
+    String requestVerifyCode = BASE_USER + "/client/validCode.do";
+
+    @POST
+    Observable<BaseBean> requestVerifyCode(@Url String url, @Query("sc") String sc, @Query("phone") String phone, @Query("type") String type);
 
 
     //***********以下房屋权限系列接口********************************

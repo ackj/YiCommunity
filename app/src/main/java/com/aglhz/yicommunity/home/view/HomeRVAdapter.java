@@ -13,6 +13,7 @@ import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.neighbour.view.CarpoolFragment;
 import com.aglhz.yicommunity.neighbour.view.MessageFragment;
 import com.aglhz.yicommunity.neighbour.view.NeighbourFragment;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -111,7 +112,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                             fragment.go2Web("快递查询", ApiService.WULIU_SEARCH + UserHelper.token);
                             break;
                         case 2:
-                            ((BaseActivity) fragment.getActivity()).start(NeighbourFragment.newInstance(MessageFragment.TYPE_CARPOOL));
+                            ((BaseActivity) fragment.getActivity()).start(CarpoolFragment.newInstance());
                             break;
                     }
                 });

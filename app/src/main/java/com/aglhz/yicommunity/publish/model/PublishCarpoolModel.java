@@ -31,6 +31,7 @@ public class PublishCarpoolModel extends BaseModel implements PublishContract.Mo
     public Observable<BaseBean> post(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
+        builder.addFormDataPart("cmnt_c", params.cmnt_c);
         builder.addFormDataPart("carpoolType", params.carpoolType + "");
         builder.addFormDataPart("startPlace", params.startPlace);
         builder.addFormDataPart("endPlace", params.endPlace);

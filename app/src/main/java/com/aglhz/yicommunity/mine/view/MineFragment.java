@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.mine.view;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,6 +36,8 @@ import com.aglhz.yicommunity.mine.presenter.MinePresenter;
 import com.aglhz.yicommunity.mypublish.MyPublishActivity;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,7 +46,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.internal.FastBlur;
 import me.yokeyword.fragmentation.SupportFragment;
 
 
@@ -79,7 +84,10 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     TextView tvLogout;
     @BindView(R.id.tv_cache_sum)
     TextView tvCacheSum;
+    @BindView(R.id.iv_header_background)
+    ImageView ivHeaderBackground;
     private ViewGroup rootView;
+    private Unbinder unbinder;
 
     public static MineFragment newInstance() {
         return new MineFragment();
@@ -95,7 +103,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -168,6 +176,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 tvName.setText("访客");
                 tvPhoneNumber.setText("");
                 ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
+                ivHeaderBackground.setImageResource(R.drawable.bg_mine_1920px_1080px);
                 tvLogout.setVisibility(View.GONE);
                 mPresenter.requestLogout(Params.getInstance());
                 break;
@@ -237,11 +246,34 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                     .load(UserHelper.userInfo.getFace())
                     .bitmapTransform(new CropCircleTransformation(_mActivity))
                     .into(ivHead);
+            updateHeaderBackground();
 
             tvName.setText(UserHelper.userInfo.getNickName());
             tvPhoneNumber.setText(UserHelper.userInfo.getMobile());
             tvLogout.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void updateHeaderBackground() {
+//        int scaleRatio = 10;
+//        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originBitmap,
+//                originBitmap.getWidth() / scaleRatio,
+//                originBitmap.getHeight() / scaleRatio,
+//                false);
+        Glide.with(this)
+                .load(UserHelper.userInfo.getFace())
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>(DensityUtils.dp2px(_mActivity, 80), DensityUtils.dp2px(_mActivity, 80)) {
+                    @Override
+                    public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+                        Bitmap blurBitmap = FastBlur.blur(bitmap, 8, true);
+                        ivHeaderBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        ivHeaderBackground.setImageBitmap(blurBitmap);
+//                        setHeaderBackground(bitmap, 8);
+                    }
+                    // setImageBitmap(bitmap) on CircleImageView
+                });
+
     }
 
     @Override
@@ -259,7 +291,14 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         UserHelper.clear();
         tvName.setText("访客");
         tvPhoneNumber.setText("");
+        ivHeaderBackground.setImageResource(R.drawable.bg_mine_1920px_1080px);
         ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
         tvLogout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
