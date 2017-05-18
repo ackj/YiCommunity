@@ -89,4 +89,7 @@ dependencies {
     compile project(':PushSDK')
     //视频播放
     compile 'fm.jiecao:jiecaovideoplayer:5.5.4'
+    //Banner
+    compile 'com.youth.banner:banner:1.4.9'
+    //最新版本
 }

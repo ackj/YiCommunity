@@ -136,6 +136,8 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     }
 
     private void initData() {
+        //因为params是单例，所以要将上次选择的清除
+        params.files = new ArrayList<>();
         if (isPrivate) {
             rlHouseName.setVisibility(View.VISIBLE);
             params.cmnt_c = UserHelper.communityCode;
@@ -255,7 +257,6 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (resultCode == RESULT_OK && requestCode == 100) {
             ArrayList<BaseMedia> medias = Boxing.getResult(data);
-            params.files = new ArrayList<>();
             for (int i = 0; i < medias.size(); i++) {
                 params.files.add(new File(medias.get(i).getPath()));
             }

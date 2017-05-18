@@ -233,6 +233,15 @@ public class NeighbourListBean extends BaseBean {
             private String name;
             private int type;
             private String url;
+            private String src;
+
+            public String getSrc() {
+                return src;
+            }
+
+            public void setSrc(String src) {
+                this.src = src;
+            }
 
             public String getName() {
                 return name;

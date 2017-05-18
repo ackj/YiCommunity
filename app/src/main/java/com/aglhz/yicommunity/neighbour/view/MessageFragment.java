@@ -65,6 +65,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     private NeighbourRVAdapter adapter;
     private int type;
     private int removePosition;
+    Params params = Params.getInstance();
 
     public static MessageFragment newInstance(int type) {
         MessageFragment fragment = new MessageFragment();
@@ -126,8 +127,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 //        }
 
         initPtrFrameLayout(ptrFrameLayout);
-        Params params = Params.getInstance();
-        requestNet(params);
+        requestNet();
 
         //下拉刷新必须得在懒加载里设置，因为下拉刷新是一进来就刷新，启动start()。
         mLinearLayoutManager = new LinearLayoutManager(_mActivity);
@@ -217,15 +217,16 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                Params params = Params.getInstance();
-                requestNet(params);
+
+                requestNet();
             }
         });
     }
 
-    public void requestNet(Params params) {
+    public void requestNet() {
         params.page = 1;
         params.pageSize = 10;
+        params.cmnt_c = UserHelper.communityCode;
         if (type == TYPE_EXCHANGE) {
             mPresenter.requestExchangeList(params);
         } else if (type == TYPE_NEIGHBOUR) {

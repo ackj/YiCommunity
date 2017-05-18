@@ -23,7 +23,7 @@ public class RepairApplyModel extends BaseModel implements RepairApplyContract.M
 
     @Override
     public Observable<RepairApplyBean> getRepairApply(Params params) {
-        return HttpHelper.getService(ApiService.class).getRepairApply(params.token)
+        return HttpHelper.getService(ApiService.class).requestRepairApply(ApiService.requestRepairApply,params.token)
                 .subscribeOn(Schedulers.io());
     }
 }

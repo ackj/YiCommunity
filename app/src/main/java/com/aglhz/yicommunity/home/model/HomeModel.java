@@ -39,13 +39,6 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
                 .subscribeOn(Schedulers.io());
     }
 
-    //    @Override
-//    public Observable<NoticeBean> requestHomeNotices(Params params) {
-//        return HttpHelper.getService(ApiService.class)
-//                .requestHomeNotices(
-//                        ApiService.requestHomeNotices,
-//                        params.token,
-//                        params.cmnt_c)
     public Single<List<String>> requestHomeNotices(Params params) {
         return HttpHelper.getService(ApiService.class)
                 .requestHomeNotices(ApiService.requestHomeNotices, params.token, params.cmnt_c)

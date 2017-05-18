@@ -63,6 +63,5 @@ public interface NeighbourContract {
 
         Observable<BaseBean> removeMyNeighbour(Params params);
 
-
     }
 }

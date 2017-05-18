@@ -10,6 +10,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,21 +52,12 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 //        ALog.e(">>>>>>>>>>>>>>", "position:" + helper.getLayoutPosition());
 
         helper.setText(R.id.tv_create_at_item_moments_list, item.getCreateTime())
-                .setText(R.id.tv_name_item_moments_list, item.getMember().getMemberNickName())
+                .setText(R.id.tv_name_item_moments_list, item.getMember()==null?"":item.getMember().getMemberNickName())
                 .setText(R.id.tv_comment_count_item_moments_list, item.getCommentCount() + "");
 
         helper.addOnClickListener(R.id.ll_comment_item_moments_list)
                 .addOnClickListener(R.id.tv_remove_item_moments_list)
                 .addOnClickListener(R.id.tv_comment_count_item_moments_list);
-
-        //-------------- 视频 ---------------
-        JCVideoPlayerStandard jcVideoPlayerStandard = helper.getView(R.id.videoplayer);
-        jcVideoPlayerStandard.setUp("http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4"
-                , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "嫂子闭眼睛");
-
-        Glide.with(BaseApplication.mContext)
-                .load("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640")
-                .into(jcVideoPlayerStandard.thumbImageView);
 
         //-------------- 删除 ---------------
         TextView tvRemove = helper.getView(R.id.tv_remove_item_moments_list);
@@ -113,41 +105,62 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
                 .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
                 .into(ivAvatar);
 
-        //------------------- 照片 ----------------
-        RecyclerView recyclerView = helper.getView(R.id.rv_pics_item_moments_list);
-        if (item.getPics().size() <= 0 || item.getPics().get(0).getType() != 1) {
-            recyclerView.setVisibility(View.GONE);
+
+        FrameLayout frameLayout = helper.getView(R.id.fl_video_pics_layout);
+
+        if (item.getPics().size() <= 0) {
+            frameLayout.setVisibility(View.GONE);
         } else {
-            ALog.e("pics size:" + item.getPics().size());
-            recyclerView.setVisibility(View.VISIBLE);
-            ImagesGridRVAdapter adapter = new ImagesGridRVAdapter(item.getPics());
-            adapter.setOnItemChildClickListener((adapter1, view, position) -> {
-                Context context = BaseApplication.mContext;
-                Intent intent = new Intent(context, PreviewActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Bundle bundle = new Bundle();
-                ArrayList<String> picsUrls = new ArrayList<>();
-                for (int i = 0; i < item.getPics().size(); i++) {
-                    picsUrls.add(item.getPics().get(i).getUrl());
-                }
-                bundle.putStringArrayList("picsList", picsUrls);
-                intent.putExtra("pics", bundle);
-                intent.putExtra("position", position);
-                context.startActivity(intent);
-                return false;
-            });
-            int spanCount = item.getPics().size() < 3 ? item.getPics().size() : 3;
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(BaseApplication.mContext, spanCount) {
-                @Override
-                public boolean canScrollVertically() {
+            frameLayout.setVisibility(View.VISIBLE);
+            JCVideoPlayerStandard jcVideoPlayerStandard = helper.getView(R.id.videoplayer);
+            RecyclerView recyclerView = helper.getView(R.id.rv_pics_item_moments_list);
+
+            NeighbourListBean.DataBean.PicsBean firstPicBean = item.getPics().get(0);
+            if (firstPicBean.getType() == 2) {
+                //-------------- 视频  ---------------
+                jcVideoPlayerStandard.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+
+                jcVideoPlayerStandard.setUp(firstPicBean.getUrl()
+                        , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
+
+                Glide.with(BaseApplication.mContext)
+                        .load(firstPicBean.getSrc())
+                        .into(jcVideoPlayerStandard.thumbImageView);
+            } else {
+                //------------------- 照片 ----------------
+                ALog.e("pics size:" + item.getPics().size());
+                recyclerView.setVisibility(View.VISIBLE);
+                jcVideoPlayerStandard.setVisibility(View.GONE);
+                ImagesGridRVAdapter adapter = new ImagesGridRVAdapter(item.getPics());
+                adapter.setOnItemChildClickListener((adapter1, view, position) -> {
+                    Context context = BaseApplication.mContext;
+                    Intent intent = new Intent(context, PreviewActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle bundle = new Bundle();
+                    ArrayList<String> picsUrls = new ArrayList<>();
+                    for (int i = 0; i < item.getPics().size(); i++) {
+                        picsUrls.add(item.getPics().get(i).getUrl());
+                    }
+                    bundle.putStringArrayList("picsList", picsUrls);
+                    intent.putExtra("pics", bundle);
+                    intent.putExtra("position", position);
+                    context.startActivity(intent);
                     return false;
-                }
-            };
-            recyclerView.setLayoutManager(gridLayoutManager);
-            recyclerView.setAdapter(adapter);
+                });
+                int spanCount = item.getPics().size() < 3 ? item.getPics().size() : 3;
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(BaseApplication.mContext, spanCount) {
+                    @Override
+                    public boolean canScrollVertically() {
+                        return false;
+                    }
+                };
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
         }
 
-        //------------------- 评论 ----------------
+        //----------------- 评论 ------------------
         LinearLayout commentsLayout = helper.getView(R.id.ll_comment_item_moments_list);
 
         if (item.getCommentCount() <= 0) {

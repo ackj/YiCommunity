@@ -125,6 +125,8 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     }
 
     private void initData() {
+        //因为params是单例，所以要将上次选择的清除
+        params.files = new ArrayList<>();
         tvCommunityAddress.setText(UserHelper.communityName);
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
             @Override
@@ -161,7 +163,6 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (resultCode == RESULT_OK &&requestCode == 100 ) {
             ArrayList<BaseMedia> medias = Boxing.getResult(data);
-            params.files = new ArrayList<>();
             for (int i = 0; i < medias.size(); i++) {
                 params.files.add(new File(medias.get(i).getPath()));
             }

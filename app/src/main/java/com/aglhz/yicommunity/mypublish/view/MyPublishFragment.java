@@ -31,7 +31,6 @@ public class MyPublishFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
-
     public static MyPublishFragment newInstance() {
         return new MyPublishFragment();
     }

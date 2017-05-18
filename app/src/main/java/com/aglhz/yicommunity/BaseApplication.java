@@ -25,6 +25,8 @@ import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
+import retrofit2.http.HEAD;
+
 
 /**
  * Author：leguang on 2016/10/9 0009 15:49
