@@ -43,6 +43,8 @@ import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
+import static com.aglhz.yicommunity.R.layout.recyclerview;
+
 /**
  * Created by Administrator on 2017/4/19 9:15.
  */
@@ -63,7 +65,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recyclerview, container, false);
+        View view = inflater.inflate(recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         return view;
@@ -159,6 +161,27 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return ScrollingHelper.isRecyclerViewToTop(recyclerView);
+                //判断RecyclerView是否在在顶部，在顶部则允许滑动下拉刷新
+
+//
+//                if (null != recyclerView && null != layoutManager) {
+//                    int position = layoutManager.findFirstVisibleItemPosition();
+//
+//                    ALog.e("position::" + position);
+//                    ALog.e("layoutManager.findViewByPosition(position).getTop()::" + layoutManager.findViewByPosition(position).getTop());
+//
+//
+//                    if (position >= 0) {
+//                        if (layoutManager.findViewByPosition(position).getTop() >= 0 && position == 0) {
+//                            return true;
+//                        }
+//                    }
+//                } else {
+//                    return true;
+//                }
+//                return false;
+
+
             }
 
             @Override

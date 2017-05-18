@@ -2,22 +2,28 @@ package com.aglhz.yicommunity;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
+import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.boxingimpl.BoxingGlideLoader;
-import com.aglhz.yicommunity.common.AppContext;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.bilibili.boxing.BoxingMediaLoader;
 import com.bilibili.boxing.loader.IBoxingMediaLoader;
-import com.github.moduth.blockcanary.BlockCanary;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
-
-import me.yokeyword.fragmentation.Fragmentation;
+import com.umeng.message.UTrack;
+import com.umeng.message.UmengMessageHandler;
+import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.entity.UMessage;
 
 
 /**
@@ -33,14 +39,21 @@ public class BaseApplication extends MultiDexApplication implements Application.
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        initData();//数据的初始化要在友盟推送之前，因为要注册别名时，用到用户名。
+
         initPush();
 
-        registerActivityLifecycleCallbacks(this);
 
-        tempInit();
+//        registerActivityLifecycleCallbacks(this);
+
+//        tempInit();
 
         initBoxing();
 
+    }
+
+    private void initData() {
+        UserHelper.init();
     }
 
     private void initBoxing() {
@@ -51,15 +64,15 @@ public class BaseApplication extends MultiDexApplication implements Application.
     }
 
     private void tempInit() {
-        Fragmentation.builder()
-                .stackViewMode(Fragmentation.BUBBLE)
-                .install();
-
-        //初始化内存泄露监听
-        mRefWatcher = LeakCanary.install(this);
-
-        // 初始化卡顿监听
-        BlockCanary.install(this, new AppContext()).start();
+//        Fragmentation.builder()
+//                .stackViewMode(Fragmentation.BUBBLE)
+//                .install();
+//
+//        //初始化内存泄露监听
+//        mRefWatcher = LeakCanary.install(this);
+//
+//        // 初始化卡顿监听
+//        BlockCanary.install(this, new AppContext()).start();
 
         //  Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
         ALog.init(true, "ysq");
@@ -107,49 +120,111 @@ public class BaseApplication extends MultiDexApplication implements Application.
     private void initPush() {
         PushAgent mPushAgent = PushAgent.getInstance(this);
         mPushAgent.setDebugMode(true);
+        mPushAgent.setResourcePackageName("com.aglhz.yicommunity");
 
         //sdk开启通知声音
-//        mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
-//
-//        mPushAgent.setResourcePackageName("com.aglhz.yicommunity");
+        mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
+
+        ALog.e(TAG, UserHelper.account);
+
+        mPushAgent.addAlias(UserHelper.account, "userType", new UTrack.ICallBack() {
+            @Override
+            public void onMessage(boolean b, String s) {
+                ALog.e(TAG, "addAlias::" + b + "……" + s);
+            }
+        });
+
 
         //注册推送服务 每次调用register都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
             public void onSuccess(String deviceToken) {
-                ALog.e("deviceToken::" + deviceToken);
+                ALog.e(TAG, "deviceToken::" + deviceToken);
             }
 
             @Override
             public void onFailure(String s, String s1) {
-                ALog.e("register failed: " + s + " ---  " + s1);
+                ALog.e(TAG, "register failed: " + s + " ---  " + s1);
             }
         });
 
-//        UmengMessageHandler messageHandler = new UmengMessageHandler() {
-//            /**
-//             * 自定义消息的回调方法
-//             */
-//            @Override
-//            public void dealWithCustomMessage(final Context context, final UMessage msg) {
-//            }
-//
-//            /**
-//             * 自定义通知栏样式的回调方法
-//             */
-//            @Override
-//            public Notification getNotification(Context context, UMessage msg) {
-//                switch (msg.builder_id) {
-//                    default:
-//                    case 0:
-////                        MediaPlayer mp = MediaPlayer.create(MyApplication.this, R.raw.soundfile2);
-//////                        mp.setVolume(80f,80f);
-////                        mp.start();
-////                        EventBus.getDefault().post(new UmengNotificationEvent());
-//                        return super.getNotification(context, msg);
-//                }
-//            }
-//        };
-//        mPushAgent.setMessageHandler(messageHandler);
+        UmengMessageHandler messageHandler = new UmengMessageHandler() {
+            @Override
+            public void dealWithCustomMessage(final Context context, final UMessage msg) {
+                ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
+
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // TODO Auto-generated method stub
+                        // 对自定义消息的处理方式，点击或者忽略
+                        boolean isClickOrDismissed = true;
+                        if (isClickOrDismissed) {
+//统计自定义消息的打开
+                            UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
+                        } else {
+//统计自定义消息的忽略
+                            UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
+                        }
+                        Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+
+                    }
+                });
+            }
+
+            //自定义通知样式
+            @Override
+            public Notification getNotification(Context context, UMessage msg) {
+                //每当有通知送达时，均会回调getNotification方法，因此可以通过监听此方法来判断通知是否送达。
+                ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
+                ALog.e(TAG, msg.custom);//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
+
+
+                switch (msg.builder_id) {
+                    //自定义通知样式编号
+                    case 1:
+                        ALog.e(TAG, msg.builder_id);
+
+//                        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+//                        RemoteViews myNotificationView = new RemoteViews(context.getPackageName(), R.layout.notification_view);
+//                        myNotificationView.setTextViewText(R.id.notification_title, msg.title);
+//                        myNotificationView.setTextViewText(R.id.notification_text, msg.text);
+//                        myNotificationView.setImageViewBitmap(R.id.notification_large_icon, getLargeIcon(context, msg));
+//                        myNotificationView.setImageViewResource(R.id.notification_small_icon, getSmallIconId(context, msg));
+//                        builder.setContent(myNotificationView);
+//                        builder.setAutoCancel(true);
+//                        Notification mNotification = builder.build();
+//                        //由于Android v4包的bug，在2.3及以下系统，Builder创建出来的Notification，并没有设置RemoteView，故需要添加此代码
+//                        mNotification.contentView = myNotificationView;
+//                        return mNotification;
+                    default:
+                        //默认为0，若填写的builder_id并不存在，也使用默认。
+                        return super.getNotification(context, msg);
+                }
+            }
+        };
+
+        mPushAgent.setMessageHandler(messageHandler);
+
+        /**
+         * 该Handler是在BroadcastReceiver中被调用，故
+         * 如果需启动Activity，需添加Intent.FLAG_ACTIVITY_NEW_TASK
+         * 参考集成文档的1.6.2
+         * [url=http://dev.umeng.com/push/android/integration#1_6_2]http://dev.umeng.com/push/android/integration#1_6_2[/url]
+         * */
+        UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+            //点击通知的自定义行为
+            @Override
+            public void dealWithCustomAction(Context context, UMessage msg) {
+                Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+                ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
+                ALog.e(TAG, msg.custom);
+
+            }
+        };
+
+        mPushAgent.setNotificationClickHandler(notificationClickHandler);
+
     }
 }

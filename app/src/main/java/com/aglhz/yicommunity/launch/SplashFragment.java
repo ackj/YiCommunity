@@ -75,7 +75,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void initData() {
-        UserHelper.init();
+//        UserHelper.init();//此处初始化改在application里初始化了。
 
         ALog.e(UserHelper.string());
 
