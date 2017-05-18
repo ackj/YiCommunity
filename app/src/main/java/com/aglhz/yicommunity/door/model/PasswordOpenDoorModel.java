@@ -28,7 +28,7 @@ public class PasswordOpenDoorModel extends BaseModel implements PasswordOpenDoor
 
     @Override
     public Observable<PasswordBean> getPassword(Params params) {
-        return HttpHelper.getService(ApiService.class).getPassword(params.token, params.dir)
+        return HttpHelper.getService(ApiService.class).requestPassword(ApiService.requestPassword,params.token, params.dir)
                 .subscribeOn(Schedulers.io());
     }
 }

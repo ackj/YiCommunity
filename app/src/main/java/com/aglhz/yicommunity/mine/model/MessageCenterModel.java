@@ -29,7 +29,7 @@ public class MessageCenterModel extends BaseModel implements MessageCenterContra
 
     @Override
     public Observable<MessageCenterBean> requestMessages(Params params) {
-        return HttpHelper.getService(ApiService.class).requestMessages(params.token)
+        return HttpHelper.getService(ApiService.class).requestMessages(ApiService.requestMessages,params.token)
                 .subscribeOn(Schedulers.io());
     }
 }

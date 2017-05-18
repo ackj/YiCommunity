@@ -11,9 +11,9 @@ import com.google.gson.stream.JsonWriter;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -61,9 +61,9 @@ public class HttpHelper {
             //设置缓存
 //            builder.cache(cache);
             //设置超时
-//            builder.connectTimeout(Constants.DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-//            builder.readTimeout(Constants.DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-//            builder.writeTimeout(Constants.DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+            builder.connectTimeout(50, TimeUnit.SECONDS);
+            builder.readTimeout(50, TimeUnit.SECONDS);
+            builder.writeTimeout(50, TimeUnit.SECONDS);
             //错误重连
             builder.retryOnConnectionFailure(true);
 

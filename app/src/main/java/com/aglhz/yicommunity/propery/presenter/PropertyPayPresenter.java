@@ -90,11 +90,9 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
 
                         String code = jsonOther.optString("code");
                         if ("200".equals(code)) {
-
                             if (params.payType == 1) {
                                 //支付宝
                                 ALog.e("支付宝支付宝支付宝支付宝支付宝支付宝");
-
                             } else if (params.payType == 2) {
                                 ALog.e("微信微信微信微信微信微信");
                                 //微信

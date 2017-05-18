@@ -43,16 +43,10 @@ public class PublishNeighbourPresenter extends BasePresenter<PublishContract.Vie
 
     @Override
     public void post(Params params) {
-        switch (params.type){
-            case 1:
-                compress(params);
-                break;
-            case 2:
-                //上传视频
-                break;
-            default:
-                upload(params);
-                break;
+        if (params.type == 1) {
+            compress(params);
+        } else {
+            upload(params);
         }
     }
 

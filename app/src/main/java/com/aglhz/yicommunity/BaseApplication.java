@@ -14,7 +14,6 @@ import com.bilibili.boxing.loader.IBoxingMediaLoader;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
-import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 
 import me.yokeyword.fragmentation.Fragmentation;
@@ -33,6 +32,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
     public void onCreate() {
         super.onCreate();
         mContext = this;
+
         initPush();
 
         registerActivityLifecycleCallbacks(this);
@@ -114,17 +114,17 @@ public class BaseApplication extends MultiDexApplication implements Application.
 //        mPushAgent.setResourcePackageName("com.aglhz.yicommunity");
 
         //注册推送服务 每次调用register都会回调该接口
-        mPushAgent.register(new IUmengRegisterCallback() {
-            @Override
-            public void onSuccess(String deviceToken) {
-                ALog.e("deviceToken::" + deviceToken);
-            }
-
-            @Override
-            public void onFailure(String s, String s1) {
-                ALog.e("register failed: " + s + " ---  " + s1);
-            }
-        });
+//        mPushAgent.register(new IUmengRegisterCallback() {
+//            @Override
+//            public void onSuccess(String deviceToken) {
+//                ALog.e("deviceToken::" + deviceToken);
+//            }
+//
+//            @Override
+//            public void onFailure(String s, String s1) {
+//                ALog.e("register failed: " + s + " ---  " + s1);
+//            }
+//        });
 
 //        UmengMessageHandler messageHandler = new UmengMessageHandler() {
 //            /**

@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.publish.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -69,6 +70,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
 
 
     private int which;
+    private Dialog loadingDialog;
 
     public static PublishNeighbourFragment newInstance(int which) {
         PublishNeighbourFragment fragment = new PublishNeighbourFragment();
@@ -109,6 +111,9 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     }
 
     private void initData() {
+        //因为params是单例，所以要将上次选择的清除
+        params.files = new ArrayList<>();
+
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
             @Override
             public boolean canScrollVertically() {
@@ -133,14 +138,14 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     }
 
     private void selectPhoto() {
-        if(which == 0){
+        if (which == 0) {
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
             config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
                     .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
             Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
-        }else{
+        } else {
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.VIDEO).withVideoDurationRes(R.drawable.ic_boxing_play);
-            Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
+            Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 101);
         }
 
     }
@@ -149,9 +154,9 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
-        if (resultCode == RESULT_OK &&requestCode == 100 ) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 100) {
                 ArrayList<BaseMedia> medias = Boxing.getResult(data);
-                params.files = new ArrayList<>();
                 for (int i = 0; i < medias.size(); i++) {
                     params.files.add(new File(medias.get(i).getPath()));
                 }
@@ -160,6 +165,20 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
                 }
                 medias.add(addMedia);
                 adapter.setNewData(medias);
+            } else if (requestCode == 101) {
+                ArrayList<BaseMedia> medias = Boxing.getResult(data);
+                if (medias.size() > 0) {
+                    File file = new File(medias.get(0).getPath());
+                    if (file.length() >= 1024 * 1024 * 10) {
+                        DialogHelper.warningSnackbar(getView(), "视频文件不能大于10M");
+                    } else {
+                        params.type = 2;
+                        params.files.add(file);
+                        medias.add(addMedia);
+                        adapter.setNewData(medias);
+                    }
+                }
+            }
         }
     }
 
@@ -178,12 +197,18 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     @Override
     public void error(String errorMessage) {
         requesting = false;
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
         requesting = false;
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
         DialogHelper.successSnackbar(getView(), "提交成功!");
         pop();
     }
@@ -206,6 +231,10 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
         params.cmnt_c = UserHelper.communityCode;
         params.content = content;
         mPresenter.post(params);
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
         requesting = true;
     }
 }

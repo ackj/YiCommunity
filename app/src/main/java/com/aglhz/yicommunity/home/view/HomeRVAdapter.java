@@ -1,8 +1,10 @@
 package com.aglhz.yicommunity.home.view;
 
+import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.utils.DensityUtils;
@@ -16,8 +18,11 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.neighbour.view.CarpoolFragment;
 import com.aglhz.yicommunity.neighbour.view.MessageFragment;
 import com.aglhz.yicommunity.neighbour.view.NeighbourFragment;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.youth.banner.Banner;
+import com.youth.banner.loader.ImageLoader;
 
 import java.util.List;
 
@@ -49,18 +54,16 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
             case HomeBean.TYPE_COMMUNITY_BANNER:
                 helper.addOnClickListener(R.id.fl_item_banner)
                         .setText(R.id.tv_location_item_banner, item.community);
-
+                Banner banner = helper.getView(R.id.viewpager_item_banner);
                 List<BannerBean.DataBean.AdvsBean> banners = item.getBanners();
                 if (banners != null && banners.size() > 0) {
-                    ViewPager viewpager = helper.getView(R.id.viewpager_item_banner);
-                    BannerVPAdapter adapter = new BannerVPAdapter(banners);
-                    viewpager.setAdapter(adapter);
+                    banner.setImages(banners).setImageLoader(new GlideImageLoader()).start();
                 }
                 break;
             case HomeBean.TYPE_COMMUNITY_NOTICE:
                 AutoScrollTextView tv = helper.getView(R.id.tv_notice);
                 tv.setTextList(item.getNotice());
-                if(!tv.isStart()){
+                if (!tv.isStart()) {
                     tv.startAutoScroll();
                 }
                 helper.addOnClickListener(R.id.ll_item_notice);
@@ -120,4 +123,12 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
         }
     }
 
+
+    public class GlideImageLoader extends ImageLoader {
+        @Override
+        public void displayImage(Context context, Object advsBean, ImageView imageView) {
+            BannerBean.DataBean.AdvsBean bean = (BannerBean.DataBean.AdvsBean) advsBean;
+            Glide.with(context).load(bean.getCover()).into(imageView);
+        }
+    }
 }

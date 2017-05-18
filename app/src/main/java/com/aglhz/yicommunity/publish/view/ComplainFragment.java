@@ -105,6 +105,8 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     }
 
     private void initData() {
+        //因为params是单例，所以要将上次选择的清除
+        params.files = new ArrayList<>();
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
             @Override
             public boolean canScrollVertically() {
@@ -181,8 +183,6 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         submit(params);
     }
 
-    public static final int REQUEST_CODE_CHOOSE = 100;
-
     private void selectPhoto() {
         BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
         config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
@@ -196,7 +196,6 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (resultCode == RESULT_OK && requestCode == 100) {
             ArrayList<BaseMedia> medias = Boxing.getResult(data);
-            params.files = new ArrayList<>();
             for (int i = 0; i < medias.size(); i++) {
                 params.files.add(new File(medias.get(i).getPath()));
             }

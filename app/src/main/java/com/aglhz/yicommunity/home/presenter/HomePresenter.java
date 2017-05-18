@@ -41,7 +41,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bannerBean -> {
                     if (bannerBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-
                         getView().responseBanners(bannerBean.getData().getAdvs());
                     } else {
                         getView().error(bannerBean.getOther().getMessage());
