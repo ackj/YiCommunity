@@ -25,7 +25,7 @@ public interface NeighbourContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestNeihbourList(Params params);
+        void requestNeighbourList(Params params);
 
         void requestExchangeList(Params params);
 
@@ -45,7 +45,7 @@ public interface NeighbourContract {
     }
 
     interface Model extends BaseContract.Model {
-        Observable<NeighbourListBean> getNeihbourList(Params params);
+        Observable<NeighbourListBean> requestNeighbourList(Params params);
 
         Observable<NeighbourListBean> getExchangeList(Params params);
 

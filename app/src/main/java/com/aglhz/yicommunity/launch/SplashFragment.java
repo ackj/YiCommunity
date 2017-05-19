@@ -65,7 +65,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_splash, container, false);
         ButterKnife.bind(this, view);
-        return view;
+        return attachToSwipeBack(view);
     }
 
     @Override

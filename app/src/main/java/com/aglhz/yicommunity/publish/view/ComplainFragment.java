@@ -45,7 +45,6 @@ import butterknife.Unbinder;
  */
 public class ComplainFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = ComplainFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -121,13 +120,9 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     }
 
     private void initListener() {
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (position == adapter.getData().size() - 1) {
-                    selectPhoto();
-                }
-                return false;
+        adapter.setOnItemChildClickListener((adapter1, view, position) -> {
+            if (position == adapter1.getData().size() - 1) {
+                selectPhoto();
             }
         });
     }

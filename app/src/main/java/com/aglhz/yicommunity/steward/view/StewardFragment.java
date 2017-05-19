@@ -241,9 +241,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         myHouseAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == adapter.getData().size() - 1) {
                 //点击的最后一个item，此时应该跳转到添加房屋界面。
-                go2House(Constants.ADD_HOUSE, "");
+                go2House(Constants.ADD_HOUSE, listMyhouses.get(position).title, "");
             } else {
-                go2House(Constants.HOUSE_RIGHTS, listMyhouses.get(position).fid);
+                go2House(Constants.HOUSE_RIGHTS, listMyhouses.get(position).title, listMyhouses.get(position).fid);
             }
         });
 
@@ -337,10 +337,11 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     //跳转到添加房屋模块。
-    private void go2House(int position, String fid) {
+    private void go2House(int position, String address, String fid) {
         Intent intent = new Intent(_mActivity, HouseActivity.class);
         intent.putExtra(Constants.FROM_TO, position);
         intent.putExtra(Constants.HOUSE_FID, fid);
+        intent.putExtra(Constants.HOUSE_ADDRESS, address);
         startActivity(intent);
     }
 
@@ -440,9 +441,6 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         listMyhouses.clear();
         listMyhouses = listIcons;
         myHouseAdapter.setNewData(listIcons);
-        for (IconBean listIcon : listIcons) {
-            ALog.e("fid**" + listIcon.fid);
-        }
     }
 
     @Override

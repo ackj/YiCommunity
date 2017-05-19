@@ -12,7 +12,9 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
+import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.boxingimpl.BoxingGlideLoader;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.bilibili.boxing.BoxingMediaLoader;
 import com.bilibili.boxing.loader.IBoxingMediaLoader;
@@ -25,6 +27,8 @@ import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.http.HEAD;
 
 
@@ -142,6 +146,13 @@ public class BaseApplication extends MultiDexApplication implements Application.
             @Override
             public void onSuccess(String deviceToken) {
                 ALog.e(TAG, "deviceToken::" + deviceToken);
+
+                HttpHelper.getService(ApiService.class)
+                        .requestUMeng(ApiService.requestUMeng, UserHelper.token, deviceToken, UserHelper.account, "userType")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(baseBean -> ALog.e(TAG, baseBean.getOther().getMessage()));
+
             }
 
             @Override

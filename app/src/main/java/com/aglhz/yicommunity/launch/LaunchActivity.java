@@ -32,7 +32,6 @@ public class LaunchActivity extends BaseActivity {
 
     @Override
     public void onBackPressedSupport() {
-
         if (System.currentTimeMillis() - TOUCH_TIME < WAIT_TIME) {
             finish();
         } else {

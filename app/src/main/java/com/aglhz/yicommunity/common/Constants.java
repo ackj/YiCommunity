@@ -6,7 +6,7 @@ package com.aglhz.yicommunity.common;
  * Email：langmanleguang@qq.com
  */
 public class Constants {
-    private final String TAG = this.getClass().getSimpleName();
+    private final String TAG = Constants.class.getSimpleName();
 
     //不允许new
     private Constants() {
@@ -50,6 +50,8 @@ public class Constants {
     public static final int ADD_HOUSE = 1;
     public static final int HOUSE_RIGHTS = 0;
     public static final String HOUSE_FID = "house_fid";
+    public static final String HOUSE_ADDRESS = "house_address";
+
 
     //Picker模块
     public static final String SP_KEY_USED_CITYS = "sp_key_used_citys";

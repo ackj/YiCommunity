@@ -17,6 +17,7 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
@@ -32,6 +33,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
 
+import static com.aglhz.yicommunity.R.id.recyclerView;
+
 /**
  * Author: LiuJia on 2017/4/21 10:31.
  * Email: liujia95me@126.com
@@ -43,14 +46,14 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.recyclerView)
+    @BindView(recyclerView)
     RecyclerView rvOpenDoorRecord;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
     private OpenDoorRecordRVAdapter mAdapter;
     private Unbinder unbinder;
     private ViewGroup rootView;
-
+    private Params params = Params.getInstance();
 
     public static OpenDoorRecordFragment newInstance() {
         return new OpenDoorRecordFragment();
@@ -71,9 +74,7 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
 
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
@@ -86,7 +87,9 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
 //                mPresenter.start();
-                mPresenter.requestRecord(Params.getInstance());
+                params.page = 1;
+                params.pageSize = Constants.PAGE_SIZE;
+                mPresenter.requestRecord(params);
             }
         });
     }
@@ -113,27 +116,37 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         initStateBar(toolbar);
         toolbarTitle.setText("开门记录");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
-        mPresenter.requestRecord(Params.getInstance());
-
         rvOpenDoorRecord.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new OpenDoorRecordRVAdapter();
+        mAdapter.setEnableLoadMore(true);
+        mAdapter.setOnLoadMoreListener(() -> {
+            ALog.e("加载更多………………………………");
+            params.page++;
+            mPresenter.requestRecord(params);
+        }, rvOpenDoorRecord);
         rvOpenDoorRecord.setAdapter(mAdapter);
     }
 
     @Override
-    public void responseRecord(List<OpenDoorRecordBean.DataBean> listRecord) {
+    public void responseRecord(List<OpenDoorRecordBean.DataBean> datas) {
         ptrFrameLayout.refreshComplete();
-        DialogHelper.successSnackbar(getView(), "请求成功：" + listRecord.size());
-        mAdapter.setNewData(listRecord);
+        if (datas == null || datas.isEmpty()) {
+            mAdapter.loadMoreEnd();
+            return;
+        }
+
+        if (params.page == 1) {
+            mAdapter.setNewData(datas);
+            mAdapter.disableLoadMoreIfNotFullPage(rvOpenDoorRecord);
+        } else {
+            mAdapter.addData(datas);
+            mAdapter.setEnableLoadMore(true);
+            mAdapter.loadMoreComplete();
+        }
     }
 
     @Override

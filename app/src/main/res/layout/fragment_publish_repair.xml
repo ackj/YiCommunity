@@ -70,6 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:lines="1"
                     android:text="报修类型"
                     android:textColor="@color/base_black"
                     android:textSize="16sp" />
@@ -81,6 +82,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
                     android:drawableRight="@drawable/ic_arrow_right_30px"
+                    android:lines="1"
                     android:text="请选择报修类型"
                     android:textColor="@color/gray_text"
                     android:textSize="16sp" />
@@ -100,6 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:lines="1"
                     android:text="联系人"
                     android:textColor="@color/base_black"
                     android:textSize="16sp" />
@@ -113,6 +116,7 @@
                     android:background="@null"
                     android:gravity="center"
                     android:hint="输入联系人姓名"
+                    android:lines="1"
                     android:textColor="@color/accent_text"
                     android:textColorHint="@color/default_text"
                     android:textSize="15sp" />
@@ -132,6 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:lines="1"
                     android:text="联系方式"
                     android:textColor="@color/base_black"
                     android:textSize="16sp" />
@@ -145,6 +150,7 @@
                     android:background="@null"
                     android:gravity="center"
                     android:hint="输入联系方式"
+                    android:lines="1"
                     android:textColor="@color/accent_text"
                     android:textColorHint="@color/default_text"
                     android:textSize="15sp" />

@@ -19,6 +19,7 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
@@ -60,7 +61,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public static final int TYPE_MY_NEIGHBOUR = 105;
 
     private LinearLayoutManager mLinearLayoutManager;
-    private View mFooterLoading, mFooterNotLoading, mFooterError;
     private Unbinder unbinder;
     private NeighbourRVAdapter adapter;
     private int type;
@@ -102,15 +102,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     @Override
     protected void initLazyView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            mFooterLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_loading, (ViewGroup) recyclerView.getParent(), false);
-            mFooterNotLoading = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_end, (ViewGroup) recyclerView.getParent(), false);
-            mFooterError = getLayoutInflater(savedInstanceState).inflate(R.layout.item_footer_error, (ViewGroup) recyclerView.getParent(), false);
-            mFooterError.setOnClickListener(v -> {
-//                    mAdapter.removeAllFooterView();
-//                    mAdapter.addFooterView(mFooterLoading);
-//                    mPresenter.queryData(pagination);
-            });
-
             initData();
             initListener();
         }
@@ -125,15 +116,20 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 //        for (int i = 0; i < 5; i++) {
 //            momentsList.addAll(momentsList);
 //        }
-
-        initPtrFrameLayout(ptrFrameLayout);
-        requestNet();
-
+        initPtrFrameLayout();
         //下拉刷新必须得在懒加载里设置，因为下拉刷新是一进来就刷新，启动start()。
         mLinearLayoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         adapter = new NeighbourRVAdapter();
-//        adapter = new NeighbourRVAdapter(momentsList);
+
+        adapter.setEnableLoadMore(true);
+
+        adapter.setOnLoadMoreListener(() -> {
+            ALog.e("加载更多………………………………");
+            params.page++;
+            requestNet();
+        }, recyclerView);
+
         adapter.setType(type);
         recyclerView.setAdapter(adapter);
     }
@@ -162,7 +158,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
                     builder.create().show();
                     break;
             }
-            return false;
         });
 
         //滑动时不让图片加载
@@ -171,9 +166,9 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Glide.with(_mActivity).resumeRequests();
+                    Glide.with(MessageFragment.this).resumeRequests();
                 } else {
-                    Glide.with(_mActivity).pauseRequests();
+                    Glide.with(MessageFragment.this).pauseRequests();
                 }
             }
         });
@@ -195,7 +190,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         }
     }
 
-    private void initPtrFrameLayout(final PtrFrameLayout ptrFrameLayout) {
+    private void initPtrFrameLayout() {
         final MaterialHeader header = new MaterialHeader(getContext());
         int[] colors = getResources().getIntArray(R.array.google_colors);
         header.setColorSchemeColors(colors);
@@ -204,7 +199,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
 
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
@@ -217,20 +211,19 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-
+                params.page = 1;
                 requestNet();
             }
         });
     }
 
     public void requestNet() {
-        params.page = 1;
-        params.pageSize = 10;
+        params.pageSize = Constants.PAGE_SIZE;
         params.cmnt_c = UserHelper.communityCode;
         if (type == TYPE_EXCHANGE) {
             mPresenter.requestExchangeList(params);
         } else if (type == TYPE_NEIGHBOUR) {
-            mPresenter.requestNeihbourList(params);
+            mPresenter.requestNeighbourList(params);
         } else if (type == TYPE_CARPOOL_OWNER || type == TYPE_CARPOOL_passenger) {
             params.currentPositionLat = UserHelper.latitude;
             params.currentPositionLng = UserHelper.longitude;
@@ -254,6 +247,13 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public void error(String errorMessage) {
         ALog.e("error:" + errorMessage);
         ptrFrameLayout.refreshComplete();
+        if (params.page == 1) {
+            //为后面的pageState做准备
+        } else if (params.page > 1) {
+            adapter.loadMoreFail();
+            params.page--;
+        }
+
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -267,7 +267,19 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     @Override
     public void responseSuccess(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
         ptrFrameLayout.refreshComplete();
-        adapter.setNewData(datas);
+        if (datas == null || datas.size() == 0) {
+            adapter.loadMoreEnd();
+            return;
+        }
+        ALog.e("datas::" + datas.size());
+        if (params.page == 1) {
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
+        } else {
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 
     @Override
@@ -286,6 +298,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 
     @Override
     public void onPause() {
+        Glide.with(this).pauseRequests();
         super.onPause();
         JCVideoPlayer.releaseAllVideos();
     }

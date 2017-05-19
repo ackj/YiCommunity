@@ -224,7 +224,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     break;
 
             }
-            return false;
         });
     }
 

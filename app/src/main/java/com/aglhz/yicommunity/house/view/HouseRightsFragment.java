@@ -62,10 +62,12 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
     private HouseRightsBean mHouseRights;
     private ViewGroup rootView;
     private Params params = Params.getInstance();
+    private String title;
 
-    public static HouseRightsFragment newInstance(String fid) {
+    public static HouseRightsFragment newInstance(String fid, String address) {
         Bundle args = new Bundle();
         args.putString(Constants.HOUSE_FID, fid);
+        args.putString(Constants.HOUSE_ADDRESS, address);
         HouseRightsFragment fragment = new HouseRightsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -77,6 +79,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         Bundle args = getArguments();
         if (args != null) {
             params.fid = args.getString(Constants.HOUSE_FID);
+            title = args.getString(Constants.HOUSE_ADDRESS);
         }
     }
 
@@ -107,7 +110,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText("成员权限");
+        toolbarTitle.setText(title);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }

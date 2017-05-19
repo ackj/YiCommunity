@@ -132,7 +132,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
             if (position == adapter.getData().size() - 1) {
                 selectPhoto();
             }
-            return false;
         });
 
     }

@@ -27,7 +27,7 @@ public class NeighbourModel extends BaseModel implements NeighbourContract.Model
     }
 
     @Override
-    public Observable<NeighbourListBean> getNeihbourList(Params params) {
+    public Observable<NeighbourListBean> requestNeighbourList(Params params) {
         return HttpHelper.getService(ApiService.class).requestNeighbourList(ApiService.requestNeighbourList, params.token, params.cmnt_c, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }

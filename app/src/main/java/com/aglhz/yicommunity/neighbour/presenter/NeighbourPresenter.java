@@ -36,8 +36,8 @@ public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, Ne
     }
 
     @Override
-    public void requestNeihbourList(Params params) {
-        mRxManager.add(mModel.getNeihbourList(params)
+    public void requestNeighbourList(Params params) {
+        mRxManager.add(mModel.requestNeighbourList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {

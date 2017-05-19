@@ -37,7 +37,7 @@ import butterknife.Unbinder;
  */
 
 public class RegisterFragment extends BaseFragment<RegisterPresenter> implements RegisterContract.View {
-
+    public static final String TAG = RegisterFragment.class.getSimpleName();
     @BindView(R.id.et_username)
     EditText etPhoneNo;
     @BindView(R.id.et_verify_code)

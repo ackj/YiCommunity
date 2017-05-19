@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="1号大门"
+            android:lines="2"
             android:textColor="@color/base_black"
             android:textSize="15sp" />
 
@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="密码开锁"
+            android:lines="2"
             android:textColor="@color/base_black"
             android:textSize="15sp" />
 
@@ -36,6 +36,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:lines="2"
             android:text="2016-11-15 14:06:11"
             android:textColor="@color/base_black"
             android:textSize="15sp" />
@@ -46,11 +47,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="王二"
+            android:lines="2"
             android:textColor="@color/base_black"
             android:textSize="15sp" />
-
-
     </LinearLayout>
 
     <View

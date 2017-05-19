@@ -20,7 +20,7 @@ public class OpenDoorRecordRVAdapter extends BaseRecyclerViewAdapter<OpenDoorRec
     @Override
     protected void convert(BaseViewHolder helper, OpenDoorRecordBean.DataBean item) {
         helper.setText(R.id.tv_door_name, item.getDeviceName())
-                .setText(R.id.tv_unlock_way, item.getAccessWay())
+                .setText(R.id.tv_unlock_way, item.getAccessWay() == 22 ? "App" : "其他")
                 .setText(R.id.tv_date, item.getAccessTime())
                 .setText(R.id.tv_opendoor_man, item.getUserName());
     }

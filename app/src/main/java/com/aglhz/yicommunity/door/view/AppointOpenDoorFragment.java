@@ -18,6 +18,7 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
@@ -38,7 +39,6 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  */
 public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContract.Presenter> implements AppointOpenDoorContract.View {
     private static final String TAG = AppointOpenDoorFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -47,10 +47,9 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     RecyclerView rvAppointOpendoor;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
-
     private AppointOpenDoorRVAdapter adapter;
     private Unbinder unbinder;
+    private Params params = Params.getInstance();
 
 
     public static AppointOpenDoorFragment newInstance() {
@@ -99,8 +98,9 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                mPresenter.requestDoors(Params.getInstance());
-
+                params.page = 1;
+                params.pageSize = Constants.PAGE_SIZE;
+                mPresenter.requestDoors(params);
             }
         });
     }
@@ -115,6 +115,13 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     private void initData() {
         rvAppointOpendoor.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new AppointOpenDoorRVAdapter();
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(() -> {
+            params.page++;
+            ALog.e("加载更多………………………………");
+            mPresenter.requestDoors(params);
+        }, rvAppointOpendoor);
+
         rvAppointOpendoor.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             ALog.e("111111111");
@@ -125,9 +132,21 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     }
 
     @Override
-    public void responseDoors(DoorListBean mDoorListBean) {
+    public void responseDoors(DoorListBean datas) {
         ptrFrameLayout.refreshComplete();
-        adapter.setNewData(mDoorListBean.getData());
+        if (datas == null || datas.getData().isEmpty()) {
+            adapter.loadMoreEnd();
+            return;
+        }
+
+        if (params.page == 1) {
+            adapter.setNewData(datas.getData());
+            adapter.disableLoadMoreIfNotFullPage(rvAppointOpendoor);
+        } else {
+            adapter.addData(datas.getData());
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 
     @Override
@@ -143,7 +162,13 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
-        DialogHelper.warningSnackbar(getView(), errorMessage);
+        if (params.page == 1) {
+            //为后面的pageState做准备
+        } else if (params.page > 1) {
+            adapter.loadMoreFail();
+            params.page--;
+        }
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     @Override

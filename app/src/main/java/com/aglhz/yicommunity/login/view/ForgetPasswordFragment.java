@@ -23,7 +23,7 @@ import butterknife.Unbinder;
  */
 
 public class ForgetPasswordFragment extends BaseFragment {
-
+    public static final String TAG = ForgetPasswordFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)

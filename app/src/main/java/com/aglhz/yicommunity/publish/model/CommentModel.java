@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.publish.model;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -25,6 +26,8 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
 
     @Override
     public Observable<CommentListBean> requestExchangeCommentList(Params params) {
+        ALog.e("page::" + params.page);
+
         return HttpHelper.getService(ApiService.class)
                 .getExchangeComments(ApiService.getExchangeComments, params.fid, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
@@ -32,6 +35,8 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
 
     @Override
     public Observable<CommentListBean> requestCarpoolCommentList(Params params) {
+        ALog.e("page::" + params.page);
+
         return HttpHelper.getService(ApiService.class)
                 .getCarpoolComments(ApiService.getCarpoolComments, params.fid, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
@@ -39,6 +44,9 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
 
     @Override
     public Observable<CommentListBean> requestNeighbourCommentList(Params params) {
+        ALog.e("page::" + params.page);
+
+
         return HttpHelper.getService(ApiService.class)
                 .getNeighbourComments(ApiService.getNeighbourComments, params.fid, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
@@ -63,7 +71,7 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
         builder.addFormDataPart("carpoolFid", params.fid);
         builder.addFormDataPart("content", params.content);
         return HttpHelper.getService(ApiService.class)
-                .postCarpoolComment(ApiService.postCarpoolComment,builder.build())
+                .postCarpoolComment(ApiService.postCarpoolComment, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 

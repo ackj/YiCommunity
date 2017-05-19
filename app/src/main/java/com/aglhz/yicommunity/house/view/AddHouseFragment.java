@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.widget.selector.SelectorDialog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
@@ -24,6 +25,7 @@ import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.bean.FloorBean;
 import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.UnitBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.house.contract.AddHouseContract;
@@ -36,6 +38,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import chihane.jdaddressselector.BottomDialog;
 
 /**
@@ -77,9 +80,24 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     private BottomDialog addressSelector;
     private SelectorDialog selector;
     private Params params = Params.getInstance();
+    private String title;
+    private Unbinder unbinder;
 
-    public static AddHouseFragment newInstance() {
-        return new AddHouseFragment();
+    public static AddHouseFragment newInstance(String address) {
+        Bundle args = new Bundle();
+        args.putString(Constants.HOUSE_ADDRESS, address);
+        AddHouseFragment fragment = new AddHouseFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            title = args.getString(Constants.HOUSE_ADDRESS);
+        }
     }
 
     @NonNull
@@ -92,7 +110,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_house, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -105,8 +123,9 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     protected void initToolbar(Toolbar toolbar) {
         initStateBar(toolbar);
-        toolbarTitle.setText("智能管家");
-
+        toolbarTitle.setText(title);
+        toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
+        toolbar.setNavigationOnClickListener(v -> _mActivity.finish());
     }
 
     @OnClick({R.id.tv_proprietor_house_fragment,
@@ -224,6 +243,13 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        KeyBoardUtils.hideKeybord(getView(), _mActivity);
+        unbinder.unbind();
+    }
+
+    @Override
     public void onDestroy() {
         if (selector != null) {
             selector = null;
@@ -234,6 +260,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
         super.onDestroy();
     }
+
 
     @Override
     public void responseCommunitys(final List<CommunitySelectBean.DataBean.CommunitiesBean> communities) {

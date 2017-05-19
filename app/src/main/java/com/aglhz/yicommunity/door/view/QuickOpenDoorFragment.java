@@ -18,6 +18,7 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
@@ -35,6 +36,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
 
+import static com.aglhz.yicommunity.R.id.recyclerView;
+
 /**
  * Author: LiuJia on 2017/4/21 10:31.
  * Email: liujia95me@126.com
@@ -45,7 +48,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.recyclerView)
+    @BindView(recyclerView)
     RecyclerView rvQuickOpendoor;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
@@ -54,6 +57,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     private QuickOpenDoorRVAdapter mAdapter;
     private int prePosition;
     private Unbinder unbinder;
+    private Params params = Params.getInstance();
 
     public static QuickOpenDoorFragment newInstance() {
         return new QuickOpenDoorFragment();
@@ -102,8 +106,9 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                mPresenter.requestDoors(Params.getInstance());
-
+                params.page = 1;
+                params.pageSize = Constants.PAGE_SIZE;
+                mPresenter.requestDoors(params);
             }
         });
     }
@@ -127,8 +132,14 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     private void initData() {
         rvQuickOpendoor.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new QuickOpenDoorRVAdapter();
+        mAdapter.setEnableLoadMore(true);
+        mAdapter.setOnLoadMoreListener(() -> {
+            ALog.e("加载更多………………………………");
+            params.page++;
+            mPresenter.requestDoors(params);
+        }, rvQuickOpendoor);
+
         rvQuickOpendoor.setAdapter(mAdapter);
-        mAdapter.bindToRecyclerView(rvQuickOpendoor);
     }
 
     private void initListener() {
@@ -142,11 +153,24 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     }
 
     @Override
-    public void responseDoors(DoorListBean mDoorListBean) {
+    public void responseDoors(DoorListBean datas) {
         ptrFrameLayout.refreshComplete();
 
-        mAdapter.setNewData(mDoorListBean.getData());
-        List<DoorListBean.DataBean> list = mDoorListBean.getData();
+        if (datas == null || datas.getData().isEmpty()) {
+            mAdapter.loadMoreEnd();
+            return;
+        }
+
+        if (params.page == 1) {
+            mAdapter.setNewData(datas.getData());
+            mAdapter.disableLoadMoreIfNotFullPage(rvQuickOpendoor);
+        } else {
+            mAdapter.addData(datas.getData());
+            mAdapter.setEnableLoadMore(true);
+            mAdapter.loadMoreComplete();
+        }
+
+        List<DoorListBean.DataBean> list = datas.getData();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).isQuickopen()) {
                 prePosition = i;
@@ -176,6 +200,13 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        if (params.page == 1) {
+            //为后面的pageState做准备
+        } else if (params.page > 1) {
+            mAdapter.loadMoreFail();
+            params.page--;
+        }
+
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 

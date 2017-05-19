@@ -26,19 +26,13 @@ public class MemberRVAdapter extends BaseRecyclerViewAdapter<HouseRightsBean.Dat
 
     @Override
     protected void convert(BaseViewHolder helper, HouseRightsBean.DataBean item) {
-        ALog.e("11111111");
-
-
-//        ImgLoad.toImgViewRound(item.getMember().getIcon(), (ImageView) helper.getView(R.id.iv_avatar));
-
 
         Glide.with(BaseApplication.mContext)
-                .load(UserHelper.userInfo.getFace())
+                .load(item.getMember().getIcon())
                 .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
                 .into((ImageView) helper.getView(R.id.iv_avatar));
 
-
-        helper.setText(R.id.tv_name, item.getMember().getName())
+        helper.setText(R.id.tv_name, item.getMember().getMname())
                 .setText(R.id.tv_role, "业主")
                 .setVisible(R.id.tv_role, 1 == (item.getMember().getIsOwner()));
     }

@@ -26,12 +26,14 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CommentBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.event.KeyboardChangeListener;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.publish.contract.CommentContract;
 import com.aglhz.yicommunity.publish.presenter.CommentPresenter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
 
@@ -139,7 +141,6 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
 
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
@@ -152,6 +153,9 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
+                commentListParams.fid = fid;
+                commentListParams.page = 1;
+                commentListParams.pageSize = Constants.PAGE_SIZE;
                 requestComments();
             }
         });
@@ -163,7 +167,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
 
     private void initListener() {
         mKeyboardChangeListener = new KeyboardChangeListener(_mActivity);
-        mKeyboardChangeListener.setKeyBoardListener((isShow, keyboardHeight) -> ALog.d(TAG, "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]"));
+        mKeyboardChangeListener.setKeyBoardListener((isShow, keyboardHeight) -> ALog.e(TAG, "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]"));
 
         final View decorView = _mActivity.getWindow().getDecorView();
         //计算出可见屏幕的高度
@@ -205,19 +209,20 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     }
 
     private void initData() {
-        requestComments();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new CommentRVAdapter();
         adapter.setEnableLoadMore(true);
-        adapter.loadMoreFail();
+        adapter.setOnLoadMoreListener(() -> {
+            commentListParams.page++;
+            ALog.e("加载更多………………………………");
+            requestComments();
+        }, recyclerView);
+
         recyclerView.setAdapter(adapter);
     }
 
     private void requestComments() {
-        commentListParams.fid = this.fid;
-        commentListParams.page = 1;
-        commentListParams.pageSize = 10;
+        ALog.e(" commentListParams.page++" + commentListParams.page);
         switch (type) {
             case TYPE_EXCHANGE:
             case TYPE_MY_EXCHANGE:
@@ -256,13 +261,33 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
-        DialogHelper.warningSnackbar(getView(), errorMessage);
+        if (commentListParams.page == 1) {
+            //为后面的pageState做准备
+        } else if (commentListParams.page > 1) {
+            adapter.loadMoreFail();
+            commentListParams.page--;
+        }
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     @Override
     public void responseCommentList(List<CommentBean> datas) {
         ptrFrameLayout.refreshComplete();
-        adapter.setNewData(datas);
+
+        if (datas == null || datas.isEmpty()) {
+            adapter.loadMoreEnd();
+            return;
+        }
+
+        ALog.e("datas::" + datas.size());
+        if (commentListParams.page == 1) {
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
+        } else {
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 
     @Override

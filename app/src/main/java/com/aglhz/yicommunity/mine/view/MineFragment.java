@@ -57,9 +57,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Email: liujia95me@126.com
  */
 public class MineFragment extends BaseFragment<MineContract.Presenter> implements MineContract.View {
-
     private static final String TAG = MineFragment.class.getSimpleName();
-
     @BindView(R.id.iv_head_item_comment)
     ImageView ivHead;
     @BindView(R.id.tv_name)
@@ -88,7 +86,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     TextView tvCacheSum;
     @BindView(R.id.iv_header_background)
     ImageView ivHeaderBackground;
-
     private ViewGroup rootView;
     private Unbinder unbinder;
 
@@ -261,11 +258,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     private void updateHeaderBackground() {
-//        int scaleRatio = 10;
-//        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originBitmap,
-//                originBitmap.getWidth() / scaleRatio,
-//                originBitmap.getHeight() / scaleRatio,
-//                false);
         Glide.with(this)
                 .load(UserHelper.userInfo.getFace())
                 .asBitmap()
@@ -273,13 +265,9 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                     @Override
                     public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
                         Bitmap blurBitmap = FastBlur.blur(bitmap, 8, true);
-                        ivHeaderBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         ivHeaderBackground.setImageBitmap(blurBitmap);
-//                        setHeaderBackground(bitmap, 8);
                     }
-                    // setImageBitmap(bitmap) on CircleImageView
                 });
-
     }
 
     @Override

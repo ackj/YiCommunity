@@ -56,7 +56,7 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
                 .requestMyhouses(ApiService.requestMyhouses, params.token, params.cmnt_c)
                 .map(myHousesBean -> myHousesBean.getData().getAuthBuildings())
                 .flatMap(Flowable::fromIterable)
-                .map(bean -> new IconBean(R.drawable.ic_my_house_red_140px, bean.getB_name(), bean.getFid()))
+                .map(bean -> new IconBean(R.drawable.ic_my_house_red_140px, bean.getAddress(), bean.getFid()))
                 .toList()
                 .subscribeOn(Schedulers.io());
     }

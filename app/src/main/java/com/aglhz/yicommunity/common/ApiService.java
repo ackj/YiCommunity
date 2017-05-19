@@ -96,7 +96,6 @@ public interface ApiService {
     //登出
     String requestLogout = BASE_USER + "/client/logout.do";
 
-
     //    @POST("/memberSYS-m/client/logout.do")
     @POST
     Observable<BaseBean> requestLogout(
@@ -135,10 +134,7 @@ public interface ApiService {
     String updateUserData = BASE_USER + "/client/updateMemberFieldByToken.do";
 
     @POST
-    Observable<BaseBean> updateUserData(@Url String url,
-                                        @Query("token") String token,
-                                        @Query("field") String field,
-                                        @Query("val") String val);
+    Observable<BaseBean> updateUserData(@Url String url, @Body MultipartBody file);
 
 
     //修改密码
@@ -279,16 +275,18 @@ public interface ApiService {
     Observable<BaseBean> appointOpenDoor(@Url String url, @Query("token") String token, @Query("dir") String dir);
 
     //密码开门
-    String requestPassword = BASE_PROPERTY + "/smartdoor/client/opendoor";
+    String requestPassword = BASE_PROPERTY + "/smartdoor/client/temppwd";
 
     @POST/*("/sub_property_ysq/smartdoor/client/temppwd")*/
-    Observable<PasswordBean> requestPassword(@Url String url, @Query("token") String token, @Query("dir") String dir);
+    Observable<PasswordBean> requestPassword(@Url String url,
+                                             @Query("token") String token,
+                                             @Query("dir") String dir);
 
     //设置快速开门
     String postQuickOpenDoor = BASE_PROPERTY + "/smartdoor/client/qdos";
 
     @POST/*("/sub_property_ysq/smartdoor/client/qdos")*/
-    Observable<BaseBean> postQuickOpenDoor(@Url String url,@Query("token") String token, @Query("directory") String directory, @Query("deviceName") String deviceName);
+    Observable<BaseBean> postQuickOpenDoor(@Url String url, @Query("token") String token, @Query("directory") String directory, @Query("deviceName") String deviceName);
 
     //获取开门记录
     String requestOpenDoorRecord = BASE_PROPERTY + "/smartdoor/info/dooropenlog";
@@ -376,7 +374,11 @@ public interface ApiService {
     String requestNeighbourList = BASE_PROPERTY + "/neighbor/moments/to-client/moments-list";
 
     @POST
-    Observable<NeighbourListBean> requestNeighbourList(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<NeighbourListBean> requestNeighbourList(@Url String url,
+                                                       @Query("token") String token,
+                                                       @Query("cmnt_c") String cmnt_c,
+                                                       @Query("page") int page,
+                                                       @Query("pageSize") int pageSize);
 
     //获取闲置交换
     String requestExchangeList = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-list";
@@ -390,7 +392,7 @@ public interface ApiService {
     @POST
     Observable<NeighbourListBean> requestCarpoolList(@Url String url,
                                                      @Query("token") String token,
-                                                     @Query("cmnt_c")String cmnt_c,
+                                                     @Query("cmnt_c") String cmnt_c,
                                                      @Query("currentPositionLat") String currentPositionLat,
                                                      @Query("currentPositionLng") String currentPositionLng,
                                                      @Query("page") int page,
@@ -547,5 +549,16 @@ public interface ApiService {
     Observable<ResponseBody> requestOrder(@Url String url,
                                           @Query("type") int type,
                                           @Query("billFids") String billFids);
+
+    //友盟用户登记接口
+
+    String requestUMeng = BASE_USER + "/client/logUMengParams.do";
+
+    @POST
+    Observable<BaseBean> requestUMeng(@Url String url,
+                                      @Query("token") String token,
+                                      @Query("deviceToken") String deviceToken,
+                                      @Query("alias") String alias,
+                                      @Query("aliasType") String aliasType);
 
 }

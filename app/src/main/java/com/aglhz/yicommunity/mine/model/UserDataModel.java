@@ -54,11 +54,12 @@ public class UserDataModel extends BaseModel implements UserDataContract.Model {
 
     @Override
     public Observable<BaseBean> updateUserData(Params params) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.addFormDataPart("token", params.token);
+        builder.addFormDataPart("field", params.field);
+        builder.addFormDataPart("val", params.val);
         return HttpHelper.getService(ApiService.class)
-                .updateUserData(ApiService.updateUserData,
-                        params.token,
-                        params.field,
-                        params.val)
+                .updateUserData(ApiService.updateUserData, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 

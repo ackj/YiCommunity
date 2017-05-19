@@ -137,7 +137,6 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
             if (position == adapter.getData().size() - 1) {
                 selectPhoto();
             }
-            return false;
         });
 
     }

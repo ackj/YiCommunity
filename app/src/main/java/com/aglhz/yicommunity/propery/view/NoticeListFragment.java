@@ -100,7 +100,6 @@ public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implem
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             NoticeBean.DataBean.NoticeListBean bean = (NoticeBean.DataBean.NoticeListBean) adapter.getData().get(position);
             go2Web("物业公告", ApiService.requestNoticeDetail + bean.getFid());
-            return false;
         });
     }
 

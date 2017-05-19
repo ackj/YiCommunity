@@ -17,6 +17,7 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.MyHousesBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
@@ -38,7 +39,7 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  */
 
 public class MineHouseFragment extends BaseFragment<MineHousePresenter> implements MineHouseContract.View {
-
+    public static final String TAG = MineHouseFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -47,9 +48,9 @@ public class MineHouseFragment extends BaseFragment<MineHousePresenter> implemen
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
     private MineHouseRVAdapter adapter;
     private Unbinder unbinder;
+    private Params params = Params.getInstance();
 
     public static MineHouseFragment newInstance() {
         return new MineHouseFragment();
@@ -86,7 +87,6 @@ public class MineHouseFragment extends BaseFragment<MineHousePresenter> implemen
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
 
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
@@ -99,7 +99,9 @@ public class MineHouseFragment extends BaseFragment<MineHousePresenter> implemen
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                mPresenter.requsetMyHouse(Params.getInstance());
+                params.page = 1;
+                params.pageSize = Constants.PAGE_SIZE;
+                mPresenter.requsetMyHouse(params);
             }
         });
     }
@@ -113,9 +115,15 @@ public class MineHouseFragment extends BaseFragment<MineHousePresenter> implemen
 
     private void initData() {
         adapter = new MineHouseRVAdapter();
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(() -> {
+            ALog.e("加载更多………………………………");
+            params.page++;
+            mPresenter.requsetMyHouse(params);
+        }, recyclerView);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         recyclerView.setAdapter(adapter);
-        mPresenter.requsetMyHouse(Params.getInstance());
     }
 
     @Override
@@ -132,12 +140,31 @@ public class MineHouseFragment extends BaseFragment<MineHousePresenter> implemen
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
-        DialogHelper.warningSnackbar(getView(), errorMessage);
+        if (params.page == 1) {
+            //为后面的pageState做准备
+        } else if (params.page > 1) {
+            adapter.loadMoreFail();
+            params.page--;
+        }
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     @Override
     public void responseHouseList(List<MyHousesBean.DataBean.AuthBuildingsBean> datas) {
         ptrFrameLayout.refreshComplete();
-        adapter.setNewData(datas);
+
+        if (datas == null || datas.size() == 0) {
+            adapter.loadMoreEnd();
+            return;
+        }
+
+        if (params.page == 1) {
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
+        } else {
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 }

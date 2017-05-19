@@ -146,7 +146,6 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
                     intent.putExtra("pics", bundle);
                     intent.putExtra("position", position);
                     context.startActivity(intent);
-                    return false;
                 });
                 int spanCount = item.getPics().size() < 3 ? item.getPics().size() : 3;
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(BaseApplication.mContext, spanCount) {

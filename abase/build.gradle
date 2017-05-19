@@ -58,7 +58,7 @@ dependencies {
     // If you want to use the GPU Filters
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     //一个不错的RecyclerViewAdapter辅助框架
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.0'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.16'
     //下拉刷新框架
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     //事件总线

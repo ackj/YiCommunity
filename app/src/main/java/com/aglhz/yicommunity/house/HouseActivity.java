@@ -13,6 +13,7 @@ public class HouseActivity extends BaseActivity {
     private static final String TAG = HouseActivity.class.getSimpleName();
     private int intFromTo;
     private String fid;
+    private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +25,11 @@ public class HouseActivity extends BaseActivity {
         if (savedInstanceState == null) {
             switch (intFromTo) {
                 case Constants.HOUSE_RIGHTS:
-                    loadRootFragment(R.id.fl_house_activity, HouseRightsFragment.newInstance(fid));
+                    loadRootFragment(R.id.fl_house_activity, HouseRightsFragment.newInstance(fid, address));
                     ALog.e("Constants.HOUSE_RIGHTS::" + Constants.HOUSE_RIGHTS);
                     break;
                 case Constants.ADD_HOUSE:
-                    loadRootFragment(R.id.fl_house_activity, AddHouseFragment.newInstance());
+                    loadRootFragment(R.id.fl_house_activity, AddHouseFragment.newInstance(address));
                     ALog.e("Constants.ADD_HOUSE::" + Constants.ADD_HOUSE);
 
                     break;
@@ -39,6 +40,7 @@ public class HouseActivity extends BaseActivity {
     private void initData() {
         intFromTo = getIntent().getIntExtra(Constants.FROM_TO, 0);
         fid = getIntent().getStringExtra(Constants.HOUSE_FID);
+        address = getIntent().getStringExtra(Constants.HOUSE_ADDRESS);
         ALog.e(intFromTo);
         ALog.e(fid);
     }

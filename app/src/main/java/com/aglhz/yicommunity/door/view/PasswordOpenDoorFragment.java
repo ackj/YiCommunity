@@ -1,9 +1,13 @@
 package com.aglhz.yicommunity.door.view;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.door.contract.PasswordOpenDoorContract;
 import com.aglhz.yicommunity.door.presenter.PasswordOpenDoorPresenter;
 
@@ -67,12 +72,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
         initStateBar(toolbar);
         toolbarTitle.setText("密码开门");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     @Override
@@ -86,11 +86,38 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
         switch (view.getId()) {
             case R.id.bt_password:
                 Params params = Params.getInstance();
+                params.dir = UserHelper.dir;
                 mPresenter.requestPassword(params);
                 break;
             case R.id.bt_share:
+                sharePassword();
                 break;
         }
+    }
+
+    private void sharePassword() {
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("选择分享类型")
+                .setItems(new String[]{"微信", "短信"}, (dialog, which) -> {
+                    switch (which) {
+                        case 0: //微信
+                            break;
+
+                        case 1: //短信
+                            sendSMS();
+                            break;
+                    }
+                }).show();
+    }
+
+    private void sendSMS() {
+        Uri smsToUri = Uri.parse("smsto:");
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW, smsToUri);
+        //sendIntent.putExtra("address", "123456"); // 电话号码，这行去掉的话，默认就没有电话
+        //短信内容
+        sendIntent.putExtra("sms_body", tvPassword.getText().toString().trim());
+        sendIntent.setType("vnd.android-dir/mms-sms");
+        startActivityForResult(sendIntent, 1002);
     }
 
     @Override

@@ -111,7 +111,7 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
 
     private void initToolbar() {
         initStateBar(toolbar);
-        tvTitle.setText("小区名字");
+        tvTitle.setText("小区名称");
         tvCity.setText("选择城市");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
@@ -186,7 +186,6 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
             UserHelper.setCommunity(communitiesBean.getName(), communitiesBean.getCode());
             EventBus.getDefault().post(new EventCommunityChange(communitiesBean));
             _mActivity.finish();
-            return false;
         });
     }
 

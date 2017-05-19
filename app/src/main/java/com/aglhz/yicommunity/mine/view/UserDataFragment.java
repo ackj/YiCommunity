@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.UserBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -176,6 +177,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        KeyBoardUtils.hideKeybord(getView(), _mActivity);
         unbinder.unbind();
     }
 

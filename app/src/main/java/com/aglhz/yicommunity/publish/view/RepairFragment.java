@@ -55,7 +55,6 @@ import butterknife.Unbinder;
 @SuppressLint("ValidFragment")
 public class RepairFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = RepairFragment.class.getSimpleName();
-
     @BindView(R.id.rl_house_name)
     RelativeLayout rlHouseName;
     @BindView(R.id.bt_submit_fragment_repair)
@@ -131,7 +130,6 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
             if (position == adapter.getData().size() - 1) {
                 selectPhoto();
             }
-            return false;
         });
     }
 

@@ -62,7 +62,7 @@ public class Params {
     public boolean summerable;
     public int positionType;
     public int type;
-    public int pageSize = 20;
+    public int pageSize = Constants.PAGE_SIZE;
     public int status;
     public int page = 1;
     public int carpoolType;
