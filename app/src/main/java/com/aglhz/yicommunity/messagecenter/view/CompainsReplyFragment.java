@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.mine.view;
+package com.aglhz.yicommunity.messagecenter.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,17 +13,14 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.mvp.view.base.Decoration;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.MessageCenterBean;
-import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.mine.contract.MessageCenterContract;
-import com.aglhz.yicommunity.mine.presenter.MessageCenterPresenter;
+import com.aglhz.yicommunity.messagecenter.contract.CompainsReplyContract;
+import com.aglhz.yicommunity.messagecenter.presenter.CompainReplyPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,12 +31,14 @@ import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
- * Created by leguang on 2017/5/7 0007.
- * Email：langmanleguang@qq.com
+ * Author: LiuJia on 2017/5/18 0018 17:36.
+ * Email: liujia95me@126.com
  */
 
-public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Presenter> implements MessageCenterContract.View {
-    private static final String TAG = MessageCenterFragment.class.getSimpleName();
+public class CompainsReplyFragment extends BaseFragment<CompainReplyPresenter> implements CompainsReplyContract.View {
+
+    private static final String TAG = CompainsReplyFragment.class.getSimpleName();
+
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -48,19 +47,18 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-    Unbinder unbinder;
-    private LinearLayoutManager layoutManager;
-    private MessageCenterRVAdapter adapter;
-    private ViewGroup rootView;
 
-    public static MessageCenterFragment newInstance() {
-        return new MessageCenterFragment();
+    private Unbinder unbinder;
+    private CompainsReplyRVAdapter adapter;
+
+    public static CompainsReplyFragment newInstance() {
+        return new CompainsReplyFragment();
     }
 
     @NonNull
     @Override
-    protected MessageCenterContract.Presenter createPresenter() {
-        return new MessageCenterPresenter(this);
+    protected CompainReplyPresenter createPresenter() {
+        return new CompainReplyPresenter(this);
     }
 
     @Nullable
@@ -74,25 +72,14 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar();
-        initData();
         initPtrFrameLayout();
-//        initListener();
-    }
-
-
-    private void initData() {
-        layoutManager = new LinearLayoutManager(_mActivity);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new MessageCenterRVAdapter();
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new Decoration(_mActivity, Decoration.VERTICAL_LIST));
+        initData();
     }
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText("消息中心");
+        toolbarTitle.setText("物业投诉回复");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
@@ -116,32 +103,37 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了…………");
-                mPresenter.start(Params.getInstance());
-
+                ALog.e("开始刷新了");
             }
         });
     }
 
+    private void initData() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        adapter = new CompainsReplyRVAdapter();
+        recyclerView.setAdapter(adapter);
+
+        List<String> datas = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            datas.add("张三" + i);
+        }
+        adapter.setNewData(datas);
+        adapter.setOnItemChildClickListener((adapter, view, position) -> false);
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-//        if (adapter != null) {
-//            adapter = null;
-//        }
     }
 
     @Override
     public void start(Object response) {
-        ptrFrameLayout.refreshComplete();
-        adapter.setNewData((List<MessageCenterBean.DataBean.MemNewsBean>) response);
+
     }
 
     @Override
     public void error(String errorMessage) {
-        DialogHelper.warningSnackbar(rootView, errorMessage);
-        ptrFrameLayout.refreshComplete();
+
     }
 }

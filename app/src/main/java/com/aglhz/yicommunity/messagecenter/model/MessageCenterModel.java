@@ -1,11 +1,11 @@
-package com.aglhz.yicommunity.mine.model;
+package com.aglhz.yicommunity.messagecenter.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.mine.contract.MessageCenterContract;
+import com.aglhz.yicommunity.messagecenter.contract.MessageCenterContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;

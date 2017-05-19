@@ -208,7 +208,12 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
                 }).setTitle("请选择").setPositiveButton("取消", null).show();
                 break;
             case R.id.tl_repair_type:
-                String[] arr = {"水电", "水管", "门窗"};
+                String[] arr;
+                if (isPrivate) {
+                    arr = new String[]{"水电", "水管", "门窗"};
+                } else {
+                    arr = new String[]{"花园", "公共区域", "电梯"};
+                }
                 new AlertDialog.Builder(_mActivity).setItems(arr, (dialog, which) -> {
                     //网络访问
                     dialog.dismiss();

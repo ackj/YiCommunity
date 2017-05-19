@@ -19,6 +19,7 @@ import com.aglhz.yicommunity.bean.ParkRecordBean;
 import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
+import com.aglhz.yicommunity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.UnitBean;
@@ -117,6 +118,8 @@ public interface ApiService {
     @POST
     Observable<MessageCenterBean> requestMessages(@Url String url, @Query("token") String token);
 
+
+
     //社区Banner
 //    @POST("/sub_property_ysq/client/info/indexadvs")
     String requestBanners = BASE_PROPERTY + "/client/info/indexadvs";
@@ -168,6 +171,12 @@ public interface ApiService {
 
     @POST
     Observable<RepairApplyBean> requestRepairApply(@Url String url, @Query("token") String token);
+
+    //物业报修详情
+    String requestRepairDetail = BASE_PROPERTY+"/client/info/repairDet";
+
+    @POST
+    Observable<RepairDetailBean> requestRepairDetail(@Url String url, @Query("token")String token, @Query("fid")String fid);
 
     //****************以下获取小区，楼栋，单元，楼层，房间等**********************************
 

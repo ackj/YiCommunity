@@ -1,11 +1,10 @@
-package com.aglhz.yicommunity.mine.view;
+package com.aglhz.yicommunity.messagecenter.view;
 
 
 import android.view.View;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -23,7 +22,9 @@ public class MessageCenterRVAdapter extends BaseRecyclerViewAdapter<MessageCente
     protected void convert(BaseViewHolder helper, MessageCenterBean.DataBean.MemNewsBean item) {
         helper.getView(R.id.v_mark_item_message_center_fragment)
                 .setVisibility(item.isRead() ? View.INVISIBLE : View.VISIBLE);
-        helper.setText(R.id.tv_title_item_message_center_fragment, item.getTitle())
+
+        helper.addOnClickListener(R.id.ll_layout_item_message_center_fragment)
+                .setText(R.id.tv_title_item_message_center_fragment, item.getTitle())
                 .setText(R.id.tv_description_item_message_center_fragment, item.getDes())
                 .setText(R.id.tv_date_item_message_center_fragment, item.getOpTime().substring(0, 10));
     }
