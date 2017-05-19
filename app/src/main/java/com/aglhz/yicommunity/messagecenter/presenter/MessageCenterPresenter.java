@@ -1,19 +1,11 @@
-package com.aglhz.yicommunity.mine.presenter;
+package com.aglhz.yicommunity.messagecenter.presenter;
 
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.mine.contract.MessageCenterContract;
-import com.aglhz.yicommunity.mine.contract.MineContract;
-import com.aglhz.yicommunity.mine.model.MessageCenterModel;
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
-
-import org.json.JSONException;
-
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
+import com.aglhz.yicommunity.messagecenter.contract.MessageCenterContract;
+import com.aglhz.yicommunity.messagecenter.model.MessageCenterModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

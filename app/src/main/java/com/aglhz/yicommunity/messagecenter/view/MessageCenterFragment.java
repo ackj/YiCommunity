@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.mine.view;
+package com.aglhz.yicommunity.messagecenter.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,8 +21,8 @@ import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.mine.contract.MessageCenterContract;
-import com.aglhz.yicommunity.mine.presenter.MessageCenterPresenter;
+import com.aglhz.yicommunity.messagecenter.contract.MessageCenterContract;
+import com.aglhz.yicommunity.messagecenter.presenter.MessageCenterPresenter;
 
 import java.util.List;
 
@@ -48,10 +48,24 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
+
     Unbinder unbinder;
+
     private LinearLayoutManager layoutManager;
     private MessageCenterRVAdapter adapter;
     private ViewGroup rootView;
+
+    private static final String SMARTDOOR_PUSHREC = "smartdoor_pushrec";
+    private static final String HOUSE_OWNER_APPLY = "house_owner_apply";// 业主申请
+    private static final String HOUSE_MEMBER_APPLY = "house_member_apply";// 成员申请
+    private static final String HOUSE_RENTER_APPLY = "house_renter_apply";// 租客申请
+    private static final String HOUSE_OWNER_APPROVE = "house_owner_approve";// 业主申请审核
+    private static final String HOUSE_MEMBER_APPROVE = "house_member_approve";// 成员申请审核
+    private static final String HOUSE_RENTER_APPROVE = "house_renter_approve";// 租客申请审核
+    private static final String FEEDBACK_REPLY = "feedback_reply";// 信息反馈回复
+    private static final String REPAIR_REPLY = "repair_reply";// 物业报修回复
+    private static final String NOTICE_PUBLISH = "notice_publish";// 公告发布
+    private static final String PROPERTY_BILL = "property_bill";// 物业账单
 
     public static MessageCenterFragment newInstance() {
         return new MessageCenterFragment();
@@ -78,9 +92,8 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         initToolbar();
         initData();
         initPtrFrameLayout();
-//        initListener();
+        initListener();
     }
-
 
     private void initData() {
         layoutManager = new LinearLayoutManager(_mActivity);
@@ -90,11 +103,56 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         recyclerView.addItemDecoration(new Decoration(_mActivity, Decoration.VERTICAL_LIST));
     }
 
+
     private void initToolbar() {
         initStateBar(toolbar);
         toolbarTitle.setText("消息中心");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+    }
+
+    private void initListener() {
+        adapter.setOnItemChildClickListener((adapter, view, position) -> {
+            MessageCenterBean.DataBean.MemNewsBean bean = (MessageCenterBean.DataBean.MemNewsBean) adapter.getData().get(position);
+            if (view.getId() == R.id.ll_layout_item_message_center_fragment) {
+                ALog.e(TAG, "type:" + bean.getOpType());
+                switch (bean.getOpType()) {
+                    case NOTICE_PUBLISH://公告发布
+                        break;
+                    case HOUSE_OWNER_APPLY: //业主申请
+                        //todo:可能要改
+                        start(ApplyCheckFragment.newInstance(bean.getTitle(), bean.getDes()));
+                        break;
+                    case HOUSE_MEMBER_APPLY://成员申请
+                        start(ApplyCheckFragment.newInstance(bean.getTitle(), bean.getDes()));
+                        break;
+                    case HOUSE_RENTER_APPLY://租客申请
+                        //todo:可能要改
+                        start(ApplyCheckFragment.newInstance(bean.getTitle(), bean.getDes()));
+                        break;
+                    case HOUSE_OWNER_APPROVE://业主申请审核结果
+                        //todo:可能要改
+                        start(ApplyResultFragment.newInstance());
+                        break;
+                    case HOUSE_MEMBER_APPROVE://成员申请审核结果
+                        //todo:可能要改
+                        start(ApplyResultFragment.newInstance());
+                        break;
+                    case HOUSE_RENTER_APPROVE://租客申请审核结果
+                        break;
+                    case FEEDBACK_REPLY://信息反馈回复
+                        break;
+                    case REPAIR_REPLY://物业报修回复
+                        start(RepairDetailFragment.newInstance(bean.getSfid()));
+                        break;
+                    case PROPERTY_BILL://物业账单
+                        break;
+                    case SMARTDOOR_PUSHREC://
+                        start(CompainsReplyFragment.newInstance());
+                        break;
+                }
+            }
+        });
     }
 
     private void initPtrFrameLayout() {

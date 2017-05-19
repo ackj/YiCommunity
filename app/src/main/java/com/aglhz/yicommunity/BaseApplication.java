@@ -7,8 +7,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
-import android.support.v4.app.NotificationCompat;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
@@ -29,7 +27,6 @@ import com.umeng.message.entity.UMessage;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.http.HEAD;
 
 
 /**
@@ -48,8 +45,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
         initData();//数据的初始化要在友盟推送之前，因为要注册别名时，用到用户名。
 
         initPush();
-
-
 //        registerActivityLifecycleCallbacks(this);
 
 //        tempInit();
@@ -66,7 +61,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
         IBoxingMediaLoader loader = new BoxingGlideLoader();
         BoxingMediaLoader.getInstance().init(loader);
 //        BoxingCrop.getInstance().init(new BoxingUcrop());初始化图片裁剪（可选）
-
     }
 
     private void tempInit() {
@@ -193,7 +187,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
                 ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
                 ALog.e(TAG, msg.custom);//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
 
-
                 switch (msg.builder_id) {
                     //自定义通知样式编号
                     case 1:
@@ -233,7 +226,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
                 Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
                 ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
                 ALog.e(TAG, msg.custom);
-
             }
         };
 

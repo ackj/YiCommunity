@@ -5,9 +5,7 @@ import android.support.annotation.NonNull;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.mine.contract.FeedbackContract;
-import com.aglhz.yicommunity.mine.contract.MessageCenterContract;
 import com.aglhz.yicommunity.mine.model.FeedbackModel;
-import com.aglhz.yicommunity.mine.model.MessageCenterModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
