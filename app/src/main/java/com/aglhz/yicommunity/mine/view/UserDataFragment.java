@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.mine.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
@@ -24,7 +26,14 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.mine.contract.UserDataContract;
 import com.aglhz.yicommunity.mine.presenter.UserDataPresenter;
+import com.bilibili.boxing.Boxing;
+import com.bilibili.boxing.model.config.BoxingConfig;
+import com.bilibili.boxing.model.entity.BaseMedia;
+import com.bilibili.boxing_impl.ui.BoxingActivity;
 import com.bumptech.glide.Glide;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -129,9 +138,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     tvGender.setText("女");
                     break;
             }
-
             tvPhone.setText(getUserInfo().getMobile());
-
         }
 
         etNickname.setOnFocusChangeListener((v, hasFocus) -> {
@@ -162,7 +169,6 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
             int genderIndex = Integer.parseInt(params.val);
             userInfo.setSex(genderIndex);
             tvGender.setText(arrGender[genderIndex]);
-
         } else {
             userInfo.setNickName(etNickname.getText().toString());
         }
@@ -189,6 +195,10 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
         switch (view.getId()) {
             case R.id.ll_portrait_user_data_fragment:
+                BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.SINGLE_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
+                config.needCamera(R.drawable.ic_boxing_camera_white) // 支持gif，相机，设置最大选图数
+                        .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
+                Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
                 break;
             case R.id.ll_nickname_user_data_fragment:
                 etNickname.selectAll();
@@ -212,7 +222,6 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
                 //添加右边箭头的动画
                 break;
-
             case R.id.toolbar_menu:
                 if (TextUtils.isEmpty(etNickname.getText().toString())) {
                     DialogHelper.warningSnackbar(rootView, "昵称不能为空");
@@ -242,6 +251,26 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
                 mPresenter.updatePassword(params);
                 break;
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
+        if (resultCode == RESULT_OK && requestCode == 100) {
+            ArrayList<BaseMedia> medias = Boxing.getResult(data);
+            if (medias.size() > 0) {
+                File file = new File(medias.get(0).getPath());
+                Glide.with(_mActivity)
+                        .load(file.getPath())
+                        .bitmapTransform(new CropCircleTransformation(_mActivity))
+                        .into(ivPortrait);
+
+                params.file = file;
+                mPresenter.changePortrait(params);
+            }
         }
     }
 }

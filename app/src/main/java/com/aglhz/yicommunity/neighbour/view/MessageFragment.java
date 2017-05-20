@@ -104,6 +104,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         if (savedInstanceState == null) {
             initData();
             initListener();
+            initPtrFrameLayout();
         }
     }
 
@@ -116,16 +117,12 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 //        for (int i = 0; i < 5; i++) {
 //            momentsList.addAll(momentsList);
 //        }
-        initPtrFrameLayout();
         //下拉刷新必须得在懒加载里设置，因为下拉刷新是一进来就刷新，启动start()。
         mLinearLayoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         adapter = new NeighbourRVAdapter();
-
         adapter.setEnableLoadMore(true);
-
         adapter.setOnLoadMoreListener(() -> {
-            ALog.e("加载更多………………………………");
             params.page++;
             requestNet();
         }, recyclerView);

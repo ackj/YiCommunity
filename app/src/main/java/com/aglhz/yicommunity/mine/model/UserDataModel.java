@@ -5,7 +5,6 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.mine.contract.FeedbackContract;
 import com.aglhz.yicommunity.mine.contract.UserDataContract;
 
 import io.reactivex.Observable;
@@ -33,23 +32,14 @@ public class UserDataModel extends BaseModel implements UserDataContract.Model {
 
     @Override
     public Observable<BaseBean> updatePortrait(Params params) {
-//        // 创建 RequestBody，用于封装构建RequestBody
-//        RequestBody requestFile =
-//                RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//
-//// MultipartBody.Part  和后端约定好Key，这里的partName是用image
-//        MultipartBody.Part body =
-//                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-//
-//// 添加描述
-//        String descriptionString = "hello, 这是文件描述";
-//        RequestBody description =
-//                RequestBody.create(
-//                        MediaType.parse("multipart/form-data"), descriptionString);
-//
-//        return HttpHelper.getService(ApiService.class).updatePortrait(params.token, params., params.val)
-//                .subscribeOn(Schedulers.io());
-        return null;
+        // 创建 RequestBody，用于封装构建RequestBody
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), params.file);
+        builder.addFormDataPart("file", params.file.getName(), requestBody);
+
+        return HttpHelper.getService(ApiService.class).updatePortrait(ApiService.updatePortrait,
+                params.token, builder.build())
+                .subscribeOn(Schedulers.io());
     }
 
     @Override

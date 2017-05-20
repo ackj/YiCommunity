@@ -86,6 +86,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     PtrFrameLayout ptrFrameLayout;
     @BindView(R.id.sv_steward_fragment)
     ScrollView svSteward;
+
     private ViewGroup rootView;
     private StewardRVAdapter myHouseAdapter;
     private StewardRVAdapter smartHomeAdapter;
@@ -123,22 +124,14 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         super.onViewCreated(view, savedInstanceState);
         rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar(toolbar);
-
         DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
-
             ALog.e("1111111111::" + state.toString());
-
             if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
                 // 启动CallOutgoingActivity
                 _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
-
                 ALog.e("1111111111::" + state.toString());
-
             }
-
         });
-
-
     }
 
     /**

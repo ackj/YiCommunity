@@ -3,13 +3,14 @@ package com.aglhz.yicommunity.mine.presenter;
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.mine.contract.FeedbackContract;
+import com.aglhz.yicommunity.common.luban.Luban;
 import com.aglhz.yicommunity.mine.contract.UserDataContract;
-import com.aglhz.yicommunity.mine.model.FeedbackModel;
 import com.aglhz.yicommunity.mine.model.UserDataModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -39,16 +40,33 @@ public class UserDataPresenter extends BasePresenter<UserDataContract.View, User
 
     @Override
     public void changePortrait(Params params) {
-//        mRxManager.add(mModel.changePortrait( params)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(baseBean -> {
-//                    if (baseBean.getOther().getCode() == 200) {
-//                        getView().start(baseBean.getOther().getMessage());
-//                    } else {
-//                        getView().error(baseBean.getOther().getMessage());
-//                    }
-//                }, this::error)
-//        );
+        compress(params);
+    }
+
+    public void compress(Params params) {
+        Luban.get(BaseApplication.mContext)
+                .load(params.file)
+                .putGear(Luban.THIRD_GEAR)
+                .asObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(file -> {
+                    params.file = file;
+                    updatePortait(params);
+                });
+    }
+
+    private void updatePortait(Params params) {
+        mRxManager.add(mModel.updatePortrait(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().start(baseBean.getOther().getMessage());
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error)
+        );
     }
 
     @Override

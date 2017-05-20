@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -51,7 +52,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@null"
-            android:gravity="center"
+            android:gravity="end"
             android:hint="输入车牌号"
             android:textColor="@color/accent_text"
             android:textColorHint="@color/default_text"
@@ -92,11 +93,12 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@null"
-            android:gravity="center"
+            android:gravity="end"
             android:hint="输入车牌号"
             android:textColor="@color/accent_text"
             android:textColorHint="@color/default_text"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            tools:ignore="DuplicateIds" />
     </RelativeLayout>
 
     <View
@@ -153,7 +155,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@null"
-            android:gravity="center"
+            android:gravity="end"
             android:hint="输入您的姓名"
             android:textColor="@color/accent_text"
             android:textColorHint="@color/default_text"
@@ -184,7 +186,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@null"
-            android:gravity="center"
+            android:gravity="end"
             android:hint="输入您的联系方式"
             android:textColor="@color/accent_text"
             android:textColorHint="@color/default_text"

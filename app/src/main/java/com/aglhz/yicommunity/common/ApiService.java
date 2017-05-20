@@ -28,12 +28,9 @@ import com.aglhz.yicommunity.bean.UserBean;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -117,9 +114,8 @@ public interface ApiService {
     @POST
     Observable<MessageCenterBean> requestMessages(@Url String url, @Query("token") String token);
 
-
     //社区Banner
-//    @POST("/sub_property_ysq/client/info/indexadvs")
+    //@POST("/sub_property_ysq/client/info/indexadvs")
     String requestBanners = BASE_PROPERTY + "/client/info/indexadvs";
 
     @POST
@@ -132,7 +128,7 @@ public interface ApiService {
     Observable<BaseBean> feedback(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("des") String des, @Query("contact") String contact);
 
     //更新用户信息
-//    @POST("/memberSYS-m/client/updateMemberFieldByToken.do")
+    //@POST("/memberSYS-m/client/updateMemberFieldByToken.do")
     String updateUserData = BASE_USER + "/client/updateMemberFieldByToken.do";
 
     @POST
@@ -152,9 +148,10 @@ public interface ApiService {
 
 
     //更新头像
-    @Multipart
-    @POST("/memberSYS-m/client/uploadHeader2.do")
-    Observable<BaseBean> updatePortrait(@Query("token") String token, @Part("file") RequestBody file);
+    String updatePortrait = BASE_USER+"/client/uploadHeader2.do";
+
+    @POST
+    Observable<BaseBean> updatePortrait(@Url String url,@Query("token") String token, @Body MultipartBody file);
 
 
     //停车记录
