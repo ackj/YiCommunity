@@ -1,10 +1,10 @@
-package com.aglhz.yicommunity.messagecenter;
+package com.aglhz.yicommunity.message;
 
 import android.os.Bundle;
 
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.messagecenter.view.MessageCenterFragment;
+import com.aglhz.yicommunity.message.view.MessageCenterFragment;
 
 /**
  * Author：leguang on 2017/5/20 0009 08:54

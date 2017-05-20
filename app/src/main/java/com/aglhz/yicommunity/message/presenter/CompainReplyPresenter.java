@@ -1,10 +1,10 @@
-package com.aglhz.yicommunity.messagecenter.presenter;
+package com.aglhz.yicommunity.message.presenter;
 
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.messagecenter.contract.CompainsReplyContract;
-import com.aglhz.yicommunity.messagecenter.model.CompainsReplyModel;
+import com.aglhz.yicommunity.message.contract.CompainsReplyContract;
+import com.aglhz.yicommunity.message.model.CompainsReplyModel;
 
 /**
  * Author: LiuJia on 2017/5/18 0018 18:04.

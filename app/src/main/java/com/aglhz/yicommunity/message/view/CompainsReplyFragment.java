@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.messagecenter.view;
+package com.aglhz.yicommunity.message.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +17,8 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.messagecenter.contract.CompainsReplyContract;
-import com.aglhz.yicommunity.messagecenter.presenter.CompainReplyPresenter;
+import com.aglhz.yicommunity.message.contract.CompainsReplyContract;
+import com.aglhz.yicommunity.message.presenter.CompainReplyPresenter;
 
 import java.util.ArrayList;
 import java.util.List;

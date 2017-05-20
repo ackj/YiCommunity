@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.messagecenter.view;
+package com.aglhz.yicommunity.message.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,8 +18,8 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.messagecenter.contract.RepairDetailContract;
-import com.aglhz.yicommunity.messagecenter.presenter.RepairDetailPresenter;
+import com.aglhz.yicommunity.message.contract.RepairDetailContract;
+import com.aglhz.yicommunity.message.presenter.RepairDetailPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

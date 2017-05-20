@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.messagecenter.view;
+package com.aglhz.yicommunity.message.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;

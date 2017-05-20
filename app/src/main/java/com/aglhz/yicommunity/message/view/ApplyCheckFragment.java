@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.messagecenter.view;
+package com.aglhz.yicommunity.message.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

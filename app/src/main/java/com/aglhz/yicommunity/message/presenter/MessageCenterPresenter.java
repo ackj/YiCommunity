@@ -1,11 +1,11 @@
-package com.aglhz.yicommunity.messagecenter.presenter;
+package com.aglhz.yicommunity.message.presenter;
 
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.messagecenter.contract.MessageCenterContract;
-import com.aglhz.yicommunity.messagecenter.model.MessageCenterModel;
+import com.aglhz.yicommunity.message.contract.MessageCenterContract;
+import com.aglhz.yicommunity.message.model.MessageCenterModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

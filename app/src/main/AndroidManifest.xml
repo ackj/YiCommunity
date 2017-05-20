@@ -216,7 +216,7 @@
                 android:resource="@xml/boxing_file_provider" />
         </provider>
 
-        <activity android:name=".messagecenter.MessageActivity"></activity>
+        <activity android:name=".message.MessageActivity"></activity>
     </application>
 
 </manifest>

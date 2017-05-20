@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.messagecenter.contract;
+package com.aglhz.yicommunity.message.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.RepairDetailBean;

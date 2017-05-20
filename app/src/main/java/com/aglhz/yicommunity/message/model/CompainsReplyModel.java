@@ -1,7 +1,7 @@
-package com.aglhz.yicommunity.messagecenter.model;
+package com.aglhz.yicommunity.message.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
-import com.aglhz.yicommunity.messagecenter.contract.CompainsReplyContract;
+import com.aglhz.yicommunity.message.contract.CompainsReplyContract;
 
 /**
  * Author: LiuJia on 2017/5/18 0018 18:03.

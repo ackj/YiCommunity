@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.messagecenter.view;
+package com.aglhz.yicommunity.message.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,8 +21,9 @@ import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.messagecenter.contract.MessageCenterContract;
-import com.aglhz.yicommunity.messagecenter.presenter.MessageCenterPresenter;
+import com.aglhz.yicommunity.message.contract.MessageCenterContract;
+import com.aglhz.yicommunity.message.presenter.MessageCenterPresenter;
+import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
 
 import java.util.List;
 
@@ -146,6 +147,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 //                        start(RepairDetailFragment.newInstance(bean.getSfid()));
                         break;
                     case PROPERTY_BILL://物业账单
+                        start(PropertyPayFragment.newInstance());
                         break;
                     case SMARTDOOR_PUSHREC://
                         start(CompainsReplyFragment.newInstance());
