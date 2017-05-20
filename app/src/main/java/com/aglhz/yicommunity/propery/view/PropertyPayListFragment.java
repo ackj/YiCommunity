@@ -1,13 +1,11 @@
 package com.aglhz.yicommunity.propery.view;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +24,12 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.event.EventCommunityChange;
+import com.aglhz.yicommunity.common.payment.ALiPayHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventPay;
 import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
 import com.aglhz.yicommunity.propery.presenter.PropertyPayPresenter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -64,7 +65,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     private Unbinder unbinder;
     private int payPosition;
     private LinearLayoutManager mLinearLayoutManager;
-    private PropertyPayRVAdapter adapter;
+    private PropertyPayRVAdapter mAdapter;
     private Params params = Params.getInstance();
     private String[] arrPayType = {"支付宝支付", "微信支付"};
 
@@ -111,9 +112,12 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     private void initData() {
         mLinearLayoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(mLinearLayoutManager);
-        adapter = new PropertyPayRVAdapter();
-        recyclerView.setAdapter(adapter);
+        mAdapter = new PropertyPayRVAdapter();
+        recyclerView.setAdapter(mAdapter);
         ll.setVisibility(payPosition == 0 ? View.VISIBLE : View.GONE);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+//            mAdapter.getData().get(position)
+        });
     }
 
     private void initPtrFrameLayout() {
@@ -154,10 +158,13 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
 
     @Override
     public void start(Object response) {
+        PropertyPayBean.DataBean data = ((PropertyPayBean) response).getData();
         ptrFrameLayout.refreshComplete();
-        adapter.setNewData(((PropertyPayBean) response).getData().getObpptBills());
+        mAdapter.setNewData(data.getObpptBills());
+        tvSum.setText("合计：" + data.getTotalAmt() + "元");
 
-        List<PropertyPayBean.DataBean.ObpptBillsBean> beans = adapter.getData();
+        //以下是为生成参数
+        List<PropertyPayBean.DataBean.ObpptBillsBean> beans = mAdapter.getData();
         StringBuilder sb = new StringBuilder();
         for (PropertyPayBean.DataBean.ObpptBillsBean item : beans) {
             sb.append(item.getFid() + ",");
@@ -183,21 +190,32 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
                             params.payType = Constants.ALIPAY;
                             break;
                         case 1:
-                            params.payType = Constants.ALIPAY;
+                            params.payType = Constants.WXPAY;
                             break;
                     }
                     mPresenter.requestOrder(params);
-                }).setNegativeButton("取消", null).show();
+                })
+                .setNegativeButton("取消", null)
+                .show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunityChange event) {
-        ALog.e(TAG, "onEvent:::" + event.bean.getName());
+    public void onEvent(EventCommunity event) {
+        ptrFrameLayout.autoRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventPay event) {
         ptrFrameLayout.autoRefresh();
     }
 
     @Override
     public void responsePropertyPayDetail(PropertyPayBean bean) {
 
+    }
+
+    @Override
+    public void responseALiPay(String order) {
+        new ALiPayHelper().pay(_mActivity, order);
     }
 }

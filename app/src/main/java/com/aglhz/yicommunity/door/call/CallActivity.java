@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.door.call;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -17,11 +18,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.aglhz.abase.common.RxManager;
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
+import com.aglhz.abase.network.http.HttpHelper;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.DoorManager;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.sipphone.sdk.BluetoothManager;
 import com.sipphone.sdk.SipCoreManager;
+import com.sipphone.sdk.SipCorePreferences;
 import com.sipphone.sdk.SipCoreUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -32,6 +44,9 @@ import org.linphone.core.LinphoneCore;
 import org.linphone.core.LinphoneCoreException;
 import org.linphone.core.LinphoneCoreListenerBase;
 import org.linphone.mediastream.video.capture.hwconf.AndroidCameraConfiguration;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class CallActivity extends BaseActivity implements View.OnClickListener {
     public static final String TAG = "CallActivity";
@@ -45,6 +60,8 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
     private boolean isVideoCallPaused = false;
     private int cameraNumber;
     private LinphoneCoreListenerBase mListener;
+    private LinphoneCall mCall;
+    private RxManager rxManager;
 
 
     @Override
@@ -75,6 +92,19 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
                                               String authenticationToken) {
             }
         };
+
+        DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
+
+            ALog.e("1111111111::" + state.toString());
+
+            if (state == State.IncomingReceived) {
+                mCall = call;
+            }
+
+
+        });
+
+
         mBottomView = findViewById(R.id.menu);
 
         micro = (ImageView) findViewById(R.id.micro);
@@ -84,6 +114,8 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
         findViewById(R.id.switchCamera).setOnClickListener(this);
         findViewById(R.id.accept_call).setOnClickListener(this);
         findViewById(R.id.video).setOnClickListener(this);
+        findViewById(R.id.iv_open_door).setOnClickListener(this);
+
 
         micro.setOnClickListener(this);
 
@@ -151,16 +183,44 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
             case R.id.micro:
                 toggleMicro();
                 break;
-            case R.id.unlock:
-                SipCoreManager.getLc().sendDtmf('#');
+            case R.id.iv_open_door:
+
+                openDoor();
+
+
                 break;
         }
+    }
+
+    private void openDoor() {
+        rxManager = new RxManager();
+        rxManager.add(HttpHelper.getService(ApiService.class).requestOpenDoor(ApiService.requestOpenDoor, UserHelper.token, UserHelper.dir)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        ToastUtils.showToast(CallActivity.this, "开门成功，欢迎回家，我的主人！");
+
+                    } else {
+                        ToastUtils.showToast(CallActivity.this, baseBean.getOther().getMessage());
+                    }
+                }, throwable -> {
+                    ToastUtils.showToast(CallActivity.this, "网络异常！");
+
+                })
+        );
+
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         hangUp();
+
+        if (rxManager != null) {
+            rxManager.clear();
+        }
     }
 
     public void displayVideoCall(boolean display) {
@@ -247,4 +307,41 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
         }
         return false;
     }
+
+    // 接听
+    private void answer() {
+        Fragment callFragment;
+
+        if (mCall == null) {
+            finish();
+            return;
+
+        }
+
+        LinphoneCallParams params = SipCoreManager.getLc().createCallParams(mCall);
+
+        if (!SipCoreManager.getInstance().acceptCallWithParams(mCall, params)) {
+            // the above method takes care of Samsung Galaxy S
+            Toast.makeText(this, "接听电话时发生错误", Toast.LENGTH_LONG).show();
+        } else {
+            // 根据远端是否提供视频参数信息，选择启动视频通话或音频通话
+            final LinphoneCallParams remoteParams = mCall.getRemoteParams();
+            if (remoteParams != null && remoteParams.getVideoEnabled() &&
+                    SipCorePreferences.instance().shouldAutomaticallyAcceptVideoRequests()) {
+
+                callFragment = new CallVideoFragment();
+                videoCallFragment = (CallVideoFragment) callFragment;
+
+            } else {
+                // 启动音频通话界面
+                callFragment = new CallAudioFragment();
+                audioCallFragment = (CallAudioFragment) callFragment;
+            }
+            callFragment.setArguments(getIntent().getExtras());
+            getFragmentManager().beginTransaction().add(R.id.fragmentContainer, callFragment).commitAllowingStateLoss();
+
+        }
+    }
+
+
 }

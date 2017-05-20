@@ -156,29 +156,29 @@ public class BaseApplication extends MultiDexApplication implements Application.
         });
 
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
-            @Override
-            public void dealWithCustomMessage(final Context context, final UMessage msg) {
-                ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
-
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        // TODO Auto-generated method stub
-                        // 对自定义消息的处理方式，点击或者忽略
-                        boolean isClickOrDismissed = true;
-                        if (isClickOrDismissed) {
-//统计自定义消息的打开
-                            UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
-                        } else {
-//统计自定义消息的忽略
-                            UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
-                        }
-                        Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
-
-                    }
-                });
-            }
+//            @Override
+//            public void dealWithCustomMessage(final Context context, final UMessage msg) {
+//                ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
+//
+//                new Handler().post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        // TODO Auto-generated method stub
+//                        // 对自定义消息的处理方式，点击或者忽略
+//                        boolean isClickOrDismissed = true;
+//                        if (isClickOrDismissed) {
+////统计自定义消息的打开
+//                            UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
+//                        } else {
+////统计自定义消息的忽略
+//                            UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
+//                        }
+//                        Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+//
+//                    }
+//                });
+//            }
 
             //自定义通知样式
             @Override

@@ -62,7 +62,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <!-- 闪光灯相关权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <!--打电话权限-->
+    <!-- 打电话权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 添加快捷方式 -->
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
@@ -70,7 +70,6 @@
     <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
     <!-- 查询快捷方式 -->
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -87,11 +86,9 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="58b917eaf5ade45a1f000489" />
-
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="9762ad27d9de2f4b06d393d156fd6968" />
-
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Umeng" />
@@ -102,42 +99,36 @@
             android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".main.MainActivity"
-            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".publish.CommentActivity"
             android:launchMode="singleTop"
             android:theme="@style/Transparent" />
-
         <activity android:name=".test.TestActivity" />
-
         <activity
             android:name=".login.LoginActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Transparent">
-
             <intent-filter>
                 <action android:name="LoginActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".picker.PickerActivity"
             android:launchMode="singleTop"
             android:theme="@style/Transparent" />
-
         <activity
             android:name=".web.WebActivity"
             android:launchMode="singleTop"
@@ -160,23 +151,18 @@
         <activity
             android:name=".publish.PropertyActivity"
             android:theme="@style/Transparent" />
-
         <activity
             android:name=".door.DoorActivity"
             android:theme="@style/Transparent" />
-
         <activity
             android:name=".about.AboutActivity"
             android:theme="@style/Transparent" />
-
         <activity
             android:name=".mypublish.MyPublishActivity"
             android:theme="@style/Transparent" />
-
         <activity
             android:name=".preview.PreviewActivity"
             android:theme="@style/Transparent" />
-
         <activity
             android:name=".mine.QuickOpenActivity"
             android:excludeFromRecents="true"
@@ -193,7 +179,6 @@
             android:value="da7f5447eccd1609e8dcce4cd0919ad8" />
 
         <service android:name="com.amap.api.location.APSService" />
-
         <service
             android:name="com.sipphone.sdk.SipService"
             android:label="Sip Service"
@@ -207,7 +192,6 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".door.call.CallIncomingActivity"
             android:launchMode="singleTop"
@@ -215,10 +199,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-
         </activity>
 
-        <!--微信支付回调页面-->
+        <!-- 微信支付回调页面 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:theme="@style/Transparent" />
@@ -233,6 +216,7 @@
                 android:resource="@xml/boxing_file_provider" />
         </provider>
 
+        <activity android:name=".messagecenter.MessageActivity"></activity>
     </application>
 
 </manifest>

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
-import com.aglhz.yicommunity.payment.ALiPayUtilsV2;
+import com.aglhz.yicommunity.common.payment.ALiPayHelper;
 
 /**
  * Created by YandZD on 2017/1/22.
@@ -24,6 +24,6 @@ public class JavaScriptObject {
 
     @JavascriptInterface
     public void appAliPay(String str) {
-        new ALiPayUtilsV2(mActivity).alipay2(str);
+        new ALiPayHelper().pay(mActivity, str);
     }
 }

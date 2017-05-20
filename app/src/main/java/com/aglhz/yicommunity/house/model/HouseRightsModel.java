@@ -48,7 +48,7 @@ public class HouseRightsModel extends BaseModel implements HouseRightsContract.M
 
     @Override
     public Observable<BaseBean> requestDelete(Params params) {
-        return HttpHelper.getService(ApiService.class).requestDelete(params.url
+        return HttpHelper.getService(ApiService.class).requestDelete(ApiService.requestRights
                 , params.token
                 , params.mfid
                 , params.fid)

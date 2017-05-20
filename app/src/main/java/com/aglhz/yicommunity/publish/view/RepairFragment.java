@@ -27,7 +27,7 @@ import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.event.EventCommunityChange;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.RepairPresenter;
@@ -186,7 +186,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunityChange event) {
+    public void onEvent(EventCommunity event) {
         params.cmnt_c = event.bean.getCode();
         tvLocation.setText(event.bean.getName());
         if (isPrivate) {

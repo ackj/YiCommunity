@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/tv_date_item_property_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/base_line"
+        android:padding="5dp"
+        android:text="2017-4" />
+
+    <TextView
+        android:id="@+id/tv_state_item_property_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/tv_date_item_property_pay"
+        android:background="@color/base_line"
+        android:gravity="right"
+        android:padding="5dp"
+        android:text="未缴费"
+        android:textColor="@color/base_color" />
 
     <ImageView
         android:id="@+id/iv_hourse_logo_item_property_pay"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:layout_below="@+id/tv_date_item_property_pay"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_house_blue_200px" />
 
     <TextView
         android:id="@+id/tv_price_item_property_pay"
@@ -29,15 +51,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_price_item_property_pay"
-        android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/iv_hourse_logo_item_property_pay"
         android:text="1单元一号" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/tv_house_name_item_property_pay"
-        android:layout_marginTop="5dp"
-        android:background="@color/base_grey" />
 </RelativeLayout>

@@ -30,6 +30,7 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
+import com.aglhz.yicommunity.messagecenter.MessageActivity;
 import com.aglhz.yicommunity.messagecenter.view.MessageCenterFragment;
 import com.aglhz.yicommunity.mine.contract.MineContract;
 import com.aglhz.yicommunity.mine.presenter.MinePresenter;
@@ -147,7 +148,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 break;
             case R.id.ll_message_center:
                 if (isLogined()) {
-                    ((MainFragment) getParentFragment()).start(MessageCenterFragment.newInstance(), SupportFragment.STANDARD);
+                    _mActivity.startActivity(new Intent(_mActivity, MessageActivity.class));
                 }
 
                 break;

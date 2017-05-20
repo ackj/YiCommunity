@@ -7,11 +7,11 @@ import com.aglhz.yicommunity.bean.CommunitySelectBean;
  * Email: liujia95me@126.com
  */
 
-public class EventCommunityChange {
+public class EventCommunity {
 
     public CommunitySelectBean.DataBean.CommunitiesBean bean;
 
-    public EventCommunityChange(CommunitySelectBean.DataBean.CommunitiesBean bean) {
+    public EventCommunity(CommunitySelectBean.DataBean.CommunitiesBean bean) {
         this.bean = bean;
     }
 

@@ -27,7 +27,7 @@ import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.event.EventCommunityChange;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.picker.contract.CityPickerContract;
 import com.aglhz.yicommunity.picker.presenter.CityPickerPresenter;
 
@@ -184,7 +184,7 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
         adapter.setOnItemChildClickListener((adapter1, view, position) -> {
             CommunitySelectBean.DataBean.CommunitiesBean communitiesBean = mDatas.get(position);
             UserHelper.setCommunity(communitiesBean.getName(), communitiesBean.getCode());
-            EventBus.getDefault().post(new EventCommunityChange(communitiesBean));
+            EventBus.getDefault().post(new EventCommunity(communitiesBean));
             _mActivity.finish();
         });
     }

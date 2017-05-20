@@ -1,6 +1,4 @@
-package com.aglhz.yicommunity.payment;
-
-import android.util.Log;
+package com.aglhz.yicommunity.common.payment;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
@@ -15,13 +13,13 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.util.List;
 
-import mlxy.utils.MD5;
-
 /**
  * Created by YandZD on 2017/3/2.
  */
 
 public class WxPayHelper {
+    private static final String TAG = WxPayHelper.class.getSimpleName();
+
     public static String appId;
 
     public static void WxPay(String string) {
@@ -30,28 +28,24 @@ public class WxPayHelper {
         try {
             json = new JSONObject(string);
             JSONObject payData = json.getJSONObject("data");
-            Log.e("json", json.toString());
-
-            if (json == null) {
-                return;
-            }
+            ALog.e("json", json.toString());
 
             PayReq req = new PayReq();
             //{"data":{"appId":"wxe5dbac804d7bb267","timeStamp":"1488436959","noncestr":"cfb9296583e2461caeda09d0d3621f9a","sign":"BC569731EE8560316A719BC1F8EBCF0E","partnerid":"1335876101","prepayid":"wx20170302144239e711b2897c0269541507","package_":"Sign=WXPay","wxOrderSn":"20170302144238868719"},"other":{"code":200,"message":"","time":"","currpage":0,"next":"","forward":"","refresh":"","first":""}}
-            req.appId = payData.getString("appid");
-            Log.e("appId", req.appId);
-            req.partnerId = payData.getString("partnerid");
-            Log.e("partnerId", req.partnerId);
-            req.prepayId = payData.getString("prepayid");
-            Log.e("prepayId", req.prepayId);
+            req.appId = payData.optString("appid");
+            ALog.e("appId", req.appId);
+            req.partnerId = payData.optString("partnerid");
+            ALog.e("partnerId", req.partnerId);
+            req.prepayId = payData.optString("prepayid");
+            ALog.e("prepayId", req.prepayId);
             req.packageValue = "Sign=WXPay";
-            Log.e("packageValue", req.packageValue);
-            req.nonceStr = payData.getString("noncestr");
-            Log.e("nonceStr", req.nonceStr);
-            req.timeStamp = payData.getString("timestamp");
-            Log.e("timeStamp", req.timeStamp);
-            req.sign = payData.getString("sign");
-            Log.e("sign", req.sign);
+            ALog.e("packageValue", req.packageValue);
+            req.nonceStr = payData.optString("noncestr");
+            ALog.e("nonceStr", req.nonceStr);
+            req.timeStamp = payData.optString("timestamp");
+            ALog.e("timeStamp", req.timeStamp);
+            req.sign = payData.optString("sign");
+            ALog.e("sign", req.sign);
 
             appId = req.appId;
             IWXAPI api = WXAPIFactory.createWXAPI(BaseApplication.mContext, req.appId);

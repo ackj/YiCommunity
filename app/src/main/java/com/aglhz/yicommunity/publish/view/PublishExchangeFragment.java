@@ -23,7 +23,7 @@ import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.event.EventCommunityChange;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishExchangePresenter;
@@ -215,7 +215,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunityChange event) {
+    public void onEvent(EventCommunity event) {
         ALog.e(TAG, "onEvent:::" + event.bean.getName());
         tvCommunityAddress.setText(event.bean.getName());
         params.cmnt_c = event.bean.getCode();

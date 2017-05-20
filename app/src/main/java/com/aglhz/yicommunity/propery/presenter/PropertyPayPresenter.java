@@ -5,7 +5,8 @@ import android.support.annotation.NonNull;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.payment.WxPayHelper;
+import com.aglhz.yicommunity.common.payment.ALiPayHelper;
+import com.aglhz.yicommunity.common.payment.WxPayHelper;
 import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
 import com.aglhz.yicommunity.propery.model.PropertyPayModel;
 
@@ -81,7 +82,6 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
         mRxManager.add(mModel.requestOrder(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(responseBody -> {
-                    ALog.e("bean::" + responseBody);
 
                     JSONObject jsonObject;
                     try {
@@ -92,11 +92,13 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
                         if ("200".equals(code)) {
                             if (params.payType == 1) {
                                 //支付宝
-                                ALog.e("支付宝支付宝支付宝支付宝支付宝支付宝");
+
+                                JSONObject jsonData = jsonObject.optJSONObject("data");
+                                getView().responseALiPay(jsonData.optString("body"));
+
                             } else if (params.payType == 2) {
-                                ALog.e("微信微信微信微信微信微信");
                                 //微信
-                                WxPayHelper.WxPay(jsonObject.optJSONObject("data").toString());
+                                WxPayHelper.WxPay(jsonObject.toString());
                             }
                         } else {
                             getView().error(jsonOther.optString("message"));

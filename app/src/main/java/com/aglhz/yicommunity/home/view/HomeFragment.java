@@ -21,7 +21,7 @@ import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.event.EventCommunityChange;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.home.contract.HomeContract;
 import com.aglhz.yicommunity.home.presenter.HomePresenter;
 import com.aglhz.yicommunity.home.view.header.RentalsSunHeaderView;
@@ -274,8 +274,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunityChange event) {
+    public void onEvent(EventCommunity event) {
         ALog.e(TAG, "onEvent:::" + event.bean.getName());
+        ALog.e(TAG, "onEvent:::" + event.bean.getCode());
         adapter.getData().get(0).community = UserHelper.city + UserHelper.communityName;
         ptrFrameLayout.autoRefresh();
     }

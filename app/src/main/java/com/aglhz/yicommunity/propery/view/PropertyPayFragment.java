@@ -2,7 +2,6 @@ package com.aglhz.yicommunity.propery.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -15,13 +14,9 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.PropertyPayBean;
-import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.event.EventCommunityChange;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.picker.PickerActivity;
-import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
-import com.aglhz.yicommunity.propery.presenter.PropertyPayPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,8 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static com.aglhz.yicommunity.R.id.tablayout;
 
 /**
  * Author: LiuJia on 2017/5/7 0007 20:16.
@@ -99,7 +92,7 @@ public class PropertyPayFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunityChange event) {
+    public void onEvent(EventCommunity event) {
         ALog.e(TAG, "onEvent:::" + event.bean.getName());
         tvCommunity.setText(UserHelper.city + "　" + UserHelper.communityName);
     }

@@ -192,7 +192,6 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         footerView.setOnClickListener(v -> {
             ALog.e("prePosition::" + prePosition);
             params.mfid = memberAdapter.getData().get(prePosition).getMember().getFid();
-
             mPresenter.requestDelete(params);
         });
 
@@ -224,7 +223,6 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
     public void responseRights(HouseRightsBean mHouseRights) {
         ptrFrameLayout.refreshComplete();
         this.mHouseRights = mHouseRights;
-        ptrFrameLayout.refreshComplete();
         memberAdapter.setNewData(mHouseRights.getData());
         permissionAdapter.setNewData(mHouseRights.getData().get(prePosition).getAuthority());
     }

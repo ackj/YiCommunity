@@ -32,7 +32,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.door.DoorActivity;
 import com.aglhz.yicommunity.door.call.CallActivity;
-import com.aglhz.yicommunity.event.EventCommunityChange;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.house.HouseActivity;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.park.ParkActivity;
@@ -506,7 +506,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunityChange event) {
+    public void onEvent(EventCommunity event) {
         ALog.d(TAG, "onEvent:::" + event.bean.getName());
         svSteward.fullScroll(ScrollView.FOCUS_UP);
         ptrFrameLayout.autoRefresh();
