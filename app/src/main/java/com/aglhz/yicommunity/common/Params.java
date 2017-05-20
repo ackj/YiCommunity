@@ -19,7 +19,6 @@ public class Params {
     public String contact = "";
     public String user = "";
     public String field = "";
-    public String file = "";
     public String val = "";
     public String pwd = "";
     public String name = "";
@@ -66,6 +65,7 @@ public class Params {
     public int status;
     public int page = 1;
     public int carpoolType;
+    public File file;
     public List<File> files;
     public int payType;  //1.支付宝;2.微信
 

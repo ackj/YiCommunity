@@ -149,7 +149,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 if (isLogined()) {
                     ((MainFragment) getParentFragment()).start(MessageCenterFragment.newInstance(), SupportFragment.STANDARD);
                 }
-
                 break;
             case R.id.ll_my_indent:
                 if (isLogined()) {
@@ -208,7 +207,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     public void error(String errorMessage) {
         DialogHelper.warningSnackbar(rootView, errorMessage);
     }
-
 
     @Override
     public void onDestroy() {

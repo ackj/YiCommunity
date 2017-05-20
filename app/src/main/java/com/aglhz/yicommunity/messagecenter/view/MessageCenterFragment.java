@@ -143,7 +143,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                     case FEEDBACK_REPLY://信息反馈回复
                         break;
                     case REPAIR_REPLY://物业报修回复
-                        start(RepairDetailFragment.newInstance(bean.getSfid()));
+//                        start(RepairDetailFragment.newInstance(bean.getSfid()));
                         break;
                     case PROPERTY_BILL://物业账单
                         break;

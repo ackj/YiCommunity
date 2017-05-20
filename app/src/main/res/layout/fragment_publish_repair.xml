@@ -108,18 +108,11 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    style="@style/EtBackgroundNullStyle"
                     android:id="@+id/et_name_fragment_repair"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
-                    android:background="@null"
-                    android:gravity="center"
-                    android:hint="输入联系人姓名"
-                    android:lines="1"
-                    android:textColor="@color/accent_text"
-                    android:textColorHint="@color/default_text"
-                    android:textSize="15sp" />
+                    android:hint="输入联系人姓名" />
             </RelativeLayout>
 
             <View
@@ -142,18 +135,12 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    style="@style/EtBackgroundNullStyle"
                     android:id="@+id/et_phone_fragment_repair"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:inputType="number"
                     android:layout_marginRight="15dp"
-                    android:background="@null"
-                    android:gravity="center"
-                    android:hint="输入联系方式"
-                    android:lines="1"
-                    android:textColor="@color/accent_text"
-                    android:textColorHint="@color/default_text"
-                    android:textSize="15sp" />
+                    android:hint="输入联系方式" />
             </RelativeLayout>
 
             <View
