@@ -7,8 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/status">
+        android:layout_height="match_parent">
         <!-- 定义一个Fragment容器，用于装载不同的Fragment组件 ，
             如VideoFragment或AudioFragment-->
         <LinearLayout
@@ -16,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginTop="100dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
 
         </LinearLayout>

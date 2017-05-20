@@ -216,7 +216,9 @@
                 android:resource="@xml/boxing_file_provider" />
         </provider>
 
-        <activity android:name=".message.MessageActivity"></activity>
+        <activity
+            android:name=".message.MessageActivity"
+            android:theme="@style/Transparent" />
     </application>
 
 </manifest>

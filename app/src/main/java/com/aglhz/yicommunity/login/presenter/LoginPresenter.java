@@ -10,20 +10,9 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.login.contract.LoginContract;
 import com.aglhz.yicommunity.login.model.LoginModel;
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.sipphone.sdk.access.WebReponse;
 
-import org.json.JSONException;
-
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
-import static com.aglhz.yicommunity.common.ApiService.requestSip;
-import static com.aglhz.yicommunity.common.UserHelper.setUserInfo;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -31,6 +20,7 @@ import static com.aglhz.yicommunity.common.UserHelper.setUserInfo;
  */
 
 public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContract.Model> implements LoginContract.Presenter {
+    private static final String TAG = LoginPresenter.class.getSimpleName();
 
     public LoginPresenter(LoginContract.View mView) {
         super(mView);
@@ -48,8 +38,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userBean -> {
                     if (userBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        //注册友盟
+                        mModel.requestUMeng(((Params) request).user);
+                        //保存用户信息
                         UserHelper.setUserInfo(userBean.getData().getMemberInfo());
-
+                        //注册Sip到全视通服务器
                         requestSip();
                     } else {
                         getView().error(userBean.getOther().getMessage());
@@ -83,6 +76,4 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                     }
                 }, throwable -> getView().start(null));
     }
-
-
 }

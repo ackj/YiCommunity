@@ -5,7 +5,6 @@ import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
@@ -16,7 +15,6 @@ import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.bilibili.boxing.BoxingMediaLoader;
 import com.bilibili.boxing.loader.IBoxingMediaLoader;
-import com.squareup.leakcanary.RefWatcher;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
@@ -36,7 +34,7 @@ import io.reactivex.schedulers.Schedulers;
 public class BaseApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
     private static final String TAG = BaseApplication.class.getSimpleName();
     public static Context mContext;
-    private RefWatcher mRefWatcher;
+//    private RefWatcher mRefWatcher;
 
     @Override
     public void onCreate() {
@@ -75,7 +73,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
 //        BlockCanary.install(this, new AppContext()).start();
 
         //  Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
-        ALog.init(true, "ysq");
+        ALog.init(false, "ysq");
 
     }
 
