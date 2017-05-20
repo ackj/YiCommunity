@@ -3,7 +3,7 @@ apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    signingConfigs {
+    signingConfigs { 
         debug {
             keyAlias 'agl'
             keyPassword 'aglandroid'
