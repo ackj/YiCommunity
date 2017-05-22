@@ -68,7 +68,10 @@ public class Params {
     public File file;
     public List<File> files;
     public int payType;  //1.支付宝;2.微信
-
+    public String id;
+    public int appType;//android 2就好
+    public String secondCategoryId;//二级菜单的id
+    public String keywords;
 
     private Params() {
     }
@@ -98,7 +101,6 @@ public class Params {
                 ", contact='" + contact + '\'' +
                 ", user='" + user + '\'' +
                 ", field='" + field + '\'' +
-                ", file='" + file + '\'' +
                 ", val='" + val + '\'' +
                 ", pwd='" + pwd + '\'' +
                 ", name='" + name + '\'' +
@@ -132,7 +134,9 @@ public class Params {
                 ", endPlace='" + endPlace + '\'' +
                 ", outTime='" + outTime + '\'' +
                 ", currentPositionLat='" + currentPositionLat + '\'' +
-                ", currentPostionLng='" + currentPositionLng + '\'' +
+                ", billFids='" + billFids + '\'' +
+                ", currentPositionLng='" + currentPositionLng + '\'' +
+                ", positionAddress='" + positionAddress + '\'' +
                 ", isProprietor=" + isProprietor +
                 ", single=" + single +
                 ", timeable=" + timeable +
@@ -143,7 +147,11 @@ public class Params {
                 ", status=" + status +
                 ", page=" + page +
                 ", carpoolType=" + carpoolType +
+                ", file=" + file +
                 ", files=" + files +
+                ", payType=" + payType +
+                ", id='" + id + '\'' +
+                ", appType=" + appType +
                 '}';
     }
 }

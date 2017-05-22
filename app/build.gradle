@@ -7,13 +7,13 @@ android {
         debug {
             keyAlias 'agl'
             keyPassword 'aglandroid'
-            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
+            storeFile file('F:/gaocheng/agl.keystore')
             storePassword 'aglandroid'
         }
         release {
             keyAlias 'agl'
             keyPassword 'aglandroid'
-            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
+            storeFile file('F:/gaocheng/agl.keystore')
             storePassword 'aglandroid'
         }
     }
@@ -58,9 +58,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     testCompile 'junit:junit:4.12'
-
     //谷歌官方依赖
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
@@ -71,43 +69,32 @@ dependencies {
     //黄油刀系列
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-
     //自定义的snackbar
     compile 'com.trycatch.android:mysnackbar:1.2.2'
-
     //自定义二维码
     compile 'com.google.zxing:core:3.2.1'
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
     compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
     //底部导航栏
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
-
     //地址选择器
     compile 'com.github.chihane:JDAddressSelector:1.1.4'
-
     //dialog
     compile 'com.orhanobut:dialogplus:1.11@aar'
-
     //图片选择器
     compile 'com.bilibili:boxing-impl:0.7.0'
-
     //switchbutton
     compile 'com.kyleduo.switchbutton:library:1.4.5'
-
     //键盘冲突
-//    compile 'cn.dreamtobe.kpswitch:library:1.6.0'
-
+    //    compile 'cn.dreamtobe.kpswitch:library:1.6.0'
     //时间选择器
     compile 'com.contrarywind:Android-PickerView:3.2.4'
-
     //友盟推送
     compile project(':PushSDK')
     //视频播放
     compile 'fm.jiecao:jiecaovideoplayer:5.5.4'
-
     //Banner
     compile 'com.youth.banner:banner:1.4.9'
-
     //监控内存泄露
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     //监控卡顿

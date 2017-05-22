@@ -42,6 +42,7 @@ import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.PropertyActivity;
 import com.aglhz.yicommunity.publish.view.ComplainFragment;
 import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
+import com.aglhz.yicommunity.smarthome.view.GoodsCategoryFragment;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.presenter.StewardPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
@@ -349,7 +350,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
 
 
     private void go2DeviceStore() {
-
+        _mActivity.start(GoodsCategoryFragment.newInstance());
     }
 
     private void go2SmartDevice() {

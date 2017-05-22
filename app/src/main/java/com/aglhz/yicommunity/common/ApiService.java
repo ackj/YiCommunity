@@ -8,7 +8,9 @@ import com.aglhz.yicommunity.bean.CommentListBean;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.bean.ContactBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
+import com.aglhz.yicommunity.bean.FirstLevelBean;
 import com.aglhz.yicommunity.bean.FloorBean;
+import com.aglhz.yicommunity.bean.GoodsBean;
 import com.aglhz.yicommunity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.bean.MyHousesBean;
@@ -22,6 +24,7 @@ import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.SipBean;
+import com.aglhz.yicommunity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
@@ -578,4 +581,22 @@ public interface ApiService {
                                       @Query("alias") String alias,
                                       @Query("aliasType") String aliasType);
 
+    //************************* 智能商城模块 **************************
+    //一级列表同时是判断是否是跳转一级列表还是二级列表的入口
+    String requestFirstLevel = "http://www.aglhz.com/mall/member/goodscategory/firstLevelList.do";
+
+    @POST
+    Observable<FirstLevelBean> requestFirstLevel(@Url String url,@Query("keywords")String keywords);
+
+    //二级列表
+    String requestSubCategoryLevel = "http://www.aglhz.com/mall/member/goodscategory/subCategoryLevelList.do";
+
+    @POST
+    Observable<SubCategoryBean> requestSubCategoryLevel(@Url String url, @Query("token") String token, @Query("appType") int appType, @Query("id") String id);
+
+    //三级列表
+    String requestGoodsList = "http://www.aglhz.com/mall/member/goodscategory/findGoodsListByCategoryId.do";
+
+    @POST
+    Observable<GoodsBean> requestGoodsList(@Url String url, @Query("token") String token, @Query("appType") int appType, @Query("secondCategoryId") String id);
 }
