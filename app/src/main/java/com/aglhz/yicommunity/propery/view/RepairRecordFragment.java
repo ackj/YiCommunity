@@ -18,11 +18,19 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.propery.contract.RepairApplyContract;
 import com.aglhz.yicommunity.propery.presenter.RepairApplyPresenter;
 import com.aglhz.yicommunity.publish.view.RepairFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +49,6 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  */
 public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> implements RepairApplyContract.View {
     private final String TAG = RepairRecordFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -51,8 +58,9 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
     private Unbinder unbinder;
-    private List<RepairApplyBean.DataBean.RepairApplysBean> datas;
     private RepairRecordRVAdapter adapter;
+    private Params params = Params.getInstance();
+    public static final int REQUEST_CODE = 100;
 
     public static RepairRecordFragment newInstance() {
         return new RepairRecordFragment();
@@ -69,6 +77,7 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -78,10 +87,10 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
         initToolbar();
         initData();
         initListener();
-        initPtrFrameLayout(ptrFrameLayout);
+        initPtrFrameLayout();
     }
 
-    private void initPtrFrameLayout(final PtrFrameLayout ptrFrameLayout) {
+    private void initPtrFrameLayout() {
         final MaterialHeader header = new MaterialHeader(getContext());
         int[] colors = getResources().getIntArray(R.array.google_colors);
         header.setColorSchemeColors(colors);
@@ -90,7 +99,6 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.autoRefresh(true);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
 
         ptrFrameLayout.setPtrHandler(new PtrHandler() {
@@ -103,8 +111,11 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-//                mPresenter.start();
-                mPresenter.requestRepairApplyList();
+
+                params.page = 1;
+                params.pageSize = Constants.PAGE_SIZE;
+                params.cmnt_c = UserHelper.communityCode;
+                mPresenter.requestRepairApplyList(params);
             }
         });
     }
@@ -114,34 +125,30 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
         toolbarTitle.setText("物业报修");
         toolbar.inflateMenu(R.menu.menu_repair_record);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     public void initData() {
-        mPresenter.requestRepairApplyList();
         recyclerview.setLayoutManager(new LinearLayoutManager(_mActivity));
+        adapter = new RepairRecordRVAdapter();
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(() -> {
+            ALog.e("加载更多………………………………");
+            params.page++;
+            mPresenter.requestRepairApplyList(params);
 
-        datas = new ArrayList<>();
-        adapter = new RepairRecordRVAdapter(datas);
+        }, recyclerview);
         recyclerview.setAdapter(adapter);
     }
 
     private void initListener() {
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.btn_public_repairs) {
-                    startForResult(RepairFragment.newInstance(false),REQUEST_CODE);
-                } else if (item.getItemId() == R.id.btn_private_repairs) {
-                    startForResult(RepairFragment.newInstance(true),REQUEST_CODE);
-                }
-                return true;
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.btn_public_repairs) {
+                startForResult(RepairFragment.newInstance(false), REQUEST_CODE);
+            } else if (item.getItemId() == R.id.btn_private_repairs) {
+                startForResult(RepairFragment.newInstance(true), REQUEST_CODE);
             }
+            return true;
         });
     }
 
@@ -149,6 +156,7 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -159,24 +167,45 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        if (params.page == 1) {
+            //为后面的pageState做准备
+        } else if (params.page > 1) {
+            adapter.loadMoreFail();
+            params.page--;
+        }
+
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
-    public void responseRepairApplyList(List<RepairApplyBean.DataBean.RepairApplysBean> beans) {
-        ptrFrameLayout.refreshComplete();
-        datas = beans;
-        adapter.setNewData(datas);
-//        DialogHelper.successSnackbar(getView(), "请求成功 sizecount:" + beans.size());
-    }
+    public void responseRepairApplyList(List<RepairApplyBean.DataBean.RepairApplysBean> datas) {
 
-    public static final int REQUEST_CODE = 100;
+        ptrFrameLayout.refreshComplete();
+        if (datas == null || datas.isEmpty()) {
+            adapter.loadMoreEnd();
+            return;
+        }
+
+        if (params.page == 1) {
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerview);
+        } else {
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
+    }
 
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            ptrFrameLayout.autoRefresh(true);
+            ptrFrameLayout.autoRefresh();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        ptrFrameLayout.autoRefresh();
     }
 }

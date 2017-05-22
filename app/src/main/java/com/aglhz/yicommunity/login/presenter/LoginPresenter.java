@@ -8,9 +8,12 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.login.contract.LoginContract;
 import com.aglhz.yicommunity.login.model.LoginModel;
 import com.sipphone.sdk.access.WebReponse;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -38,12 +41,17 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userBean -> {
                     if (userBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+
                         //注册友盟
                         mModel.requestUMeng(((Params) request).user);
                         //保存用户信息
                         UserHelper.setUserInfo(userBean.getData().getMemberInfo());
+
                         //注册Sip到全视通服务器
                         requestSip();
+                        //登录成功后，通知相关页面刷新。
+                        EventBus.getDefault().post(new EventCommunity(null));
+
                     } else {
                         getView().error(userBean.getOther().getMessage());
                     }

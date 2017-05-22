@@ -19,7 +19,7 @@ public interface RepairApplyContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestRepairApplyList();
+        void requestRepairApplyList(Params params);
     }
 
     interface Model extends BaseContract.Model {

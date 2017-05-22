@@ -25,7 +25,6 @@ import butterknife.Unbinder;
  */
 
 public class CarpoolFragment extends BaseFragment {
-
     private static final String TAG = CarpoolFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;

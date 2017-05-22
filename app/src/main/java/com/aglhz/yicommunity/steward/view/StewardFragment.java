@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.steward.view;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
 import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.DoorListBean;
@@ -56,6 +58,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
@@ -99,6 +102,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     private Params params = Params.getInstance();
     private final static int SELECT_COMMUNIT = 100;   //选择社区
     private Dialog loadingDialog;
+    private Unbinder unbinder;
 
     public static StewardFragment newInstance() {
         return new StewardFragment();
@@ -115,7 +119,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_steward, container, false);
         EventBus.getDefault().register(this);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -404,6 +408,12 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
     public void onDestroy() {
         if (myHouseAdapter != null) {
             myHouseAdapter = null;
@@ -485,24 +495,23 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
                 .show();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            if (requestCode == SELECT_COMMUNIT) {
-
-                ALog.e("11111111111111");
-                UserHelper.setCommunity(data.getStringExtra(Constants.COMMUNITY_NAME)
-                        , data.getStringExtra(Constants.COMMUNITY_CODE));
-            }
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (data != null) {
+//            if (requestCode == SELECT_COMMUNIT) {
+//
+//                ALog.e("11111111111111");
+//                UserHelper.setCommunity(data.getStringExtra(Constants.COMMUNITY_NAME)
+//                        , data.getStringExtra(Constants.COMMUNITY_CODE));
+//            }
+//        }
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
-        ALog.d(TAG, "onEvent:::" + event.bean.getName());
         svSteward.fullScroll(ScrollView.FOCUS_UP);
-        ptrFrameLayout.autoRefresh();
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
     }
 }
 

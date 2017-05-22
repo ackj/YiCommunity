@@ -28,12 +28,18 @@ import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CommentBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.KeyboardChangeListener;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.publish.contract.CommentContract;
 import com.aglhz.yicommunity.publish.presenter.CommentPresenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -59,9 +65,7 @@ import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_NEIGHBOU
  */
 
 public class CommentFragment extends BaseFragment<CommentPresenter> implements CommentContract.View {
-
     private static final String TAG = CommentFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -77,12 +81,10 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     @BindView(R.id.view_bottom_space)
     View viewBottomSpace;
 
-
     private Unbinder unbinder;
     private CommentRVAdapter adapter;
     private Params commentListParams = Params.getInstance();
     private Params commentPostParams = Params.getInstance();
-
     private String fid;
     private int type;
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
@@ -109,6 +111,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
         ALog.e(TAG, "onCreateView type:" + type);
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return attachToSwipeBack(view);
     }
 
@@ -244,6 +247,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
         KeyBoardUtils.hideKeybord(getView(), _mActivity);
         //移除布局变化监听
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -324,5 +328,10 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
                 mPresenter.postNeighbourComment(commentPostParams);
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        ptrFrameLayout.autoRefresh();
     }
 }

@@ -15,8 +15,8 @@ import java.util.List;
 public class RepairRecordRVAdapter extends BaseRecyclerViewAdapter<RepairApplyBean.DataBean.RepairApplysBean, BaseViewHolder> {
     private final String TAG = RepairRecordRVAdapter.class.getSimpleName();
 
-    public RepairRecordRVAdapter(List<RepairApplyBean.DataBean.RepairApplysBean> data) {
-        super(R.layout.item_rv_property_repair, data);
+    public RepairRecordRVAdapter() {
+        super(R.layout.item_rv_property_repair);
     }
 
     @Override

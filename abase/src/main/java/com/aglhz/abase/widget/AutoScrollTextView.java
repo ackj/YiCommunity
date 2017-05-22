@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -25,8 +26,7 @@ import java.util.List;
  * <p/>
  * Created by zhenguo on 3/4/15.
  */
-public class AutoScrollTextView extends TextSwitcher implements
-        ViewSwitcher.ViewFactory {
+public class AutoScrollTextView extends TextSwitcher implements ViewSwitcher.ViewFactory {
 
     private static final int FLAG_START_AUTO_SCROLL = 1001;
     private static final int FLAG_STOP_AUTO_SCROLL = 1002;
@@ -56,7 +56,6 @@ public class AutoScrollTextView extends TextSwitcher implements
     private boolean isStart;
 
     private OnItemClickListener itemClickListener;
-    private Context mContext;
     /**
      * 当前显示Item的ID
      */
@@ -66,19 +65,23 @@ public class AutoScrollTextView extends TextSwitcher implements
 
     public AutoScrollTextView(Context context) {
         this(context, null);
-        mContext = context;
     }
 
     public AutoScrollTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AutoScrollHeight);
-        mTextSize = a.getDimension(R.styleable.AutoScrollHeight_size, 13);
-        mPadding = (int) a.getDimension(R.styleable.AutoScrollHeight_padding, 20);
-        scrollDuration = a.getInteger(R.styleable.AutoScrollHeight_scrollDuration, 3000);
-        animDuration = a.getInteger(R.styleable.AutoScrollHeight_animDuration, 800);
-        textColor = a.getColor(R.styleable.AutoScrollHeight_color, Color.BLACK);
-        a.recycle();
+        try {
+            mTextSize = a.getDimension(R.styleable.AutoScrollHeight_size, 13);
+            mPadding = (int) a.getDimension(R.styleable.AutoScrollHeight_padding, 20);
+            scrollDuration = a.getInteger(R.styleable.AutoScrollHeight_scrollDuration, 3000);
+            animDuration = a.getInteger(R.styleable.AutoScrollHeight_animDuration, 800);
+            textColor = a.getColor(R.styleable.AutoScrollHeight_color, Color.BLACK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            a.recycle();
+        }
+
         init();
     }
 
@@ -107,7 +110,7 @@ public class AutoScrollTextView extends TextSwitcher implements
         setFactory(this);
         Animation in = new TranslateAnimation(0, 0, 300, 0);
         in.setDuration(animDuration);
-        in.setInterpolator(new AccelerateInterpolator());
+        in.setInterpolator(new DecelerateInterpolator());
         Animation out = new TranslateAnimation(0, 0, 0, -300);
         out.setDuration(animDuration);
         out.setInterpolator(new AccelerateInterpolator());
@@ -146,7 +149,7 @@ public class AutoScrollTextView extends TextSwitcher implements
 
     @Override
     public View makeView() {
-        TextView t = new TextView(mContext);
+        TextView t = new TextView(getContext());
         t.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
         t.setMaxLines(1);
         t.setPadding(mPadding, mPadding, mPadding, mPadding);
@@ -185,7 +188,7 @@ public class AutoScrollTextView extends TextSwitcher implements
          *
          * @param position 当前点击ID
          */
-        public void onItemClick(int position);
+        void onItemClick(int position);
 
     }
 

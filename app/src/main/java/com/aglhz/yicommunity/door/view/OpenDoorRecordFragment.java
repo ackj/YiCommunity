@@ -21,8 +21,14 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.door.contract.OpenDoorRecordContract;
 import com.aglhz.yicommunity.door.presenter.OpenDoorRecordPresenter;
+import com.aglhz.yicommunity.event.EventCommunity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -52,7 +58,6 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     PtrFrameLayout ptrFrameLayout;
     private OpenDoorRecordRVAdapter mAdapter;
     private Unbinder unbinder;
-    private ViewGroup rootView;
     private Params params = Params.getInstance();
 
     public static OpenDoorRecordFragment newInstance() {
@@ -65,41 +70,13 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         return new OpenDoorRecordPresenter(this);
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(rvOpenDoorRecord);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-//                mPresenter.start();
-                params.page = 1;
-                params.pageSize = Constants.PAGE_SIZE;
-                mPresenter.requestRecord(params);
-            }
-        });
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_opendoor_record, container, false);
         unbinder = ButterKnife.bind(this, view);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -129,6 +106,36 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
             mPresenter.requestRecord(params);
         }, rvOpenDoorRecord);
         rvOpenDoorRecord.setAdapter(mAdapter);
+    }
+
+    private void initPtrFrameLayout() {
+        final MaterialHeader header = new MaterialHeader(getContext());
+        int[] colors = getResources().getIntArray(R.array.google_colors);
+        header.setColorSchemeColors(colors);
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
+        header.setPtrFrameLayout(ptrFrameLayout);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
+
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                //判断是否滑动到顶部。
+                return ScrollingHelper.isRecyclerViewToTop(rvOpenDoorRecord);
+            }
+
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                ALog.e("开始刷新了");
+//                mPresenter.start();
+                params.page = 1;
+                params.pageSize = Constants.PAGE_SIZE;
+                params.cmnt_c = UserHelper.communityCode;
+                mPresenter.requestRecord(params);
+            }
+        });
     }
 
     @Override
@@ -164,5 +171,11 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        ptrFrameLayout.autoRefresh();
     }
 }

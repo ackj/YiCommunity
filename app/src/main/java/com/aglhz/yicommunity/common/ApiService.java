@@ -112,7 +112,10 @@ public interface ApiService {
 
     //    @POST("/sub_property_ysq/client/info/msgList")
     @POST
-    Observable<MessageCenterBean> requestMessages(@Url String url, @Query("token") String token);
+    Observable<MessageCenterBean> requestMessages(@Url String url,
+                                                  @Query("token") String token,
+                                                  @Query("pageSize") String pageSize,
+                                                  @Query("page") String page);
 
     //社区Banner
     //@POST("/sub_property_ysq/client/info/indexadvs")
@@ -148,10 +151,10 @@ public interface ApiService {
 
 
     //更新头像
-    String updatePortrait = BASE_USER+"/client/uploadHeader2.do";
+    String updatePortrait = BASE_USER + "/client/uploadHeader2.do";
 
     @POST
-    Observable<BaseBean> updatePortrait(@Url String url,@Query("token") String token, @Body MultipartBody file);
+    Observable<BaseBean> updatePortrait(@Url String url, @Query("token") String token, @Body MultipartBody file);
 
 
     //停车记录
@@ -162,7 +165,11 @@ public interface ApiService {
     String requestRepairApply = BASE_PROPERTY + "/client/info/repairApplyList";
 
     @POST
-    Observable<RepairApplyBean> requestRepairApply(@Url String url, @Query("token") String token);
+    Observable<RepairApplyBean> requestRepairApply(@Url String url,
+                                                   @Query("token") String token,
+                                                   @Query("cmnt_c") String cmnt_c,
+                                                   @Query("pageSize") String pageSize,
+                                                   @Query("page") String page);
 
     //物业报修详情
     String requestRepairDetail = BASE_PROPERTY + "/client/info/repairDet";
@@ -324,7 +331,9 @@ public interface ApiService {
     String requestMyhouses = BASE_PROPERTY + "/client/info/authBdgs.do";
 
     @POST
-    Flowable<MyHousesBean> requestMyhouses(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c);
+    Flowable<MyHousesBean> requestMyhouses(@Url String url,
+                                           @Query("token") String token,
+                                           @Query("cmnt_c") String cmnt_c);
 
     String UPDATE_RIGHTS_MYSELF = BASE_PROPERTY + "/smartdoor/client/powerset";
 
@@ -360,6 +369,8 @@ public interface ApiService {
     Observable<NoticeBean> requestNotices(@Url String url,
                                           @Query("token") String token,
                                           @Query("cmnt_c") String cmnt_c,
+                                          @Query("page") String page,
+                                          @Query("pageSize") String pageSize,
                                           @Query("summerable") boolean summerable,
                                           @Query("timeable") boolean timeable);
 

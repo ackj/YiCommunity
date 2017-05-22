@@ -18,12 +18,19 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.message.contract.MessageCenterContract;
 import com.aglhz.yicommunity.message.presenter.MessageCenterPresenter;
 import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -49,12 +56,10 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
     Unbinder unbinder;
-
+    private Params params = Params.getInstance();
     private LinearLayoutManager layoutManager;
     private MessageCenterRVAdapter adapter;
-    private ViewGroup rootView;
 
     private static final String SMARTDOOR_PUSHREC = "smartdoor_pushrec";
     private static final String HOUSE_OWNER_APPLY = "house_owner_apply";// 业主申请
@@ -83,13 +88,13 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return attachToSwipeBack(view);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar();
         initData();
         initPtrFrameLayout();
@@ -100,6 +105,14 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         layoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageCenterRVAdapter();
+
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(() -> {
+            params.page++;
+            mPresenter.start(params);
+
+        }, recyclerView);
+
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new Decoration(_mActivity, Decoration.VERTICAL_LIST));
     }
@@ -177,31 +190,60 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了…………");
-                mPresenter.start(Params.getInstance());
+                params.page = 1;
+                params.pageSize = Constants.PAGE_SIZE;
+                mPresenter.start(params);
 
             }
         });
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-//        if (adapter != null) {
-//            adapter = null;
-//        }
+        EventBus.getDefault().unregister(this);
+        if (adapter != null) {
+            adapter = null;
+        }
     }
 
     @Override
     public void start(Object response) {
         ptrFrameLayout.refreshComplete();
-        adapter.setNewData((List<MessageCenterBean.DataBean.MemNewsBean>) response);
+        List<MessageCenterBean.DataBean.MemNewsBean> datas = (List<MessageCenterBean.DataBean.MemNewsBean>) response;
+
+        if (datas == null || datas.isEmpty()) {
+            adapter.loadMoreEnd();
+            return;
+        }
+
+        if (params.page == 1) {
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
+        } else {
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 
     @Override
     public void error(String errorMessage) {
-        DialogHelper.warningSnackbar(rootView, errorMessage);
+
         ptrFrameLayout.refreshComplete();
+        if (params.page == 1) {
+            //为后面的pageState做准备
+        } else if (params.page > 1) {
+            adapter.loadMoreFail();
+            params.page--;
+        }
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        recyclerView.scrollToPosition(0);
+        ptrFrameLayout.autoRefresh();
     }
 }

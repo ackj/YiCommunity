@@ -10,7 +10,6 @@ import com.aglhz.yicommunity.message.contract.MessageCenterContract;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
-
 /**
  * Author：leguang on 2017/4/12 0009 14:23
  * Email：langmanleguang@qq.com
@@ -26,10 +25,13 @@ public class MessageCenterModel extends BaseModel implements MessageCenterContra
 
     }
 
-
     @Override
     public Observable<MessageCenterBean> requestMessages(Params params) {
-        return HttpHelper.getService(ApiService.class).requestMessages(ApiService.requestMessages,params.token)
+        return HttpHelper.getService(ApiService.class)
+                .requestMessages(ApiService.requestMessages,
+                        params.token,
+                        params.pageSize + "",
+                        params.page + "")
                 .subscribeOn(Schedulers.io());
     }
 }

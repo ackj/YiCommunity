@@ -3,7 +3,7 @@ apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    signingConfigs { 
+    signingConfigs {
         debug {
             keyAlias 'agl'
             keyPassword 'aglandroid'
@@ -36,7 +36,17 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
+
+        debug {
+            ndk {
+                abiFilters "armeabi", "armeabi-v7a", "x86"
+            }
+        }
+
         release {
+            ndk {
+                abiFilters "armeabi", "armeabi-v7a", "x86"
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

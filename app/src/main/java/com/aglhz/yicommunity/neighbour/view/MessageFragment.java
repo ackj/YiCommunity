@@ -24,10 +24,15 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.neighbour.contract.NeighbourContract;
 import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
 import com.aglhz.yicommunity.publish.CommentActivity;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -45,7 +50,6 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  */
 
 public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presenter> implements NeighbourContract.View {
-
     private static final String TAG = NeighbourFragment.class.getSimpleName();
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -92,6 +96,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -209,14 +214,14 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
                 params.page = 1;
+                params.pageSize = Constants.PAGE_SIZE;
+                params.cmnt_c = UserHelper.communityCode;
                 requestNet();
             }
         });
     }
 
     public void requestNet() {
-        params.pageSize = Constants.PAGE_SIZE;
-        params.cmnt_c = UserHelper.communityCode;
         if (type == TYPE_EXCHANGE) {
             mPresenter.requestExchangeList(params);
         } else if (type == TYPE_NEIGHBOUR) {
@@ -259,6 +264,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -298,5 +304,10 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         Glide.with(this).pauseRequests();
         super.onPause();
         JCVideoPlayer.releaseAllVideos();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        ptrFrameLayout.autoRefresh();
     }
 }

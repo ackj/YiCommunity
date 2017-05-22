@@ -32,6 +32,8 @@ public class NoticeListModel extends BaseModel implements NoticeListContract.Mod
                         ApiService.requestNotices,
                         params.token,
                         params.cmnt_c,
+                        params.page + "",
+                        params.pageSize + "",
                         params.summerable,
                         params.timeable)
                 .subscribeOn(Schedulers.io());

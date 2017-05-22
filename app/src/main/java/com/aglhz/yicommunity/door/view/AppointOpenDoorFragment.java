@@ -22,9 +22,15 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.door.contract.AppointOpenDoorContract;
 import com.aglhz.yicommunity.door.presenter.AppointOpenDoorPresenter;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +73,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -100,6 +107,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
                 ALog.e("开始刷新了");
                 params.page = 1;
                 params.pageSize = Constants.PAGE_SIZE;
+                params.cmnt_c = UserHelper.communityCode;
                 mPresenter.requestDoors(params);
             }
         });
@@ -175,5 +183,11 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        ptrFrameLayout.autoRefresh();
     }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
+import com.aglhz.abase.exception.AppExceptionHandler;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.boxingimpl.BoxingGlideLoader;
@@ -45,7 +46,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
         initPush();
 //        registerActivityLifecycleCallbacks(this);
 
-//        tempInit();
+        tempInit();
 
         initBoxing();
 
@@ -72,8 +73,8 @@ public class BaseApplication extends MultiDexApplication implements Application.
 //        // 初始化卡顿监听
 //        BlockCanary.install(this, new AppContext()).start();
 
-        //  Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
-        ALog.init(false, "ysq");
+          Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
+        ALog.init(true, "ysq");
 
     }
 

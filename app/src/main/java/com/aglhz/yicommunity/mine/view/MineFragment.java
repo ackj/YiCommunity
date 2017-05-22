@@ -137,7 +137,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 break;
             case R.id.ll_my_house:
                 if (isLogined()) {
-                    ((MainFragment) getParentFragment()).start(MineHouseFragment.newInstance(), SupportFragment.STANDARD);
+                    ((MainFragment) getParentFragment()).start(MyHousesFragment.newInstance(), SupportFragment.STANDARD);
                 }
                 break;
             case R.id.tv_user_data:

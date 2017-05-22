@@ -25,7 +25,12 @@ import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.door.contract.QuickOpenDoorContract;
 import com.aglhz.yicommunity.door.presenter.QuickOpenDoorPresenter;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -74,6 +79,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -108,6 +114,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
                 ALog.e("开始刷新了");
                 params.page = 1;
                 params.pageSize = Constants.PAGE_SIZE;
+                params.cmnt_c = UserHelper.communityCode;
                 mPresenter.requestDoors(params);
             }
         });
@@ -214,5 +221,11 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        ptrFrameLayout.autoRefresh();
     }
 }

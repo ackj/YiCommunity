@@ -36,8 +36,7 @@ public class RepairApplyPresenter extends BasePresenter<RepairApplyContract.View
     }
 
     @Override
-    public void requestRepairApplyList() {
-        Params params = Params.getInstance();
+    public void requestRepairApplyList(Params params) {
         mRxManager.add(mModel.getRepairApply(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(repairApplyBean -> {

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -61,20 +62,32 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     EditText etName;
     @BindView(R.id.et_idcard_house_fragment)
     EditText etIdcard;
-    @BindView(R.id.tv_area_house_fragment)
-    TextView tvArea;
-    @BindView(R.id.tv_community_house_fragment)
-    TextView tvCommunity;
+    @BindView(R.id.ll_area_add_house_fragment)
+    LinearLayout llArea;
+    @BindView(R.id.ll_community_add_house_fragment)
+    LinearLayout llCommunity;
     @BindView(R.id.bt_submit_house_fragment)
     Button btSubmit;
-    @BindView(R.id.tv_building_house_fragment)
+    @BindView(R.id.ll_building_add_house_fragment)
+    LinearLayout llBuilding;
+    @BindView(R.id.ll_unit_add_house_fragment)
+    LinearLayout llUnit;
+    @BindView(R.id.ll_floor_add_house_fragment)
+    LinearLayout llFloor;
+    @BindView(R.id.ll_room_add_house_fragment)
+    LinearLayout llRoom;
+    @BindView(R.id.tv_area_add_house_fragment)
+    TextView tvArea;
+    @BindView(R.id.tv_community_add_house_fragment)
+    TextView tvCommunity;
+    @BindView(R.id.tv_building_add_house_fragment)
     TextView tvBuilding;
-    @BindView(R.id.tv_unit_house_fragment)
+    @BindView(R.id.tv_unit_add_house_fragment)
     TextView tvUnit;
-    @BindView(R.id.tv_floor_house_fragment)
+    @BindView(R.id.tv_floor_add_house_fragment)
     TextView tvFloor;
-    @BindView(R.id.tv_room_number_house_fragment)
-    TextView tvRoomNumber;
+    @BindView(R.id.tv_room_add_house_fragment)
+    TextView tvRoom;
     private boolean isProprietor = true;
     private ViewGroup rootView;
     private BottomDialog addressSelector;
@@ -109,7 +122,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_house, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_house, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -130,12 +143,12 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     @OnClick({R.id.tv_proprietor_house_fragment,
             R.id.tv_member_house_fragment,
-            R.id.tv_area_house_fragment,
-            R.id.tv_community_house_fragment,
-            R.id.tv_building_house_fragment,
-            R.id.tv_unit_house_fragment,
-            R.id.tv_floor_house_fragment,
-            R.id.tv_room_number_house_fragment,
+            R.id.ll_area_add_house_fragment,
+            R.id.ll_community_add_house_fragment,
+            R.id.ll_building_add_house_fragment,
+            R.id.ll_unit_add_house_fragment,
+            R.id.ll_floor_add_house_fragment,
+            R.id.ll_room_add_house_fragment,
             R.id.bt_submit_house_fragment,})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -145,38 +158,38 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
             case R.id.tv_member_house_fragment:
                 resetIdentity(tvMember, tvProprietor, false);
                 break;
-            case R.id.tv_area_house_fragment:
+            case R.id.ll_area_add_house_fragment:
                 showAddressSelector();//选择省市县
                 break;
-            case R.id.tv_community_house_fragment:
+            case R.id.ll_community_add_house_fragment:
                 if (TextUtils.isEmpty(tvArea.getText().toString())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择区域！");
                 } else {
                     mPresenter.requestCommunitys(params);
                 }
                 break;
-            case R.id.tv_building_house_fragment:
+            case R.id.ll_building_add_house_fragment:
                 if (TextUtils.isEmpty(tvCommunity.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择小区！");
                 } else {
                     mPresenter.requestBuildings(params);
                 }
                 break;
-            case R.id.tv_unit_house_fragment:
+            case R.id.ll_unit_add_house_fragment:
                 if (TextUtils.isEmpty(tvBuilding.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择楼栋！");
                 } else {
                     mPresenter.requestUnits(params);
                 }
                 break;
-            case R.id.tv_floor_house_fragment:
+            case R.id.ll_floor_add_house_fragment:
                 if (TextUtils.isEmpty(tvUnit.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择单元！");
                 } else {
                     mPresenter.requestFloors(params);
                 }
                 break;
-            case R.id.tv_room_number_house_fragment:
+            case R.id.ll_room_add_house_fragment:
                 if (TextUtils.isEmpty(tvFloor.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择楼层！");
                 } else {
@@ -184,7 +197,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 }
                 break;
             case R.id.bt_submit_house_fragment:
-                if (TextUtils.isEmpty(tvRoomNumber.getText().toString().trim())) {
+                if (TextUtils.isEmpty(tvRoom.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(rootView, "请先选择房间！");
                 } else {
                     params.isProprietor = isProprietor;
@@ -278,7 +291,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     tvBuilding.setText("");
                     tvUnit.setText("");
                     tvFloor.setText("");
-                    tvRoomNumber.setText("");
+                    tvRoom.setText("");
 
                     params.bdg_c = "";
                     params.bdg_u_c = "";
@@ -306,7 +319,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
                     tvUnit.setText("");
                     tvFloor.setText("");
-                    tvRoomNumber.setText("");
+                    tvRoom.setText("");
 
                     params.bdg_u_c = "";
                     params.bdg_f_c = "";
@@ -332,7 +345,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     tvUnit.setText(array[which]);
 
                     tvFloor.setText("");
-                    tvRoomNumber.setText("");
+                    tvRoom.setText("");
 
                     params.bdg_f_c = "";
                     params.bdg_f_h_c = "";
@@ -356,7 +369,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     params.bdg_f_c = floors.get(which).getCode();
                     tvFloor.setText(array[which]);
 
-                    tvRoomNumber.setText("");
+                    tvRoom.setText("");
                     params.bdg_f_h_c = "";
 
                     ALog.e("params.cmnt_c ::" + params.bdg_f_c);
@@ -376,7 +389,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .setTitle("请选择楼层")
                 .setItems(array, (dialog, which) -> {
                     params.bdg_f_h_c = rooms.get(which).getCode();
-                    tvRoomNumber.setText(array[which]);
+                    tvRoom.setText(array[which]);
 
                     ALog.e("params.cmnt_c ::" + params.bdg_f_h_c);
                     ALog.e("params.cmnt_c ::" + array[which]);

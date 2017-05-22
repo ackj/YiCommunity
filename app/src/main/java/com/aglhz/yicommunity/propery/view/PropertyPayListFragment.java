@@ -29,8 +29,8 @@ import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPay;
 import com.aglhz.yicommunity.propery.contract.PropertyPayContract;
 import com.aglhz.yicommunity.propery.presenter.PropertyPayPresenter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -99,6 +99,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_property_pay_list, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -154,6 +155,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

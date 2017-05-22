@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -27,12 +28,18 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.house.contract.HouseRightsContract;
 import com.aglhz.yicommunity.house.presenter.HouseRightsPresenter;
 import com.kyleduo.switchbutton.SwitchButton;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
@@ -43,7 +50,6 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  */
 public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presenter> implements HouseRightsContract.View {
     private static final String TAG = HouseRightsFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -60,9 +66,9 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
     private View footerView;
     private RecyclerView rvMember;
     private HouseRightsBean mHouseRights;
-    private ViewGroup rootView;
     private Params params = Params.getInstance();
     private String title;
+    private Unbinder unbinder;
 
     public static HouseRightsFragment newInstance(String fid, String address) {
         Bundle args = new Bundle();
@@ -93,15 +99,14 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_house_rights, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
-
         initToolbar();
         initPtrFrameLayout();
         initData();
@@ -136,6 +141,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
+
                 mPresenter.requestRights(params);
             }
         });
@@ -234,12 +240,12 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
          */
         permissionAdapter.getData().get(prePosition).setStatus(params.status);
         permissionAdapter.notifyDataSetChanged();
-        DialogHelper.successSnackbar(rootView, mBaseBean.getOther().getMessage());
+        DialogHelper.successSnackbar(getView(), mBaseBean.getOther().getMessage());
     }
 
     @Override
     public void responseDelete(BaseBean mBaseBean) {
-        DialogHelper.successSnackbar(rootView, mBaseBean.getOther().getMessage());
+        DialogHelper.successSnackbar(getView(), mBaseBean.getOther().getMessage());
         memberAdapter.remove(prePosition);
         permissionAdapter.setNewData(null);
         if (memberAdapter.getData().size() == 1) {
@@ -256,6 +262,18 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
     public void error(String errorMessage) {
         permissionAdapter.notifyDataSetChanged();
         ptrFrameLayout.refreshComplete();
-        DialogHelper.errorSnackbar(rootView, errorMessage);
+        DialogHelper.errorSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        ptrFrameLayout.autoRefresh();
     }
 }

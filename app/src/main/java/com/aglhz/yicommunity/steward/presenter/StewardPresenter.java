@@ -52,7 +52,7 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
         mRxManager.add(mModel.requestContact(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(contactBean -> {
-                    if (contactBean.getOther().getCode() == 200) {
+                    if (contactBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         List<String> listPhone = new ArrayList<>();
                         listPhone.add("座机：" + contactBean.getData().getTelephoneNo());
                         listPhone.add("手机：" + contactBean.getData().getMobileNo());
