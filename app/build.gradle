@@ -7,13 +7,13 @@ android {
         debug {
             keyAlias 'agl'
             keyPassword 'aglandroid'
-            storeFile file('F:/gaocheng/agl.keystore')
+            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
             storePassword 'aglandroid'
         }
         release {
             keyAlias 'agl'
             keyPassword 'aglandroid'
-            storeFile file('F:/gaocheng/agl.keystore')
+            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
             storePassword 'aglandroid'
         }
     }
