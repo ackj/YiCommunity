@@ -575,7 +575,7 @@ public interface ApiService {
     String requestFirstLevel = "http://www.aglhz.com/mall/member/goodscategory/firstLevelList.do";
 
     @POST
-    Observable<FirstLevelBean> requestFirstLevel(@Url String url);
+    Observable<FirstLevelBean> requestFirstLevel(@Url String url,@Query("keywords")String keywords);
 
     //二级列表
     String requestSubCategoryLevel = "http://www.aglhz.com/mall/member/goodscategory/subCategoryLevelList.do";
@@ -587,5 +587,5 @@ public interface ApiService {
     String requestGoodsList = "http://www.aglhz.com/mall/member/goodscategory/findGoodsListByCategoryId.do";
 
     @POST
-    Observable<GoodsBean> requestGoodsList(@Url String url, @Query("token") String token, @Query("appType") int appType, @Query("id") String id);
+    Observable<GoodsBean> requestGoodsList(@Url String url, @Query("token") String token, @Query("appType") int appType, @Query("secondCategoryId") String id);
 }

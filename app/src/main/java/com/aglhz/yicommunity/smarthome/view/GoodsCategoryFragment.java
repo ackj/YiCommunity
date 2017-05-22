@@ -82,7 +82,7 @@ public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryPresenter> 
     private void initData() {
         mPresenter.requestFirstLevel(params);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(_mActivity,2));
+        recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 2));
         adapter = new GoodsCategoryRVAdapter();
         recyclerView.setAdapter(adapter);
     }
@@ -96,7 +96,15 @@ public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryPresenter> 
 
     @Override
     public void responseFirstLevel(List<FirstLevelBean.DataBean> datas) {
-        adapter.setNewData(datas);
+        startForResult(SmartHomeMallFragment.newInstance(datas.get(datas.size() - 1).getId()), 100);
+    }
+
+    @Override
+    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 100) {
+            pop();
+        }
     }
 
     @Override

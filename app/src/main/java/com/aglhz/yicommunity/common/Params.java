@@ -70,7 +70,8 @@ public class Params {
     public int payType;  //1.支付宝;2.微信
     public String id;
     public int appType;//android 2就好
-
+    public String secondCategoryId;//二级菜单的id
+    public String keywords;
 
     private Params() {
     }

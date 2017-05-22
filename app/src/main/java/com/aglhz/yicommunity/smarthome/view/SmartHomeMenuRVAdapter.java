@@ -19,6 +19,14 @@ public class SmartHomeMenuRVAdapter extends BaseRecyclerViewAdapter<SubCategoryB
     @Override
     protected void convert(BaseViewHolder helper, SubCategoryBean.DataBean item) {
         helper.setText(R.id.tv_menu, item.getName())
-                .addOnClickListener(R.id.tv_menu);
+                .setTextColor(R.id.tv_menu, selectItem == item ? 0xFFE95D5A : 0xFF999999)
+                .setBackgroundColor(R.id.tv_menu,selectItem == item ? 0xFFFFFFFF : 0x00000000);
+    }
+
+    private SubCategoryBean.DataBean selectItem;
+
+    public void setSelectItem(SubCategoryBean.DataBean selectItem) {
+        this.selectItem = selectItem;
+        notifyDataSetChanged();
     }
 }

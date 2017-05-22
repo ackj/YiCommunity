@@ -46,6 +46,7 @@
     <color name="red_pointer">#E23531</color>
     <color name="navy_blue">#5B9FC9</color>
 
+    <color name="grey_menu_bg">#F0F0F0</color>
 
     <!--City Picker-->
     <color name="cp_colorAccent">#F7F7F7</color>

@@ -10,5 +10,4 @@
     android:paddingRight="5dp"
     android:paddingTop="10dp"
     android:text="哈哈哈哈"
-    android:textColor="@color/selector_menu_textview"
-    android:textSize="15sp"></TextView>
+    android:textSize="15sp" />
