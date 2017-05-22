@@ -24,5 +24,7 @@ public interface LoginContract {
         Observable<UserBean> requestLogin(Params params);
 
         Observable<SipBean> requestSip(Params params);
+
+        void requestUMeng(String alias);
     }
 }

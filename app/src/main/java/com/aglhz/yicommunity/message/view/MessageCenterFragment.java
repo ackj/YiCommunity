@@ -119,6 +119,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                 ALog.e(TAG, "type:" + bean.getOpType());
                 switch (bean.getOpType()) {
                     case NOTICE_PUBLISH://公告发布
+
                         break;
                     case HOUSE_OWNER_APPLY: //业主申请
                         //todo:可能要改
@@ -144,7 +145,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                     case FEEDBACK_REPLY://信息反馈回复
                         break;
                     case REPAIR_REPLY://物业报修回复
-//                        start(RepairDetailFragment.newInstance(bean.getSfid()));
+                        // start(RepairDetailFragment.newInstance(bean.getSfid()));
                         break;
                     case PROPERTY_BILL://物业账单
                         start(PropertyPayFragment.newInstance());

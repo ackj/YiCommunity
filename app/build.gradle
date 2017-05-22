@@ -13,7 +13,7 @@ android {
         release {
             keyAlias 'agl'
             keyPassword 'aglandroid'
-            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
+            storeFile file('F:/gaocheng/agl.keystore')
             storePassword 'aglandroid'
         }
     }
@@ -23,8 +23,8 @@ android {
         applicationId "com.aglhz.yicommunity"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 200
+        versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'x86'
