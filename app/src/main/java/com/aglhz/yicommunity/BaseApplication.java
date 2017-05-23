@@ -73,7 +73,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
 //        // 初始化卡顿监听
 //        BlockCanary.install(this, new AppContext()).start();
 
-          Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
+        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
         ALog.init(true, "ysq");
 
     }

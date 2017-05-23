@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.neighbour.model;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -28,7 +29,17 @@ public class NeighbourModel extends BaseModel implements NeighbourContract.Model
 
     @Override
     public Observable<NeighbourListBean> requestNeighbourList(Params params) {
-        return HttpHelper.getService(ApiService.class).requestNeighbourList(ApiService.requestNeighbourList, params.token, params.cmnt_c, params.page, params.pageSize)
+        ALog.e(params.token);
+        ALog.e(params.cmnt_c);
+        ALog.e(params.page);
+        ALog.e(params.pageSize);
+
+        return HttpHelper.getService(ApiService.class)
+                .requestNeighbourList(ApiService.requestNeighbourList,
+                        params.token,
+                        params.cmnt_c,
+                        params.page,
+                        params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 

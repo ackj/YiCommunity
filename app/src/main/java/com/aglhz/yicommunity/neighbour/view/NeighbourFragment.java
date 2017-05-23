@@ -96,12 +96,15 @@ public class NeighbourFragment extends BaseFragment {
                 break;
             case MessageFragment.TYPE_NEIGHBOUR:
                 String[] arr = {"发布照片", "发布视频"};
-                new AlertDialog.Builder(_mActivity).setItems(arr, (dialog, which) -> {
-                    //网络访问
-                    dialog.dismiss();
-                    ALog.e("AlertDialog which:::" + which);
-                    _mActivity.start(PublishNeighbourFragment.newInstance(which));
-                }).setTitle("请选择").setPositiveButton("取消", null).show();
+                new AlertDialog.Builder(_mActivity)
+                        .setItems(arr, (dialog, which) -> {
+                            //网络访问
+                            dialog.dismiss();
+                            _mActivity.start(PublishNeighbourFragment.newInstance(which));
+                        })
+                        .setTitle("请选择")
+                        .setPositiveButton("取消", null)
+                        .show();
                 break;
         }
     }

@@ -270,7 +270,7 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     @Override
     public void responseSuccess(List<NeighbourListBean.DataBean.MomentsListBean> datas) {
         ptrFrameLayout.refreshComplete();
-        if (datas == null || datas.size() == 0) {
+        if (datas == null || datas.isEmpty()) {
             adapter.loadMoreEnd();
             return;
         }
@@ -308,6 +308,8 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
+        adapter.getData().clear();
+        adapter.notifyDataSetChanged();
         ptrFrameLayout.autoRefresh();
     }
 }
