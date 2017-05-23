@@ -8,7 +8,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.park.view.CarCardFragment;
 import com.aglhz.yicommunity.park.view.CarCardTransactFragment;
-import com.aglhz.yicommunity.park.view.ParkingRecordFragment;
+import com.aglhz.yicommunity.park.view.ParkRecordFragment;
 
 public class ParkActivity extends BaseActivity {
     private static final String TAG = ParkActivity.class.getSimpleName();
@@ -27,7 +27,7 @@ public class ParkActivity extends BaseActivity {
                     loadRootFragment(R.id.fl_park_activity, CarCardFragment.newInstance());
                     break;
                 case Constants.PARKING_RECORD:
-                    loadRootFragment(R.id.fl_park_activity, ParkingRecordFragment.newInstance());
+                    loadRootFragment(R.id.fl_park_activity, ParkRecordFragment.newInstance());
                     break;
                 case Constants.CARD_TRANSACT:
                     loadRootFragment(R.id.fl_park_activity, CarCardTransactFragment.newInstance());
