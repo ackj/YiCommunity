@@ -19,6 +19,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/4/19 9:39.
@@ -28,8 +29,11 @@ public class CarCardFragment extends BaseFragment {
     TextView toolbarTitle;
     @BindView(R.id.rv_car_card_manage)
     RecyclerView rvCarCardManage;
+    @BindView(R.id.toolbar_menu)
+    TextView toolbarMenu;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private Unbinder unbinder;
 
     public static CarCardFragment newInstance() {
         return new CarCardFragment();
@@ -39,7 +43,7 @@ public class CarCardFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_car_card_manage, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -53,13 +57,9 @@ public class CarCardFragment extends BaseFragment {
     private void initToolbar() {
         initStateBar(toolbar);
         toolbarTitle.setText("我的车卡");
+        toolbarMenu.setText("充值记录");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
@@ -71,5 +71,11 @@ public class CarCardFragment extends BaseFragment {
         lists.add(new CarCardManageBean("粤L23212", 25, "张三", "12321332132", "凯宾斯基地下车库", "2016/07/08", "2016/07/08", 0));
         lists.add(new CarCardManageBean("粤L23212", 25, "张三", "12321332132", "凯宾斯基地下车库", "2016/07/08", "2016/07/08", 1));
         rvCarCardManage.setAdapter(new CarCardRVAdapter(lists));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

@@ -33,6 +33,7 @@ public class CarCardTransactFragment extends BaseFragment {
     RecyclerView rvCarCardTransact;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private CarCardTransactRVAdapter adapter;
 
     public static CarCardTransactFragment newInstance() {
         return new CarCardTransactFragment();
@@ -43,7 +44,7 @@ public class CarCardTransactFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_car_card_transact, container, false);
         ButterKnife.bind(this, view);
-        return view;
+        return attachToSwipeBack(view);
     }
 
     @Override
@@ -51,6 +52,7 @@ public class CarCardTransactFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
+        initListener();
     }
 
     private void initToolbar() {
@@ -70,6 +72,17 @@ public class CarCardTransactFragment extends BaseFragment {
         List<CarCardTransactBean> datas= new ArrayList<>();
         datas.add(new CarCardTransactBean(R.drawable.ic_car_card_transact_orange_210px,"月卡缴费","按照每月各小区收费标准收取月租费用",R.drawable.bg_round_orange_border, Color.parseColor("#FEB953")));
         datas.add(new CarCardTransactBean(R.drawable.ic_car_card_transact_greed_210px,"业主车库","业主自有车库，方便管理",R.drawable.bg_round_green_border,Color.parseColor("#0ABE9B")));
-        rvCarCardTransact.setAdapter(new CarCardTransactRVAdapter(datas));
+        adapter = new CarCardTransactRVAdapter(datas);
+        rvCarCardTransact.setAdapter(adapter);
+    }
+
+    private void initListener() {
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            if (position == 0) {
+                start(MonthCardPayFragment.newInstance());
+            }else{
+                start(ProprietorGarageFragment.newInstance());
+            }
+        });
     }
 }

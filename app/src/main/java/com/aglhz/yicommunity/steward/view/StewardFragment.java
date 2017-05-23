@@ -3,7 +3,6 @@ package com.aglhz.yicommunity.steward.view;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.DoorListBean;
@@ -38,6 +36,9 @@ import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.house.HouseActivity;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.park.ParkActivity;
+import com.aglhz.yicommunity.park.view.CarCardFragment;
+import com.aglhz.yicommunity.park.view.CarCardTransactFragment;
+import com.aglhz.yicommunity.park.view.ParkRecordFragment;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.PropertyActivity;
 import com.aglhz.yicommunity.publish.view.ComplainFragment;
@@ -274,7 +275,20 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         });
 
         //设置智慧停车卡片点击事件。
-        smartParkAdapter.setOnItemClickListener((adapter, view, position) -> go2Park(position));
+        smartParkAdapter.setOnItemClickListener((adapter, view, position) -> {
+            switch (position) {
+                case Constants.MY_CARD:
+                    _mActivity.start(CarCardFragment.newInstance());
+                    break;
+                case Constants.PARKING_RECORD:
+                    _mActivity.start(ParkRecordFragment.newInstance());
+                    break;
+                case Constants.CARD_TRANSACT:
+                    _mActivity.start(CarCardTransactFragment.newInstance());
+                    break;
+            }
+//            go2Park(position);
+        });
 
         //物业服务卡片点击事件。
         propertyServiceAdapter.setOnItemClickListener((adapter, view, position) -> {

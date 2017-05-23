@@ -20,16 +20,16 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.bean.ParkSelectBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.event.EventCommunity;
-import com.aglhz.yicommunity.picker.contract.CityPickerContract;
-import com.aglhz.yicommunity.picker.presenter.CityPickerPresenter;
+import com.aglhz.yicommunity.event.EventPark;
+import com.aglhz.yicommunity.picker.contract.ParkPickerContract;
+import com.aglhz.yicommunity.picker.presenter.ParkPickerPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,38 +42,40 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
 
 import static com.aglhz.yicommunity.common.UserHelper.city;
 
-
 /**
- * Created by Administrator on 2017/4/29 0029.
+ * Author: LiuJia on 2017/5/23 0023 14:51.
+ * Email: liujia95me@126.com
  */
-public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Presenter> implements CityPickerContract.View {
-    private static final String TAG = CommunityPickerFragment.class.getSimpleName();
+
+public class ParkPickerFragment extends BaseFragment<ParkPickerPresenter> implements ParkPickerContract.View{
+
+    private static final String TAG = ParkPickerFragment.class.getSimpleName();
     private PtrFrameLayout ptrFrameLayout;
     private RecyclerView recyclerView;
-    private List<CommunitySelectBean.DataBean.CommunitiesBean> mDatas;
-    private List<CommunitySelectBean.DataBean.CommunitiesBean> resultData;
+    private List<ParkSelectBean.DataBean.ParkPlaceListBean> mDatas;
+    private List<ParkSelectBean.DataBean.ParkPlaceListBean> resultData;
     private EditText etSearchCommunity;
-    private CommunityPickerRVAdapter adapter;
+    private ParkPickerRVAdapter adapter;
     private TextView tvCity;
     private TextView tvTitle;
     private Toolbar toolbar;
     private Params params = Params.getInstance();
     public static final int REQUEST_CODE_CITY = 100;
 
-    public static CommunityPickerFragment newInstance() {
-        return new CommunityPickerFragment();
+    public static ParkPickerFragment newInstance() {
+        return new ParkPickerFragment();
     }
 
     @NonNull
     @Override
-    protected CityPickerContract.Presenter createPresenter() {
-        return new CityPickerPresenter(this);
+    protected ParkPickerPresenter createPresenter() {
+        return new ParkPickerPresenter(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_picker_community, container, false);
+        View view = inflater.inflate(R.layout.fragment_picker_park, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.ptrFrameLayout);
         etSearchCommunity = (EditText) view.findViewById(R.id.et_search);
@@ -111,7 +113,7 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
 
     private void initToolbar() {
         initStateBar(toolbar);
-        tvTitle.setText("小区名称");
+        tvTitle.setText("选择停车场");
         tvCity.setText("选择城市");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
@@ -137,19 +139,19 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                mPresenter.requestCommunitys(params);
+                mPresenter.requestParkList(params);
             }
         });
     }
 
     private void initData() {
         params.city = city;
-        mPresenter.requestCommunitys(params);
-        etSearchCommunity.setHint("请输入城市名或小区名");
+        mPresenter.requestParkList(params);
+        etSearchCommunity.setHint("请输入停车场关键字");
         mDatas = new ArrayList<>();
         resultData = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        adapter = new CommunityPickerRVAdapter(resultData);
+        adapter = new ParkPickerRVAdapter(resultData);
         recyclerView.setAdapter(adapter);
     }
 
@@ -164,8 +166,8 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ALog.e(TAG, "onTextChanged:" + s + " start:" + start + " count:" + count);
                 resultData.clear();
-                for (CommunitySelectBean.DataBean.CommunitiesBean bean : mDatas) {
-                    if (bean.getName().contains(s) || bean.getPosition().getAddress().contains(s)) {
+                for (ParkSelectBean.DataBean.ParkPlaceListBean bean : mDatas) {
+                    if (bean.getName().contains(s)) {
                         resultData.add(bean);
                     }
                 }
@@ -181,10 +183,9 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
 
         tvCity.setOnClickListener(v -> startForResult(CityPickerFragment.newInstance(), REQUEST_CODE_CITY));
 
-        adapter.setOnItemChildClickListener((adapter1, view, position) -> {
-            CommunitySelectBean.DataBean.CommunitiesBean communitiesBean = mDatas.get(position);
-            UserHelper.setCommunity(communitiesBean.getName(), communitiesBean.getCode());
-            EventBus.getDefault().post(new EventCommunity(communitiesBean));
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            ParkSelectBean.DataBean.ParkPlaceListBean listBean = mDatas.get(position);
+            EventBus.getDefault().post(new EventPark(listBean));
             _mActivity.finish();
         });
     }
@@ -210,15 +211,15 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
     }
 
     @Override
-    public void responseCommunitys(List<CommunitySelectBean.DataBean.CommunitiesBean> beans) {
-        ptrFrameLayout.refreshComplete();
-        mDatas = beans;
-        adapter.setNewData(mDatas);
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         LbsManager.getInstance().stopLocation();
+    }
+
+    @Override
+    public void responsePark(List<ParkSelectBean.DataBean.ParkPlaceListBean> beans) {
+        ptrFrameLayout.refreshComplete();
+        mDatas = beans;
+        adapter.setNewData(mDatas);
     }
 }

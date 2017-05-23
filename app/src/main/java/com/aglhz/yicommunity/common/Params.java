@@ -72,6 +72,10 @@ public class Params {
     public int appType;//android 2就好
     public String secondCategoryId;//二级菜单的id
     public String keywords;
+    public String carNo;
+    public String monthName;
+    public int monthCount;//月数值：1、6、12
+
 
     private Params() {
     }

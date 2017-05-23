@@ -17,7 +17,8 @@ import com.aglhz.yicommunity.bean.MyHousesBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
-import com.aglhz.yicommunity.bean.ParkRecordBean;
+import com.aglhz.yicommunity.bean.ParkRecordListBean;
+import com.aglhz.yicommunity.bean.ParkSelectBean;
 import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
@@ -158,11 +159,6 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> updatePortrait(@Url String url, @Query("token") String token, @Body MultipartBody file);
-
-
-    //停车记录
-    @POST("/sub_property_ysq/park/record/to-client/record-list")
-    Observable<ParkRecordBean> getParkRecord(@Query("token") String token);
 
     //物业报修列表
     String requestRepairApply = BASE_PROPERTY + "/client/info/repairApplyList";
@@ -586,7 +582,7 @@ public interface ApiService {
     String requestFirstLevel = "http://www.aglhz.com/mall/member/goodscategory/firstLevelList.do";
 
     @POST
-    Observable<FirstLevelBean> requestFirstLevel(@Url String url,@Query("keywords")String keywords);
+    Observable<FirstLevelBean> requestFirstLevel(@Url String url, @Query("keywords") String keywords);
 
     //二级列表
     String requestSubCategoryLevel = "http://www.aglhz.com/mall/member/goodscategory/subCategoryLevelList.do";
@@ -599,4 +595,25 @@ public interface ApiService {
 
     @POST
     Observable<GoodsBean> requestGoodsList(@Url String url, @Query("token") String token, @Query("appType") int appType, @Query("secondCategoryId") String id);
+
+    //************************ 停车记录 *************************
+
+    //月卡办理
+    String postMothCarPay = BASE_PROPERTY + "/park/card/from-client/month-card-create";
+
+    @POST
+    Observable<BaseBean> postMothCarPay(@Url String url, @Body MultipartBody body);
+
+    //停车记录
+    String requestParkRecord = BASE_PROPERTY + "/park/record/to-client/record-list";
+
+    @POST
+    Observable<ParkRecordListBean> requestParkRecord(@Url String url, @Query("token") String authToken, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //按区域搜索停车场
+    String requestParkList = BASE_PROPERTY + "/park/place/to-client/search-park-list";
+
+    @POST
+    Observable<ParkSelectBean> requestParkList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+
 }

@@ -5,7 +5,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
@@ -17,11 +16,11 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/4/29 0029.
  */
-public class CommunityRVAdapter extends BaseRecyclerViewAdapter<CommunitySelectBean.DataBean.CommunitiesBean, BaseViewHolder> {
+public class CommunityPickerRVAdapter extends BaseRecyclerViewAdapter<CommunitySelectBean.DataBean.CommunitiesBean, BaseViewHolder> {
 
     private String searchKey = "";
 
-    public CommunityRVAdapter(List<CommunitySelectBean.DataBean.CommunitiesBean> data) {
+    public CommunityPickerRVAdapter(List<CommunitySelectBean.DataBean.CommunitiesBean> data) {
         super(R.layout.item_community_address, data);
     }
 
@@ -46,9 +45,7 @@ public class CommunityRVAdapter extends BaseRecyclerViewAdapter<CommunitySelectB
         if (addressIndex != -1) {
             addressSpan.setSpan(new ForegroundColorSpan(Color.RED), addressIndex, addressIndex + searchKey.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-        helper//.setText(R.id.tv_community_name, bean.getName())
-                .setText(R.id.tv_community_name, nameSpan)
-                //.setText(R.id.tv_community_address, bean.getPosition().getAddress())
+        helper.setText(R.id.tv_community_name, nameSpan)
                 .setText(R.id.tv_community_address, addressSpan)
                 .addOnClickListener(R.id.ll_community_layout);
     }
