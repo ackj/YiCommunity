@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.common;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.BuildingBean;
+import com.aglhz.yicommunity.bean.CarCardListBean;
 import com.aglhz.yicommunity.bean.CheckTokenBean;
 import com.aglhz.yicommunity.bean.CommentListBean;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
@@ -13,6 +14,7 @@ import com.aglhz.yicommunity.bean.FloorBean;
 import com.aglhz.yicommunity.bean.GoodsBean;
 import com.aglhz.yicommunity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
+import com.aglhz.yicommunity.bean.MonthCardRuleListBean;
 import com.aglhz.yicommunity.bean.MyHousesBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
@@ -604,6 +606,12 @@ public interface ApiService {
     @POST
     Observable<BaseBean> postMothCarPay(@Url String url, @Body MultipartBody body);
 
+    //业主办理免费卡
+    String postOwnerCard = BASE_PROPERTY + "/park/card/from-client/owner-card-create";
+
+    @POST
+    Observable<BaseBean> postOwnerCard(@Url String url, @Body MultipartBody body);
+
     //停车记录
     String requestParkRecord = BASE_PROPERTY + "/park/record/to-client/record-list";
 
@@ -615,5 +623,17 @@ public interface ApiService {
 
     @POST
     Observable<ParkSelectBean> requestParkList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //我的车卡列表
+    String requestCarCardList = BASE_PROPERTY + "/park/card/to-client/card-list";
+
+    @POST
+    Observable<CarCardListBean> requestCarCardList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //月卡计费规则列表
+    String requestMonthCardRuleList = BASE_PROPERTY + "/park/card/rule/to-client/rule-list";
+
+    @POST
+    Observable<MonthCardRuleListBean> requestMonthCardRuleList(@Url String url, @Query("token") String token, @Query("parkPlaceFid") String fid);
 
 }

@@ -1,7 +1,6 @@
 package com.aglhz.yicommunity.park.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,45 +12,31 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.CarCardListBean;
-import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.park.contract.CarCardContract;
-import com.aglhz.yicommunity.park.presenter.CarCardPresenter;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
- * Created by Administrator on 2017/4/19 9:39.
+ * Author: LiuJia on 2017/5/24 0024 17:48.
+ * Email: liujia95me@126.com
  */
-public class CarCardFragment extends BaseFragment<CarCardPresenter> implements CarCardContract.View {
+
+public class RechargeRecordFragment extends BaseFragment {
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R.id.toolbar_menu)
-    TextView toolbarMenu;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     private Unbinder unbinder;
-    private CarCardRVAdapter adapter;
     Params params = Params.getInstance();
 
-    public static CarCardFragment newInstance() {
-        return new CarCardFragment();
-    }
-
-    @NonNull
-    @Override
-    protected CarCardPresenter createPresenter() {
-        return new CarCardPresenter(this);
+    public static RechargeRecordFragment newInstance() {
+        return new RechargeRecordFragment();
     }
 
     @Nullable
@@ -72,24 +57,17 @@ public class CarCardFragment extends BaseFragment<CarCardPresenter> implements C
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText("我的车卡");
-        toolbarMenu.setText("充值记录");
+        toolbarTitle.setText("充值记录");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
-        mPresenter.requestCarCardList(params);
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        adapter = new CarCardRVAdapter();
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(new RechargeReocrdAdapter());
     }
 
     private void initListener() {
-        adapter.setOnItemClickListener((adapter, view, position) -> {
-            CarCardListBean.DataBean.CardListBean bean = (CarCardListBean.DataBean.CardListBean) adapter.getData().get(position);
-            startForResult(SubmitSuccessFragment.newInstance(bean.getCardType()), 100);
-        });
     }
 
     @Override
@@ -106,23 +84,4 @@ public class CarCardFragment extends BaseFragment<CarCardPresenter> implements C
         unbinder.unbind();
     }
 
-    @Override
-    public void start(Object response) {
-
-    }
-
-    @Override
-    public void error(String errorMessage) {
-        DialogHelper.warningSnackbar(getView(), errorMessage);
-    }
-
-    @Override
-    public void responseCarCardList(List<CarCardListBean.DataBean.CardListBean> datas) {
-        adapter.setNewData(datas);
-    }
-
-    @OnClick(R.id.toolbar_menu)
-    public void onViewClicked() {
-        start(RechargeRecordFragment.newInstance());
-    }
 }
