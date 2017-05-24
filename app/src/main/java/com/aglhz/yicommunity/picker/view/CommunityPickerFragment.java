@@ -28,8 +28,8 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
-import com.aglhz.yicommunity.picker.contract.CityPickerContract;
-import com.aglhz.yicommunity.picker.presenter.CityPickerPresenter;
+import com.aglhz.yicommunity.picker.contract.CommunityPickerContract;
+import com.aglhz.yicommunity.picker.presenter.CommunityPickerPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -46,7 +46,7 @@ import static com.aglhz.yicommunity.common.UserHelper.city;
 /**
  * Created by Administrator on 2017/4/29 0029.
  */
-public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Presenter> implements CityPickerContract.View {
+public class CommunityPickerFragment extends BaseFragment<CommunityPickerContract.Presenter> implements CommunityPickerContract.View {
     private static final String TAG = CommunityPickerFragment.class.getSimpleName();
     private PtrFrameLayout ptrFrameLayout;
     private RecyclerView recyclerView;
@@ -66,8 +66,8 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
 
     @NonNull
     @Override
-    protected CityPickerContract.Presenter createPresenter() {
-        return new CityPickerPresenter(this);
+    protected CommunityPickerContract.Presenter createPresenter() {
+        return new CommunityPickerPresenter(this);
     }
 
     @Nullable
@@ -108,7 +108,6 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
         });
     }
 
-
     private void initToolbar() {
         initStateBar(toolbar);
         tvTitle.setText("小区名称");
@@ -117,34 +116,9 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-                mPresenter.requestCommunitys(params);
-            }
-        });
-    }
 
     private void initData() {
-        params.city = city;
-        mPresenter.requestCommunitys(params);
+        params.city = UserHelper.city;
         etSearchCommunity.setHint("请输入城市名或小区名");
         mDatas = new ArrayList<>();
         resultData = new ArrayList<>();
@@ -186,6 +160,33 @@ public class CommunityPickerFragment extends BaseFragment<CityPickerContract.Pre
             UserHelper.setCommunity(communitiesBean.getName(), communitiesBean.getCode());
             EventBus.getDefault().post(new EventCommunity(communitiesBean));
             _mActivity.finish();
+        });
+    }
+
+    private void initPtrFrameLayout() {
+        final MaterialHeader header = new MaterialHeader(getContext());
+        int[] colors = getResources().getIntArray(R.array.google_colors);
+        header.setColorSchemeColors(colors);
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
+        header.setPtrFrameLayout(ptrFrameLayout);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                //判断是否滑动到顶部。
+                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
+            }
+
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                ALog.e("开始刷新了");
+                adapter.getData().clear();
+                adapter.notifyDataSetChanged();
+                mPresenter.requestCommunitys(params);
+            }
         });
     }
 

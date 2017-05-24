@@ -13,7 +13,7 @@ import io.reactivex.Observable;
  * Email: liujia95me@126.com
  */
 
-public interface CityPickerContract {
+public interface CommunityPickerContract {
 
     interface View extends BaseContract.View {
         void responseCommunitys(List<CommunitySelectBean.DataBean.CommunitiesBean> bean);

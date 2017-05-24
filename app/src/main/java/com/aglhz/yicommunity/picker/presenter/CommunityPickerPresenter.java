@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.picker.contract.CityPickerContract;
+import com.aglhz.yicommunity.picker.contract.CommunityPickerContract;
 import com.aglhz.yicommunity.picker.model.CommunityPickerModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,20 +15,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Email: liujia95me@126.com
  */
 
-public class CityPickerPresenter extends BasePresenter<CityPickerContract.View,CityPickerContract.Model> implements CityPickerContract.Presenter {
+public class CommunityPickerPresenter extends BasePresenter<CommunityPickerContract.View,CommunityPickerContract.Model> implements CommunityPickerContract.Presenter {
 
     /**
      * 创建Presenter的时候就绑定View和创建model。
      *
      * @param mView 所要绑定的view层对象，一般在View层创建Presenter的时候通过this把自己传过来。
      */
-    public CityPickerPresenter(CityPickerContract.View mView) {
+    public CommunityPickerPresenter(CommunityPickerContract.View mView) {
         super(mView);
     }
 
     @NonNull
     @Override
-    protected CityPickerContract.Model createModel() {
+    protected CommunityPickerContract.Model createModel() {
         return new CommunityPickerModel();
     }
 

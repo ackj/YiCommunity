@@ -46,7 +46,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
         initPush();
 //        registerActivityLifecycleCallbacks(this);
 
-        tempInit();
+//        tempInit();
 
         initBoxing();
 

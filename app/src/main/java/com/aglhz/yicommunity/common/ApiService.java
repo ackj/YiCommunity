@@ -29,11 +29,16 @@ import com.aglhz.yicommunity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
 
+import java.util.Map;
+
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -48,6 +53,7 @@ public interface ApiService {
     String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
     String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+//    String BASE_PROPERTYCFG_M = "http://192.168.250.108:8080/propertyCFG-m";  //调试之用
 
     //********************以下为Web*******************************
     String PRODUCT_INTRODUCTION = "http://www.aglhz.com/sub_property_ysq/m/html/introduction.html";
@@ -183,13 +189,22 @@ public interface ApiService {
     String requestCommunitys = BASE_PROPERTYCFG_M + "/client/communityList.do";
 
     //    @POST("/propertyCFG-m/client/communityList.do")
+    @FormUrlEncoded
     @POST
-    Observable<CommunitySelectBean> requestCommunitys(@Url String url, @Query("sc") String sc
-            , @Query("page") String page
-            , @Query("pageSize") String pageSize
-            , @Query("province") String province
-            , @Query("city") String city
-            , @Query("county") String county);
+    Observable<CommunitySelectBean> requestCommunitys(
+            @Url String url
+            , @Field("sc") String sc
+            , @Field("page") String page
+            , @Field("pageSize") String pageSize
+            , @Field("province") String province
+            , @Field("city") String city
+            , @Field("county") String county);
+
+//    @FormUrlEncoded
+//    @POST
+//    Observable<CommunitySelectBean> requestCommunitys(
+//            @Url String url,
+//            @FieldMap() Map<String, String> params);
 
     //请求楼栋列表
     String requestBuildings = BASE_PROPERTYCFG_M + "/client/buildingList.do";

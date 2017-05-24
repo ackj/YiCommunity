@@ -6,7 +6,10 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.picker.contract.CityPickerContract;
+import com.aglhz.yicommunity.picker.contract.CommunityPickerContract;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -16,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
  * Email: liujia95me@126.com
  */
 
-public class CommunityPickerModel extends BaseModel implements CityPickerContract.Model {
+public class CommunityPickerModel extends BaseModel implements CommunityPickerContract.Model {
 
     @Override
     public void start(Object request) {
@@ -29,16 +32,17 @@ public class CommunityPickerModel extends BaseModel implements CityPickerContrac
         ALog.e(params.page + "");
         ALog.e(params.pageSize + "");
         ALog.e(params.province);
-        ALog.e(params.city);
         ALog.e(params.county);
+        ALog.e(params.city);
 
-        return HttpHelper.getService(ApiService.class).requestCommunitys(ApiService.requestCommunitys
-                , params.sc
-                , params.page + ""
-                , params.pageSize + ""
-                , params.province
-                , params.city
-                , params.county)
+        return HttpHelper.getService(ApiService.class)
+                .requestCommunitys(ApiService.requestCommunitys
+                        , params.sc
+                        , params.page + ""
+                        , params.pageSize + ""
+                        , params.province
+                        , params.city
+                        , params.county)
                 .subscribeOn(Schedulers.io());
     }
 }
