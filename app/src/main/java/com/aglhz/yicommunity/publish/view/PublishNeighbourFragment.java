@@ -24,12 +24,15 @@ import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishNeighbourPresenter;
 import com.bilibili.boxing.Boxing;
 import com.bilibili.boxing.model.config.BoxingConfig;
 import com.bilibili.boxing.model.entity.BaseMedia;
 import com.bilibili.boxing_impl.ui.BoxingActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -209,6 +212,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
             loadingDialog.dismiss();
         }
         DialogHelper.successSnackbar(getView(), "提交成功!");
+        EventBus.getDefault().post(new EventPublish());
         pop();
     }
 
@@ -236,4 +240,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
         loadingDialog.show();
         requesting = true;
     }
+
+
 }

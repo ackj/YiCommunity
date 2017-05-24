@@ -25,6 +25,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.neighbour.contract.NeighbourContract;
 import com.aglhz.yicommunity.neighbour.presenter.NeighbourPresenter;
 import com.aglhz.yicommunity.publish.CommentActivity;
@@ -310,6 +311,12 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
     public void onEvent(EventCommunity event) {
         adapter.getData().clear();
         adapter.notifyDataSetChanged();
+        ptrFrameLayout.autoRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventPublish event) {
+    
         ptrFrameLayout.autoRefresh();
     }
 }

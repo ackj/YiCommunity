@@ -74,7 +74,6 @@ public class Constants {
     public static final int ALIPAY = 1;
     public static final int WXPAY = 2;
 
-
     //********************以上为支付类型************************
 
 

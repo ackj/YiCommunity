@@ -525,8 +525,9 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
-        svSteward.fullScroll(ScrollView.FOCUS_UP);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
+//        svSteward.fullScroll(ScrollView.FOCUS_UP);
+//        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
+        ptrFrameLayout.autoRefresh();
     }
 }
 

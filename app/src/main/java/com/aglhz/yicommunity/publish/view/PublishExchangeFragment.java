@@ -24,6 +24,7 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishExchangePresenter;
@@ -52,7 +53,6 @@ import butterknife.Unbinder;
 
 public class PublishExchangeFragment extends BaseFragment<PublishExchangePresenter> implements PublishContract.View {
     private final String TAG = PublishExchangeFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -189,6 +189,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
     public void responseSuccess(BaseBean bean) {
         requesting = false;
         DialogHelper.successSnackbar(getView(), "提交成功!");
+        EventBus.getDefault().post(new EventPublish());
         pop();
     }
 

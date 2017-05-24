@@ -24,6 +24,7 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.picker.view.CityPickerFragment;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
@@ -57,7 +58,6 @@ import butterknife.Unbinder;
 
 public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter> implements PublishContract.View {
     private final String TAG = PublishCarpoolFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -160,7 +160,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
-        if (resultCode == RESULT_OK &&requestCode == 100 ) {
+        if (resultCode == RESULT_OK && requestCode == 100) {
             ArrayList<BaseMedia> medias = Boxing.getResult(data);
             for (int i = 0; i < medias.size(); i++) {
                 params.files.add(new File(medias.get(i).getPath()));
@@ -196,6 +196,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     public void responseSuccess(BaseBean bean) {
         requesting = false;
         DialogHelper.successSnackbar(getView(), "提交成功!");
+        EventBus.getDefault().post(new EventPublish());
         pop();
     }
 
