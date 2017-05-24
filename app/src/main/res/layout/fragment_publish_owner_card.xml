@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,7 +10,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:text="您的车卡申请已通过，请及时缴费!"
         android:textColor="@color/base_black"
@@ -24,7 +25,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="50dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,15 +34,57 @@
             android:layout_marginLeft="15dp"
             android:text="办卡车辆"
             android:textColor="@color/default_text"
-            android:textSize="16sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_car_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/et_input_car_num"
+            android:layout_toLeftOf="@id/et_input_car_num"
+            android:padding="10dp"
+            android:text="粤"
+            android:textColor="@color/base_black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_input_car_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="输入车牌号"
+            android:textColor="@color/accent_text"
+            android:textColorHint="@color/default_text"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/base_grey" />
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="附属车辆"
+            android:textColor="@color/default_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/et_input_car_num"
             android:padding="10dp"
             android:text="粤"
             android:textColor="@color/base_black"
@@ -59,21 +102,22 @@
             android:hint="输入车牌号"
             android:textColor="@color/accent_text"
             android:textColorHint="@color/default_text"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            tools:ignore="DuplicateIds" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/base_grey" />
+        android:background="@color/base_grey" />-->
 
     <RelativeLayout
-        android:id="@+id/rl_park_address"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:id="@+id/rl_park_address"
         android:gravity="center_vertical">
 
         <TextView
@@ -82,18 +126,22 @@
             android:layout_marginLeft="15dp"
             android:text="停车地址"
             android:textColor="@color/default_text"
-            android:textSize="16sp" />
+            android:textSize="13sp"
+            android:id="@+id/textView2" />
 
         <TextView
             android:id="@+id/tv_park_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:drawableRight="@drawable/ic_arrow_right_30px"
             android:hint="请选择停车场"
             android:textColor="@color/base_black"
-            android:textSize="16sp" />
+            android:textSize="13sp"
+            android:layout_alignBaseline="@+id/textView2"
+            android:layout_alignBottom="@+id/textView2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp" />
     </RelativeLayout>
 
     <View
@@ -101,85 +149,10 @@
         android:layout_height="1dp"
         android:background="@color/base_grey" />
 
-    <RelativeLayout
-        android:id="@+id/rl_beforehand_pay_month_count"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="预缴月数"
-            android:textColor="@color/default_text"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_beforehand_pay_month_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:drawableRight="@drawable/ic_arrow_right_30px"
-            android:hint="请选择预缴月数"
-            android:textColor="@color/base_black"
-            android:textSize="16sp" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/base_grey" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="1"
-            android:text="有效期"
-            android:textColor="@color/default_text"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_start_time_fragment_month_car_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="开始时间"
-            android:padding="15dp"
-            android:textColor="@color/base_black"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="至"
-            android:textColor="@color/default_text"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_end_time_fragment_month_car_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="结束时间"
-            android:padding="15dp"
-            android:textColor="@color/base_black"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/base_grey" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -188,10 +161,13 @@
             android:layout_marginLeft="15dp"
             android:text="姓名"
             android:textColor="@color/default_text"
-            android:textSize="16sp" />
+            android:textSize="13sp"
+            android:layout_alignTop="@+id/et_input_name"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="17dp" />
 
         <EditText
-            android:id="@+id/et_name_fragment_month_card_pay"
+            android:id="@+id/et_input_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -201,7 +177,7 @@
             android:hint="输入您的姓名"
             android:textColor="@color/accent_text"
             android:textColorHint="@color/default_text"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
     </RelativeLayout>
 
     <View
@@ -211,7 +187,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -220,10 +196,10 @@
             android:layout_marginLeft="15dp"
             android:text="联系方式"
             android:textColor="@color/default_text"
-            android:textSize="16sp" />
+            android:textSize="13sp" />
 
         <EditText
-            android:id="@+id/et_input_phone_fragment_month_card_pay"
+            android:id="@+id/et_input_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -231,67 +207,19 @@
             android:background="@null"
             android:gravity="end"
             android:hint="输入您的联系方式"
-            android:inputType="number"
             android:textColor="@color/accent_text"
             android:textColorHint="@color/default_text"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/base_grey" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:id="@+id/tv_need_pay_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="应付金额"
-            android:textColor="@color/default_text"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/tv_need_pay_money"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/tv_need_pay_money"
-            android:text="(收费标准)"
-            android:textColor="@color/red_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:text="0.00元"
-            android:textColor="@color/base_black"
-            android:textSize="16sp" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/base_grey" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="您的有效时间是以缴费成功的日期开始计算！"
-        android:textColor="@color/red_text"
-        android:textSize="13sp" />
 
     <Button
-        android:id="@+id/bt_submit_fragment_month_card_pay"
-        android:layout_width="150dp"
+        android:id="@+id/bt_submit_fragment_owner_card"
+        android:layout_width="200dp"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"

@@ -79,9 +79,9 @@ public class CarCardTransactFragment extends BaseFragment {
     private void initListener() {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == 0) {
-                start(MonthCardPayFragment.newInstance());
+                start(PublishMonthCardFragment.newInstance());
             }else{
-                start(ProprietorGarageFragment.newInstance());
+                start(PublishOwnerCardFragment.newInstance());
             }
         });
     }

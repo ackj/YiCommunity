@@ -3,8 +3,12 @@ package com.aglhz.yicommunity.park.presenter;
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.park.contract.CarCardContract;
 import com.aglhz.yicommunity.park.model.CarCardModel;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：leguang on 2016/10/9 0009 10:35
@@ -36,5 +40,17 @@ public class CarCardPresenter extends BasePresenter<CarCardContract.View, CarCar
 
     }
 
-
+    @Override
+    public void requestCarCardList(Params params) {
+        mRxManager.add(mModel.requestCarCardList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(carCardListBean -> {
+                    if (carCardListBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseCarCardList(carCardListBean.getData().getCardList());
+                    } else {
+                        getView().error(carCardListBean.getOther().getMessage());
+                    }
+                }, this::error)
+        );
+    }
 }

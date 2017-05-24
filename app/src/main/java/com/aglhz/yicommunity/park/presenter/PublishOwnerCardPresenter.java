@@ -5,36 +5,42 @@ import android.support.annotation.NonNull;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.park.contract.MonthCardPayContract;
-import com.aglhz.yicommunity.park.model.MonthCardPayModel;
+import com.aglhz.yicommunity.park.model.PublishOwnerCardModel;
+import com.aglhz.yicommunity.publish.contract.PublishContract;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
- * Author: LiuJia on 2017/5/23 0023 16:28.
+ * Author: LiuJia on 2017/5/24 0024 10:44.
  * Email: liujia95me@126.com
  */
 
-public class MonthCardPayPresenter extends BasePresenter<MonthCardPayContract.View, MonthCardPayContract.Model> implements MonthCardPayContract.Presenter {
+public class PublishOwnerCardPresenter extends BasePresenter<PublishContract.View,PublishContract.Model> implements PublishContract.Presenter{
+
 
     /**
      * 创建Presenter的时候就绑定View和创建model。
      *
      * @param mView 所要绑定的view层对象，一般在View层创建Presenter的时候通过this把自己传过来。
      */
-    public MonthCardPayPresenter(MonthCardPayContract.View mView) {
+    public PublishOwnerCardPresenter(PublishContract.View mView) {
         super(mView);
     }
 
     @NonNull
     @Override
-    protected MonthCardPayContract.Model createModel() {
-        return new MonthCardPayModel();
+    protected PublishContract.Model createModel() {
+        return new PublishOwnerCardModel();
     }
 
     @Override
-    public void postMothCarPay(Params params) {
-        mRxManager.add(mModel.postMothCarPay(params)
+    public void start(Object request) {
+
+    }
+
+    @Override
+    public void post(Params params) {
+        mRxManager.add(mModel.post(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
@@ -44,10 +50,5 @@ public class MonthCardPayPresenter extends BasePresenter<MonthCardPayContract.Vi
                     }
                 }, this::error)
         );
-    }
-
-    @Override
-    public void start(Object request) {
-
     }
 }
