@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.mine.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.UserDataBean;
 import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;
@@ -28,7 +29,7 @@ public interface UserDataContract {
     }
 
     interface Model extends BaseContract.Model {
-        Observable<BaseBean> updatePortrait(Params params);
+        Observable<UserDataBean> updatePortrait(Params params);
 
         Observable<BaseBean> updateUserData(Params params);
 

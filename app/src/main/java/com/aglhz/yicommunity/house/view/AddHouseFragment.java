@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.house.view;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -89,12 +90,12 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     @BindView(R.id.tv_room_add_house_fragment)
     TextView tvRoom;
     private boolean isProprietor = true;
-    private ViewGroup rootView;
     private BottomDialog addressSelector;
     private SelectorDialog selector;
     private Params params = Params.getInstance();
     private String title;
     private Unbinder unbinder;
+    private Dialog loadingDialog;
 
     public static AddHouseFragment newInstance(String address) {
         Bundle args = new Bundle();
@@ -130,7 +131,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar(toolbar);
     }
 
@@ -163,42 +163,47 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 break;
             case R.id.ll_community_add_house_fragment:
                 if (TextUtils.isEmpty(tvArea.getText().toString())) {
-                    DialogHelper.warningSnackbar(rootView, "请先选择区域！");
+                    DialogHelper.warningSnackbar(getView(), "请先选择区域！");
                 } else {
+                    showLoadingDialog();
                     mPresenter.requestCommunitys(params);
                 }
                 break;
             case R.id.ll_building_add_house_fragment:
                 if (TextUtils.isEmpty(tvCommunity.getText().toString().trim())) {
-                    DialogHelper.warningSnackbar(rootView, "请先选择小区！");
+                    DialogHelper.warningSnackbar(getView(), "请先选择小区！");
                 } else {
+                    showLoadingDialog();
                     mPresenter.requestBuildings(params);
                 }
                 break;
             case R.id.ll_unit_add_house_fragment:
                 if (TextUtils.isEmpty(tvBuilding.getText().toString().trim())) {
-                    DialogHelper.warningSnackbar(rootView, "请先选择楼栋！");
+                    DialogHelper.warningSnackbar(getView(), "请先选择楼栋！");
                 } else {
+                    showLoadingDialog();
                     mPresenter.requestUnits(params);
                 }
                 break;
             case R.id.ll_floor_add_house_fragment:
                 if (TextUtils.isEmpty(tvUnit.getText().toString().trim())) {
-                    DialogHelper.warningSnackbar(rootView, "请先选择单元！");
+                    DialogHelper.warningSnackbar(getView(), "请先选择单元！");
                 } else {
+                    showLoadingDialog();
                     mPresenter.requestFloors(params);
                 }
                 break;
             case R.id.ll_room_add_house_fragment:
                 if (TextUtils.isEmpty(tvFloor.getText().toString().trim())) {
-                    DialogHelper.warningSnackbar(rootView, "请先选择楼层！");
+                    DialogHelper.warningSnackbar(getView(), "请先选择楼层！");
                 } else {
+                    showLoadingDialog();
                     mPresenter.requestRooms(params);
                 }
                 break;
             case R.id.bt_submit_house_fragment:
                 if (TextUtils.isEmpty(tvRoom.getText().toString().trim())) {
-                    DialogHelper.warningSnackbar(rootView, "请先选择房间！");
+                    DialogHelper.warningSnackbar(getView(), "请先选择房间！");
                 } else {
                     params.isProprietor = isProprietor;
                     params.name = etName.getText().toString().trim();
@@ -207,18 +212,16 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     Pattern pattern = Pattern.compile(regEx);
                     Matcher matcher = pattern.matcher(idCard);
                     if (!matcher.matches()) {
-                        DialogHelper.warningSnackbar(rootView, "请输入正确的身份证号码!");
+                        DialogHelper.warningSnackbar(getView(), "请输入正确的身份证号码!");
                         return;
                     }
                     params.idCard = idCard;
+                    showLoadingDialog();
                     mPresenter.requestApply(params);
                 }
                 break;
         }
-        ALog.e(isProprietor);
-
     }
-
 
     private void resetIdentity(TextView tvChecked, TextView tvUnChecked, boolean b) {
         tvChecked.setBackgroundResource(R.drawable.bg_checked_red_340px_180px);
@@ -277,6 +280,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     @Override
     public void responseCommunitys(final List<CommunitySelectBean.DataBean.CommunitiesBean> communities) {
+        dismissLoadingDialog();
         String[] array = new String[communities.size()];
         for (int i = 0; i < communities.size(); i++) {
             array[i] = communities.get(i).getName();
@@ -306,6 +310,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     @Override
     public void responseBuildings(List<BuildingBean.DataBean.BuildingsBean> buildings) {
+        dismissLoadingDialog();
+
         String[] array = new String[buildings.size()];
         for (int i = 0; i < buildings.size(); i++) {
             array[i] = buildings.get(i).getName();
@@ -333,6 +339,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     @Override
     public void responseUnits(List<UnitBean.DataBean.BuildingUnitsBean> units) {
+        dismissLoadingDialog();
+
         String[] array = new String[units.size()];
         for (int i = 0; i < units.size(); i++) {
             array[i] = units.get(i).getName();
@@ -358,6 +366,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     @Override
     public void responseFloors(List<FloorBean.DataBean.FloorsBean> floors) {
+        dismissLoadingDialog();
+
         String[] array = new String[floors.size()];
         for (int i = 0; i < floors.size(); i++) {
             array[i] = floors.get(i).getName();
@@ -380,6 +390,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     @Override
     public void responseRooms(List<RoomBean.DataBean.HousesBean> rooms) {
+        dismissLoadingDialog();
+
         String[] array = new String[rooms.size()];
         for (int i = 0; i < rooms.size(); i++) {
             array[i] = rooms.get(i).getName();
@@ -400,7 +412,9 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     @Override
     public void responseApply(String message) {
-        DialogHelper.successSnackbar(rootView, message);
+        dismissLoadingDialog();
+
+        DialogHelper.successSnackbar(getView(), message);
         getView().postDelayed(() -> _mActivity.finish(), 1000);
     }
 
@@ -409,9 +423,23 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     }
 
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+    }
+
     @Override
     public void error(String errorMessage) {
-        DialogHelper.errorSnackbar(rootView, errorMessage);
+        dismissLoadingDialog();
+        DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 }
 

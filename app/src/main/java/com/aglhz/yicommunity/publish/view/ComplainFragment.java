@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.publish.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +24,20 @@ import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.ComplainPresenter;
+import com.aglhz.yicommunity.publish.presenter.RepairPresenter;
 import com.bilibili.boxing.Boxing;
 import com.bilibili.boxing.model.config.BoxingConfig;
 import com.bilibili.boxing.model.entity.BaseMedia;
 import com.bilibili.boxing_impl.ui.BoxingActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -49,6 +58,8 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_community_fragment_complain)
+    TextView tvCommunity;
     @BindView(R.id.et_name_fragment_complain)
     EditText etName;
     @BindView(R.id.et_phone_fragment_complain)
@@ -61,7 +72,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     Params params = Params.getInstance();
-    private boolean requesting;
+    private Dialog loadingDialog;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
@@ -79,12 +90,12 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         return new ComplainPresenter(this);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_complain, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -104,6 +115,8 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     }
 
     private void initData() {
+        tvCommunity.setText(TextUtils.isEmpty(UserHelper.communityName) ? "请选择小区" : UserHelper.communityName);
+
         //因为params是单例，所以要将上次选择的清除
         params.files = new ArrayList<>();
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
@@ -134,15 +147,15 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
 
     @Override
     public void error(String errorMessage) {
-        requesting = false;
+        dismissLoadingDialog();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean baseBean) {
-        requesting = false;
+        dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "提交成功!");
-        pop();
+        getView().postDelayed(() -> _mActivity.finish(), 300);
     }
 
     @Override
@@ -150,32 +163,37 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         super.onDestroyView();
         KeyBoardUtils.hideKeybord(getView(), _mActivity);
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
-    @OnClick(R.id.btn_submit_fragment_complain)
-    public void onViewClicked() {
-        try {
-            params.name = new String(etName.getText().toString().trim().getBytes("GBK"), "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        params.phoneNo = etPhone.getText().toString().trim();
-        params.content = etContent.getText().toString().trim();
-        if (params.name.isEmpty()) {
-            DialogHelper.errorSnackbar(getView(), "请输入联系人");
-            return;
-        }
+    @OnClick({R.id.tv_community_fragment_complain, R.id.btn_submit_fragment_complain})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_community_fragment_complain:
+                _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
+                break;
 
-        if (params.phoneNo.isEmpty()) {
-            DialogHelper.errorSnackbar(getView(), "请输入您的联系方式");
-            return;
-        }
+            case R.id.btn_submit_fragment_complain:
+                params.name = etName.getText().toString().trim();
+                params.phoneNo = etPhone.getText().toString().trim();
+                params.content = etContent.getText().toString().trim();
+                if (params.name.isEmpty()) {
+                    DialogHelper.errorSnackbar(getView(), "请输入联系人");
+                    return;
+                }
 
-        if (params.content.isEmpty()) {
-            DialogHelper.errorSnackbar(getView(), "请输入详情");
-            return;
+                if (params.phoneNo.isEmpty()) {
+                    DialogHelper.errorSnackbar(getView(), "请输入您的联系方式");
+                    return;
+                }
+
+                if (params.content.isEmpty()) {
+                    DialogHelper.errorSnackbar(getView(), "请输入详情");
+                    return;
+                }
+                submit(params);
+                break;
         }
-        submit(params);
     }
 
     private void selectPhoto() {
@@ -203,12 +221,27 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     }
 
     private void submit(Params params) {
-        if (requesting) {
-            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
-            return;
-        }
         params.cmnt_c = UserHelper.communityCode;
         mPresenter.post(params);//上传
-        requesting = true;
+        showLoadingDialog();
+    }
+
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        tvCommunity.setText(UserHelper.communityName);
     }
 }

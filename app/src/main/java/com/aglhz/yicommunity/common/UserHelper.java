@@ -23,7 +23,10 @@ public class UserHelper {
     private static final String PASSWORD = "password";
     private static final String USER_INFO = "user_info";
     private static final String DIR = "dir";
+    private static final String PROVINCE = "province";
     private static final String CITY = "city";
+    private static final String COUNTY = "county";
+    private static final String ADDRESS = "address";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
     private static final String POSITION_ADDRESS = "position_address";
@@ -31,7 +34,10 @@ public class UserHelper {
 
     public static String token = "";
     public static String communityName = "";
+    public static String province = "";
     public static String city = "";
+    public static String county = "";
+    public static String address = "";
     public static String communityCode = "";
     public static String account = "";
     public static String password = "";
@@ -58,7 +64,7 @@ public class UserHelper {
         return editor.commit();
     }
 
-    public static boolean setLocationAddress(String address){
+    public static boolean setLocationAddress(String address) {
         UserHelper.positionAddress = address;
         SharedPreferences.Editor editor = getEditor();
         editor.putString(POSITION_ADDRESS, address);
@@ -88,6 +94,11 @@ public class UserHelper {
         latitude = "";
         longitude = "";
         sip = "";
+        province = "";
+        city = "";
+        county = "";
+        address = "";
+
         return getEditor().clear().commit();
     }
 
@@ -162,10 +173,14 @@ public class UserHelper {
         latitude = getSp().getString(LATITUDE, "");
         longitude = getSp().getString(LONGITUDE, "");
         sip = getSp().getString(SIP, "");
+        province = getSp().getString(PROVINCE, "");
+        city = getSp().getString(CITY, "");
+        county = getSp().getString(COUNTY, "");
+        address = getSp().getString(ADDRESS, "");
         getUserInfo();
     }
 
-    //更新社区名称和社区代码
+    //更新门禁机的路径
     public static boolean setDir(String dir) {
         UserHelper.dir = dir;
         SharedPreferences.Editor editor = getEditor();
@@ -173,11 +188,51 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //更新社区名称和社区代码
+    //更新省份名称
+    public static boolean setProvince(String province) {
+        UserHelper.province = province;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(PROVINCE, province);
+        return editor.commit();
+    }
+
+    //更新城市名称
     public static boolean setCity(String city) {
         UserHelper.city = city;
         SharedPreferences.Editor editor = getEditor();
         editor.putString(CITY, city);
+        return editor.commit();
+    }
+
+    //更新区名
+    public static boolean setCounty(String county) {
+        UserHelper.county = county;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(COUNTY, county);
+        return editor.commit();
+    }
+
+    //更新完整地址
+    public static boolean setAddress(String address) {
+        UserHelper.address = address;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(ADDRESS, address);
+        return editor.commit();
+    }
+
+    //更新位置信息
+    public static boolean setPosition(String province, String city, String county, String address) {
+        UserHelper.province = province;
+        UserHelper.city = city;
+        UserHelper.county = county;
+        UserHelper.address = address;
+
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(PROVINCE, province);
+        editor.putString(CITY, city);
+        editor.putString(COUNTY, county);
+        editor.putString(ADDRESS, address);
+
         return editor.commit();
     }
 

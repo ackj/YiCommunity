@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.mine.model;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.UserDataBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.mine.contract.UserDataContract;
@@ -31,13 +32,14 @@ public class UserDataModel extends BaseModel implements UserDataContract.Model {
     }
 
     @Override
-    public Observable<BaseBean> updatePortrait(Params params) {
+    public Observable<UserDataBean> updatePortrait(Params params) {
         // 创建 RequestBody，用于封装构建RequestBody
         MultipartBody.Builder builder = new MultipartBody.Builder();
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), params.file);
         builder.addFormDataPart("file", params.file.getName(), requestBody);
 
-        return HttpHelper.getService(ApiService.class).updatePortrait(ApiService.updatePortrait,
+        return HttpHelper.getService(ApiService.class)
+                .updatePortrait(ApiService.updatePortrait,
                 params.token, builder.build())
                 .subscribeOn(Schedulers.io());
     }

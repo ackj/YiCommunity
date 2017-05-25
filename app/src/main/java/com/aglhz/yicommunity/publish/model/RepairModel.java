@@ -43,10 +43,15 @@ public class RepairModel extends BaseModel implements PublishContract.Model {
         builder.addFormDataPart("name", params.name);
         builder.addFormDataPart("single", params.single + "");
         builder.addFormDataPart("type", params.type + "");
+        builder.addFormDataPart("ofid", params.ofid);
+
         ALog.d("PublishNeighbourModel", "上传=============");
+
         if (params.files != null && params.files.size() > 0) {
             for (File f : params.files) {
+
                 ALog.d("PublishNeighbourModel", "上传图片：" + f.getAbsolutePath());
+
                 RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), f);
                 builder.addFormDataPart("file", f.getName(), requestBody);
             }
@@ -61,7 +66,7 @@ public class RepairModel extends BaseModel implements PublishContract.Model {
                 .requestMyhouses(ApiService.requestMyhouses, params.token, params.cmnt_c)
                 .map(myHousesBean -> myHousesBean.getData().getAuthBuildings())
                 .flatMap(Flowable::fromIterable)
-                .map(bean -> new IconBean(R.drawable.ic_my_house_red_140px, bean.getB_name(), bean.getFid()))
+                .map(bean -> new IconBean(R.drawable.ic_my_house_red_140px, bean.getAddress(), bean.getFid()))
                 .toList()
                 .subscribeOn(Schedulers.io());
     }

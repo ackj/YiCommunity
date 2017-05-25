@@ -38,6 +38,7 @@ public class Params {
     public String idCard = "";
     public String fid = "";
     public String url = "";
+    public String ofid = "";
     public String mfid = "";
     public String picode = "";
     public String directory;

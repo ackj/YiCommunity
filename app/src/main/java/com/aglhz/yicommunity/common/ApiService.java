@@ -30,6 +30,7 @@ import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
+import com.aglhz.yicommunity.bean.UserDataBean;
 
 import java.util.Map;
 
@@ -166,7 +167,7 @@ public interface ApiService {
     String updatePortrait = BASE_USER + "/client/uploadHeader2.do";
 
     @POST
-    Observable<BaseBean> updatePortrait(@Url String url, @Query("token") String token, @Body MultipartBody file);
+    Observable<UserDataBean> updatePortrait(@Url String url, @Query("token") String token, @Body MultipartBody file);
 
     //物业报修列表
     String requestRepairApply = BASE_PROPERTY + "/client/info/repairApplyList";
@@ -281,7 +282,7 @@ public interface ApiService {
     Observable<BaseBean> postRepair(@Url String url, @Body MultipartBody file);
 
 
-    String postComplain = BASE_PROPERTY + "/property/complaint/from-client/complaint-create";
+    String requestComplain = BASE_PROPERTY + "/property/complaint/from-client/complaint-create";
 
     //提交管理投诉
     @POST

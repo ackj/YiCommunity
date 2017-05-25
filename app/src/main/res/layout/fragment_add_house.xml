@@ -128,7 +128,6 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="@string/hint_idcard"
-                    android:inputType="number|text"
                     android:lines="1"
                     android:textColor="@color/accent_text"
                     android:textColorHint="@color/default_text"

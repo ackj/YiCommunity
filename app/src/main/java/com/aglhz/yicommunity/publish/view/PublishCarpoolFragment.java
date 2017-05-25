@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.publish.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -56,7 +57,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter> implements PublishContract.View {
+public class PublishCarpoolFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = PublishCarpoolFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -82,7 +83,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     private Params params = Params.getInstance();
     private int REQUEST_START_POINT_CODE = 100;
     private int REQUEST_END_POINT_CODE = 101;
-    private boolean requesting;
+    private Dialog loadingDialog;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
@@ -96,7 +97,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
 
     @NonNull
     @Override
-    protected PublishCarpoolPresenter createPresenter() {
+    protected PublishContract.Presenter createPresenter() {
         return new PublishCarpoolPresenter(this);
     }
 
@@ -188,13 +189,13 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
 
     @Override
     public void error(String errorMessage) {
-        requesting = false;
+        dismissLoadingDialog();
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
-        requesting = false;
+        dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         EventBus.getDefault().post(new EventPublish());
         pop();
@@ -230,12 +231,9 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     }
 
     private void selectTogoTime() {
-        TimePickerView pvTime = new TimePickerView.Builder(_mActivity, new TimePickerView.OnTimeSelectListener() {
-            @Override
-            public void onTimeSelect(Date date, View v) {
-                params.outTime = getTime(date);
-                tvSelectGoTime.setText(params.outTime);
-            }
+        TimePickerView pvTime = new TimePickerView.Builder(_mActivity, (date, v) -> {
+            params.outTime = getTime(date);
+            tvSelectGoTime.setText(params.outTime);
         })
                 .setType(TimePickerView.Type.YEAR_MONTH_DAY_HOUR_MIN)
                 .build();
@@ -273,10 +271,6 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
     }
 
     private void submit() {
-        if (requesting) {
-            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
-            return;
-        }
         if (TextUtils.isEmpty(params.startPlace)) {
             DialogHelper.errorSnackbar(getView(), "请选择起点城市!");
             return;
@@ -302,7 +296,21 @@ public class PublishCarpoolFragment extends BaseFragment<PublishCarpoolPresenter
         params.currentPositionLng = UserHelper.longitude;
         params.positionAddress = UserHelper.positionAddress;
         params.positionType = 2;
+        showLoadingDialog();
         mPresenter.post(params);
-        requesting = true;
+    }
+
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

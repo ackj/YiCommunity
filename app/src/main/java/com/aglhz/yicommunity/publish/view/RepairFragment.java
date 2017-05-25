@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.publish.view;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,11 +83,8 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private boolean isPrivate;//是否是私人报修
-    private boolean requesting;
     private Params params = Params.getInstance();
-    private List<IconBean> houseBeans;
-    private String[] houseTitles;
-
+    private Dialog loadingDialog;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
@@ -139,12 +138,11 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         if (isPrivate) {
             rlHouseName.setVisibility(View.VISIBLE);
             params.cmnt_c = UserHelper.communityCode;
-            ((RepairPresenter) mPresenter).requestMyhouse(params);
         } else {
             rlHouseName.setVisibility(View.GONE);
         }
 
-        tvLocation.setText(UserHelper.communityName);
+        tvLocation.setText(TextUtils.isEmpty(UserHelper.communityName) ? "请选择小区" : UserHelper.communityName);
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
             @Override
             public boolean canScrollVertically() {
@@ -162,12 +160,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         initStateBar(toolbar);
         toolbarTitle.setText("我要报修");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     @Override
@@ -189,21 +182,16 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     public void onEvent(EventCommunity event) {
         params.cmnt_c = event.bean.getCode();
         tvLocation.setText(event.bean.getName());
-        if (isPrivate) {
-            ((RepairPresenter) mPresenter).requestMyhouse(params);
-        }
     }
 
     @OnClick({R.id.bt_submit_fragment_repair, R.id.tv_location_fragment_repair, R.id.rl_house_name, R.id.tl_repair_type})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_house_name:
-                new AlertDialog.Builder(_mActivity).setItems(houseTitles, (dialog, which) -> {
-                    //网络访问
-                    dialog.dismiss();
-                    ALog.e("AlertDialog which:::" + which);
-                    tvHouseName.setText(houseBeans.get(which).title);
-                }).setTitle("请选择").setPositiveButton("取消", null).show();
+                if (isPrivate) {
+                    showLoadingDialog();
+                    ((RepairPresenter) mPresenter).requestMyhouse(params);
+                }
                 break;
             case R.id.tl_repair_type:
                 String[] arr;
@@ -245,13 +233,9 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     }
 
     private void submit(Params params) {
-        if (requesting) {
-            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
-            return;
-        }
+        showLoadingDialog();
         params.cmnt_c = UserHelper.communityCode;
         mPresenter.post(params);
-        requesting = true;
     }
 
     @Override
@@ -279,23 +263,46 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     @Override
     public void error(String errorMessage) {
-        requesting = false;
+        dismissLoadingDialog();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     public void responseMyHouse(List<IconBean> iconBeans) {
-        houseBeans = iconBeans;
-        houseTitles = new String[iconBeans.size()];
+        dismissLoadingDialog();
+        String[] houseTitles = new String[iconBeans.size()];
         for (int i = 0; i < iconBeans.size(); i++) {
             houseTitles[i] = iconBeans.get(i).title;
         }
+
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("请选择")
+                .setItems(houseTitles, (dialog, which) -> {
+                    //网络访问
+                    tvHouseName.setText(iconBeans.get(which).title);
+                    params.ofid = iconBeans.get(which).fid;
+                })
+                .setPositiveButton("取消", null)
+                .show();
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
-        requesting = false;
+        dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         setFragmentResult(RESULT_OK, null);
         pop();
+    }
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

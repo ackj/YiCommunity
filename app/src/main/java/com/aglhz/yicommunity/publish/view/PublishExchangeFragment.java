@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.publish.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,7 +52,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class PublishExchangeFragment extends BaseFragment<PublishExchangePresenter> implements PublishContract.View {
+public class PublishExchangeFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = PublishExchangeFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -71,8 +72,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private Params params = Params.getInstance();
-    private boolean requesting;
-
+    private Dialog loadingDialog;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
@@ -86,7 +86,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
 
     @NonNull
     @Override
-    protected PublishExchangePresenter createPresenter() {
+    protected PublishContract.Presenter createPresenter() {
         return new PublishExchangePresenter(this);
     }
 
@@ -152,7 +152,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
-        if (resultCode == RESULT_OK &&requestCode == 100 ) {
+        if (resultCode == RESULT_OK && requestCode == 100) {
             ArrayList<BaseMedia> medias = Boxing.getResult(data);
             for (int i = 0; i < medias.size(); i++) {
                 params.files.add(new File(medias.get(i).getPath()));
@@ -181,13 +181,13 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
 
     @Override
     public void error(String errorMessage) {
-        requesting = false;
+        dismissLoadingDialog();
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
-        requesting = false;
+        dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         EventBus.getDefault().post(new EventPublish());
         pop();
@@ -223,14 +223,23 @@ public class PublishExchangeFragment extends BaseFragment<PublishExchangePresent
     }
 
     private void submit(String money, String content) {
-        if (requesting) {
-            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
-            return;
-        }
         params.cmnt_c = UserHelper.communityCode;
         params.content = content;
         params.price = money;
+        showLoadingDialog();
         mPresenter.post(params);
-        requesting = true;
+    }
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

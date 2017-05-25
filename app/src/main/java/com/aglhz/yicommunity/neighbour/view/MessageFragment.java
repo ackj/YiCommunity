@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aglhz.abase.log.ALog;
+import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
@@ -50,7 +51,7 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  * Email: liujia95me@126.com
  */
 
-public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presenter> implements NeighbourContract.View {
+public class MessageFragment extends BaseFragment<NeighbourContract.Presenter> implements NeighbourContract.View {
     private static final String TAG = NeighbourFragment.class.getSimpleName();
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -101,18 +102,26 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
         return view;
     }
 
-    /**
-     * 懒加载
-     */
-    @SuppressLint("RestrictedApi")
     @Override
-    protected void initLazyView(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            initData();
-            initListener();
-            initPtrFrameLayout();
-        }
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initData();
+        initListener();
+        initPtrFrameLayout();
     }
+
+//    /**
+//     * 懒加载
+//     */
+//    @SuppressLint("RestrictedApi")
+//    @Override
+//    protected void initLazyView(@Nullable Bundle savedInstanceState) {
+//        if (savedInstanceState == null) {
+//            initData();
+//            initListener();
+//            initPtrFrameLayout();
+//        }
+//    }
 
     private void initData() {
         //假数据
@@ -316,7 +325,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventPublish event) {
-
         ptrFrameLayout.autoRefresh();
     }
 }

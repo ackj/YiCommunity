@@ -42,15 +42,14 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
         ALog.e(params.city);
         ALog.e(params.county);
 
-        return null;
-//        return HttpHelper.getService(ApiService.class).requestCommunitys(ApiService.requestCommunitys
-//                , params.sc
-//                , params.page + ""
-//                , params.pageSize + ""
-//                , params.province
-//                , params.city
-//                , params.county)
-//                .subscribeOn(Schedulers.io());
+        return HttpHelper.getService(ApiService.class).requestCommunitys(ApiService.requestCommunitys
+                , params.sc
+                , params.page + ""
+                , params.pageSize + ""
+                , params.province
+                , params.city
+                , params.county)
+                .subscribeOn(Schedulers.io());
     }
 
     @Override

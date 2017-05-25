@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.mine.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,9 +22,11 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.UserBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.mine.contract.UserDataContract;
 import com.aglhz.yicommunity.mine.presenter.UserDataPresenter;
 import com.bilibili.boxing.Boxing;
@@ -31,6 +34,8 @@ import com.bilibili.boxing.model.config.BoxingConfig;
 import com.bilibili.boxing.model.entity.BaseMedia;
 import com.bilibili.boxing_impl.ui.BoxingActivity;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,10 +90,9 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
     LinearLayout llChangePasswordLayout;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
-
     private Params params = Params.getInstance();
-    private ViewGroup rootView;
     private static final String[] arrGender = {"保密", "男", "女"};
+    private Dialog loadingDialog;
 
     public static UserDataFragment newInstance() {
         return new UserDataFragment();
@@ -111,10 +115,8 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar();
         initData();
-
     }
 
     private void initData() {
@@ -160,8 +162,10 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
     @Override
     public void start(Object response) {
+        dismissLoadingDialog();
+
         if (response instanceof String) {
-            DialogHelper.successSnackbar(rootView, (String) response);
+            DialogHelper.successSnackbar(getView(), (String) response);
         }
         UserBean.DataBean.MemberInfoBean userInfo = UserHelper.getUserInfo();
 
@@ -173,11 +177,13 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
             userInfo.setNickName(etNickname.getText().toString());
         }
         UserHelper.setUserInfo(userInfo);
+        EventBus.getDefault().post(new EventData(Constants.login));
     }
 
     @Override
     public void error(String errorMessage) {
-        DialogHelper.warningSnackbar(rootView, errorMessage);
+        dismissLoadingDialog();
+        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
@@ -209,6 +215,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     dialog.dismiss();
                     params.field = "sex";//写死就好
                     params.val = which + "";
+                    showLoadingDialog();
                     mPresenter.updateUserData(params);
                 }).show();
 
@@ -224,12 +231,13 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                 break;
             case R.id.toolbar_menu:
                 if (TextUtils.isEmpty(etNickname.getText().toString())) {
-                    DialogHelper.warningSnackbar(rootView, "昵称不能为空");
+                    DialogHelper.warningSnackbar(getView(), "昵称不能为空");
                     return;
                 }
                 //网络请求
                 params.field = "nickName";//写死就好
                 params.val = etNickname.getText().toString();
+                showLoadingDialog();
                 mPresenter.updateUserData(params);
                 break;
 
@@ -240,15 +248,15 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
                 if (TextUtils.isEmpty(params.pwd0) | TextUtils.isEmpty(params.pwd1)
                         | TextUtils.isEmpty(params.pwd2)) {
-                    DialogHelper.warningSnackbar(rootView, "密码不能为空！");
+                    DialogHelper.warningSnackbar(getView(), "密码不能为空！");
                     return;
                 }
 
                 if (!TextUtils.equals(params.pwd1, params.pwd2)) {
-                    DialogHelper.warningSnackbar(rootView, "两次输入密码不相同！");
+                    DialogHelper.warningSnackbar(getView(), "两次输入密码不相同！");
                     return;
                 }
-
+                showLoadingDialog();
                 mPresenter.updatePassword(params);
                 break;
         }
@@ -269,8 +277,22 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                         .into(ivPortrait);
 
                 params.file = file;
+                showLoadingDialog();
                 mPresenter.changePortrait(params);
             }
+        }
+    }
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
         }
     }
 }
