@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.park.view;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CarCardListBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
@@ -43,6 +45,7 @@ public class CarCardFragment extends BaseFragment<CarCardPresenter> implements C
     private Unbinder unbinder;
     private CarCardRVAdapter adapter;
     Params params = Params.getInstance();
+    private int removePosition;
 
     public static CarCardFragment newInstance() {
         return new CarCardFragment();
@@ -86,9 +89,44 @@ public class CarCardFragment extends BaseFragment<CarCardPresenter> implements C
     }
 
     private void initListener() {
-        adapter.setOnItemClickListener((adapter, view, position) -> {
+        adapter.setOnItemChildClickListener((adapter, view, position) -> {
             CarCardListBean.DataBean.CardListBean bean = (CarCardListBean.DataBean.CardListBean) adapter.getData().get(position);
-            startForResult(SubmitSuccessFragment.newInstance(bean.getCardType()), 100);
+            switch (view.getId()) {
+                case R.id.ll_view_group:
+                    if (bean.getApproveState() == 0) {
+                        //-------------- 审核中 -------------
+                        startForResult(SubmitResultFragment.newInstance(bean.getCardType(),true), 100);
+                    } else if (bean.getApproveState() == 1) {
+                        //-------------- 审核通过 -------------
+                        if ("月租卡".equals(bean.getCardType())) {
+                            //-------------- 月租卡 -------------
+                            if (bean.getNeedToPayType() > 1){
+                                start(PublishMonthCardFragment.newInstance(PublishMonthCardFragment.TYPE_RECHARGE, bean.getFid()));
+                            }else{
+                                start(PublishMonthCardFragment.newInstance(PublishMonthCardFragment.TYPE_FIRST_PAY, bean.getFid()));
+                            }
+                        } else {
+                            //-------------- 业主卡 -------------
+
+                        }
+                    } else {
+                        //-------------- 审核被拒 -------------
+                        startForResult(SubmitResultFragment.newInstance(bean.getCardType(),false), 100);
+                    }
+                    break;
+                case R.id.iv_delete_card:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(_mActivity);
+                    builder.setMessage("确认删除吗？");
+                    builder.setTitle("提示");
+                    builder.setPositiveButton("确认", (dialog, which) -> {
+                        removePosition = position;
+                        params.fid = bean.getFid();
+                        mPresenter.deleteCarCard(params);
+                    });
+                    builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
+                    builder.create().show();
+                    break;
+            }
         });
     }
 
@@ -119,6 +157,11 @@ public class CarCardFragment extends BaseFragment<CarCardPresenter> implements C
     @Override
     public void responseCarCardList(List<CarCardListBean.DataBean.CardListBean> datas) {
         adapter.setNewData(datas);
+    }
+
+    @Override
+    public void deleteSuccess(BaseBean baseBean) {
+        adapter.remove(removePosition);
     }
 
     @OnClick(R.id.toolbar_menu)

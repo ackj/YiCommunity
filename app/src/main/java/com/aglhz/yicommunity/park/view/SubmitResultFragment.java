@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
@@ -19,22 +20,28 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2017/4/19 9:43.
  */
-public class SubmitSuccessFragment extends BaseFragment {
+public class SubmitResultFragment extends BaseFragment {
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_apply_card_result)
+    @BindView(R.id.tv_apply_card_result_submit_result_fragment)
     TextView tvApplyCardResult;
+    @BindView(R.id.iv_image_submit_result_fragment)
+    ImageView ivImage;
+    @BindView(R.id.tv_apply_message_submit_result_fragment)
+    TextView tvApplyMessage;
 
     private Unbinder unbinder;
     private String cardType;
+    private boolean isPass;
 
-    public static SubmitSuccessFragment newInstance(String cardType) {
-        SubmitSuccessFragment fragment = new SubmitSuccessFragment();
+    public static SubmitResultFragment newInstance(String cardType, boolean isPass) {
+        SubmitResultFragment fragment = new SubmitResultFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("cardType",cardType);
+        bundle.putString("cardType", cardType);
+        bundle.putBoolean("isPass", isPass);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -43,12 +50,13 @@ public class SubmitSuccessFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cardType = getArguments().getString("cardType");
+        isPass = getArguments().getBoolean("isPass");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_submit_success, container, false);
+        View view = inflater.inflate(R.layout.fragment_submit_result, container, false);
         unbinder = ButterKnife.bind(this, view);
         return attachToSwipeBack(view);
     }
@@ -68,10 +76,16 @@ public class SubmitSuccessFragment extends BaseFragment {
     }
 
     private void initData() {
-        if("月租卡".equals(cardType)){
-            tvApplyCardResult.setText(String.format(_mActivity.getResources().getString(R.string.apply_card_result),"月卡"));
-        }else{
-            tvApplyCardResult.setText(String.format(_mActivity.getResources().getString(R.string.apply_card_result),"车库"));
+        if (!isPass) {
+            tvApplyCardResult.setVisibility(View.GONE);
+            ivImage.setImageResource(R.drawable.ic_apply_refuse_200px);
+            tvApplyMessage.setText("抱歉，审核不通过，请联系物业！");
+        } else {
+            if ("月租卡".equals(cardType)) {
+                tvApplyCardResult.setText(String.format(_mActivity.getResources().getString(R.string.apply_card_result), "月卡"));
+            } else {
+                tvApplyCardResult.setText(String.format(_mActivity.getResources().getString(R.string.apply_card_result), "车库"));
+            }
         }
     }
 
@@ -83,7 +97,7 @@ public class SubmitSuccessFragment extends BaseFragment {
 
     @OnClick(R.id.bt_go_back_home)
     public void onViewClicked() {
-        setFragmentResult(RESULT_OK,null);
+        setFragmentResult(RESULT_OK, null);
         pop();
     }
 }

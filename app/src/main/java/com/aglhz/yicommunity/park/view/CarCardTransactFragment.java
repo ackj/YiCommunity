@@ -59,19 +59,14 @@ public class CarCardTransactFragment extends BaseFragment {
         initStateBar(toolbar);
         toolbarTitle.setText("车卡办理");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _mActivity.onBackPressedSupport();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
-        rvCarCardTransact.setLayoutManager(new LinearLayoutManager(_mActivity,LinearLayoutManager.VERTICAL,false));
-        List<CarCardTransactBean> datas= new ArrayList<>();
-        datas.add(new CarCardTransactBean(R.drawable.ic_car_card_transact_orange_210px,"月卡缴费","按照每月各小区收费标准收取月租费用",R.drawable.bg_round_orange_border, Color.parseColor("#FEB953")));
-        datas.add(new CarCardTransactBean(R.drawable.ic_car_card_transact_greed_210px,"业主车库","业主自有车库，方便管理",R.drawable.bg_round_green_border,Color.parseColor("#0ABE9B")));
+        rvCarCardTransact.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
+        List<CarCardTransactBean> datas = new ArrayList<>();
+        datas.add(new CarCardTransactBean(R.drawable.ic_car_card_transact_orange_210px, "月卡缴费", "按照每月各小区收费标准收取月租费用", R.drawable.bg_round_orange_border, Color.parseColor("#FEB953")));
+        datas.add(new CarCardTransactBean(R.drawable.ic_car_card_transact_greed_210px, "业主车库", "业主自有车库，方便管理", R.drawable.bg_round_green_border, Color.parseColor("#0ABE9B")));
         adapter = new CarCardTransactRVAdapter(datas);
         rvCarCardTransact.setAdapter(adapter);
     }
@@ -79,8 +74,8 @@ public class CarCardTransactFragment extends BaseFragment {
     private void initListener() {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == 0) {
-                start(PublishMonthCardFragment.newInstance());
-            }else{
+                start(PublishMonthCardFragment.newInstance(0, null));
+            } else {
                 start(PublishOwnerCardFragment.newInstance());
             }
         });

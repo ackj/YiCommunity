@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/c"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="18dp"
     android:layout_marginRight="18dp"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
     android:layout_marginTop="18dp">
 
     <LinearLayout
+
         android:id="@+id/ll_view_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +31,6 @@
                 android:layout_weight="1"
                 android:text="粤L 2356"
                 android:textColor="@color/white"
-
                 android:textSize="22sp" />
 
             <TextView
@@ -38,6 +42,15 @@
                 android:text="还有35天"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/iv_delete_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                android:padding="15dp"
+                android:src="@drawable/ic_clearcachehui_84px" />
 
         </LinearLayout>
 
