@@ -18,7 +18,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
-import com.aglhz.abase.mvp.view.base.BaseLazyFragment;
+import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
@@ -70,8 +70,10 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  * Email：langmanleguang@qq.com
  * <p>
  * 负责管家模块的View层内容。
+ * 此类不能用懒加载，因为在未进入此页面，PtrFrameLayout尚未加载的完全的时候，
+ * 由于切换小区，这个页面的EventBus会调用下拉刷新，导致再进入此页面后，下拉刷新无法归为，基本瘫痪。
  */
-public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter> implements StewardContract.View {
+public class StewardFragment extends BaseFragment<StewardContract.Presenter> implements StewardContract.View {
     private static final String TAG = StewardFragment.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -92,7 +94,6 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     @BindView(R.id.sv_steward_fragment)
     ScrollView svSteward;
 
-    private ViewGroup rootView;
     private StewardRVAdapter myHouseAdapter;
     private StewardRVAdapter smartHomeAdapter;
     private StewardRVAdapter smartDoorAdapter;
@@ -128,32 +129,20 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar(toolbar);
+        initSmartDoor();
+        initPtrFrameLayout();
+        initRecyclerView();
+        setListener();
+    }
+
+    private void initSmartDoor() {
         DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
-            ALog.e("1111111111::" + state.toString());
             if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
                 // 启动CallOutgoingActivity
                 _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
-                ALog.e("1111111111::" + state.toString());
             }
         });
-    }
-
-    /**
-     * 懒加载
-     */
-    @Override
-    protected void initLazyView(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            initData();
-        }
-    }
-
-    private void initData() {
-        initPtrFrameLayout(ptrFrameLayout);
-        initRecyclerView();
-        setListener();
     }
 
     private void initRecyclerView() {
@@ -318,7 +307,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
             startActivity(new Intent(_mActivity, LoginActivity.class));
             return false;
         } else if (!UserHelper.hasCommunity()) {
-            DialogHelper.warningSnackbar(rootView, "需要先选择社区！");
+            DialogHelper.warningSnackbar(getView(), "需要先选择社区！");
 
             Intent intent = new Intent(_mActivity, PickerActivity.class);
             startActivityForResult(intent, SELECT_COMMUNIT);
@@ -374,7 +363,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         startActivity(intent);
     }
 
-    private void initPtrFrameLayout(final PtrFrameLayout ptrFrameLayout) {
+    private void initPtrFrameLayout() {
         final MaterialHeader header = new MaterialHeader(getContext());
         int[] colors = getResources().getIntArray(R.array.google_colors);
         header.setColorSchemeColors(colors);
@@ -412,7 +401,7 @@ public class StewardFragment extends BaseLazyFragment<StewardContract.Presenter>
         if (loadingDialog != null) {
             loadingDialog.dismiss();
         }
-        DialogHelper.warningSnackbar(rootView, errorMessage);
+        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
 
