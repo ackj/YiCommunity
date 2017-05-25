@@ -44,7 +44,7 @@ public class PublishMonthCardPresenter extends BasePresenter<PublishContract.Vie
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-                        getView().start(baseBean);
+                        getView().responseSuccess(baseBean);
                     } else {
                         getView().error(baseBean.getOther().getMessage());
                     }
@@ -60,6 +60,32 @@ public class PublishMonthCardPresenter extends BasePresenter<PublishContract.Vie
                         ((PublishMonthCardFragment)getView()).responseRuleList(monthCardRuleListBean.getData().getMonthCardRuleList());
                     } else {
                         getView().error(monthCardRuleListBean.getOther().getMessage());
+                    }
+                }, this::error)
+        );
+    }
+
+    public void requestCardPay(Params params){
+        mRxManager.add(((PublishMonthCardModel)mModel).requestCardPay(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(carCardBean -> {
+                    if (carCardBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        ((PublishMonthCardFragment)getView()).responseCardPay(carCardBean.getData());
+                    } else {
+                        getView().error(carCardBean.getOther().getMessage());
+                    }
+                }, this::error)
+        );
+    }
+
+    public void requestCardRecharge(Params params){
+        mRxManager.add(((PublishMonthCardModel)mModel).requestCardRecharge(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(rechargeBean -> {
+                    if (rechargeBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        ((PublishMonthCardFragment)getView()).responseCardRecharge(rechargeBean.getData());
+                    } else {
+                        getView().error(rechargeBean.getOther().getMessage());
                     }
                 }, this::error)
         );

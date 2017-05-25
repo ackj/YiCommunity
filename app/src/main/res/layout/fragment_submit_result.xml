@@ -9,12 +9,14 @@
     <include layout="@layout/toolbar" />
 
     <ImageView
+        android:id="@+id/iv_image_submit_result_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
         android:src="@drawable/ic_apply_pass_200px" />
 
     <TextView
+        android:id="@+id/tv_apply_message_submit_result_fragment"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -23,7 +25,7 @@
         android:textColor="@color/gray_text" />
 
     <TextView
-        android:id="@+id/tv_apply_card_result"
+        android:id="@+id/tv_apply_card_result_submit_result_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

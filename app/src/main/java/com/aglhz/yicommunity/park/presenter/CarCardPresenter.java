@@ -50,7 +50,19 @@ public class CarCardPresenter extends BasePresenter<CarCardContract.View, CarCar
                     } else {
                         getView().error(carCardListBean.getOther().getMessage());
                     }
-                }, this::error)
-        );
+                }, this::error));
+    }
+
+    @Override
+    public void deleteCarCard(Params params) {
+        mRxManager.add(mModel.deleteCarCard(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().deleteSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
     }
 }

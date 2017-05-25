@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.park.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CarCardListBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
@@ -27,6 +28,13 @@ public class CarCardModel extends BaseModel implements CarCardContract.Model {
     public Observable<CarCardListBean> requestCarCardList(Params params) {
         return HttpHelper.getService(ApiService.class).requestCarCardList(ApiService.requestCarCardList
                 , params.token, params.page, params.pageSize)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseBean> deleteCarCard(Params params) {
+        return HttpHelper.getService(ApiService.class).deleteCarCard(ApiService.deleteCarCard
+                , params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }
 }

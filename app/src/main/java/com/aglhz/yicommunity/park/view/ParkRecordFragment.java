@@ -51,7 +51,6 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordPresenter> implem
     private ParkRecordRVAdapter adapter;
     private Params params = Params.getInstance();
 
-
     public static ParkRecordFragment newInstance() {
         return new ParkRecordFragment();
     }

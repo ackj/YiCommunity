@@ -3,6 +3,8 @@ package com.aglhz.yicommunity.park.model;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.CarCardBean;
+import com.aglhz.yicommunity.bean.CardRechargeBean;
 import com.aglhz.yicommunity.bean.MonthCardRuleListBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
@@ -39,9 +41,21 @@ public class PublishMonthCardModel extends BaseModel implements PublishContract.
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<MonthCardRuleListBean> requestMonthCardRule(Params params){
+    public Observable<MonthCardRuleListBean> requestMonthCardRule(Params params) {
         return HttpHelper.getService(ApiService.class).requestMonthCardRuleList(ApiService.requestMonthCardRuleList,
-                params.token,params.fid)
+                params.token, params.fid)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<CarCardBean> requestCardPay(Params params) {
+        return HttpHelper.getService(ApiService.class).requestCardPay(ApiService.requestCardPay,
+                params.token, params.fid)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<CardRechargeBean> requestCardRecharge(Params params) {
+        return HttpHelper.getService(ApiService.class).requestCardRecharge(ApiService.requestCardRecharge,
+                params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }
 }

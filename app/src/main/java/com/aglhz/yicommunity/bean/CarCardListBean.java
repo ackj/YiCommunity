@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * Email: liujia95me@126.com
  */
 
-public class CarCardListBean extends BaseBean{
+public class CarCardListBean extends BaseBean {
 
 
     /**
@@ -35,7 +36,7 @@ public class CarCardListBean extends BaseBean{
             this.cardList = cardList;
         }
 
-        public static class CardListBean {
+        public static class CardListBean implements Serializable{
             /**
              * annexFirstCarNo : string
              * annexSecondCarNo : string
@@ -74,7 +75,7 @@ public class CarCardListBean extends BaseBean{
             private ParkPlaceBean parkPlace;
             private String phoneNo;
             private String startTime;
-            private int surplusDays;
+            private int surplusDays; //<=0 已过期
 
             public String getAnnexFirstCarNo() {
                 return annexFirstCarNo;

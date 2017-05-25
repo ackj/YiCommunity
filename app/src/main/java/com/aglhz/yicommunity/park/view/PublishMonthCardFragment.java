@@ -11,13 +11,17 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.MonthCardRuleListBean;
+import com.aglhz.yicommunity.bean.CarCardBean;
+import com.aglhz.yicommunity.bean.CardRechargeBean;
+import com.aglhz.yicommunity.bean.MonthCardRuleBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
@@ -31,6 +35,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,12 +76,41 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
     EditText etInputPhone;
     @BindView(R.id.tv_park_address)
     TextView tvParkAddress;
+    @BindView(R.id.tv_hint_message)
+    TextView tvHintMessage;
+    @BindView(R.id.rl_park_address)
+    RelativeLayout rlParkAddress;
+    @BindView(R.id.bt_submit_fragment_month_card_pay)
+    Button btSubmit;
+    @BindView(R.id.rl_month_card_rule)
+    RelativeLayout rlMonthCardRule;
 
     private Unbinder unbinder;
     private Params params = Params.getInstance();
 
-    public static PublishMonthCardFragment newInstance() {
-        return new PublishMonthCardFragment();
+    public static final int TYPE_FIRST_PAY = 1;
+    public static final int TYPE_RECHARGE = 2;
+
+    private int type;
+    private String fid;
+    private String[] ruleArr;
+    private CardRechargeBean.DataBean cardRechargeBean;
+
+    public static PublishMonthCardFragment newInstance(int type, String fid) {
+        PublishMonthCardFragment fragment = new PublishMonthCardFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", type);
+        bundle.putString("fid", fid);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        type = bundle.getInt("type");
+        fid = bundle.getString("fid");
     }
 
     @NonNull
@@ -108,7 +143,16 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
     }
 
     private void initData() {
-
+        if (type == TYPE_FIRST_PAY) {
+            params.fid = fid;
+            mPresenter.requestCardPay(params);
+            tvHintMessage.setVisibility(View.VISIBLE);
+            btSubmit.setText("立即缴费");
+        } else if (type == TYPE_RECHARGE) {
+            params.fid = fid;
+            mPresenter.requestCardRecharge(params);
+            btSubmit.setText("立即续费");
+        }
     }
 
     @Override
@@ -125,7 +169,15 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
                 startForResult(CarCityFragment.newInstance(), 100);
                 break;
             case R.id.bt_submit_fragment_month_card_pay:
-                submit();
+                switch (type) {
+                    case TYPE_FIRST_PAY:
+                    case TYPE_RECHARGE:
+                        pay();
+                        break;
+                    default:
+                        submit();
+                        break;
+                }
                 break;
             case R.id.rl_park_address:
                 Intent intent = new Intent(_mActivity, PickerActivity.class);
@@ -133,9 +185,19 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
                 _mActivity.startActivity(intent);
                 break;
             case R.id.rl_month_card_rule:
-                mPresenter.requestMonthCardRule(params);
+                if (type == TYPE_RECHARGE) {
+                    if (cardRechargeBean != null) {
+                        showRuleDialog(cardRechargeBean.getMonthCardRuleList());
+                    }
+                } else {
+                    mPresenter.requestMonthCardRule(params);
+                }
                 break;
         }
+    }
+
+    private void pay() {
+        //todo:跳支付宝 or 微信
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -149,17 +211,21 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
         //车牌号
         String carNum = etInputCarNum.getText().toString().trim();
         params.carNo = tvCarCity.getText().toString() + carNum;
-        if (TextUtils.isEmpty(carNum)) {
-            DialogHelper.warningSnackbar(getView(), "请输入车牌号");
+
+        String regEx = "(^[\\u4E00-\\u9FA5]{1}[A-Z0-9]{6}$)|(^[A-Z]{2}[A-Z0-9]{2}[A-Z0-9\\u4E00-\\u9FA5]{1}[A-Z0-9]{4}$)|(^[\\u4E00-\\u9FA5]{1}[A-Z0-9]{5}[挂学警军港澳]{1}$)|(^[A-Z]{2}[0-9]{5}$)|(^(08|38){1}[A-Z0-9]{4}[A-Z0-9挂学警军港澳]{1}$)";
+        Pattern pattern = Pattern.compile(regEx);
+        Matcher matcher = pattern.matcher(params.carNo);
+        if (!matcher.matches()) {
+            DialogHelper.warningSnackbar(getView(), "请输入正确的车牌号");
             return;
         }
         //停车地址
-        if(TextUtils.isEmpty(tvParkAddress.getText().toString())){
+        if (TextUtils.isEmpty(tvParkAddress.getText().toString())) {
             DialogHelper.warningSnackbar(getView(), "请选择停车地址");
             return;
         }
         //预交费月数
-        if(TextUtils.isEmpty(tvBeforehandPayMonthCount.getText().toString())){
+        if (TextUtils.isEmpty(tvBeforehandPayMonthCount.getText().toString())) {
             DialogHelper.warningSnackbar(getView(), "请选择预交费月数");
             return;
         }
@@ -202,20 +268,63 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
         pop();
     }
 
-    public void responseRuleList(List<MonthCardRuleListBean.DataBean.MonthCardRuleBean> datas) {
-        String[] arr = new String[datas.size()];
+    public void responseRuleList(List<MonthCardRuleBean> datas) {
+        showRuleDialog(datas);
+    }
+
+    private void showRuleDialog(List<MonthCardRuleBean> datas) {
+        String[] ruleArr = new String[datas.size()];
         for (int i = 0; i < datas.size(); i++) {
-            arr[i] = datas.get(i).getName();
+            ruleArr[i] = datas.get(i).getName();
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(_mActivity);
-        builder.setItems(arr, (dialog, which) -> {
-            MonthCardRuleListBean.DataBean.MonthCardRuleBean clickBean = datas.get(which);
+        builder.setItems(ruleArr, (dialog, which) -> {
+            MonthCardRuleBean clickBean = datas.get(which);
             selectRule(clickBean);
         });
         builder.show();
     }
 
-    private void selectRule(MonthCardRuleListBean.DataBean.MonthCardRuleBean clickBean) {
+    public void responseCardPay(CarCardBean.DataBean bean) {
+        String carNo = bean.getCarNo();
+        tvCarCity.setText(carNo.substring(0, 1));
+        etInputCarNum.setText(carNo.substring(1));
+        tvParkAddress.setText(bean.getParkPlaceName());
+        tvBeforehandPayMonthCount.setText(bean.getMonthName());
+        tvStartTime.setText(bean.getStartTime());
+        tvEndTime.setText(bean.getEndTime());
+        etInputName.setText(bean.getCustomerName());
+        etInputPhone.setText(bean.getPhoneNo());
+        tvNeedPayMoney.setText(bean.getCostMoney() + "元");
+
+        tvCarCity.setEnabled(false);
+        etInputCarNum.setEnabled(false);
+        rlParkAddress.setEnabled(false);
+        rlMonthCardRule.setEnabled(false);
+        etInputName.setEnabled(false);
+        etInputPhone.setEnabled(false);
+    }
+
+    public void responseCardRecharge(CardRechargeBean.DataBean bean) {
+        cardRechargeBean = bean;
+        String carNo = bean.getCarNo();
+        tvCarCity.setText(carNo.substring(0, 1));
+        etInputCarNum.setText(carNo.substring(1));
+        tvParkAddress.setText(bean.getParkPlaceName());
+        tvBeforehandPayMonthCount.setText(bean.getMonthName());
+        tvStartTime.setText(bean.getStartTime());
+        tvEndTime.setText(bean.getEndTime());
+        etInputName.setText(bean.getCustomerName());
+        etInputPhone.setText(bean.getPhoneNo());
+
+        tvCarCity.setEnabled(false);
+        etInputCarNum.setEnabled(false);
+        rlParkAddress.setEnabled(false);
+        etInputName.setEnabled(false);
+        etInputPhone.setEnabled(false);
+    }
+
+    private void selectRule(MonthCardRuleBean clickBean) {
         tvStartTime.setText(clickBean.getStartDate());
         tvEndTime.setText(clickBean.getEndDate());
         tvNeedPayMoney.setText(clickBean.getMoney() + "元");

@@ -8,6 +8,7 @@
     <include layout="@layout/toolbar" />
 
     <TextView
+        android:id="@+id/tv_hint_message"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
@@ -19,8 +20,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/base_grey"
-        android:visibility="gone" />
+        android:background="@color/base_line" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -125,8 +125,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:drawableRight="@drawable/ic_arrow_right_30px"
-            android:hint="请选择预缴月数"
             android:gravity="end"
+            android:hint="请选择预缴月数"
             android:textColor="@color/base_black"
             android:textSize="13sp" />
     </RelativeLayout>
