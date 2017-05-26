@@ -284,6 +284,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     }
 
     public void responseMyHouse(List<IconBean> iconBeans) {
+
         houseBeans = iconBeans;
         houseTitles = new String[iconBeans.size()];
         for (int i = 0; i < iconBeans.size(); i++) {

@@ -390,7 +390,7 @@ public interface ApiService {
                                           @Query("timeable") boolean timeable);
 
     //物业详情
-    String requestNoticeDetail = BASE_PROPERTY + "/m/html/noticeDetail.html?fid=";
+    String requestNoticeDetail = BASE_PROPERTY + "/client/info/noticeDet?fid=";
 
     //获取物业公告
     @POST("/sub_property_ysq/client/info/noticeList")

@@ -256,7 +256,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
             adapter.loadMoreFail();
             params.page--;
         }
-
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -316,7 +315,6 @@ public class MessageFragment extends BaseLazyFragment<NeighbourContract.Presente
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventPublish event) {
-
         ptrFrameLayout.autoRefresh();
     }
 }

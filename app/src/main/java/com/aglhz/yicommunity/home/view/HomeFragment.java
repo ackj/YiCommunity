@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.R;
@@ -142,6 +141,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         adapter = new HomeRVAdapter(data);
         adapter.setFragment(this);
         recyclerView.setAdapter(adapter);
+
+        //add footer
+        View footerView = LayoutInflater.from(_mActivity).inflate(R.layout.footer_no_anymore,null,false);
+        adapter.addFooterView(footerView);
+
+
     }
 
     private void initPtrFrameLayout() {
