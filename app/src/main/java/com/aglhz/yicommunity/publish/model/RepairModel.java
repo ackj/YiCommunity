@@ -6,6 +6,7 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.IconBean;
+import com.aglhz.yicommunity.bean.RepairTypesBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
@@ -68,6 +69,12 @@ public class RepairModel extends BaseModel implements PublishContract.Model {
                 .flatMap(Flowable::fromIterable)
                 .map(bean -> new IconBean(R.drawable.ic_my_house_red_140px, bean.getAddress(), bean.getFid()))
                 .toList()
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<RepairTypesBean> requestRepairTypes(Params params){
+        return HttpHelper.getService(ApiService.class)
+                .requestRepairTypes(ApiService.requestRepairTypes,params.type,params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 }

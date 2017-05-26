@@ -265,7 +265,6 @@ public class MessageFragment extends BaseFragment<NeighbourContract.Presenter> i
             adapter.loadMoreFail();
             params.page--;
         }
-
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 

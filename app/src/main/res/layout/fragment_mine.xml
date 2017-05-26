@@ -92,7 +92,9 @@
                     style="@style/MineItemTitleStyle"
                     android:text="消息中心" />
 
-                <!--<View style="@style/MineItemRedPointerStyle" />-->
+                <View
+                    android:id="@+id/view_red_pointer"
+                    style="@style/MineItemRedPointerStyle" />
 
                 <View style="@style/MineItemHorizontalSpace" />
 

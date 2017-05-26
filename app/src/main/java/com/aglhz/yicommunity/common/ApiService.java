@@ -27,6 +27,7 @@ import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.bean.RepairDetailBean;
+import com.aglhz.yicommunity.bean.RepairTypesBean;
 import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.SubCategoryBean;
@@ -132,6 +133,12 @@ public interface ApiService {
                                                   @Query("pageSize") String pageSize,
                                                   @Query("page") String page);
 
+    //消息已读
+    String requestMessageRead = BASE_PROPERTY + "/client/msgread";
+
+    @POST
+    Observable<BaseBean> requestMessageRead(@Url String url,@Query("token")String token,@Query("fid")String fid);
+
     //社区Banner
     //@POST("/sub_property_ysq/client/info/indexadvs")
     String requestBanners = BASE_PROPERTY + "/client/info/indexadvs";
@@ -186,6 +193,14 @@ public interface ApiService {
 
     @POST
     Observable<RepairDetailBean> requestRepairDetail(@Url String url, @Query("token") String token, @Query("fid") String fid);
+
+
+    //报修类型列表
+    String requestRepairTypes = BASE_PROPERTY + "/client/info/rpTypes";
+
+    @POST
+    Observable<RepairTypesBean> requestRepairTypes(@Url String url, @Query("type") int type, @Query("cmnt_c") String cmnt_c);
+
 
     //****************以下获取小区，楼栋，单元，楼层，房间等**********************************
 
@@ -392,7 +407,6 @@ public interface ApiService {
                                           @Query("pageSize") String pageSize,
                                           @Query("summerable") boolean summerable,
                                           @Query("timeable") boolean timeable);
-
 
     //获取物业公告
     @POST("/sub_property_ysq/client/info/noticeList")

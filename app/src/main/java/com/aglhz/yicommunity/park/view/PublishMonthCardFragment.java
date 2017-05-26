@@ -93,7 +93,6 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
 
     private int type;
     private String fid;
-    private String[] ruleArr;
     private CardRechargeBean.DataBean cardRechargeBean;
 
     public static PublishMonthCardFragment newInstance(int type, String fid) {

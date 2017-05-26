@@ -186,13 +186,13 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <!--<style name="MineItemRedPointerStyle">-->
-    <!--<item name="android:layout_width">8dp</item>-->
-    <!--<item name="android:layout_height">8dp</item>-->
-    <!--<item name="android:layout_gravity">top</item>-->
-    <!--<item name="android:layout_marginTop">20dp</item>-->
-    <!--<item name="android:background">@drawable/ic_message_red_pointer</item>-->
-    <!--</style>-->
+    <style name="MineItemRedPointerStyle">
+    <item name="android:layout_width">8dp</item>
+    <item name="android:layout_height">8dp</item>
+    <item name="android:layout_gravity">top</item>
+    <item name="android:layout_marginTop">20dp</item>
+    <item name="android:background">@drawable/shape_solid_red_pointer</item>
+    </style>
 
     <style name="MineItemHorizontalSpace">
         <item name="android:layout_width">0dp</item>

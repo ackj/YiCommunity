@@ -22,10 +22,10 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.IconBean;
+import com.aglhz.yicommunity.bean.RepairTypesBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
@@ -194,18 +194,14 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
                 }
                 break;
             case R.id.tl_repair_type:
-                String[] arr;
+                showLoadingDialog();
                 if (isPrivate) {
-                    arr = new String[]{"水电", "水管", "门窗"};
+                    params.type = 1;
                 } else {
-                    arr = new String[]{"花园", "公共区域", "电梯"};
+                    params.type = 2;
                 }
-                new AlertDialog.Builder(_mActivity).setItems(arr, (dialog, which) -> {
-                    //网络访问
-                    dialog.dismiss();
-                    ALog.e("AlertDialog which:::" + which);
-                    tvRepairType.setText(arr[which]);
-                }).setTitle("请选择").setPositiveButton("取消", null).show();
+                ((RepairPresenter) mPresenter).requestRepairTypes(params);
+
                 break;
             case R.id.tv_location_fragment_repair:
                 _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
@@ -255,10 +251,8 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         }
     }
 
-
     @Override
     public void start(Object response) {
-
     }
 
     @Override
@@ -283,6 +277,20 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
                 })
                 .setPositiveButton("取消", null)
                 .show();
+    }
+
+    public void responseRepairTypes(List<RepairTypesBean.DataBean.TypesBean> datas) {
+        dismissLoadingDialog();
+        String[] arr = new String[datas.size()];
+        for (int i = 0; i < datas.size(); i++) {
+            arr[i] = datas.get(i).getName();
+        }
+        new AlertDialog.Builder(_mActivity).setItems(arr, (dialog, which) -> {
+            //网络访问
+            dialog.dismiss();
+            ALog.e("AlertDialog which:::" + which);
+            tvRepairType.setText(arr[which]);
+        }).setTitle("请选择").setPositiveButton("取消", null).show();
     }
 
     @Override

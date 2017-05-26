@@ -24,7 +24,9 @@ import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
+import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.contract.PublishContract;
 import com.aglhz.yicommunity.publish.presenter.PublishNeighbourPresenter;
 import com.bilibili.boxing.Boxing;
@@ -33,6 +35,8 @@ import com.bilibili.boxing.model.entity.BaseMedia;
 import com.bilibili.boxing_impl.ui.BoxingActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,6 +63,8 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     RecyclerView recyclerView;
     @BindView(R.id.et_input_content)
     EditText etInputContent;
+    @BindView(R.id.tv_community_name)
+    TextView tvCommunityName;
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
@@ -100,6 +106,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        EventBus.getDefault().register(this);
         initToolbar();
         initData();
         initListener();
@@ -115,6 +122,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     private void initData() {
         //因为params是单例，所以要将上次选择的清除
         params.files = new ArrayList<>();
+        tvCommunityName.setText(UserHelper.communityName);
 
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
             @Override
@@ -148,7 +156,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.VIDEO).withVideoDurationRes(R.drawable.ic_boxing_play);
             Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 101);
         }
-
     }
 
     @Override
@@ -187,6 +194,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     public void onDestroyView() {
         super.onDestroyView();
         KeyBoardUtils.hideKeybord(getView(), _mActivity);
+        EventBus.getDefault().unregister(this);
         unbinder.unbind();
     }
 
@@ -209,14 +217,28 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
         pop();
     }
 
-    @OnClick(R.id.btn_submit)
-    public void onViewClicked() {
-        String content = etInputContent.getText().toString().trim();
-        if (TextUtils.isEmpty(content)) {
-            DialogHelper.errorSnackbar(getView(), "请输入内容");
-            return;
+    @OnClick({R.id.btn_submit, R.id.ll_community_name})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_submit:
+                String content = etInputContent.getText().toString().trim();
+                if (TextUtils.isEmpty(content)) {
+                    DialogHelper.errorSnackbar(getView(), "请输入内容");
+                    return;
+                }
+                submit(content);
+                break;
+            case R.id.ll_community_name:
+                _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
+                break;
         }
-        submit(content);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventCommunity event) {
+        ALog.e(TAG, "onEvent:::" + event.bean.getName());
+        tvCommunityName.setText(event.bean.getName());
+        params.cmnt_c = event.bean.getCode();
     }
 
     private void submit(String content) {

@@ -17,12 +17,12 @@ import com.aglhz.abase.mvp.view.base.Decoration;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.message.contract.MessageCenterContract;
 import com.aglhz.yicommunity.message.presenter.MessageCenterPresenter;
@@ -72,6 +72,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     private static final String REPAIR_REPLY = "repair_reply";// 物业报修回复
     private static final String NOTICE_PUBLISH = "notice_publish";// 公告发布
     private static final String PROPERTY_BILL = "property_bill";// 物业账单
+    private int clickPosition;
 
     public static MessageCenterFragment newInstance() {
         return new MessageCenterFragment();
@@ -129,6 +130,9 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             MessageCenterBean.DataBean.MemNewsBean bean = (MessageCenterBean.DataBean.MemNewsBean) adapter.getData().get(position);
             if (view.getId() == R.id.ll_layout_item_message_center_fragment) {
+                clickPosition = position;
+                params.fid = bean.getFid();
+                mPresenter.requestMessageRead(params);
                 ALog.e(TAG, "type:" + bean.getOpType());
                 switch (bean.getOpType()) {
                     case NOTICE_PUBLISH://公告发布
@@ -194,7 +198,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                 params.page = 1;
                 params.pageSize = Constants.PAGE_SIZE;
                 mPresenter.start(params);
-
             }
         });
     }
@@ -210,6 +213,12 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     }
 
     @Override
+    public void responseReadSuccess(BaseBean bean) {
+        adapter.getData().get(clickPosition).setRead(true);
+        adapter.notifyItemChanged(clickPosition);
+    }
+
+    @Override
     public void start(Object response) {
         ptrFrameLayout.refreshComplete();
         List<MessageCenterBean.DataBean.MemNewsBean> datas = (List<MessageCenterBean.DataBean.MemNewsBean>) response;
@@ -218,7 +227,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
             adapter.loadMoreEnd();
             return;
         }
-
         if (params.page == 1) {
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
@@ -231,7 +239,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Override
     public void error(String errorMessage) {
-
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
             //为后面的pageState做准备

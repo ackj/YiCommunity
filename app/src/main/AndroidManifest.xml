@@ -149,7 +149,9 @@
             android:name=".park.ParkActivity"
             android:theme="@style/Transparent" />
         <activity
+
             android:name=".publish.PropertyActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/Transparent" />
         <activity
             android:name=".door.DoorActivity"

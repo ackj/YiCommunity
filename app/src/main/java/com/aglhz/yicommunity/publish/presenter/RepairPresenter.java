@@ -55,6 +55,17 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
 
     }
 
+    public void requestRepairTypes(Params params) {
+        mRxManager.add(((RepairModel) mModel).requestRepairTypes(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(beanList -> {
+                    if (isViewAttached()) {
+                        ((RepairFragment) getView()).responseRepairTypes(beanList.getData().getTypes());
+                    }
+                }, this::error));
+
+    }
+
     @Override
     public void post(Params params) {
         switch (params.type) {
