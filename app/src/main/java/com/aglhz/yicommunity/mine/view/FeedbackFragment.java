@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.mine.view;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,9 +39,9 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
     Toolbar toolbar;
     @BindView(R.id.bt_submit_feedback_fragment)
     Button btSubmit;
-    private ViewGroup rootView;
     private Unbinder unbind;
-    private Params params;
+    private Params params = Params.getInstance();
+    private Dialog loadingDialog;
 
     public static FeedbackFragment newInstance() {
         return new FeedbackFragment();
@@ -63,10 +64,7 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initToolbar();
-        params = Params.getInstance();
-//        params.contact= UserHelper.userInfo.getMobile();
     }
 
     private void initToolbar() {
@@ -78,14 +76,16 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
 
     @Override
     public void start(Object response) {
+        dismissLoadingDialog();
         if (response instanceof String) {
-            DialogHelper.successSnackbar(rootView, (String) response);
+            DialogHelper.successSnackbar(getView(), (String) response);
         }
     }
 
     @Override
     public void error(String errorMessage) {
-        DialogHelper.warningSnackbar(rootView, errorMessage);
+        dismissLoadingDialog();
+        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
@@ -97,6 +97,7 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
     @OnClick(R.id.bt_submit_feedback_fragment)
     public void onViewClicked() {
         params.des = btSubmit.getText().toString().trim();
+        showLoadingDialog();
         mPresenter.start(params);
     }
 
@@ -113,5 +114,19 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

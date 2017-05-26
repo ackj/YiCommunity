@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.home.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -56,6 +57,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     Unbinder unbinder;
     private HomeRVAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private Dialog loadingDialog;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -167,7 +169,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return ScrollingHelper.isRecyclerViewToTop(recyclerView);
                 //判断RecyclerView是否在在顶部，在顶部则允许滑动下拉刷新
-
 //
 //                if (null != recyclerView && null != layoutManager) {
 //                    int position = layoutManager.findFirstVisibleItemPosition();
@@ -185,7 +186,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 //                    return true;
 //                }
 //                return false;
-
 
             }
 
@@ -214,6 +214,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 case HomeBean.TYPE_COMMUNITY_FUNCTION:
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
+                            showLoadingDialog();
                             mPresenter.requestOpenDoor();
                             break;
                         case R.id.ll_property_payment:
@@ -227,7 +228,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                             break;
                     }
                     break;
-
             }
         });
     }
@@ -255,6 +255,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void error(String errorMessage) {
+        dismissLoadingDialog();
         ptrFrameLayout.refreshComplete();
         adapter.notifyItemChanged(0);
         adapter.notifyItemChanged(1);
@@ -286,6 +287,21 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseOpenDoor() {
+        dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "开门成功，欢迎回家，我的主人！");
+    }
+
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

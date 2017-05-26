@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.message.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
@@ -32,6 +33,13 @@ public class MessageCenterModel extends BaseModel implements MessageCenterContra
                         params.token,
                         params.pageSize + "",
                         params.page + "")
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseBean> requestMessageRead(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestMessageRead(ApiService.requestMessageRead, params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }
 }

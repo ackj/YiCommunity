@@ -49,7 +49,7 @@ public class ComplainModel extends BaseModel implements PublishContract.Model {
                 builder.addFormDataPart("file", f.getName(), requestBody);
             }
         }
-        return HttpHelper.getService(ApiService.class).postComplain(ApiService.postComplain,
+        return HttpHelper.getService(ApiService.class).postComplain(ApiService.requestComplain,
                 builder.build())
                 .subscribeOn(Schedulers.io());
     }

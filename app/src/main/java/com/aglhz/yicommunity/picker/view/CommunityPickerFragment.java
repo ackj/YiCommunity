@@ -86,39 +86,38 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initLocate();
+//        initLocate();
         initToolbar();
         initData();
         initListener();
         initPtrFrameLayout();
     }
 
-    private void initLocate() {
-        LbsManager.getInstance().startLocation(aMapLocation -> {
-            if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode() == 0) {
-                    String city = aMapLocation.getCity();
-                    if (!TextUtils.isEmpty(city)) {
-                        tvCity.setText(city);
-                        UserHelper.setCity(city);
-                        LbsManager.getInstance().stopLocation();
-                    }
-                }
-            }
-        });
-    }
+//    private void initLocate() {
+//        LbsManager.getInstance().startLocation(aMapLocation -> {
+//            if (aMapLocation != null) {
+//                if (aMapLocation.getErrorCode() == 0) {
+//                    String city = aMapLocation.getCity();
+//                    if (!TextUtils.isEmpty(city)) {
+//                        tvCity.setText(city);
+//                        UserHelper.setCity(city);
+//                        LbsManager.getInstance().stopLocation();
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     private void initToolbar() {
         initStateBar(toolbar);
         tvTitle.setText("小区名称");
-        tvCity.setText("选择城市");
+        tvCity.setText(TextUtils.isEmpty(UserHelper.city) ? "选择城市" : UserHelper.city);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
 
     private void initData() {
-        params.city = UserHelper.city;
         etSearchCommunity.setHint("请输入城市名或小区名");
         mDatas = new ArrayList<>();
         resultData = new ArrayList<>();
@@ -155,10 +154,16 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
 
         tvCity.setOnClickListener(v -> startForResult(CityPickerFragment.newInstance(), REQUEST_CODE_CITY));
 
-        adapter.setOnItemChildClickListener((adapter1, view, position) -> {
-            CommunitySelectBean.DataBean.CommunitiesBean communitiesBean = mDatas.get(position);
-            UserHelper.setCommunity(communitiesBean.getName(), communitiesBean.getCode());
-            EventBus.getDefault().post(new EventCommunity(communitiesBean));
+        adapter.setOnItemChildClickListener((adapter, view, position) -> {
+            CommunitySelectBean.DataBean.CommunitiesBean community = mDatas.get(position);
+
+            UserHelper.setPosition(community.getPosition().getProvince()
+                    , community.getPosition().getCity()
+                    , community.getPosition().getCounty()
+                    , community.getPosition().getAddress());
+
+            UserHelper.setCommunity(community.getName(), community.getCode());
+            EventBus.getDefault().post(new EventCommunity(community));
             _mActivity.finish();
         });
     }
@@ -185,6 +190,7 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
                 ALog.e("开始刷新了");
                 adapter.getData().clear();
                 adapter.notifyDataSetChanged();
+                params.city = UserHelper.city;
                 mPresenter.requestCommunitys(params);
             }
         });

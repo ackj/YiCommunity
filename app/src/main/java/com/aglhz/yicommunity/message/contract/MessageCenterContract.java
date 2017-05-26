@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.message.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.Params;
 
@@ -16,12 +17,16 @@ import io.reactivex.Observable;
 public interface MessageCenterContract {
 
     interface View extends BaseContract.View {
+        void responseReadSuccess(BaseBean bean);
     }
 
     interface Presenter extends BaseContract.Presenter {
+        void requestMessageRead(Params params);
     }
 
     interface Model extends BaseContract.Model {
         Observable<MessageCenterBean> requestMessages(Params params);
+
+        Observable<BaseBean> requestMessageRead(Params params);
     }
 }

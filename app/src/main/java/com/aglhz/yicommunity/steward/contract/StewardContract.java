@@ -27,7 +27,7 @@ public interface StewardContract {
 
         void responseHouses(List<IconBean> listIcons);
 
-        void responseContact(List<String> phoneList);
+        void responseContact(String[] arrayPhones);
 
         void responseDoors(DoorListBean mDoorListBean);
 

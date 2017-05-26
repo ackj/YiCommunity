@@ -27,11 +27,13 @@ import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.bean.RepairDetailBean;
+import com.aglhz.yicommunity.bean.RepairTypesBean;
 import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UserBean;
+import com.aglhz.yicommunity.bean.UserDataBean;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -128,6 +130,12 @@ public interface ApiService {
                                                   @Query("pageSize") String pageSize,
                                                   @Query("page") String page);
 
+    //消息已读
+    String requestMessageRead = BASE_PROPERTY + "/client/msgread";
+
+    @POST
+    Observable<BaseBean> requestMessageRead(@Url String url,@Query("token")String token,@Query("fid")String fid);
+
     //社区Banner
     //@POST("/sub_property_ysq/client/info/indexadvs")
     String requestBanners = BASE_PROPERTY + "/client/info/indexadvs";
@@ -165,7 +173,7 @@ public interface ApiService {
     String updatePortrait = BASE_USER + "/client/uploadHeader2.do";
 
     @POST
-    Observable<BaseBean> updatePortrait(@Url String url, @Query("token") String token, @Body MultipartBody file);
+    Observable<UserDataBean> updatePortrait(@Url String url, @Query("token") String token, @Body MultipartBody file);
 
     //物业报修列表
     String requestRepairApply = BASE_PROPERTY + "/client/info/repairApplyList";
@@ -182,6 +190,14 @@ public interface ApiService {
 
     @POST
     Observable<RepairDetailBean> requestRepairDetail(@Url String url, @Query("token") String token, @Query("fid") String fid);
+
+
+    //报修类型列表
+    String requestRepairTypes = BASE_PROPERTY + "/client/info/rpTypes";
+
+    @POST
+    Observable<RepairTypesBean> requestRepairTypes(@Url String url, @Query("type") int type, @Query("cmnt_c") String cmnt_c);
+
 
     //****************以下获取小区，楼栋，单元，楼层，房间等**********************************
 
@@ -280,7 +296,7 @@ public interface ApiService {
     Observable<BaseBean> postRepair(@Url String url, @Body MultipartBody file);
 
 
-    String postComplain = BASE_PROPERTY + "/property/complaint/from-client/complaint-create";
+    String requestComplain = BASE_PROPERTY + "/property/complaint/from-client/complaint-create";
 
     //提交管理投诉
     @POST

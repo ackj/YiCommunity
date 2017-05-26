@@ -5,12 +5,15 @@ import android.support.annotation.NonNull;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.common.luban.Luban;
 import com.aglhz.yicommunity.mine.contract.UserDataContract;
 import com.aglhz.yicommunity.mine.model.UserDataModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.aglhz.yicommunity.common.ApiService.updateUserData;
 
 
 /**
@@ -59,11 +62,13 @@ public class UserDataPresenter extends BasePresenter<UserDataContract.View, User
     private void updatePortait(Params params) {
         mRxManager.add(mModel.updatePortrait(params)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
-                        getView().start(baseBean.getOther().getMessage());
+                .subscribe(userDataBean -> {
+                    if (userDataBean.getOther().getCode() == 200) {
+                        UserHelper.userInfo.setFace(userDataBean.getData());
+                        UserHelper.setUserInfo(UserHelper.userInfo);
+                        getView().start(userDataBean.getOther().getMessage());
                     } else {
-                        getView().error(baseBean.getOther().getMessage());
+                        getView().error(userDataBean.getOther().getMessage());
                     }
                 }, this::error)
         );

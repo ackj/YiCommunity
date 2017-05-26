@@ -6,14 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -41,14 +40,11 @@ import com.aglhz.yicommunity.park.view.CarCardTransactFragment;
 import com.aglhz.yicommunity.park.view.ParkRecordFragment;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.PropertyActivity;
-import com.aglhz.yicommunity.publish.view.ComplainFragment;
 import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.smarthome.view.GoodsCategoryFragment;
 import com.aglhz.yicommunity.steward.contract.StewardContract;
 import com.aglhz.yicommunity.steward.presenter.StewardPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ListHolder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -100,8 +96,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     private StewardRVAdapter smartParkAdapter;
     private StewardRVAdapter propertyServiceAdapter;
     private List<IconBean> listMyhouses;
-    private DialogPlus contactDialog;
-    private boolean isShow;
     private Params params = Params.getInstance();
     private final static int SELECT_COMMUNIT = 100;   //选择社区
     private Dialog loadingDialog;
@@ -253,10 +247,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         //设置智能门禁卡片点击事件。
         smartDoorAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == 3) {
-                if (loadingDialog == null) {
-                    loadingDialog = DialogHelper.loading(_mActivity);
-                }
-                loadingDialog.show();
+                showLoadingDialog();
                 mPresenter.requestDoors(params);
             } else {
                 go2SmartDoor(position);
@@ -285,16 +276,10 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
                 return;
             }
             if (position == 1) {
-                if (contactDialog == null) {
-                    isShow = true;
-                    params.cmnt_c = UserHelper.communityCode;
-                    mPresenter.requestContact(params);
-                } else {
-                    contactDialog.show();
-                }
+                params.cmnt_c = UserHelper.communityCode;
+                showLoadingDialog();
+                mPresenter.requestContact(params);
 
-            } else if (position == 2) {
-                _mActivity.start(ComplainFragment.newInstance());
             } else {
                 go2PropertyService(position);
             }
@@ -397,13 +382,10 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     @Override
     public void error(String errorMessage) {
+        dismissLoadingDialog();
         ptrFrameLayout.refreshComplete();
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
-
 
     protected void initToolbar(Toolbar toolbar) {
         initStateBar(toolbar);
@@ -451,51 +433,34 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     }
 
     @Override
-    public void responseContact(final List<String> listPhone) {
-
-        if (contactDialog == null) {
-            contactDialog = DialogPlus.newDialog(_mActivity)
-                    .setHeader(R.layout.dialog_header)
-                    .setFooter(R.layout.dialog_footer)
-                    .setContentHolder(new ListHolder())
-                    .setGravity(Gravity.BOTTOM)
-                    .setAdapter(new ArrayAdapter<>(_mActivity, android.R.layout.simple_list_item_1, listPhone))
-                    .setOnItemClickListener((dialog, item, view, position) -> {
-                        dialog.dismiss();
-                        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listPhone.get(position).substring(3))));
-                    })
-                    .setCancelable(true)
-                    .create();
-//            ((TextView) ((LinearLayout) contactDialog.getHeaderView()).getChildAt(0)).setText("电话：");
-        }
-
-        if (isShow) {
-            contactDialog.show();
-        }
+    public void responseContact(String[] arrayPhones) {
+        dismissLoadingDialog();
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("联系方式")
+                .setItems(arrayPhones, (dialog, which) -> {
+                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + arrayPhones[which].substring(3))));
+                }).show();
     }
 
     @Override
     public void responseDoors(DoorListBean bean) {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < bean.getData().size(); i++) {
-            list.add(0, bean.getData().get(i).getName());
+        dismissLoadingDialog();
+        if (bean == null || bean.getData() == null || bean.getData().isEmpty()) {
+            DialogHelper.errorSnackbar(getView(), "没找到门禁");
+            return;
         }
 
-        DialogPlus.newDialog(_mActivity)
-                .setHeader(R.layout.dialog_header)
-                .setFooter(R.layout.dialog_footer)
-                .setContentHolder(new ListHolder())
-                .setGravity(Gravity.BOTTOM)
-                .setAdapter(new ArrayAdapter<>(_mActivity, android.R.layout.simple_list_item_1, list))
-                .setOnItemClickListener((dialog, item, view, position) -> {
-                    dialog.dismiss();
-                    DoorManager.getInstance().callOut(bean.getData().get(position).getDir());
-                })
-                .setCancelable(true)
-                .create()
+        String[] arrayDoors = new String[bean.getData().size()];
+
+        for (int i = 0; i < bean.getData().size(); i++) {
+            arrayDoors[i] = bean.getData().get(i).getName();
+        }
+
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("选择门禁")
+                .setItems(arrayDoors, (dialog, which) -> DoorManager
+                        .getInstance()
+                        .callOut(bean.getData().get(which).getDir()))
                 .show();
     }
 
@@ -514,9 +479,21 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
-//        svSteward.fullScroll(ScrollView.FOCUS_UP);
-//        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
-        ptrFrameLayout.autoRefresh();
+        svSteward.fullScroll(ScrollView.FOCUS_UP);
+        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
+    }
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }
 

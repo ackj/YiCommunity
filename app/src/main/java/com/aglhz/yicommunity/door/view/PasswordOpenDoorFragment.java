@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.door.view;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -42,6 +43,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
     TextView tvPassword;
     @BindView(R.id.bt_share)
     Button btShare;
+    private Dialog loadingDialog;
 
     public static PasswordOpenDoorFragment newInstance() {
         return new PasswordOpenDoorFragment();
@@ -77,6 +79,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
 
     @Override
     public void responsePassword(PasswordBean mPasswordBean) {
+        dismissLoadingDialog();
         tvPassword.setTextColor(Color.parseColor("#000000"));
         tvPassword.setText(mPasswordBean.getData().getSecretCode());
     }
@@ -88,6 +91,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
                 Params params = Params.getInstance();
                 params.dir = UserHelper.dir;
                 mPresenter.requestPassword(params);
+                showLoadingDialog();
                 break;
             case R.id.bt_share:
                 sharePassword();
@@ -127,6 +131,21 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
 
     @Override
     public void error(String errorMessage) {
+        dismissLoadingDialog();
         DialogHelper.warningSnackbar(getView(), errorMessage);
+    }
+
+
+    private void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = DialogHelper.loading(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

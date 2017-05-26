@@ -42,7 +42,9 @@ public class PublishCarpoolModel extends BaseModel implements PublishContract.Mo
         builder.addFormDataPart("publishPositionAddress", params.positionAddress);
         builder.addFormDataPart("positionType", params.positionType + "");
         builder.addFormDataPart("type", params.type + "");
+
         ALog.d("PublishNeighbourModel", "上传=============");
+
         if (params.files != null && params.files.size() > 0) {
             for (File f : params.files) {
                 ALog.d("PublishNeighbourModel", "上传图片：" + f.getAbsolutePath());

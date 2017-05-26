@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.mine.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.AppUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.web.WebActivity;
@@ -54,6 +57,7 @@ public class AboutUsFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
+        initData();
     }
 
     private void initToolbar() {
@@ -61,6 +65,11 @@ public class AboutUsFragment extends BaseFragment {
         toolbarTitle.setText("关于我们");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void initData() {
+        tvVersionName.setText("版本：" + AppUtils.getVersionName(BaseApplication.mContext));
     }
 
     @OnClick({R.id.ll_product_introduction, R.id.ll_service_terms, R.id.ll_feedback})

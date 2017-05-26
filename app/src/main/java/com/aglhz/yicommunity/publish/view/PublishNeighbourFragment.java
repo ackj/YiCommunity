@@ -69,7 +69,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private Params params = Params.getInstance();
-    private boolean requesting;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
@@ -206,19 +205,13 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
 
     @Override
     public void error(String errorMessage) {
-        requesting = false;
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
+        dismissLoadingDialog();
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
-        requesting = false;
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
+        dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         EventBus.getDefault().post(new EventPublish());
         pop();
@@ -249,19 +242,22 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
     }
 
     private void submit(String content) {
-        if (requesting) {
-            ToastUtils.showToast(_mActivity, "正在提交当中，请勿重复操作");
-            return;
-        }
         params.cmnt_c = UserHelper.communityCode;
         params.content = content;
+        showLoadingDialog();
         mPresenter.post(params);
+    }
+
+    private void showLoadingDialog() {
         if (loadingDialog == null) {
             loadingDialog = DialogHelper.loading(_mActivity);
         }
         loadingDialog.show();
-        requesting = true;
     }
 
-
+    private void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+    }
 }

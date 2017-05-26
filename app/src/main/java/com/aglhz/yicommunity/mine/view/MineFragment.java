@@ -28,6 +28,7 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventData;
+import com.aglhz.yicommunity.bean.UserDataBean;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
 import com.aglhz.yicommunity.message.MessageActivity;
@@ -300,5 +301,4 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         intent.putExtra("link", link);
         startActivity(intent);
     }
-
 }

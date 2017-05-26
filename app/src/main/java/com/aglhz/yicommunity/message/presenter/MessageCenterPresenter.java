@@ -44,4 +44,17 @@ public class MessageCenterPresenter extends BasePresenter<MessageCenterContract.
         );
     }
 
+    @Override
+    public void requestMessageRead(Params params) {
+        mRxManager.add(mModel.requestMessageRead(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseReadSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error)
+        );
+    }
 }

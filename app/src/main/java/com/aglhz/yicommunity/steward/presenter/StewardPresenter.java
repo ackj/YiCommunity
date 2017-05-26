@@ -53,10 +53,16 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(contactBean -> {
                     if (contactBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-                        List<String> listPhone = new ArrayList<>();
-                        listPhone.add("座机：" + contactBean.getData().getTelephoneNo());
-                        listPhone.add("手机：" + contactBean.getData().getMobileNo());
-                        getView().responseContact(listPhone);
+                        String[] arrayPhones;
+                        if (contactBean.getData() != null) {
+                            arrayPhones = new String[2];
+                            arrayPhones[0] = "座机：" + contactBean.getData().getTelephoneNo();
+                            arrayPhones[1] = "手机：" + contactBean.getData().getMobileNo();
+                        } else {
+                            arrayPhones = new String[1];
+                        }
+
+                        getView().responseContact(arrayPhones);
                     } else {
                         getView().error(contactBean.getOther().getMessage());
                     }

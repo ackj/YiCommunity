@@ -64,7 +64,7 @@ import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_NEIGHBOU
  * Email: liujia95me@126.com
  */
 
-public class CommentFragment extends BaseFragment<CommentPresenter> implements CommentContract.View {
+public class CommentFragment extends BaseFragment<CommentContract.Presenter> implements CommentContract.View {
     private static final String TAG = CommentFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -101,7 +101,7 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
 
     @NonNull
     @Override
-    protected CommentPresenter createPresenter() {
+    protected CommentContract.Presenter createPresenter() {
         return new CommentPresenter(this);
     }
 
@@ -118,7 +118,6 @@ public class CommentFragment extends BaseFragment<CommentPresenter> implements C
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ALog.e(TAG, "onViewCreated type:" + type);
         Bundle bundle = getArguments();
         fid = bundle.getString("fid");
         type = bundle.getInt("type");

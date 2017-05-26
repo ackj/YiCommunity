@@ -39,8 +39,8 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:background="@color/white"
-            android:hint="留言"
-            android:textSize="15sp" />
+            android:hint="欢迎畅所欲言"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_send_fragment_comment"
@@ -55,8 +55,8 @@
     </LinearLayout>
 
     <View
-        android:background="#F0F0F0"
         android:id="@+id/view_bottom_space"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:background="#F0F0F0" />
 </LinearLayout>
