@@ -6,4 +6,9 @@ package com.aglhz.yicommunity.event;
  */
 
 public class EventPay {
+    public int code;
+
+    public EventPay(int code) {
+        this.code = code;
+    }
 }

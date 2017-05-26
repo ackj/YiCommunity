@@ -43,7 +43,7 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bean -> {
                     if (bean.getOther().getCode() == 200) {
-                        getView().start(bean);
+                        getView().responsePropertyNotPay(bean);
                     } else {
                         getView().error(bean.getOther().getMessage());
                     }
@@ -57,7 +57,7 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bean -> {
                     if (bean.getOther().getCode() == 200) {
-                        getView().start(bean);
+                        getView().responsePropertyPayed(bean);
                     } else {
                         getView().error(bean.getOther().getMessage());
                     }

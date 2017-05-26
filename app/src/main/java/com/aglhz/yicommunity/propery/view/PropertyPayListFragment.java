@@ -160,21 +160,6 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
 
     @Override
     public void start(Object response) {
-        PropertyPayBean.DataBean data = ((PropertyPayBean) response).getData();
-        ptrFrameLayout.refreshComplete();
-        mAdapter.setNewData(data.getObpptBills());
-        tvSum.setText("合计：" + data.getTotalAmt() + "元");
-
-        //以下是为生成参数
-        List<PropertyPayBean.DataBean.ObpptBillsBean> beans = mAdapter.getData();
-        StringBuilder sb = new StringBuilder();
-        for (PropertyPayBean.DataBean.ObpptBillsBean item : beans) {
-            sb.append(item.getFid() + ",");
-        }
-        params.billFids = sb.toString();
-        if (params.billFids.endsWith(",")) {
-            params.billFids = params.billFids.substring(0, params.billFids.length() - 1);
-        }
     }
 
     @Override
@@ -209,6 +194,35 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventPay event) {
         ptrFrameLayout.autoRefresh();
+        if (event.code == 0) {
+            DialogHelper.successSnackbar(getView(), "恭喜！支付成功");
+        } else {
+            DialogHelper.warningSnackbar(getView(), "很遗憾，支付失败");
+        }
+    }
+
+    @Override
+    public void responsePropertyNotPay(PropertyPayBean bean) {
+        PropertyPayBean.DataBean data = bean.getData();
+        ptrFrameLayout.refreshComplete();
+        mAdapter.setNewData(data.getObpptBills());
+        tvSum.setText("合计：" + data.getTotalAmt() + "元");
+
+        //以下是为生成参数
+        StringBuilder sb = new StringBuilder();
+        for (PropertyPayBean.DataBean.ObpptBillsBean obpptBillsBean : data.getObpptBills()) {
+            sb.append(obpptBillsBean.getFid()).append(",");
+        }
+        params.billFids = sb.toString();
+        if (params.billFids.endsWith(",")) {
+            params.billFids = params.billFids.substring(0, params.billFids.length() - 1);
+        }
+    }
+
+    @Override
+    public void responsePropertyPayed(PropertyPayBean bean) {
+        ptrFrameLayout.refreshComplete();
+        mAdapter.setNewData(bean.getData().getObpptBills());
     }
 
     @Override

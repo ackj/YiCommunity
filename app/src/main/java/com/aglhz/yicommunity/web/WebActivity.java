@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.web;
 
 import android.os.Bundle;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 
@@ -30,5 +31,6 @@ public class WebActivity extends BaseActivity {
     private void initData() {
         title = getIntent().getStringExtra("title");
         link = getIntent().getStringExtra("link");
+        ALog.e(link);
     }
 }

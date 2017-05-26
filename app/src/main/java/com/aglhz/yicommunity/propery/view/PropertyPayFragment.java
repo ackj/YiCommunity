@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,7 @@ public class PropertyPayFragment extends BaseFragment {
     private void initData() {
         viewpager.setAdapter(new PropertyPayVPAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewpager);
-        tvCommunity.setText(UserHelper.city + "　" + UserHelper.communityName);
+        tvCommunity.setText(TextUtils.isEmpty(UserHelper.city) ? "请选择小区" : UserHelper.city + "　" + UserHelper.communityName);
     }
 
     @Override
@@ -93,7 +94,6 @@ public class PropertyPayFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
-        ALog.e(TAG, "onEvent:::" + event.bean.getName());
         tvCommunity.setText(UserHelper.city + "　" + UserHelper.communityName);
     }
 }

@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.mine.view;
 
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.door.DoorActivity;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.bean.UserDataBean;
 import com.aglhz.yicommunity.login.LoginActivity;
@@ -165,6 +169,14 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 break;
             case R.id.ll_make_shortcut:
                 createShortCut();
+                if (TextUtils.isEmpty(UserHelper.dir)) {
+                    new AlertDialog.Builder(_mActivity)
+                            .setTitle("提醒")
+                            .setMessage("检测到您尚未设置一键开门，如需设置，请点击确定。")
+                            .setPositiveButton("确定", (dialog, which) -> go2SmartDoor(Constants.SET_OPEN_DOOR))
+                            .setNegativeButton("取消", null)
+                            .show();
+                }
                 break;
             case R.id.ll_my_publish:
                 startActivity(new Intent(_mActivity, MyPublishActivity.class));
@@ -299,6 +311,13 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         Intent intent = new Intent(getContext(), WebActivity.class);
         intent.putExtra("title", title);
         intent.putExtra("link", link);
+        startActivity(intent);
+    }
+
+    //跳转到智能门禁模块。
+    private void go2SmartDoor(int position) {
+        Intent intent = new Intent(_mActivity, DoorActivity.class);
+        intent.putExtra(Constants.FROM_TO, position);
         startActivity(intent);
     }
 }

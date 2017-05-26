@@ -22,6 +22,6 @@ public class PropertyPayRVAdapter extends BaseRecyclerViewAdapter<PropertyPayBea
                 .setText(R.id.tv_house_name_item_property_pay, item.getBName())
                 .setText(R.id.tv_state_item_property_pay, item.getStatus() == 1 ? "已缴费" : "未缴费")
                 .setTextColor(R.id.tv_state_item_property_pay, item.getStatus() == 1 ? 0XBB00CC00 : 0XBBFF0000)
-                .setText(R.id.tv_date_item_property_pay, item.getDtFrom());
+                .setText(R.id.tv_date_item_property_pay, item.getDtFrom().substring(0, 7));//只需要显示月份，所以截取一下。
     }
 }

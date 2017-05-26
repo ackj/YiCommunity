@@ -82,6 +82,9 @@ public interface ApiService {
     //我的地址
     String MY_ADDRESS = "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/addressee_list.html?appType=2&token=";
 
+    //物业详情
+    String requestNoticeDetail = "http://www.aglhz.com/sub_property_ysq/m/html/noticeDetail.html?fid=";
+
     //********************以上为Web*******************************
 
 
@@ -390,8 +393,6 @@ public interface ApiService {
                                           @Query("summerable") boolean summerable,
                                           @Query("timeable") boolean timeable);
 
-    //物业详情
-    String requestNoticeDetail = BASE_PROPERTY + "/m/html/noticeDetail.html?fid=";
 
     //获取物业公告
     @POST("/sub_property_ysq/client/info/noticeList")

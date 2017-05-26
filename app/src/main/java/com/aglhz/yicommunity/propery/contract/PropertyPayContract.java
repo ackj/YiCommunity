@@ -16,9 +16,15 @@ import okhttp3.ResponseBody;
 
 public interface PropertyPayContract {
     interface View extends BaseContract.View {
+        void responsePropertyNotPay(PropertyPayBean bean);
+
+        void responsePropertyPayed(PropertyPayBean bean);
+
         void responsePropertyPayDetail(PropertyPayBean bean);
 
         void responseALiPay(String order);
+
+
     }
 
     interface Presenter extends BaseContract.Presenter {

@@ -31,10 +31,9 @@ public class ALiPayHelper {
             if (msg.what == SDK_PAY_FLAG) {
                 Map<String, String> map = (Map<String, String>) msg.obj;
                 if (TextUtils.equals(map.get("result"), "9000")) {
-                    Toast.makeText(BaseApplication.mContext, "支付成功", Toast.LENGTH_SHORT).show();
-                    EventBus.getDefault().post(new EventPay());
+                    EventBus.getDefault().post(new EventPay(0));
                 } else {
-                    Toast.makeText(BaseApplication.mContext, map.get("memo"), Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new EventPay(-1));
                 }
             }
         }
@@ -42,7 +41,7 @@ public class ALiPayHelper {
 
     public void pay(Activity mActivity, String orderInfo) {
 
-        ALog.e("orderInfo::" + orderInfo);
+        ALog.e("orderInfo-->" + orderInfo);
 
         new Thread(() -> {
             PayTask alipay = new PayTask(mActivity);

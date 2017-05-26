@@ -4,8 +4,8 @@ package com.aglhz.yicommunity.wxapi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
@@ -43,17 +43,25 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onReq(BaseReq req) {
+
+        ALog.e("resp.errCode=", "===" + req.openId);
+        ALog.e("resp.errCode=", "===" + req.getType());
+        ALog.e("resp.errCode=", "===" + req.transaction);
+
     }
 
     @Override
     public void onResp(BaseResp resp) {
-        if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            Log.e("resp.errCode=", "===" + resp.errCode);
-            if (resp.errCode == 0) {
-                ToastUtils.showToast(BaseApplication.mContext, "支付成功！");
+        ALog.e("resp.errCode=", "===" + resp.errStr);
+        ALog.e("resp.errCode=", "===" + resp.openId);
+        ALog.e("resp.errCode=", "===" + resp.transaction);
+        ALog.e("resp.errCode=", "===" + resp.getType());
+        ALog.e("resp.errCode=", "===" + resp.checkArgs());
 
-                EventBus.getDefault().post(new EventPay());
-            }
+
+        if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+
+            EventBus.getDefault().post(new EventPay(resp.errCode));
             finish();
         }
     }
