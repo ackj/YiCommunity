@@ -7,7 +7,7 @@ android {
         debug {
             keyAlias 'agl'
             keyPassword 'aglandroid'
-            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
+            storeFile file('F:/gaocheng/agl.keystore')
             storePassword 'aglandroid'
         }
         release {
@@ -79,7 +79,6 @@ dependencies {
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     //地址选择器
     compile 'com.github.chihane:JDAddressSelector:1.1.4'
-
     //图片选择器
     compile 'com.bilibili:boxing-impl:0.7.0'
     //switchbutton

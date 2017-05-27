@@ -54,6 +54,8 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailPresenter> im
     RecyclerView recyclerviewReply;
     @BindView(R.id.ll_pics_layout_repair_detail_fragment)
     LinearLayout llPicsLayout;
+    @BindView(R.id.tv_community_name)
+    TextView tvCommunityName;
 
     private Unbinder unbinder;
     private Params params = Params.getInstance();
@@ -91,6 +93,7 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailPresenter> im
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
+        initListener();
     }
 
     private void initToolbar() {
@@ -102,6 +105,9 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailPresenter> im
 
     private void initData() {
         mPresenter.requestRepairDetail(params);
+    }
+
+    private void initListener() {
     }
 
     @Override
@@ -123,6 +129,7 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailPresenter> im
     @Override
     public void responseRepairDetail(RepairDetailBean repairDetailBean) {
         RepairDetailBean.DataBean bean = repairDetailBean.getData();
+        tvCommunityName.setText(bean.getHouse());
         tvName.setText(bean.getName());
         tvContact.setText(bean.getContact());
         tvDesc.setText(bean.getDes());
@@ -131,14 +138,24 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailPresenter> im
 
         if (bean.getPics().size() > 0) {
             llPicsLayout.setVisibility(View.VISIBLE);
-            recyclerviewPics.setLayoutManager(new GridLayoutManager(_mActivity, 3));
+            recyclerviewPics.setLayoutManager(new GridLayoutManager(_mActivity, 3) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
             recyclerviewPics.setAdapter(new RepairDetailPicsRVAdapter(bean.getPics()));
         } else {
             llPicsLayout.setVisibility(View.GONE);
         }
 
         if (bean.getReplys().size() > 0) {
-            recyclerviewReply.setLayoutManager(new LinearLayoutManager(_mActivity));
+            recyclerviewReply.setLayoutManager(new LinearLayoutManager(_mActivity) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
             recyclerviewReply.setAdapter(new RepairDetailReplyRVAdapter(bean.getReplys()));
         }
     }

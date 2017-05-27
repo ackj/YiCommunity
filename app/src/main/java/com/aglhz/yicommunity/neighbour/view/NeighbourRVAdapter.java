@@ -69,13 +69,13 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //-------------- 当前地址 --------------
         TextView tvAddress = helper.getView(R.id.tv_location_item_moments_list);
-        if (type == MessageFragment.TYPE_CARPOOL_OWNER
-                || type == MessageFragment.TYPE_CARPOOL_passenger
-                || type == MessageFragment.TYPE_MY_CARPOOL) {
-            tvAddress.setText(item.getPublishPositionAddress());
-        } else {
+//        if (type == MessageFragment.TYPE_CARPOOL_OWNER
+//                || type == MessageFragment.TYPE_CARPOOL_passenger
+//                || type == MessageFragment.TYPE_MY_CARPOOL) {
+//            tvAddress.setText(item.getPublishPositionAddress());
+//        } else {
             tvAddress.setText(item.getCommunityName());
-        }
+//        }
 
         //--------------- 内容 ------------
         TextView tvContent = helper.getView(R.id.tv_content_item_moments_list);

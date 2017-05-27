@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.message.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.message.contract.MessageCenterContract;
 import com.aglhz.yicommunity.message.presenter.MessageCenterPresenter;
 import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
+import com.aglhz.yicommunity.web.WebActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -132,43 +134,47 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
             if (view.getId() == R.id.ll_layout_item_message_center_fragment) {
                 clickPosition = position;
                 params.fid = bean.getFid();
-                mPresenter.requestMessageRead(params);
+                if (!bean.isRead()) {
+                    mPresenter.requestMessageRead(params);
+                }
                 ALog.e(TAG, "type:" + bean.getOpType());
                 switch (bean.getOpType()) {
-                    case NOTICE_PUBLISH://公告发布
-
+                    case NOTICE_PUBLISH://todo:公告发布
+                        Intent intent = new Intent(_mActivity, WebActivity.class);
+                        intent.putExtra("title", bean.getTitle());
+                        intent.putExtra("link", "");
+                        _mActivity.startActivity(intent);
                         break;
                     case HOUSE_OWNER_APPLY: //业主申请
-                        //todo:可能要改
-                        start(ApplyCheckFragment.newInstance(bean.getTitle(), bean.getDes()));
+                        //todo:可能要改 ??? 业主不是只能通过后台来审核通过吗？？
+                        start(ApplyCheckFragment.newInstance(bean));
                         break;
                     case HOUSE_MEMBER_APPLY://成员申请
-                        start(ApplyCheckFragment.newInstance(bean.getTitle(), bean.getDes()));
+                        start(ApplyCheckFragment.newInstance(bean));
                         break;
                     case HOUSE_RENTER_APPLY://租客申请
                         //todo:可能要改
-                        start(ApplyCheckFragment.newInstance(bean.getTitle(), bean.getDes()));
+                        start(ApplyCheckFragment.newInstance(bean));
                         break;
                     case HOUSE_OWNER_APPROVE://业主申请审核结果
-                        //todo:可能要改
-                        start(ApplyResultFragment.newInstance());
+                        start(ApplyResultFragment.newInstance(bean.getTitle(), bean.getDes()));
                         break;
                     case HOUSE_MEMBER_APPROVE://成员申请审核结果
-                        //todo:可能要改
-                        start(ApplyResultFragment.newInstance());
+                        start(ApplyResultFragment.newInstance(bean.getTitle(), bean.getDes()));
                         break;
                     case HOUSE_RENTER_APPROVE://租客申请审核结果
+                        start(ApplyResultFragment.newInstance(bean.getTitle(), bean.getDes()));
                         break;
                     case FEEDBACK_REPLY://信息反馈回复
                         break;
                     case REPAIR_REPLY://物业报修回复
-                        // start(RepairDetailFragment.newInstance(bean.getSfid()));
+                        start(RepairDetailFragment.newInstance(bean.getSfid()));
                         break;
                     case PROPERTY_BILL://物业账单
                         start(PropertyPayFragment.newInstance());
                         break;
                     case SMARTDOOR_PUSHREC://
-                        start(CompainsReplyFragment.newInstance());
+                        //无动作
                         break;
                 }
             }

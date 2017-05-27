@@ -9,12 +9,14 @@
     <include layout="@layout/toolbar" />
 
     <ImageView
+        android:id="@+id/iv_image_apply_result_fargment"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="150dp"
         android:src="@drawable/ic_apply_refuse_200px" />
 
     <TextView
+        android:id="@+id/tv_desc_apply_result_fargment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

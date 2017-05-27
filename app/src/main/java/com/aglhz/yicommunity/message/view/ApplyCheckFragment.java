@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.message.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -10,7 +11,12 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.MessageCenterBean;
+import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.message.contract.ApplyCheckContract;
+import com.aglhz.yicommunity.message.presenter.ApplyCheckPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +28,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class ApplyCheckFragment extends BaseFragment {
+public class ApplyCheckFragment extends BaseFragment<ApplyCheckContract.Presenter> implements ApplyCheckContract.View {
 
     private static final String TAG = ApplyCheckFragment.class.getSimpleName();
 
@@ -34,24 +40,29 @@ public class ApplyCheckFragment extends BaseFragment {
     TextView tvDesc;
 
     private Unbinder unbinder;
-    private String des;
-    private String title;
     private Params params = Params.getInstance();
+    private MessageCenterBean.DataBean.MemNewsBean bean;
 
-    public static ApplyCheckFragment newInstance(String title, String des) {
+    public static ApplyCheckFragment newInstance(MessageCenterBean.DataBean.MemNewsBean bean) {
         ApplyCheckFragment checkFragment = new ApplyCheckFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("des", des);
+        bundle.putSerializable("bean", bean);
         checkFragment.setArguments(bundle);
         return checkFragment;
+    }
+
+    @NonNull
+    @Override
+    protected ApplyCheckContract.Presenter createPresenter() {
+        return new ApplyCheckPresenter(this);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        title = getArguments().getString("title");
-        des = getArguments().getString("des");
+        if (getArguments().getSerializable("bean") != null) {
+            bean = (MessageCenterBean.DataBean.MemNewsBean) getArguments().getSerializable("bean");
+        }
     }
 
     @Nullable
@@ -71,13 +82,15 @@ public class ApplyCheckFragment extends BaseFragment {
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText(title);
+        toolbarTitle.setText(bean.getTitle());
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
-        tvDesc.setText(des);
+        params.fid = bean.getFid();
+        params.authFid = bean.getSfid();
+        tvDesc.setText(bean.getDes());
     }
 
     @Override
@@ -90,10 +103,29 @@ public class ApplyCheckFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_pass_check_fragment:
-
+                params.status = 1;
+                mPresenter.requestApplyCheck(params);
                 break;
             case R.id.bt_refuse_check_fragment:
+                params.status = 2;
+                mPresenter.requestApplyCheck(params);
                 break;
         }
+    }
+
+    @Override
+    public void start(Object response) {
+
+    }
+
+    @Override
+    public void error(String errorMessage) {
+        DialogHelper.warningSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public void responseApplySuccess(BaseBean bean) {
+        DialogHelper.successSnackbar(getView(), "申请已通过");
+        pop();
     }
 }

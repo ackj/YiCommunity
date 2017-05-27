@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
@@ -29,12 +30,30 @@ public class ApplyResultFragment extends BaseFragment {
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.iv_image_apply_result_fargment)
+    ImageView ivImage;
+    @BindView(R.id.tv_desc_apply_result_fargment)
+    TextView tvDesc;
 
     private Unbinder unbinder;
     private Params params = Params.getInstance();
+    private String des;
+    private String title;
 
-    public static ApplyResultFragment newInstance() {
-        return new ApplyResultFragment();
+    public static ApplyResultFragment newInstance(String title, String des) {
+        ApplyResultFragment fragment = new ApplyResultFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", title);
+        bundle.putString("des", des);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        title = getArguments().getString("title");
+        des = getArguments().getString("des");
     }
 
     @Nullable
@@ -54,13 +73,18 @@ public class ApplyResultFragment extends BaseFragment {
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText("");
+        toolbarTitle.setText(title);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initData() {
-
+        tvDesc.setText(des);
+        if (des.contains("通过")) {
+            ivImage.setImageResource(R.drawable.ic_apply_pass_200px);
+        } else {
+            ivImage.setImageResource(R.drawable.ic_apply_refuse_200px);
+        }
     }
 
     @Override

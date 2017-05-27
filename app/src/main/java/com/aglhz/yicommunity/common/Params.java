@@ -76,6 +76,7 @@ public class Params {
     public String carNo;
     public String monthName;
     public int monthCount;//月数值：1、6、12
+    public String authFid;
 
 
     private Params() {

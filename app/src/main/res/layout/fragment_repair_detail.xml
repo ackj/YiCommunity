@@ -19,11 +19,11 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_community_name"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@color/base_grey"
                 android:gravity="center"
-                android:text="凯宾斯基"
                 android:textColor="@color/gray_text" />
 
             <LinearLayout
