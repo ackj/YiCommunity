@@ -24,6 +24,7 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.about.AboutActivity;
+import com.aglhz.yicommunity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -89,8 +90,10 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     TextView tvCacheSum;
     @BindView(R.id.iv_header_background)
     ImageView ivHeaderBackground;
-    private ViewGroup rootView;
+    @BindView(R.id.view_unread_mark_mine_fragment)
+    View viewUnreadMark;
     private Unbinder unbinder;
+    private Params params = Params.getInstance();
 
     public static MineFragment newInstance() {
         return new MineFragment();
@@ -113,13 +116,13 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         EventBus.getDefault().register(this);
         initData();
     }
 
     private void initData() {
         mPresenter.requestCache();
+        mPresenter.requestUnreadMark(params);
         //动态给“个人资料”TextView设置drawableLeft并改变其大小
         Drawable drawableLeft = ContextCompat.getDrawable(_mActivity, R.drawable.ic_oneself_info_80px);
         drawableLeft.setBounds(0, 0, DensityUtils.dp2px(BaseApplication.mContext, 16.f), DensityUtils.dp2px(BaseApplication.mContext, 16.f));
@@ -127,9 +130,11 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         updataView();
     }
 
-    @OnClick({R.id.iv_head_item_comment, R.id.tv_user_data, R.id.ll_message_center,
-            R.id.ll_my_indent, R.id.ll_my_address, R.id.ll_make_shortcut,
-            R.id.ll_my_publish, R.id.ll_clean_cache, R.id.ll_about_us, R.id.tv_logout, R.id.ll_my_house})
+    @OnClick({R.id.iv_head_item_comment, R.id.tv_user_data,
+            R.id.ll_message_center, R.id.ll_my_indent,
+            R.id.ll_my_address, R.id.ll_make_shortcut,
+            R.id.ll_my_publish, R.id.ll_clean_cache,
+            R.id.ll_about_us, R.id.tv_logout, R.id.ll_my_house})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_head_item_comment:
@@ -217,7 +222,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @Override
     public void error(String errorMessage) {
-        DialogHelper.warningSnackbar(rootView, errorMessage);
+        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
@@ -248,8 +253,10 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(EventData event) {
-        if (event.position == Constants.login) {
+        if (event.code == Constants.login) {
             updataView();
+        } else if (event.code == Constants.refresh_unread_mark) {
+            mPresenter.requestUnreadMark(params);
         }
     }
 
@@ -259,6 +266,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                     .load(UserHelper.userInfo.getFace())
                     .bitmapTransform(new CropCircleTransformation(_mActivity))
                     .into(ivHead);
+
             updateHeaderBackground();
 
             tvName.setText(UserHelper.userInfo.getNickName());
@@ -282,12 +290,19 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @Override
     public void responseLogout(String message) {
-        DialogHelper.successSnackbar(rootView, message);
+        DialogHelper.successSnackbar(getView(), message);
     }
 
     @Override
     public void responseCache(String str) {
         tvCacheSum.setText(str);
+    }
+
+    @Override
+    public void responseUnreadMark(UnreadMessageBean bean) {
+        if (bean != null) {
+            viewUnreadMark.setVisibility(bean.getData() > 0 ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

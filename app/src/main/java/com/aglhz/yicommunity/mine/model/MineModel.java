@@ -5,6 +5,7 @@ import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.mine.contract.MineContract;
@@ -57,6 +58,13 @@ public class MineModel extends BaseModel implements MineContract.Model {
                     e.onComplete();
                 }
         ).subscribeOn(Schedulers.computation());
+    }
+
+    @Override
+    public Observable<UnreadMessageBean> requestUnreadMark(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestUnreadMark(ApiService.requestUnreadMark, params.token)
+                .subscribeOn(Schedulers.io());
     }
 
     @Override

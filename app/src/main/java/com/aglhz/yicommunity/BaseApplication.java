@@ -13,7 +13,9 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.boxingimpl.BoxingGlideLoader;
 import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventData;
 import com.bilibili.boxing.BoxingMediaLoader;
 import com.bilibili.boxing.loader.IBoxingMediaLoader;
 import com.umeng.message.IUmengRegisterCallback;
@@ -23,6 +25,8 @@ import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -185,6 +189,8 @@ public class BaseApplication extends MultiDexApplication implements Application.
                 //每当有通知送达时，均会回调getNotification方法，因此可以通过监听此方法来判断通知是否送达。
                 ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
                 ALog.e(TAG, msg.custom);//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
+
+                EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));
 
                 switch (msg.builder_id) {
                     //自定义通知样式编号

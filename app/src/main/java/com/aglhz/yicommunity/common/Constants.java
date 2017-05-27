@@ -60,6 +60,9 @@ public class Constants {
     //登录成功
     public static final int login = 11;
 
+    //登录成功
+    public static final int refresh_unread_mark = 22;
+
     //登出，或者token失效
     public static final int loginout = 10;
 

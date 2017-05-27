@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.mine.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;
@@ -20,6 +21,9 @@ public interface MineContract {
         void responseLogout(String message);
 
         void responseCache(String message);
+
+        void responseUnreadMark(UnreadMessageBean bean);
+
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -30,6 +34,8 @@ public interface MineContract {
 
         void requestClearCache();
 
+        void requestUnreadMark(Params params);
+
     }
 
     interface Model extends BaseContract.Model {
@@ -38,5 +44,8 @@ public interface MineContract {
         Observable<String> requestCache();
 
         Observable<String> requestClearCache();
+
+        Observable<UnreadMessageBean> requestUnreadMark(Params params);
+
     }
 }

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.mine.contract.MineContract;
 import com.aglhz.yicommunity.mine.model.MineModel;
@@ -40,7 +41,7 @@ public class MinePresenter extends BasePresenter<MineContract.View, MineContract
         mRxManager.add(mModel.requestLogout(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseLogout(baseBean.getOther().getMessage());
                     } else {
                         getView().error(baseBean.getOther().getMessage());
@@ -72,6 +73,20 @@ public class MinePresenter extends BasePresenter<MineContract.View, MineContract
                         getView().responseCache(s);
                     }
 
+                }, this::error)
+        );
+    }
+
+    @Override
+    public void requestUnreadMark(Params params) {
+        mRxManager.add(mModel.requestUnreadMark(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> {
+                    if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseLogout(bean.getOther().getMessage());
+                    } else {
+                        getView().error(bean.getOther().getMessage());
+                    }
                 }, this::error)
         );
     }

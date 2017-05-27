@@ -32,6 +32,7 @@ import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.bean.UnitBean;
+import com.aglhz.yicommunity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.bean.UserBean;
 import com.aglhz.yicommunity.bean.UserDataBean;
 
@@ -379,6 +380,7 @@ public interface ApiService {
     Flowable<MyHousesBean> requestMyhouses(@Url String url,
                                            @Query("token") String token,
                                            @Query("cmnt_c") String cmnt_c);
+
     //查询用户名下所有的房屋
     @POST
     Flowable<MyHousesBean> requestMyhouses(@Url String url,
@@ -720,4 +722,10 @@ public interface ApiService {
     @POST
     Observable<BaseBean> searchParkSpace(@Url String url, @Query("parkPlaceFid") String fid);
 
+
+    //"我的"模块里的未读标记
+    String requestUnreadMark = BASE_PROPERTY + "/client/info/redcount";
+
+    @POST
+    Observable<UnreadMessageBean> requestUnreadMark(@Url String url, @Query("token") String token);
 }

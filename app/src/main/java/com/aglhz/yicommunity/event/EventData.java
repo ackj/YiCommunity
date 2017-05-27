@@ -5,9 +5,9 @@ package com.aglhz.yicommunity.event;
  * Email：langmanleguang@qq.com
  */
 public class EventData {
-    public int position;
+    public int code;
 
-    public EventData(int position) {
-        this.position = position;
+    public EventData(int code) {
+        this.code = code;
     }
 }

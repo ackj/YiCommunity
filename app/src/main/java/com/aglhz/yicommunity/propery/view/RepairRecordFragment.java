@@ -78,7 +78,7 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
-        return view;
+        return attachToSwipeBack(view);
     }
 
     @Override

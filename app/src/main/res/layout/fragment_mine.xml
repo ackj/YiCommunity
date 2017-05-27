@@ -93,8 +93,9 @@
                     android:text="消息中心" />
 
                 <View
-                    android:id="@+id/view_red_pointer"
-                    style="@style/MineItemRedPointerStyle" />
+                    android:id="@+id/view_unread_mark_mine_fragment"
+                    style="@style/MineItemRedPointerStyle"
+                    android:visibility="invisible" />
 
                 <View style="@style/MineItemHorizontalSpace" />
 

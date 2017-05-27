@@ -25,6 +25,7 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.message.contract.MessageCenterContract;
 import com.aglhz.yicommunity.message.presenter.MessageCenterPresenter;
 import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
@@ -222,6 +223,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     public void responseReadSuccess(BaseBean bean) {
         adapter.getData().get(clickPosition).setRead(true);
         adapter.notifyItemChanged(clickPosition);
+        EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));
     }
 
     @Override
