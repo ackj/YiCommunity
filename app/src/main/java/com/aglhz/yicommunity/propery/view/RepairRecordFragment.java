@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,6 +23,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.message.view.RepairDetailFragment;
 import com.aglhz.yicommunity.propery.contract.RepairApplyContract;
 import com.aglhz.yicommunity.propery.presenter.RepairApplyPresenter;
 import com.aglhz.yicommunity.publish.view.RepairFragment;
@@ -32,7 +32,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,7 +46,7 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  * <p>
  * 物业保修列表
  */
-public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> implements RepairApplyContract.View {
+public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Presenter> implements RepairApplyContract.View {
     private final String TAG = RepairRecordFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -57,6 +56,8 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
     RecyclerView recyclerview;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
+
+
     private Unbinder unbinder;
     private RepairRecordRVAdapter adapter;
     private Params params = Params.getInstance();
@@ -68,7 +69,7 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
 
     @NonNull
     @Override
-    protected RepairApplyPresenter createPresenter() {
+    protected RepairApplyContract.Presenter createPresenter() {
         return new RepairApplyPresenter(this);
     }
 
@@ -149,6 +150,11 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyPresenter> imp
                 startForResult(RepairFragment.newInstance(true), REQUEST_CODE);
             }
             return true;
+        });
+
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            RepairApplyBean.DataBean.RepairApplysBean bean = (RepairApplyBean.DataBean.RepairApplysBean) adapter.getData().get(position);
+            start(RepairDetailFragment.newInstance(bean.getFid()));
         });
     }
 

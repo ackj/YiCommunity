@@ -61,6 +61,8 @@ public class Params {
     public String monthName;
     public String authFid;
     public String id;
+    public String searchStartTime;
+    public String searchEndTime;
     public boolean isProprietor = true;
     public boolean single;
     public boolean timeable;
@@ -76,7 +78,6 @@ public class Params {
     public int appType;//android 2就好
     public File file;
     public List<File> files;
-
 
     private Params() {
     }

@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers;
  * Email: liujia95me@126.com
  */
 
-public class PublishCarpoolPresenter extends BasePresenter<PublishContract.View,PublishContract.Model> implements PublishContract.Presenter {
+public class PublishCarpoolPresenter extends BasePresenter<PublishContract.View, PublishContract.Model> implements PublishContract.Presenter {
     /**
      * 创建Presenter的时候就绑定View和创建model。
      *
@@ -41,21 +41,15 @@ public class PublishCarpoolPresenter extends BasePresenter<PublishContract.View,
 
     @Override
     public void post(Params params) {
-        switch (params.type){
-            case 1:
-                compress(params);
-                break;
-            case 2:
-                //上传视频
-                break;
-            default:
-                beginPost(params);
-                break;
+        if (params.type == 1) {
+            compress(params);
+        }else{
+            beginPost(params);
         }
     }
 
-    public void compress(Params params){
-        for (int i = 0;i<params.files.size();i++){
+    public void compress(Params params) {
+        for (int i = 0; i < params.files.size(); i++) {
         }
         Luban.get(BaseApplication.mContext)
                 .load(params.files)

@@ -68,16 +68,10 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
 
     @Override
     public void post(Params params) {
-        switch (params.type) {
-            case 1:
-                compress(params);
-                break;
-            case 2:
-                //上传视频
-                break;
-            default:
-                beginPost(params);
-                break;
+        if (params.type == 1) {
+            compress(params);
+        } else {
+            beginPost(params);
         }
     }
 

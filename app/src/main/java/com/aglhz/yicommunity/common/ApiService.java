@@ -16,6 +16,7 @@ import com.aglhz.yicommunity.bean.FloorBean;
 import com.aglhz.yicommunity.bean.GoodsBean;
 import com.aglhz.yicommunity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
+import com.aglhz.yicommunity.bean.MonthCardBillListBean;
 import com.aglhz.yicommunity.bean.MonthCardRuleListBean;
 import com.aglhz.yicommunity.bean.MyHousesBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
@@ -273,12 +274,13 @@ public interface ApiService {
     //房屋成员认证审核
     String requestAuthApprove = BASE_PROPERTY + "/client/authApprove";
 
+    @FormUrlEncoded
     @POST
     Observable<BaseBean> requestAuthApprove(@Url String url,
-                                            @Query("token") String token,
-                                            @Query("fid") String fid,
-                                            @Query("authFid") String authFid,
-                                            @Query("status") int status);
+                                            @Field("token") String token,
+                                            @Field("fid") String fid,
+                                            @Field("authFid") String authFid,
+                                            @Field("status") int status);
 
     //业主申请
     String ownerApply = BASE_PROPERTY + "/client/ownerApply.do";
@@ -696,13 +698,18 @@ public interface ApiService {
     @POST
     Observable<CardRechargeBean> requestCardRecharge(@Url String url, @Query("token") String token, @Query("parkCardFid") String fid);
 
-    //-------------- 未对接的接口 ---------------
-
     //停车记录
     String requestParkRecord = BASE_PROPERTY + "/park/record/to-client/record-list";
 
     @POST
-    Observable<ParkRecordListBean> requestParkRecord(@Url String url, @Query("token") String authToken, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<ParkRecordListBean> requestParkRecord(@Url String url,
+                                                     @Query("token") String authToken,
+                                                     @Query("page") int page,
+                                                     @Query("pageSize") int pageSize,
+                                                     @Query("searchStartTime")String searchStartTime,
+                                                     @Query("searchEndTime")String searchEndTime);
+
+    //-------------- 未对接的接口 ---------------
 
     //某车临时停车的缴费账单
     String requestPayBill = BASE_PROPERTY + "/park/temporary/to-client/pay-bill";
@@ -728,4 +735,13 @@ public interface ApiService {
 
     @POST
     Observable<UnreadMessageBean> requestUnreadMark(@Url String url, @Query("token") String token);
+
+    //车卡管理里列出某会员的月卡充值记录列表
+    String requestRechargeRecord = "http://192.168.250.108:8080/property_code/park/card/to-client/month-card-recharge-record-list";
+
+    @POST
+    Observable<MonthCardBillListBean> requestRechargeRecord(@Url String url,
+                                                            @Query("token") String token,
+                                                            @Query("page")int page,
+                                                            @Query("pageSize")int pageSize);
 }
