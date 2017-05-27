@@ -76,7 +76,7 @@ public class CarCardTransactFragment extends BaseFragment {
             if (position == 0) {
                 start(PublishMonthCardFragment.newInstance(0, null));
             } else {
-                start(PublishOwnerCardFragment.newInstance());
+                start(PublishOwnerCardFragment.newInstance(null));
             }
         });
     }

@@ -43,16 +43,14 @@ public class RepairModel extends BaseModel implements PublishContract.Model {
         builder.addFormDataPart("des", params.des);
         builder.addFormDataPart("name", params.name);
         builder.addFormDataPart("single", params.single + "");
-        builder.addFormDataPart("type", params.type + "");
+        builder.addFormDataPart("type", params.repairType);
         builder.addFormDataPart("ofid", params.ofid);
 
         ALog.d("PublishNeighbourModel", "上传=============");
 
         if (params.files != null && params.files.size() > 0) {
             for (File f : params.files) {
-
                 ALog.d("PublishNeighbourModel", "上传图片：" + f.getAbsolutePath());
-
                 RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), f);
                 builder.addFormDataPart("file", f.getName(), requestBody);
             }

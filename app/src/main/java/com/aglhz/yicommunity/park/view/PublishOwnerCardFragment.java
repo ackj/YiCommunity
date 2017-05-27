@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.CarCardListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
@@ -54,18 +56,32 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
     EditText etInputName;
     @BindView(R.id.et_input_phone)
     EditText etInputPhone;
+    @BindView(R.id.bt_submit_fragment_owner_card)
+    Button btSubmit;
 
     private Unbinder unbinder;
     Params params = Params.getInstance();
+    private CarCardListBean.DataBean.CardListBean bean;
+    private boolean isUpdate;
 
-    public static PublishOwnerCardFragment newInstance() {
-        return new PublishOwnerCardFragment();
+    public static PublishOwnerCardFragment newInstance(CarCardListBean.DataBean.CardListBean bean) {
+        PublishOwnerCardFragment fragment = new PublishOwnerCardFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("bean", bean);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @NonNull
     @Override
     protected PublishOwnerCardPresenter createPresenter() {
         return new PublishOwnerCardPresenter(this);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bean = (CarCardListBean.DataBean.CardListBean) getArguments().getSerializable("bean");
     }
 
     @Nullable
@@ -81,6 +97,23 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
         super.onViewCreated(view, savedInstanceState);
         EventBus.getDefault().register(this);
         initToolbar();
+        initData();
+    }
+
+    private void initData() {
+        if (bean != null) {
+            tvCarCity.setText(bean.getCarNo().substring(0, 1));
+            etInputCarNum.setText(bean.getCarNo().substring(1));
+            tvParkAddress.setText(bean.getParkPlace().getName());
+            etInputName.setText(bean.getCustomerName());
+            etInputPhone.setText(bean.getPhoneNo());
+
+            params.parkCardFid = bean.getFid();
+            params.parkPlaceFid = bean.getParkPlace().getFid();
+
+            isUpdate = true;
+            btSubmit.setText("修改车卡");
+        }
     }
 
     private void initToolbar() {
@@ -121,7 +154,7 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
             DialogHelper.warningSnackbar(getView(), "请输入车牌号");
             return;
         }
-        if (TextUtils.isEmpty(params.fid)) {
+        if (TextUtils.isEmpty(params.parkPlaceFid)) {
             DialogHelper.warningSnackbar(getView(), "请选择停车地址");
             return;
         }
@@ -135,7 +168,11 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
             DialogHelper.warningSnackbar(getView(), "请输入联系方式");
             return;
         }
-        mPresenter.post(params);
+        if(isUpdate){
+            mPresenter.requestModifyOwnerCard(params);
+        }else{
+            mPresenter.post(params);
+        }
     }
 
     @Override
@@ -149,8 +186,8 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventPark event) {
         tvParkAddress.setText(event.bean.getName());
-        params.fid = event.bean.getFid();
-        ALog.e(TAG,"parkPlaceFid:::"+params.fid+" token:::"+params.token);
+        params.parkPlaceFid = event.bean.getFid();
+        ALog.e(TAG, "parkPlaceFid:::" + params.fid + " token:::" + params.token);
     }
 
     @Override
@@ -166,5 +203,6 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
     @Override
     public void responseSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), bean.getOther().getMessage());
+        pop();
     }
 }
