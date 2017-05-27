@@ -79,7 +79,6 @@ public class LbsManager {
                 if (amapLocation != null) {
                     if (amapLocation.getErrorCode() == 0) {
                         ALog.e(amapLocation.toString());
-                        UserHelper.setCity(amapLocation.getCity());
                         UserHelper.setLocationAddress(amapLocation.getAddress());
                         UserHelper.setLatitude(String.valueOf(amapLocation.getLatitude()));
                         UserHelper.setLongitude(String.valueOf(amapLocation.getLongitude()));

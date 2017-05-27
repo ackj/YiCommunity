@@ -29,7 +29,8 @@ public class HouseRightsModel extends BaseModel implements HouseRightsContract.M
 
     @Override
     public Observable<HouseRightsBean> requestRights(Params params) {
-        return HttpHelper.getService(ApiService.class).requestRights(ApiService.requestRights
+        return HttpHelper.getService(ApiService.class)
+                .requestRights(ApiService.requestRights
                 , params.token
                 , params.fid)
                 .subscribeOn(Schedulers.io());
@@ -37,7 +38,8 @@ public class HouseRightsModel extends BaseModel implements HouseRightsContract.M
 
     @Override
     public Observable<BaseBean> requestUpdateRights(Params params) {
-        return HttpHelper.getService(ApiService.class).requestUpdateRights(params.url
+        return HttpHelper.getService(ApiService.class)
+                .requestUpdateRights(params.url
                 , params.token
                 , params.mfid
                 , params.fid
@@ -48,7 +50,8 @@ public class HouseRightsModel extends BaseModel implements HouseRightsContract.M
 
     @Override
     public Observable<BaseBean> requestDelete(Params params) {
-        return HttpHelper.getService(ApiService.class).requestDelete(ApiService.requestRights
+        return HttpHelper.getService(ApiService.class)
+                .requestDelete(ApiService.requestRights
                 , params.token
                 , params.mfid
                 , params.fid)

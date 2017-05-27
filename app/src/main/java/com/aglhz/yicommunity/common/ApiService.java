@@ -137,7 +137,7 @@ public interface ApiService {
     String requestMessageRead = BASE_PROPERTY + "/client/msgread";
 
     @POST
-    Observable<BaseBean> requestMessageRead(@Url String url,@Query("token")String token,@Query("fid")String fid);
+    Observable<BaseBean> requestMessageRead(@Url String url, @Query("token") String token, @Query("fid") String fid);
 
     //社区Banner
     //@POST("/sub_property_ysq/client/info/indexadvs")
@@ -364,10 +364,16 @@ public interface ApiService {
 
     String requestMyhouses = BASE_PROPERTY + "/client/info/authBdgs.do";
 
+    //查询用户名下某小区的房屋
     @POST
     Flowable<MyHousesBean> requestMyhouses(@Url String url,
                                            @Query("token") String token,
                                            @Query("cmnt_c") String cmnt_c);
+    //查询用户名下所有的房屋
+    @POST
+    Flowable<MyHousesBean> requestMyhouses(@Url String url,
+                                           @Query("token") String token);
+
 
     String UPDATE_RIGHTS_MYSELF = BASE_PROPERTY + "/smartdoor/client/powerset";
 

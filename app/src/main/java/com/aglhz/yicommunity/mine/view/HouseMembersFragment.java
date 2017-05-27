@@ -1,14 +1,18 @@
 package com.aglhz.yicommunity.mine.view;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -16,17 +20,22 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.bean.MyHousesBean;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.house.contract.HouseRightsContract;
+import com.aglhz.yicommunity.house.presenter.HouseRightsPresenter;
+import com.aglhz.yicommunity.house.view.MemberRVAdapter;
+import com.aglhz.yicommunity.house.view.PermissionRVAdapter;
 import com.aglhz.yicommunity.mine.contract.MyHousesContract;
 import com.aglhz.yicommunity.mine.presenter.MyHousesPresenter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.kyleduo.switchbutton.SwitchButton;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,12 +51,11 @@ import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
- * Author: LiuJia on 2017/5/17 0017 15:29.
+ * Author: LiuJia on 2017/4/20 9:26.
  * Email: liujia95me@126.com
  */
-
-public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> implements MyHousesContract.View {
-    public static final String TAG = MyHousesFragment.class.getSimpleName();
+public class HouseMembersFragment extends BaseFragment<MyHousesContract.Presenter> implements MyHousesContract.View {
+    private static final String TAG = HouseMembersFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -56,12 +64,28 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-    private MyHousesRVAdapter adapter;
-    private Unbinder unbinder;
+    private MemberRVAdapter mAdapter;
     private Params params = Params.getInstance();
+    private String title;
+    private Unbinder unbinder;
 
-    public static MyHousesFragment newInstance() {
-        return new MyHousesFragment();
+    public static HouseMembersFragment newInstance(String fid, String address) {
+        Bundle args = new Bundle();
+        args.putString(Constants.HOUSE_FID, fid);
+        args.putString(Constants.HOUSE_ADDRESS, address);
+        HouseMembersFragment fragment = new HouseMembersFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            params.fid = args.getString(Constants.HOUSE_FID);
+            title = args.getString(Constants.HOUSE_ADDRESS);
+        }
     }
 
     @NonNull
@@ -76,7 +100,7 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
-        return attachToSwipeBack(view);
+        return view;
     }
 
     @Override
@@ -85,6 +109,13 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
         initToolbar();
         initData();
         initPtrFrameLayout();
+    }
+
+    private void initToolbar() {
+        initStateBar(toolbar);
+        toolbarTitle.setText(title);
+        toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
+        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     private void initPtrFrameLayout() {
@@ -108,44 +139,28 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                params.page = 1;
-                params.pageSize = Constants.PAGE_SIZE;
-                params.cmnt_c = UserHelper.communityCode;
-                mPresenter.requsetMyHouse(params);
+                mPresenter.requestRights(params);
             }
         });
     }
 
-    private void initToolbar() {
-        initStateBar(toolbar);
-        toolbarTitle.setText("我的房屋");
-        toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+    private void initData() {
+        //成员头像网格表
+        recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 5));
+        mAdapter = new MemberRVAdapter();
+        recyclerView.setAdapter(mAdapter);
     }
 
-    private void initData() {
-        adapter = new MyHousesRVAdapter();
-        adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(() -> {
-            ALog.e("加载更多………………………………");
-            params.page++;
-            mPresenter.requsetMyHouse(params);
-        }, recyclerView);
 
-        adapter.setOnItemClickListener((adapter, view, position) -> {
-            MyHousesBean.DataBean.AuthBuildingsBean bean = MyHousesFragment.this.adapter.getData().get(position);
-            start(HouseMembersFragment.newInstance(bean.getFid(), bean.getAddress()));
-        });
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        recyclerView.setAdapter(adapter);
+    @Override
+    public void responseHouses(List<MyHousesBean.DataBean.AuthBuildingsBean> beas) {
+        //公用Presenter多出来的
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-        EventBus.getDefault().unregister(this);
+    public void responseRights(HouseRightsBean mHouseRights) {
+        ptrFrameLayout.refreshComplete();
+        mAdapter.setNewData(mHouseRights.getData());
     }
 
     @Override
@@ -156,37 +171,13 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
-        if (params.page == 1) {
-            //为后面的pageState做准备
-        } else if (params.page > 1) {
-            adapter.loadMoreFail();
-            params.page--;
-        }
-        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     @Override
-    public void responseHouses(List<MyHousesBean.DataBean.AuthBuildingsBean> datas) {
-        ptrFrameLayout.refreshComplete();
-
-        if (datas == null || datas.size() == 0) {
-            adapter.loadMoreEnd();
-            return;
-        }
-
-        if (params.page == 1) {
-            adapter.setNewData(datas);
-            adapter.disableLoadMoreIfNotFullPage(recyclerView);
-        } else {
-            adapter.addData(datas);
-            adapter.setEnableLoadMore(true);
-            adapter.loadMoreComplete();
-        }
-    }
-
-    @Override
-    public void responseRights(HouseRightsBean mHouseRights) {
-        //公用Presenter多出来的
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

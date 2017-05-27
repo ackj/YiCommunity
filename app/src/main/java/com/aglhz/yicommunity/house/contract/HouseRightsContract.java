@@ -17,6 +17,7 @@ import io.reactivex.Observable;
 public interface HouseRightsContract {
 
     interface View extends BaseContract.View {
+
         void responseRights(HouseRightsBean mHouseRights);
 
         void responseUpdateRights(BaseBean mBaseBean);
@@ -26,6 +27,7 @@ public interface HouseRightsContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
+
         void requestRights(Params params);
 
         void requestUpdateRights(Params params);
@@ -35,6 +37,7 @@ public interface HouseRightsContract {
     }
 
     interface Model extends BaseContract.Model {
+
         Observable<HouseRightsBean> requestRights(Params params);
 
         Observable<BaseBean> requestUpdateRights(Params params);

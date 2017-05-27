@@ -86,7 +86,6 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
                         if (mCityAdapter != null) {
                             mCityAdapter.updateLocateState(LocateState.SUCCESS, city);
                         }
-                        UserHelper.setCity(city);
                         LbsManager.getInstance().stopLocation();
                     }
                 } else {
@@ -238,7 +237,6 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
     private void back(String city) {
         saveUsedCity2Local(city);
         //服务器端数据库要求城市参数得有完整的名称，也就是有市结尾，比如武汉，必须为武汉市。
-        UserHelper.setCity(city.endsWith("市") ? city : city + "市");
         Bundle bundle = new Bundle();
         bundle.putString(CITY, city.endsWith("市") ? city : city + "市");
         setFragmentResult(RESULT_OK, bundle);

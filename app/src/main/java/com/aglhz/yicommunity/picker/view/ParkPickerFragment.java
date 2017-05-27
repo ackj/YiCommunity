@@ -102,7 +102,6 @@ public class ParkPickerFragment extends BaseFragment<ParkPickerPresenter> implem
                     String city = aMapLocation.getCity();
                     if (!TextUtils.isEmpty(city)) {
                         tvCity.setText(city);
-                        UserHelper.setCity(city);
                         LbsManager.getInstance().stopLocation();
                     }
                 }

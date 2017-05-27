@@ -157,11 +157,13 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             CommunitySelectBean.DataBean.CommunitiesBean community = mDatas.get(position);
 
+            //设置省、市、区
             UserHelper.setPosition(community.getPosition().getProvince()
                     , community.getPosition().getCity()
                     , community.getPosition().getCounty()
                     , community.getPosition().getAddress());
 
+            //设置小区
             UserHelper.setCommunity(community.getName(), community.getCode());
             EventBus.getDefault().post(new EventCommunity(community));
             _mActivity.finish();
@@ -188,8 +190,6 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 ALog.e("开始刷新了");
-                adapter.getData().clear();
-                adapter.notifyDataSetChanged();
                 params.city = UserHelper.city;
                 mPresenter.requestCommunitys(params);
             }
@@ -200,7 +200,9 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CITY) {
-            tvCity.setText(params.city = data.getString(Constants.CITY));
+
+            ALog.e("params.city-->" + params.city);
+            tvCity.setText(UserHelper.city = data.getString(Constants.CITY));
             ptrFrameLayout.autoRefresh();
         }
     }
