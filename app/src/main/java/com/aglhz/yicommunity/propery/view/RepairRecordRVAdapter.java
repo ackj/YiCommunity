@@ -7,8 +7,6 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.util.List;
-
 /**
  * Created by Administrator on 2017/4/19 15:02.
  */
@@ -29,9 +27,9 @@ public class RepairRecordRVAdapter extends BaseRecyclerViewAdapter<RepairApplyBe
         if (item.getStatus() == 0) {
             ivStatus.setImageResource(R.drawable.ic_property_repair_untreated_172px);
         } else if (item.getStatus() == 1) {
-            ivStatus.setImageResource(R.drawable.ic_property_repair_processing_172px);
-        } else {
             ivStatus.setImageResource(R.drawable.ic_property_repair_finished_172px);
+        } else {
+            ivStatus.setImageResource(R.drawable.ic_property_repair_processing_172px);
         }
     }
 }

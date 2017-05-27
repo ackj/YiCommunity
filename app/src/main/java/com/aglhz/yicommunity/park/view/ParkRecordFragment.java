@@ -33,7 +33,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2017/4/19 9:35.
  */
-public class ParkRecordFragment extends BaseFragment<ParkRecordPresenter> implements ParkRecordContract.View {
+public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presenter> implements ParkRecordContract.View {
     private static final String TAG = ParkRecordFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
@@ -57,7 +57,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordPresenter> implem
 
     @NonNull
     @Override
-    protected ParkRecordPresenter createPresenter() {
+    protected ParkRecordContract.Presenter createPresenter() {
         return new ParkRecordPresenter(this);
     }
 
@@ -87,6 +87,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordPresenter> implem
         Date date = new Date();
         tvStartTime.setText(getTime(date));
         tvEndTime.setText(getTime(date));
+        requestSearch();
 
         mPresenter.requestParkReocrd(params);
 
@@ -129,17 +130,21 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordPresenter> implem
     }
 
     private void setTime(TextView tv) {
-        TimePickerView pvTime = new TimePickerView.Builder(_mActivity, new TimePickerView.OnTimeSelectListener() {
-            @Override
-            public void onTimeSelect(Date date, View v) {
-                params.outTime = getTime(date);
-                tv.setText(params.outTime);
-            }
+        TimePickerView pvTime = new TimePickerView.Builder(_mActivity, (date, v) -> {
+
+            tv.setText(getTime(date));
+            requestSearch();
         })
                 .setType(TimePickerView.Type.YEAR_MONTH_DAY)
                 .build();
         pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         pvTime.show();
+    }
+
+    private void requestSearch() {
+        params.searchStartTime = tvStartTime.getText().toString().trim();
+        params.searchEndTime = tvEndTime.getText().toString().trim();
+        mPresenter.requestParkReocrd(params);
     }
 
     private String getTime(Date date) {//可根据需要自行截取数据显示

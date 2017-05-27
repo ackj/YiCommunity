@@ -113,13 +113,10 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
             mPresenter.start(params);
-
         }, recyclerView);
-
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new Decoration(_mActivity, Decoration.VERTICAL_LIST));
     }
-
 
     private void initToolbar() {
         initStateBar(toolbar);
@@ -146,14 +143,13 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                         _mActivity.startActivity(intent);
                         break;
                     case HOUSE_OWNER_APPLY: //业主申请
-                        //todo:可能要改 ??? 业主不是只能通过后台来审核通过吗？？
+                        //todo:业主不是只能通过后台来审核通过吗？？
                         start(ApplyCheckFragment.newInstance(bean));
                         break;
                     case HOUSE_MEMBER_APPLY://成员申请
                         start(ApplyCheckFragment.newInstance(bean));
                         break;
                     case HOUSE_RENTER_APPLY://租客申请
-                        //todo:可能要改
                         start(ApplyCheckFragment.newInstance(bean));
                         break;
                     case HOUSE_OWNER_APPROVE://业主申请审核结果

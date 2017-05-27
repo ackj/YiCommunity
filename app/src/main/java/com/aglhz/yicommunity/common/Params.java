@@ -77,7 +77,8 @@ public class Params {
     public String monthName;
     public int monthCount;//月数值：1、6、12
     public String authFid;
-
+    public String searchStartTime;
+    public String searchEndTime;
 
     private Params() {
     }

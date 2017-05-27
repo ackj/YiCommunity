@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.park.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +13,13 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.MonthCardBillListBean;
+import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.park.contract.RechargeRecordContract;
+import com.aglhz.yicommunity.park.presenter.RechargeRecordPresenter;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +30,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class RechargeRecordFragment extends BaseFragment {
+public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.Presenter> implements RechargeRecordContract.View {
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -34,9 +41,16 @@ public class RechargeRecordFragment extends BaseFragment {
 
     private Unbinder unbinder;
     Params params = Params.getInstance();
+    private RechargeReocrdRVAdapter adapter;
 
     public static RechargeRecordFragment newInstance() {
         return new RechargeRecordFragment();
+    }
+
+    @NonNull
+    @Override
+    protected RechargeRecordContract.Presenter createPresenter() {
+        return new RechargeRecordPresenter(this);
     }
 
     @Nullable
@@ -63,8 +77,13 @@ public class RechargeRecordFragment extends BaseFragment {
     }
 
     private void initData() {
+        params.page = 1;
+        params.pageSize = 10;
+        mPresenter.requestMonthCardBillList(params);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        recyclerView.setAdapter(new RechargeReocrdAdapter());
+        adapter = new RechargeReocrdRVAdapter();
+        recyclerView.setAdapter(adapter);
     }
 
     private void initListener() {
@@ -84,4 +103,18 @@ public class RechargeRecordFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+    @Override
+    public void start(Object response) {
+
+    }
+
+    @Override
+    public void error(String errorMessage) {
+        DialogHelper.warningSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public void responseRechargeRecord(List<MonthCardBillListBean.DataBean.MonthCardBillBean> datas) {
+        adapter.setNewData(datas);
+    }
 }

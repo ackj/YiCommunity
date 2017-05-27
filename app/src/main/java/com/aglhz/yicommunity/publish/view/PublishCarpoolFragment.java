@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -222,10 +221,10 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
                 selectTogoTime();
                 break;
             case R.id.rb_carpool_has_car:
-                params.carpoolType = 1;
+                params.carpoolType = 2;
                 break;
             case R.id.rb_carpool_hasnot_car:
-                params.carpoolType = 2;
+                params.carpoolType = 1;
                 break;
         }
     }

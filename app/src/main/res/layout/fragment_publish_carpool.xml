@@ -152,7 +152,7 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:button="@drawable/selector_bt_radio"
                         android:padding="15dp"
-                        android:text="我有车"
+                        android:text="找乘客"
                         android:textColor="@color/base_black"
                         android:textSize="13sp" />
 
@@ -163,7 +163,7 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:button="@drawable/selector_bt_radio"
                         android:padding="15dp"
-                        android:text="我没车"
+                        android:text="找车主"
                         android:textColor="@color/base_black"
                         android:textSize="13sp" />
                 </RadioGroup>

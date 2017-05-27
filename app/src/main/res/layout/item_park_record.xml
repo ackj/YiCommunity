@@ -89,7 +89,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tv_out_time_item_park_record"
+            android:id="@+id/tv_start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

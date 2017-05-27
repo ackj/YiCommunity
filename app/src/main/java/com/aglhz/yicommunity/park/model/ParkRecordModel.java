@@ -24,7 +24,7 @@ public class ParkRecordModel extends BaseModel implements ParkRecordContract.Mod
     @Override
     public Observable<ParkRecordListBean> requestParkRecord(Params params) {
         return HttpHelper.getService(ApiService.class).requestParkRecord(ApiService.requestParkRecord,
-                params.token, params.page, params.pageSize)
+                params.token, params.page, params.pageSize, params.searchStartTime, params.searchEndTime)
                 .subscribeOn(Schedulers.io());
     }
 }

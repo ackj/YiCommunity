@@ -279,7 +279,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
                 params.cmnt_c = UserHelper.communityCode;
                 showLoadingDialog();
                 mPresenter.requestContact(params);
-
             } else {
                 go2PropertyService(position);
             }
