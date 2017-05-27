@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class MessageCenterBean {
             this.memNews = memNews;
         }
 
-        public static class MemNewsBean {
+        public static class MemNewsBean implements Serializable{
             /**
              * fid : 5605786f-ab7f-48ab-a256-14e1d04ce47e
              * sfid : 123

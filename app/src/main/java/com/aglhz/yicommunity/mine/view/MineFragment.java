@@ -1,7 +1,6 @@
 package com.aglhz.yicommunity.mine.view;
 
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -32,10 +31,9 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.door.DoorActivity;
 import com.aglhz.yicommunity.event.EventData;
-import com.aglhz.yicommunity.bean.UserDataBean;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
-import com.aglhz.yicommunity.message.MessageActivity;
+import com.aglhz.yicommunity.message.view.MessageCenterFragment;
 import com.aglhz.yicommunity.mine.contract.MineContract;
 import com.aglhz.yicommunity.mine.presenter.MinePresenter;
 import com.aglhz.yicommunity.mypublish.MyPublishActivity;
@@ -152,7 +150,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 break;
             case R.id.ll_message_center:
                 if (isLogined()) {
-                    _mActivity.startActivity(new Intent(_mActivity, MessageActivity.class));
+//                    _mActivity.startActivity(new Intent(_mActivity, MessageActivity.class));
+                    _mActivity.start(MessageCenterFragment.newInstance());
                 }
                 break;
             case R.id.ll_my_indent:

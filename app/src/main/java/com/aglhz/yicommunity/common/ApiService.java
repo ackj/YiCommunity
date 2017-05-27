@@ -137,7 +137,7 @@ public interface ApiService {
     String requestMessageRead = BASE_PROPERTY + "/client/msgread";
 
     @POST
-    Observable<BaseBean> requestMessageRead(@Url String url,@Query("token")String token,@Query("fid")String fid);
+    Observable<BaseBean> requestMessageRead(@Url String url, @Query("token") String token, @Query("fid") String fid);
 
     //社区Banner
     //@POST("/sub_property_ysq/client/info/indexadvs")
@@ -268,6 +268,16 @@ public interface ApiService {
             , @Query("bdg_u_c") String bdg_u_c
             , @Query("bdg_f_c") String bdg_f_c);
 
+
+    //房屋成员认证审核
+    String requestAuthApprove = BASE_PROPERTY + "/client/authApprove";
+
+    @POST
+    Observable<BaseBean> requestAuthApprove(@Url String url,
+                                            @Query("token") String token,
+                                            @Query("fid") String fid,
+                                            @Query("authFid") String authFid,
+                                            @Query("status") int status);
 
     //业主申请
     String ownerApply = BASE_PROPERTY + "/client/ownerApply.do";
@@ -678,13 +688,19 @@ public interface ApiService {
     @POST
     Observable<CardRechargeBean> requestCardRecharge(@Url String url, @Query("token") String token, @Query("parkCardFid") String fid);
 
-    //-------------- 未对接的接口 -----------------
+    //-------------- 未对接的接口 ---------------
 
     //停车记录
     String requestParkRecord = BASE_PROPERTY + "/park/record/to-client/record-list";
 
     @POST
     Observable<ParkRecordListBean> requestParkRecord(@Url String url, @Query("token") String authToken, @Query("page") int page, @Query("pageSize") int pageSize);
+
+    //某车临时停车的缴费账单
+    String requestPayBill = BASE_PROPERTY + "/park/temporary/to-client/pay-bill";
+
+    @POST
+    Observable<BaseBean> requestPayBill(@Url String url, @Query("token") String token, @Query("parkPlaceFid") String fid, @Query("carNo") String carNo);
 
     //车卡管理里某免费卡的修改页
     String modifyOwnerCard = BASE_PROPERTY + "/park/card/to-client/owner-card-modify";
@@ -697,11 +713,5 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> searchParkSpace(@Url String url, @Query("parkPlaceFid") String fid);
-
-    //某车临时停车的缴费账单
-    String requestPayBill = BASE_PROPERTY + "/park/temporary/to-client/pay-bill";
-
-    @POST
-    Observable<BaseBean> requestPayBill(@Url String url, @Query("token") String token, @Query("parkPlaceFid") String fid, @Query("carNo") String carNo);
 
 }
