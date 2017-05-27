@@ -323,9 +323,10 @@ public interface ApiService {
 
     String requestDoors = BASE_PROPERTY + "/smartdoor/info/doormchs";
 
-
     @POST
-    Observable<DoorListBean> requestDoors(@Url String url, @Query("token") String token);
+    Observable<DoorListBean> requestDoors(@Url String url,
+                                          @Query("token") String token,
+                                          @Query("cmnt_c") String cmnt_c);
 
     //指定开门
     String appointOpenDoor = BASE_PROPERTY + "/smartdoor/client/opendoor";
@@ -706,8 +707,8 @@ public interface ApiService {
                                                      @Query("token") String authToken,
                                                      @Query("page") int page,
                                                      @Query("pageSize") int pageSize,
-                                                     @Query("searchStartTime")String searchStartTime,
-                                                     @Query("searchEndTime")String searchEndTime);
+                                                     @Query("searchStartTime") String searchStartTime,
+                                                     @Query("searchEndTime") String searchEndTime);
 
     //-------------- 未对接的接口 ---------------
 
@@ -742,6 +743,6 @@ public interface ApiService {
     @POST
     Observable<MonthCardBillListBean> requestRechargeRecord(@Url String url,
                                                             @Query("token") String token,
-                                                            @Query("page")int page,
-                                                            @Query("pageSize")int pageSize);
+                                                            @Query("page") int page,
+                                                            @Query("pageSize") int pageSize);
 }

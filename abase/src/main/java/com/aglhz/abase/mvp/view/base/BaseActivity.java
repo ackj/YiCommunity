@@ -88,11 +88,6 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
     }
 
     @Override
-    public boolean swipeBackPriority() {
-        return true;
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);

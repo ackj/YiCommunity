@@ -66,7 +66,8 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
         ALog.e("params.token::" + params.token);
 
         return HttpHelper.getService(ApiService.class)
-                .requestDoors(ApiService.requestDoors, params.token)
+                .requestDoors(ApiService.requestDoors,
+                        params.token, params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 }

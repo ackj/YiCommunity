@@ -113,7 +113,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         View view = inflater.inflate(R.layout.fragment_publish_repair, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
-        return view;
+        return attachToSwipeBack(view);
     }
 
     @Override

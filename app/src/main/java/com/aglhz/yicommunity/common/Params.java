@@ -12,6 +12,7 @@ import java.util.List;
 public class Params {
     private static final String TAG = Params.class.getSimpleName();
     public static String token;
+    public static String cmnt_c = "";
     public String sc = "AglhzYsq";
     public String dir = "";
     public String des = "";
@@ -29,7 +30,6 @@ public class Params {
     public String province = "";
     public String city = "";
     public String county = "";
-    public static String cmnt_c = "";
     public String bdg_c = "";
     public String bdg_u_c = "";
     public String bdg_f_c = "";

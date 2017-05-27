@@ -31,14 +31,19 @@ public class QuickOpenDoorModel extends BaseModel implements QuickOpenDoorContra
     @Override
     public Observable<DoorListBean> requestDoors(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .requestDoors(ApiService.requestDoors, params.token)
+                .requestDoors(ApiService.requestDoors,
+                        params.token,
+                        params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<BaseBean> setQuickOpenDoor(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .postQuickOpenDoor(ApiService.postQuickOpenDoor,params.token, params.directory, params.deviceName)
+                .postQuickOpenDoor(ApiService.postQuickOpenDoor,
+                        params.token,
+                        params.directory,
+                        params.deviceName)
                 .subscribeOn(Schedulers.io());
     }
 }
