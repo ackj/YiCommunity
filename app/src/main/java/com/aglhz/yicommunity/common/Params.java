@@ -78,6 +78,9 @@ public class Params {
     public int appType;//android 2就好
     public File file;
     public List<File> files;
+    public String repairType;//报修类型代号
+    public String parkCardFid;//要修改的某免费卡的Fid
+    public String parkPlaceFid;//某停车场Fid
 
     private Params() {
     }

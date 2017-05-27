@@ -710,6 +710,12 @@ public interface ApiService {
                                                      @Query("searchStartTime") String searchStartTime,
                                                      @Query("searchEndTime") String searchEndTime);
 
+    //"我的"模块里的未读标记
+    String requestUnreadMark = BASE_PROPERTY + "/client/info/redcount";
+
+    @POST
+    Observable<UnreadMessageBean> requestUnreadMark(@Url String url, @Query("token") String token);
+
     //-------------- 未对接的接口 ---------------
 
     //某车临时停车的缴费账单
@@ -719,10 +725,11 @@ public interface ApiService {
     Observable<BaseBean> requestPayBill(@Url String url, @Query("token") String token, @Query("parkPlaceFid") String fid, @Query("carNo") String carNo);
 
     //车卡管理里某免费卡的修改页
-    String modifyOwnerCard = BASE_PROPERTY + "/park/card/to-client/owner-card-modify";
+    String requestModifyOwnerCard = BASE_PROPERTY + "/park/card/to-client/owner-card-modify";
 
     @POST
-    Observable<BaseBean> modifyOwnerCard(@Url String url, @Query("token") String token, @Query("parkCardFid") String fid);
+    Observable<BaseBean> requestModifyOwnerCard(@Url String url,
+                                                @Body MultipartBody body);
 
     //实时查询某停车场的车位信息
     String searchParkSpace = BASE_PROPERTY + "/park/space/to-client/search-park-space";
@@ -730,14 +737,7 @@ public interface ApiService {
     @POST
     Observable<BaseBean> searchParkSpace(@Url String url, @Query("parkPlaceFid") String fid);
 
-
-    //"我的"模块里的未读标记
-    String requestUnreadMark = BASE_PROPERTY + "/client/info/redcount";
-
-    @POST
-    Observable<UnreadMessageBean> requestUnreadMark(@Url String url, @Query("token") String token);
-
-    //车卡管理里列出某会员的月卡充值记录列表
+    //todo:（临时测试用的接口）车卡管理里列出某会员的月卡充值记录列表
     String requestRechargeRecord = "http://192.168.250.108:8080/property_code/park/card/to-client/month-card-recharge-record-list";
 
     @POST

@@ -107,7 +107,7 @@ public class CarCardFragment extends BaseFragment<CarCardPresenter> implements C
                             }
                         } else {
                             //-------------- 业主卡 -------------
-
+                            startForResult(PublishOwnerCardFragment.newInstance(bean),200);
                         }
                     } else {
                         //-------------- 审核被拒 -------------

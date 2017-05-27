@@ -290,6 +290,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
             dialog.dismiss();
             ALog.e("AlertDialog which:::" + which);
             tvRepairType.setText(arr[which]);
+            params.repairType = datas.get(which).getCode();
         }).setTitle("请选择").setPositiveButton("取消", null).show();
     }
 

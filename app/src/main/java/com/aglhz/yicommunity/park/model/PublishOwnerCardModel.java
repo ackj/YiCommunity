@@ -27,11 +27,24 @@ public class PublishOwnerCardModel extends BaseModel implements PublishContract.
     public Observable<BaseBean> post(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
-        builder.addFormDataPart("parkPlaceFid", params.fid);
+        builder.addFormDataPart("parkPlaceFid", params.parkPlaceFid);
         builder.addFormDataPart("carNo", params.carNo);
         builder.addFormDataPart("customerName", params.name);
         builder.addFormDataPart("phoneNo", params.phoneNo);
         return HttpHelper.getService(ApiService.class).postOwnerCard(ApiService.postOwnerCard,
+                builder.build())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<BaseBean> requestModifyOwnerCard(Params params){
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.addFormDataPart("token", params.token);
+        builder.addFormDataPart("parkCardFid", params.parkCardFid);
+        builder.addFormDataPart("parkPlaceFid", params.parkPlaceFid);
+        builder.addFormDataPart("carNo", params.carNo);
+        builder.addFormDataPart("customerName", params.name);
+        builder.addFormDataPart("phoneNo", params.phoneNo);
+        return HttpHelper.getService(ApiService.class).requestModifyOwnerCard(ApiService.requestModifyOwnerCard,
                 builder.build())
                 .subscribeOn(Schedulers.io());
     }
