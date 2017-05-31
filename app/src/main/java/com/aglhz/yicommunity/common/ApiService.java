@@ -37,12 +37,15 @@ import com.aglhz.yicommunity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.bean.UserBean;
 import com.aglhz.yicommunity.bean.UserDataBean;
 
+import java.util.Map;
+
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -56,6 +59,7 @@ public interface ApiService {
 
     //基础路径
     String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+
     String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
 //    String BASE_PROPERTYCFG_M = "http://192.168.250.108:8080/propertyCFG-m";  //调试之用
@@ -725,11 +729,16 @@ public interface ApiService {
     Observable<BaseBean> requestPayBill(@Url String url, @Query("token") String token, @Query("parkPlaceFid") String fid, @Query("carNo") String carNo);
 
     //车卡管理里某免费卡的修改页
-    String requestModifyOwnerCard = BASE_PROPERTY + "/park/card/to-client/owner-card-modify";
+    String requestModifyOwnerCard = BASE_PROPERTY + "/park/card/from-client/owner-card-modify";
+//    String requestModifyOwnerCard ="http://192.168.250.108:8080/property_code/park/card/from-client/owner-card-modify";
 
+//    @POST
+//    Observable<BaseBean> requestModifyOwnerCard(@Url String url,
+//                                                @Body MultipartBody body);
+
+    @FormUrlEncoded
     @POST
-    Observable<BaseBean> requestModifyOwnerCard(@Url String url,
-                                                @Body MultipartBody body);
+    Observable<BaseBean> requestModifyOwnerCard(@Url String url, @FieldMap() Map<String, String> map);
 
     //实时查询某停车场的车位信息
     String searchParkSpace = BASE_PROPERTY + "/park/space/to-client/search-park-space";
