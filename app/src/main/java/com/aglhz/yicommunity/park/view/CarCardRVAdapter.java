@@ -1,5 +1,8 @@
 package com.aglhz.yicommunity.park.view;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -7,6 +10,8 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
+import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.CarCardListBean;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -18,7 +23,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 public class CarCardRVAdapter extends BaseRecyclerViewAdapter<CarCardListBean.DataBean.CardListBean, BaseViewHolder> {
 
     public CarCardRVAdapter() {
-        super(R.layout.item_rv_car_card_manage);
+        super(R.layout.item_rv_car_card);
     }
 
     public String getStringRes(int resId) {
@@ -64,7 +69,10 @@ public class CarCardRVAdapter extends BaseRecyclerViewAdapter<CarCardListBean.Da
                         ivDeleteCard.setVisibility(View.VISIBLE);
                     } else {
                         //-------------- 未过期 -------------
-                        tvSurplusDays.setText(String.format(getStringRes(R.string.surplus_days), String.valueOf(item.getSurplusDays())));
+                        String surplusDays = String.format(getStringRes(R.string.surplus_days), String.valueOf(item.getSurplusDays()));
+                        Spannable span = new SpannableString(surplusDays);
+                        span.setSpan(new AbsoluteSizeSpan(DensityUtils.sp2px(BaseApplication.mContext, 30)), 2, surplusDays.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        tvSurplusDays.setText(span);
                     }
                     tvTermOfValidity.setText(String.format(getStringRes(R.string.term_of_validity), item.getStartTime(), item.getEndTime()));
                 } else {
@@ -81,7 +89,7 @@ public class CarCardRVAdapter extends BaseRecyclerViewAdapter<CarCardListBean.Da
             tvSurplusDays.setVisibility(View.VISIBLE);
             ivDeleteCard.setVisibility(View.GONE);
             tvTermOfValidity.setVisibility(View.GONE);
-            ALog.e("业主卡 item.getApproveState()："+item.getApproveState());
+            ALog.e("业主卡 item.getApproveState()：" + item.getApproveState());
             if (item.getApproveState() == 0) {
                 tvSurplusDays.setText("正在审核中");
             } else if (item.getApproveState() == 1) {

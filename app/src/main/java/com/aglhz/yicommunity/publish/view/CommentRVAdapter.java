@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.publish.view;
 import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
+import com.aglhz.abase.utils.DateUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.CommentBean;
@@ -26,7 +27,7 @@ public class CommentRVAdapter extends BaseRecyclerViewAdapter<CommentBean, BaseV
     protected void convert(BaseViewHolder helper, CommentBean item) {
         helper.setText(R.id.tv_username_item_comment, item.getMember().getMemberNickName())
                 .setText(R.id.tv_content_item_comment, item.getContent())
-                .setText(R.id.tv_time_item_comment, item.getCreateTime());
+                .setText(R.id.tv_time_item_comment, DateUtils.formatCommentDate(item.getCreateTime()));
 
         ImageView ivHead = helper.getView(R.id.iv_head_item_comment);
         Glide.with(BaseApplication.mContext)

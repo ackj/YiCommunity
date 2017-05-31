@@ -748,6 +748,7 @@ public interface ApiService {
 
     //todo:（临时测试用的接口）车卡管理里列出某会员的月卡充值记录列表
     String requestRechargeRecord = "http://192.168.250.108:8080/property_code/park/card/to-client/month-card-recharge-record-list";
+//    String requestRechargeRecord = BASE_PROPERTY+"/park/card/to-client/month-card-recharge-record-list";
 
     @POST
     Observable<MonthCardBillListBean> requestRechargeRecord(@Url String url,

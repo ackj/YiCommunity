@@ -44,7 +44,7 @@ public class CarCityFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
-        return view;
+        return attachToSwipeBack(view);
     }
 
     @Override

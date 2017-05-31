@@ -44,7 +44,8 @@
                     style="@style/EtBackgroundNullStyle"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
-                    android:hint="输入联系人姓名" />
+                    android:hint="输入联系人姓名"
+                    android:maxLength="20" />
             </RelativeLayout>
 
             <View
@@ -71,7 +72,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
                     android:hint="输入联系方式"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="30" />
             </RelativeLayout>
 
             <View

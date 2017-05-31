@@ -40,6 +40,8 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:hint="欢迎畅所欲言"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:textSize="14sp" />
 
         <TextView

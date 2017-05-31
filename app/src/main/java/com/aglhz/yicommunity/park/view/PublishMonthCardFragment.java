@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CarCardBean;
@@ -159,6 +160,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
         super.onDestroyView();
         unbinder.unbind();
         EventBus.getDefault().unregister(this);
+        KeyBoardUtils.hideKeybord(getView(), _mActivity);
     }
 
     @OnClick({R.id.tv_car_city, R.id.rl_park_address, R.id.bt_submit_fragment_month_card_pay, R.id.rl_month_card_rule})
