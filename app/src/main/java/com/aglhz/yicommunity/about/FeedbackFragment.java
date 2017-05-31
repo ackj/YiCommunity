@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.mine.view;
+package com.aglhz.yicommunity.about;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.about.contract.FeedbackContract;
+import com.aglhz.yicommunity.about.presenter.FeedbackPresenter;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.mine.contract.FeedbackContract;
-import com.aglhz.yicommunity.mine.presenter.FeedbackPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

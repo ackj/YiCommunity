@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.propery.contract;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.ALiPayBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
+import com.aglhz.yicommunity.bean.PropertyPayDetailBean;
 import com.aglhz.yicommunity.bean.WxPayBean;
 import com.aglhz.yicommunity.common.Params;
 
@@ -20,7 +21,7 @@ public interface PropertyPayContract {
 
         void responsePropertyPayed(PropertyPayBean bean);
 
-        void responsePropertyPayDetail(PropertyPayBean bean);
+        void responsePropertyPayDetail(PropertyPayDetailBean bean);
 
         void responseALiPay(String order);
 
@@ -42,7 +43,7 @@ public interface PropertyPayContract {
 
         Observable<PropertyPayBean> requestPropertyPayed(Params params);
 
-        Observable<PropertyPayBean> requestPropertyPayDetail(Params params);
+        Observable<PropertyPayDetailBean> requestPropertyPayDetail(Params params);
 
         Observable<ResponseBody> requestOrder(Params params);
 

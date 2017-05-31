@@ -45,12 +45,9 @@ public class LogInterceptor implements Interceptor {
         try {
             JSONObject jsonObject = new JSONObject(buffer.readUtf8());
             JSONObject jsonOther = jsonObject.optJSONObject("other");
-
-            ALog.e();
             ALog.e(String.format("Received response for %s%nin %.1fms%n%sResponse Json: %s",
                     response.request().url(), (t2 - t1) / 1e6d, response.headers(),
                     jsonObject.toString()));
-
             String code = jsonOther.optString("code");
             if ("123".equals(code)) {
                 EventBus.getDefault().post(new LoginInterceptor());

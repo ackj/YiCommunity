@@ -26,6 +26,7 @@ import com.aglhz.yicommunity.bean.ParkRecordListBean;
 import com.aglhz.yicommunity.bean.ParkSelectBean;
 import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
+import com.aglhz.yicommunity.bean.PropertyPayDetailBean;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.bean.RepairTypesBean;
@@ -390,10 +391,13 @@ public interface ApiService {
                                            @Query("token") String token);
 
 
+    //对自己设置权限
     String UPDATE_RIGHTS_MYSELF = BASE_PROPERTY + "/smartdoor/client/powerset";
 
+    //对成员设置权限
     String UPDATE_RIGHTS_OTHER = BASE_PROPERTY + "/smartdoor/client/enmemberpower";
 
+    //房屋成员及其门禁权限信息
     String requestRights = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
 
 
@@ -606,9 +610,9 @@ public interface ApiService {
     String requestPropertyPayDetail = BASE_PROPERTY + "/client/info/pptBillDet";
 
     @POST
-    Observable<PropertyPayBean> requestPropertyPayDetail(@Url String url,
-                                                         @Query("token") String token,
-                                                         @Query("fid") String fid);
+    Observable<PropertyPayDetailBean> requestPropertyPayDetail(@Url String url,
+                                                               @Query("token") String token,
+                                                               @Query("fid") String fid);
 
     //微信、支付宝等第三方支付物业缴费订单 type为1.支付宝;2.微信
     String requestOrder = BASE_PROPERTY + "/client/pay/generatePayJSON";

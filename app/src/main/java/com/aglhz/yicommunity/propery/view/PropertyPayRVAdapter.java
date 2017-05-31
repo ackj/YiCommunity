@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 public class PropertyPayRVAdapter extends BaseRecyclerViewAdapter<PropertyPayBean.DataBean.ObpptBillsBean, BaseViewHolder> {
 
     public PropertyPayRVAdapter() {
-        super(R.layout.item_property_pay);
+        super(R.layout.item_rv_property_pay);
     }
 
     @Override

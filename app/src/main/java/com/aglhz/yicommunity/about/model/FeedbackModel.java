@@ -1,11 +1,11 @@
-package com.aglhz.yicommunity.mine.model;
+package com.aglhz.yicommunity.about.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
+import com.aglhz.yicommunity.about.contract.FeedbackContract;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.mine.contract.FeedbackContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;

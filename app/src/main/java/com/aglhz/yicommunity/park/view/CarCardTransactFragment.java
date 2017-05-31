@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/4/18 17:38.
  */
 public class CarCardTransactFragment extends BaseFragment {
-
     private static final String TAG = CarCardTransactFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;

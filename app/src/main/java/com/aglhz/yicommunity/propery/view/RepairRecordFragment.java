@@ -134,7 +134,6 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
         adapter = new RepairRecordRVAdapter();
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
-            ALog.e("加载更多………………………………");
             params.page++;
             mPresenter.requestRepairApplyList(params);
 

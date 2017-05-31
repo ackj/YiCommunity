@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.mine.contract;
+package com.aglhz.yicommunity.about.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;

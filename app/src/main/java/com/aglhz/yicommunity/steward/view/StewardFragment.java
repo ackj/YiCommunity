@@ -256,18 +256,18 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
         //设置智慧停车卡片点击事件。
         smartParkAdapter.setOnItemClickListener((adapter, view, position) -> {
-            switch (position) {
-                case Constants.MY_CARD:
-                    _mActivity.start(CarCardFragment.newInstance());
-                    break;
-                case Constants.PARKING_RECORD:
-                    _mActivity.start(ParkRecordFragment.newInstance());
-                    break;
-                case Constants.CARD_TRANSACT:
-                    _mActivity.start(CarCardTransactFragment.newInstance());
-                    break;
-            }
-//            go2Park(position);
+//            switch (position) {
+//                case Constants.MY_CARD:
+//                    _mActivity.start(CarCardFragment.newInstance());
+//                    break;
+//                case Constants.PARKING_RECORD:
+//                    _mActivity.start(ParkRecordFragment.newInstance());
+//                    break;
+//                case Constants.CARD_TRANSACT:
+//                    _mActivity.start(CarCardTransactFragment.newInstance());
+//                    break;
+//            }
+            go2Park(position);
         });
 
         //物业服务卡片点击事件。

@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.mine.view;
+package com.aglhz.yicommunity.about;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

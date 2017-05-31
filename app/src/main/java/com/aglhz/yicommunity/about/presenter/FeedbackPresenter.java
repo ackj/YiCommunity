@@ -1,11 +1,11 @@
-package com.aglhz.yicommunity.mine.presenter;
+package com.aglhz.yicommunity.about.presenter;
 
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.about.contract.FeedbackContract;
+import com.aglhz.yicommunity.about.model.FeedbackModel;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.mine.contract.FeedbackContract;
-import com.aglhz.yicommunity.mine.model.FeedbackModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

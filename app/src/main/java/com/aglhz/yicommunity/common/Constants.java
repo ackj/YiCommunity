@@ -56,7 +56,7 @@ public class Constants {
     //Picker模块
     public static final String SP_KEY_USED_CITYS = "sp_key_used_citys";
 
-    //EventBus系列,值是随便取，只要不相同即可。**********************************************************************
+    //**************以下是EventBus系列,值是随便取，只要不相同即可。**********************************************************************
     //登录成功
     public static final int login = 11;
 
@@ -67,17 +67,19 @@ public class Constants {
     public static final int loginout = 10;
 
 
-    //EventBus系列,值是随便取，只要不相同即可。**********************************************************************
+    //**************以上是EventBus系列,值是随便取，只要不相同即可。**********************************************************************
 
     public static final String CITY = "city";
 
-    public static final String PAY_POSITION = "pay_position";
+    //********************以下为物业缴费模块************************
+    public static final int TYPE_ALIPAY = 1;
+    public static final int TYPE_WXPAY = 2;
+    public static final String ALIPAY = "支付宝支付";
+    public static final String WXPAY = "微信支付";
+    public static final String PAY_STATE = "pay_position";
+    public static final String PROPERTY_BILL_FID = "property_bill_fid";
 
-    //********************以下为支付类型************************
-    public static final int ALIPAY = 1;
-    public static final int WXPAY = 2;
-
-    //********************以上为支付类型************************
+    //********************以上为物业缴费模块************************
 
 
 }

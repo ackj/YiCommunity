@@ -69,4 +69,11 @@
     <!--车牌号归属地-->
     <string name="car_city_json">{"carCityList":[{"province":"北京市","shortfrom":"京"},{"province":"上海市","shortfrom":"沪"},{"province":"天津市","shortfrom":"津"},{"province":"重庆市","shortfrom":"渝"},{"province":"河北省","shortfrom":"冀"},{"province":"山西省","shortfrom":"晋"},{"province":"辽宁省","shortfrom":"辽"},{"province":"吉林省","shortfrom":"吉"},{"province":"黑龙江省","shortfrom":"黑"},{"province":"江苏省","shortfrom":"苏"},{"province":"浙江省","shortfrom":"浙"},{"province":"安徽省","shortfrom":"皖"},{"province":"福建省","shortfrom":"闽"},{"province":"江西省","shortfrom":"赣"},{"province":"山东省","shortfrom":"鲁"},{"province":"河南省","shortfrom":"豫"},{"province":"湖北省","shortfrom":"鄂"},{"province":"湖南省","shortfrom":"湘"},{"province":"广东省","shortfrom":"粤"},{"province":"海南省","shortfrom":"琼"},{"province":"四川省","shortfrom":"川"},{"province":"贵州省","shortfrom":"贵"},{"province":"云南省","shortfrom":"云"},{"province":"陕西省","shortfrom":"陕"},{"province":"甘肃省","shortfrom":"甘"},{"province":"青海省","shortfrom":"青"},{"province":"内蒙古自治区","shortfrom":"蒙"},{"province":"广西壮族自治区","shortfrom":"桂"},{"province":"西藏自治区","shortfrom":"藏"},{"province":"宁夏回族自治区","shortfrom":"宁"},{"province":"新疆维吾尔自治区","shortfrom":"新"},{"province":"香港特别行政区","shortfrom":"港"},{"province":"澳门特别行政区","shortfrom":"澳"},{"province":"台湾","shortfrom":"台"}]}</string>
 
+    <!--物业缴费-->
+    <string name="deal_success">交易成功</string>
+    <string name="payment_method">付款方式</string>
+    <string name="payment_instructions">缴费说明</string>
+    <string name="payment_number">户　　号</string>
+    <string name="creat_time">创建时间</string>
+
 </resources>

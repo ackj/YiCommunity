@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/tv_name_item_rv_property_not_pay_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:text="四月维护费"
+        android:textColor="@color/base_black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_description_item_rv_property_not_pay_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name_item_rv_property_not_pay_detail"
+        android:lines="1"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:text="1单元一号" />
+
+    <TextView
+        android:id="@+id/tv_sum_item_rv_property_not_pay_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:lines="1"
+        android:paddingEnd="15dp"
+        android:text="0.01元"
+        android:textColor="@color/base_black" />
+</RelativeLayout>

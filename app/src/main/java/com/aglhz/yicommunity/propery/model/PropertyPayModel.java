@@ -5,6 +5,7 @@ import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.ALiPayBean;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
+import com.aglhz.yicommunity.bean.PropertyPayDetailBean;
 import com.aglhz.yicommunity.bean.WxPayBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
@@ -46,7 +47,7 @@ public class PropertyPayModel extends BaseModel implements PropertyPayContract.M
     }
 
     @Override
-    public Observable<PropertyPayBean> requestPropertyPayDetail(Params params) {
+    public Observable<PropertyPayDetailBean> requestPropertyPayDetail(Params params) {
         return HttpHelper.getService(ApiService.class)
                 .requestPropertyPayDetail(ApiService.requestPropertyPayDetail,
                         params.token,

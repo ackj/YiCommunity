@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <TextView
+        android:id="@+id/tv_address_property_payed_detail_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="20dp"
+        android:text="凯宾斯基3栋"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_sum_property_payed_detail_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="22dp"
+        android:text="0.01元"
+        android:textColor="@color/base_black"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingBottom="20dp"
+        android:text="@string/deal_success"
+        android:textColor="@color/base_color"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/payment_method" />
+
+        <TextView
+            android:id="@+id/tv_payment_method_property_payed_detail_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信支付" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/payment_instructions" />
+
+        <TextView
+            android:id="@+id/tv_payment_instructions_property_payed_detail_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信支付" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/payment_number" />
+
+        <TextView
+            android:id="@+id/tv_payment_number_property_payed_detail_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信支付" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/creat_time" />
+
+        <TextView
+            android:id="@+id/tv_creat_time_property_payed_detail_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信支付" />
+
+    </LinearLayout>
+
+</LinearLayout>
