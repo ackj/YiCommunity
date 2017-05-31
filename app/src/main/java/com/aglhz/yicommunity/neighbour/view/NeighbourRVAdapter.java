@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
+import com.aglhz.abase.utils.DateUtils;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
@@ -51,7 +52,7 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
 //        ALog.e(">>>>>>>>>>>>>>", "position:" + helper.getLayoutPosition());
 
-        helper.setText(R.id.tv_create_at_item_moments_list, item.getCreateTime())
+        helper.setText(R.id.tv_create_at_item_moments_list, DateUtils.formatCommentDate(item.getCreateTime()))
                 .setText(R.id.tv_name_item_moments_list, item.getMember()==null?"":item.getMember().getMemberNickName())
                 .setText(R.id.tv_comment_count_item_moments_list, item.getCommentCount() + "");
 

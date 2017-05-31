@@ -11,7 +11,6 @@
         android:layout_margin="10dp"
         android:src="@drawable/ic_default_head_image_200px" />
 
-
     <TextView
         android:id="@+id/tv_username_item_comment"
         android:layout_width="match_parent"
@@ -21,7 +20,9 @@
         android:layout_toLeftOf="@+id/tv_time_item_comment"
         android:layout_toRightOf="@+id/iv_head_item_comment"
         android:ellipsize="end"
-        android:singleLine="true" />
+        android:lines="1"
+        android:textColor="@color/base_black"
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/tv_content_item_comment"
@@ -41,8 +42,8 @@
         android:layout_marginRight="15dp" />
 
     <View
-        android:layout_below="@id/iv_head_item_comment"
         style="@style/base_line"
         android:layout_alignLeft="@+id/tv_username_item_comment"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/iv_head_item_comment" />
 </RelativeLayout>

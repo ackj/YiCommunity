@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CarCardListBean;
@@ -127,6 +128,7 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+        KeyBoardUtils.hideKeybord(getView(), _mActivity);
         unbinder.unbind();
     }
 
@@ -168,9 +170,9 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
             DialogHelper.warningSnackbar(getView(), "请输入联系方式");
             return;
         }
-        if(isUpdate){
+        if (isUpdate) {
             mPresenter.requestModifyOwnerCard(params);
-        }else{
+        } else {
             mPresenter.post(params);
         }
     }
@@ -203,6 +205,9 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
     @Override
     public void responseSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), bean.getOther().getMessage());
+        if (isUpdate) {
+            setFragmentResult(RESULT_OK, null);
+        }
         pop();
     }
 }

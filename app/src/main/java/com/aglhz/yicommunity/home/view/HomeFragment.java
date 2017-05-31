@@ -25,6 +25,7 @@ import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.home.contract.HomeContract;
 import com.aglhz.yicommunity.home.presenter.HomePresenter;
 import com.aglhz.yicommunity.home.view.header.RentalsSunHeaderView;
+import com.aglhz.yicommunity.park.view.TemporaryParkPayFragment;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.propery.view.NoticeListFragment;
 import com.aglhz.yicommunity.propery.view.PropertyPayFragment;
@@ -145,7 +146,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         recyclerView.setAdapter(adapter);
 
         //add footer
-        View footerView = LayoutInflater.from(_mActivity).inflate(R.layout.footer_no_anymore,null,false);
+        View footerView = LayoutInflater.from(_mActivity).inflate(R.layout.footer_no_anymore, null, false);
         adapter.addFooterView(footerView);
 
 
@@ -221,7 +222,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                             _mActivity.start(PropertyPayFragment.newInstance());
                             break;
                         case R.id.ll_temporary_parking:
-                            go2Web("临时停车", ApiService.TEMP_PARKING);
+//                            go2Web("临时停车", ApiService.TEMP_PARKING);
+                            _mActivity.start(TemporaryParkPayFragment.newInstance());
                             break;
                         case R.id.ll_life_supermarket:
                             go2Web("生活超市", ApiService.SUPERMARKET + UserHelper.token);

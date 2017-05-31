@@ -108,11 +108,12 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    style="@style/EtBackgroundNullStyle"
                     android:id="@+id/et_name_fragment_repair"
+                    style="@style/EtBackgroundNullStyle"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
-                    android:hint="输入联系人姓名" />
+                    android:hint="输入联系人姓名"
+                    android:maxLength="20" />
             </RelativeLayout>
 
             <View
@@ -135,12 +136,13 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    style="@style/EtBackgroundNullStyle"
                     android:id="@+id/et_phone_fragment_repair"
+                    style="@style/EtBackgroundNullStyle"
                     android:layout_alignParentRight="true"
-                    android:inputType="number"
                     android:layout_marginRight="15dp"
-                    android:hint="输入联系方式" />
+                    android:hint="输入联系方式"
+                    android:inputType="number"
+                    android:maxLength="30" />
             </RelativeLayout>
 
             <View

@@ -78,6 +78,8 @@
     <!--登录模块-->
     <color name="edit_hint">#b4b4b4</color>
 
+    <color name="light_green">#0BBD9B</color>
+
     <!--—————————————————————————————————————————————————————— Material Color Palette ————————————————————————————————————————————————————————————————————————-->
     <!-- Red -->
     <color name="material_red_50">#fde0dc</color>
