@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.message.presenter;
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.message.contract.MessageCenterContract;
 import com.aglhz.yicommunity.message.model.MessageCenterModel;
@@ -36,7 +37,7 @@ public class MessageCenterPresenter extends BasePresenter<MessageCenterContract.
         mRxManager.add(mModel.requestMessages((Params) request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(messageCenterBean -> {
-                    if (messageCenterBean.getOther().getCode() == 200) {
+                    if (messageCenterBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().start(messageCenterBean.getData().getMemNews());
                     } else {
                         getView().error(messageCenterBean.getOther().getMessage());
@@ -49,7 +50,7 @@ public class MessageCenterPresenter extends BasePresenter<MessageCenterContract.
         mRxManager.add(mModel.requestMessageRead(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseReadSuccess(baseBean);
                     } else {
                         getView().error(baseBean.getOther().getMessage());
