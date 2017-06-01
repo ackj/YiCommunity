@@ -123,7 +123,6 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
                     ALog.e("333333");
                     return ScrollingHelper.isAbsListViewToTop((AbsListView) view);
                 }
-
                 return true;
             }
 
