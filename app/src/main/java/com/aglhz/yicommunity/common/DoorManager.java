@@ -1,43 +1,26 @@
 package com.aglhz.yicommunity.common;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
-import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.door.call.CallActivity;
-import com.aglhz.yicommunity.login.LoginActivity;
-import com.aglhz.yicommunity.main.MainActivity;
-import com.amap.api.location.AMapLocation;
+import com.aglhz.yicommunity.main.door.call.CallActivity;
 import com.sipphone.sdk.SipCoreManager;
 import com.sipphone.sdk.SipCorePreferences;
 import com.sipphone.sdk.SipService;
 import com.sipphone.sdk.access.WebApiConstants;
 import com.sipphone.sdk.access.WebReponse;
 import com.sipphone.sdk.access.WebUserApi;
-import com.ta.utdid2.device.DeviceInfo;
 
 import org.linphone.core.LinphoneCall;
 import org.linphone.core.LinphoneCore;
 import org.linphone.core.LinphoneCoreException;
 import org.linphone.core.LinphoneCoreListenerBase;
-import org.linphone.core.LinphoneProxyConfig;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
-import mlxy.utils.S;
-
-import static com.aglhz.yicommunity.R.string.member;
-import static com.alipay.sdk.app.statistic.c.w;
 
 /**
  * Author：leguang on 2017/5/5 0009 10:49

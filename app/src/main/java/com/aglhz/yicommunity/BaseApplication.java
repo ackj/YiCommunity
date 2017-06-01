@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.aglhz.abase.exception.AppExceptionHandler;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.boxingimpl.BoxingGlideLoader;
+import com.aglhz.yicommunity.common.boxing.BoxingGlideLoader;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.UserHelper;

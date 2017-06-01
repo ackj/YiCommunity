@@ -9,6 +9,7 @@ import com.aglhz.yicommunity.bean.CardRechargeBean;
 import com.aglhz.yicommunity.bean.CheckTokenBean;
 import com.aglhz.yicommunity.bean.CommentListBean;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.bean.ComplainReplyBean;
 import com.aglhz.yicommunity.bean.ContactBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.bean.FirstLevelBean;
@@ -675,8 +676,9 @@ public interface ApiService {
     //按区域搜索停车场
     String requestParkList = BASE_PROPERTY + "/park/place/to-client/search-park-list";
 
+    @FormUrlEncoded
     @POST
-    Observable<ParkSelectBean> requestParkList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<ParkSelectBean> requestParkList(@Url String url, @Field("token") String token, @Field("page") int page, @Field("pageSize") int pageSize, @Field("regionKeywords") String regionKeywords);
 
     //我的车卡列表
     String requestCarCardList = BASE_PROPERTY + "/park/card/to-client/card-list";
@@ -760,4 +762,12 @@ public interface ApiService {
                                                             @Query("token") String token,
                                                             @Query("page") int page,
                                                             @Query("pageSize") int pageSize);
+
+    //消息中心投诉回复
+    String requestComplainReplies = BASE_PROPERTY + "/property/complaint/to-client/complaint-detail";
+
+    @POST
+    Observable<ComplainReplyBean> requestComplainReplies(@Url String url,
+                                                         @Query("token") String token,
+                                                         @Query("complaintFid") String String);
 }

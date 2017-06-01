@@ -19,11 +19,9 @@ public class Constants {
     public static final String COMMUNITY_CODE = "community_code";
     public static final String COMMUNITY_NAME = "community_name";
 
-
     //网络部分
     public static final int RESPONSE_CODE_NOMAL = 200;
     public static final int RESPONSE_CODE_LOGOUT = 123;
-
 
     //web模块
     public static final String WEB_LINK = "link";
@@ -66,7 +64,6 @@ public class Constants {
     //登出，或者token失效
     public static final int loginout = 10;
 
-
     //**************以上是EventBus系列,值是随便取，只要不相同即可。**********************************************************************
 
     public static final String CITY = "city";
@@ -81,5 +78,6 @@ public class Constants {
 
     //********************以上为物业缴费模块************************
 
-
+    //消息中心
+    public static final String COMPLAINT_FID = "complaint_fid";
 }

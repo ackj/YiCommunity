@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,32 +17,21 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.CheckTokenBean;
-import com.aglhz.yicommunity.bean.SipBean;
 import com.aglhz.yicommunity.common.ApiService;
-import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.main.MainActivity;
-import com.aglhz.yicommunity.picker.view.CommunityPickerFragment;
 import com.sipphone.sdk.access.WebReponse;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
-
-import static com.aglhz.abase.network.http.HttpHelper.getService;
 
 /**
  * Author：leguang on 2016/10/9 0009 15:49
