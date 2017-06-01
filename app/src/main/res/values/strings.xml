@@ -76,4 +76,12 @@
     <string name="payment_number">户　　号</string>
     <string name="creat_time">创建时间</string>
 
+    <!--提示语-->
+    <string name="input_right_carNo_please">请输入正确的车牌号</string>
+    <string name="input_right_name_please">请输入正确的姓名</string>
+    <string name="input_right_phone_please">请输入正确的联系方式</string>
+
+    <string name="select_park_please">请选择停车场</string>
+    <string name="select_month_count_please">请选择预缴月数</string>
+
 </resources>

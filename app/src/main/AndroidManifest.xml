@@ -111,10 +111,10 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".publish.CommentActivity"
+            android:name=".main.publish.CommentActivity"
             android:launchMode="singleTop"
             android:theme="@style/Transparent" />
-        <activity android:name=".test.TestActivity" />
+
         <activity
             android:name=".login.LoginActivity"
             android:launchMode="singleInstance"
@@ -125,8 +125,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".picker.PickerActivity"
+            android:name=".main.picker.PickerActivity"
             android:launchMode="singleTop"
             android:theme="@style/Transparent" />
         <activity
@@ -143,30 +144,30 @@
             android:stopWithTask="false" />
 
         <activity
-            android:name=".house.HouseActivity"
+            android:name=".main.house.HouseActivity"
             android:theme="@style/Transparent" />
         <activity
-            android:name=".park.ParkActivity"
+            android:name=".main.park.ParkActivity"
             android:theme="@style/Transparent" />
         <activity
 
-            android:name=".publish.PropertyActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".main.publish.PropertyActivity"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".main.door.DoorActivity"
             android:theme="@style/Transparent" />
         <activity
-            android:name=".door.DoorActivity"
+            android:name=".main.about.AboutActivity"
             android:theme="@style/Transparent" />
         <activity
-            android:name=".about.AboutActivity"
-            android:theme="@style/Transparent" />
-        <activity
-            android:name=".mypublish.MyPublishActivity"
+            android:name=".main.mypublish.MyPublishActivity"
             android:theme="@style/Transparent" />
         <activity
             android:name=".preview.PreviewActivity"
             android:theme="@style/Transparent" />
         <activity
-            android:name=".mine.QuickOpenActivity"
+            android:name=".main.mine.QuickOpenActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/Transparent">
@@ -187,7 +188,7 @@
             android:stopWithTask="false" />
 
         <activity
-            android:name=".door.call.CallActivity"
+            android:name=".main.door.call.CallActivity"
             android:launchMode="singleTop"
             android:noHistory="true">
             <intent-filter>
@@ -195,7 +196,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".door.call.CallIncomingActivity"
+            android:name=".main.door.call.CallIncomingActivity"
             android:launchMode="singleTop"
             android:noHistory="true">
             <intent-filter>
@@ -221,7 +222,7 @@
         </provider>
 
         <activity
-            android:name=".message.MessageActivity"
+            android:name=".main.message.MessageActivity"
             android:theme="@style/Transparent" />
     </application>
 

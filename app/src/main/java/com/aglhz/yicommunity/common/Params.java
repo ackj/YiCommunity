@@ -82,7 +82,7 @@ public class Params {
     public String parkCardFid;//要修改的某免费卡的Fid
     public String parkPlaceFid;//某停车场Fid
     public String regionKeywords;//区域关键字
-
+    public String complaintFid;//投诉回复时所需参数
 
     private Params() {
     }

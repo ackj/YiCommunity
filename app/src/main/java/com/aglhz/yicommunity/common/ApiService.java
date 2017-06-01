@@ -9,6 +9,7 @@ import com.aglhz.yicommunity.bean.CardRechargeBean;
 import com.aglhz.yicommunity.bean.CheckTokenBean;
 import com.aglhz.yicommunity.bean.CommentListBean;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.bean.ComplainReplyBean;
 import com.aglhz.yicommunity.bean.ContactBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.bean.FirstLevelBean;
@@ -761,4 +762,12 @@ public interface ApiService {
                                                             @Query("token") String token,
                                                             @Query("page") int page,
                                                             @Query("pageSize") int pageSize);
+
+    //消息中心投诉回复
+    String requestComplainReplies = BASE_PROPERTY + "/property/complaint/to-client/complaint-detail";
+
+    @POST
+    Observable<ComplainReplyBean> requestComplainReplies(@Url String url,
+                                                         @Query("token") String token,
+                                                         @Query("complaintFid") String String);
 }

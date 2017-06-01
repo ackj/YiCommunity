@@ -11,11 +11,11 @@ import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.home.view.HomeFragment;
-import com.aglhz.yicommunity.mine.view.MineFragment;
-import com.aglhz.yicommunity.neighbour.view.MessageFragment;
-import com.aglhz.yicommunity.neighbour.view.NeighbourFragment;
-import com.aglhz.yicommunity.steward.view.StewardFragment;
+import com.aglhz.yicommunity.main.home.view.HomeFragment;
+import com.aglhz.yicommunity.main.mine.view.MineFragment;
+import com.aglhz.yicommunity.main.sociality.view.MessageFragment;
+import com.aglhz.yicommunity.main.sociality.view.NeighbourFragment;
+import com.aglhz.yicommunity.main.steward.view.StewardFragment;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
