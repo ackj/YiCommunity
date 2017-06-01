@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -30,6 +31,9 @@ import com.aglhz.yicommunity.publish.contract.PublishContract;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +63,8 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
     EditText etInputPhone;
     @BindView(R.id.bt_submit_fragment_owner_card)
     Button btSubmit;
+    @BindView(R.id.rl_park_address)
+    RelativeLayout rlParkAddress;
 
     private Unbinder unbinder;
     Params params = Params.getInstance();
@@ -109,6 +115,8 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
             etInputName.setText(bean.getCustomerName());
             etInputPhone.setText(bean.getPhoneNo());
 
+            rlParkAddress.setEnabled(false);
+
             params.parkCardFid = bean.getFid();
             params.parkPlaceFid = bean.getParkPlace().getFid();
 
@@ -152,8 +160,11 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
     private void submit() {
         String carNum = etInputCarNum.getText().toString();
         params.carNo = tvCarCity.getText().toString() + carNum;
-        if (TextUtils.isEmpty(carNum)) {
-            DialogHelper.warningSnackbar(getView(), "请输入车牌号");
+        String regEx = "(^[\\u4E00-\\u9FA5]{1}[A-Z0-9]{6}$)|(^[A-Z]{2}[A-Z0-9]{2}[A-Z0-9\\u4E00-\\u9FA5]{1}[A-Z0-9]{4}$)|(^[\\u4E00-\\u9FA5]{1}[A-Z0-9]{5}[挂学警军港澳]{1}$)|(^[A-Z]{2}[0-9]{5}$)|(^(08|38){1}[A-Z0-9]{4}[A-Z0-9挂学警军港澳]{1}$)";
+        Pattern pattern = Pattern.compile(regEx);
+        Matcher matcher = pattern.matcher(params.carNo);
+        if (!matcher.matches()) {
+            DialogHelper.warningSnackbar(getView(), "请输入正确的车牌号");
             return;
         }
         if (TextUtils.isEmpty(params.parkPlaceFid)) {

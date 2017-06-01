@@ -22,6 +22,7 @@ import com.aglhz.yicommunity.bean.MyHousesBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
+import com.aglhz.yicommunity.bean.ParkOrderBean;
 import com.aglhz.yicommunity.bean.ParkRecordListBean;
 import com.aglhz.yicommunity.bean.ParkSelectBean;
 import com.aglhz.yicommunity.bean.PasswordBean;
@@ -730,7 +731,7 @@ public interface ApiService {
     String requestPayBill = BASE_PROPERTY + "/park/temporary/to-client/pay-bill";
 
     @POST
-    Observable<BaseBean> requestPayBill(@Url String url, @Query("token") String token, @Query("parkPlaceFid") String fid, @Query("carNo") String carNo);
+    Observable<ParkOrderBean> requestPayBill(@Url String url, @Query("token") String token, @Query("parkPlaceFid") String fid, @Query("carNo") String carNo);
 
     //车卡管理里某免费卡的修改页
     String requestModifyOwnerCard = BASE_PROPERTY + "/park/card/from-client/owner-card-modify";

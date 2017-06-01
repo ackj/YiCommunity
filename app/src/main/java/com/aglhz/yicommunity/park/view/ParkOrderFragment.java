@@ -1,7 +1,7 @@
 package com.aglhz.yicommunity.park.view;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -11,11 +11,15 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.picker.PickerActivity;
+import com.aglhz.yicommunity.bean.ParkOrderBean;
+import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.park.contract.ParkOrderContract;
+import com.aglhz.yicommunity.park.presenter.ParkOrderPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -23,26 +27,55 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class ParkOrderFragment extends BaseFragment {
+public class ParkOrderFragment extends BaseFragment<ParkOrderContract.Presenter> implements ParkOrderContract.View {
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_bill_code)
+    TextView tvBillCode;
+    @BindView(R.id.tv_create_time)
+    TextView tvCreateTime;
+    @BindView(R.id.tv_car_num)
+    TextView tvCarNum;
+    @BindView(R.id.tv_in_time)
+    TextView tvInTime;
+    @BindView(R.id.tv_out_time)
+    TextView tvOutTime;
+    @BindView(R.id.tv_total_cost_time)
+    TextView tvTotalCostTime;
+    @BindView(R.id.tv_park_place_name)
+    TextView tvParkPlaceName;
+    @BindView(R.id.tv_cost_money)
+    TextView tvCostMoney;
 
     private Unbinder unbinder;
+    private String parkFid;
+    private String carNo;
 
-    public static ParkOrderFragment newInstance() {
+    private Params params = Params.getInstance();
 
-        return new ParkOrderFragment();
+    public static ParkOrderFragment newInstance(String parkFid, String carNo) {
+        ParkOrderFragment fragment = new ParkOrderFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("parkFid", parkFid);
+        bundle.putString("carNo", carNo);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(_mActivity, PickerActivity.class);
-        intent.putExtra(Constants.FROM_TO, 100);
-        _mActivity.startActivity(intent);
+        parkFid = getArguments().getString("parkFid");
+        carNo = getArguments().getString("carNo");
+    }
+
+    @NonNull
+    @Override
+    protected ParkOrderContract.Presenter createPresenter() {
+        return new ParkOrderPresenter(this);
     }
 
     @Nullable
@@ -68,7 +101,9 @@ public class ParkOrderFragment extends BaseFragment {
     }
 
     private void initData() {
-
+        params.parkPlaceFid = parkFid;
+        params.carNo = carNo;
+        mPresenter.requestParkOrder(params);
     }
 
     @Override
@@ -77,4 +112,29 @@ public class ParkOrderFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+    @Override
+    public void start(Object response) {
+    }
+
+    @Override
+    public void error(String errorMessage) {
+        DialogHelper.warningSnackbar(getView(), errorMessage);
+        pop();
+    }
+
+    @Override
+    public void responseParkOrder(ParkOrderBean.DataBean bean) {
+        tvBillCode.setText(bean.getBillCode());
+        tvCreateTime.setText(bean.getCreateTime());
+        tvCarNum.setText(bean.getCarNo());
+        tvInTime.setText(bean.getInTime());
+        tvOutTime.setText(bean.getOutTime());
+        tvTotalCostTime.setText(bean.getTotalCostTime());
+        tvParkPlaceName.setText(bean.getParkPlaceName());
+        tvCostMoney.setText(bean.getCostMoney() + "元");
+    }
+
+    @OnClick(R.id.btn_confirm_pay)
+    public void onViewClicked() {
+    }
 }

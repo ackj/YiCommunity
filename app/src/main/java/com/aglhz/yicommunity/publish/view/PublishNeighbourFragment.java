@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -123,7 +122,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
         //因为params是单例，所以要将上次选择的清除
         params.files = new ArrayList<>();
         tvCommunityName.setText(UserHelper.communityName);
-
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 4) {
             @Override
             public boolean canScrollVertically() {
@@ -143,7 +141,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
                 selectPhoto();
             }
         });
-
     }
 
     private void selectPhoto() {

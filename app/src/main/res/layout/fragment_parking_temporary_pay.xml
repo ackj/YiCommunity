@@ -22,20 +22,27 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/tv_car_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:padding="10dp"
             android:text="粤"
             android:textColor="@color/base_black"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
-        <TextView
+        <EditText
+            android:id="@+id/et_input_car_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:text="2356"
-            android:textColor="@color/base_black" />
+            android:background="@null"
+            android:gravity="end"
+            android:hint="输入车牌号"
+            android:lines="1"
+            android:maxLength="10"
+            android:textColor="@color/accent_text"
+            android:textColorHint="@color/default_text"
+            android:textSize="13sp" />
     </LinearLayout>
 
     <View

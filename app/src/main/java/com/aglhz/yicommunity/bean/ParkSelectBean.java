@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * Email: liujia95me@126.com
  */
 
-public class ParkSelectBean extends BaseBean{
+public class ParkSelectBean extends BaseBean {
 
     /**
      * data : {"parkPlaceList":[{"address":"凯宾斯基测试地址","communityFid":"KBSJ-agl-00005","communityName":"惠州市 凯宾斯基","fid":"5b9a90d0-a117-4033-b13c-0a6fa58a68ad","name":"测试停车场1","regionInfo":"惠城区广东省惠州市"}]}
@@ -34,7 +35,7 @@ public class ParkSelectBean extends BaseBean{
             this.parkPlaceList = parkPlaceList;
         }
 
-        public static class ParkPlaceListBean {
+        public static class ParkPlaceListBean implements Serializable {
             /**
              * address : 凯宾斯基测试地址
              * communityFid : KBSJ-agl-00005
