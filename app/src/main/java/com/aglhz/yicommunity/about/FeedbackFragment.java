@@ -115,18 +115,4 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
     public void afterTextChanged(Editable s) {
 
     }
-
-
-    private void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogHelper.loading(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    private void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
-    }
 }

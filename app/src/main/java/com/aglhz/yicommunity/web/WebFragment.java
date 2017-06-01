@@ -1,6 +1,6 @@
 package com.aglhz.yicommunity.web;
 
-import android.os.Build;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JsResult;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -19,8 +18,6 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.JavaScriptObject;
@@ -28,8 +25,6 @@ import com.aglhz.yicommunity.common.JavaScriptObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Author：leguang on 2017/4/12 0009 15:49
@@ -82,7 +77,7 @@ public class WebFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
-        initPtrFrameLayout(ptrFramlayout);
+        initPtrFrameLayout(ptrFramlayout, mWebView);
         initWebView();
     }
 
@@ -95,6 +90,7 @@ public class WebFragment extends BaseFragment {
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         mWebView.clearCache(true);
         mWebView.clearHistory();
@@ -143,34 +139,11 @@ public class WebFragment extends BaseFragment {
                 return super.onJsAlert(view, url, message, result);
             }
         });
-
-        mWebView.loadUrl(link);
     }
 
-    private void initPtrFrameLayout(final PtrFrameLayout ptrFrameLayout) {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return mWebView != null && mWebView.getScrollY() == 0;
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-                mWebView.loadUrl(link);
-            }
-        });
-//        ptrFrameLayout.autoRefresh();
+    @Override
+    public void onRefresh() {
+        mWebView.loadUrl(link);
     }
 
     @Override

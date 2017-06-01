@@ -16,10 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.bean.IconBean;
@@ -35,9 +32,6 @@ import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.house.HouseActivity;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.park.ParkActivity;
-import com.aglhz.yicommunity.park.view.CarCardFragment;
-import com.aglhz.yicommunity.park.view.CarCardTransactFragment;
-import com.aglhz.yicommunity.park.view.ParkRecordFragment;
 import com.aglhz.yicommunity.picker.PickerActivity;
 import com.aglhz.yicommunity.publish.PropertyActivity;
 import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
@@ -58,8 +52,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Author：leguang on 2017/4/13 0009 15:49
@@ -125,7 +117,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         super.onViewCreated(view, savedInstanceState);
         initToolbar(toolbar);
         initSmartDoor();
-        initPtrFrameLayout();
+        initPtrFrameLayout(ptrFrameLayout, svSteward);
         initRecyclerView();
         setListener();
     }
@@ -256,17 +248,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
         //设置智慧停车卡片点击事件。
         smartParkAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            switch (position) {
-//                case Constants.MY_CARD:
-//                    _mActivity.start(CarCardFragment.newInstance());
-//                    break;
-//                case Constants.PARKING_RECORD:
-//                    _mActivity.start(ParkRecordFragment.newInstance());
-//                    break;
-//                case Constants.CARD_TRANSACT:
-//                    _mActivity.start(CarCardTransactFragment.newInstance());
-//                    break;
-//            }
             go2Park(position);
         });
 
@@ -347,31 +328,11 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         startActivity(intent);
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return svSteward != null && svSteward.getScrollY() == 0;
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-                params.token = UserHelper.token;
-                params.cmnt_c = UserHelper.communityCode;
-                mPresenter.start(params);
-            }
-        });
+    @Override
+    public void onRefresh() {
+        params.token = UserHelper.token;
+        params.cmnt_c = UserHelper.communityCode;
+        mPresenter.start(params);
     }
 
     @Override
@@ -480,19 +441,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     public void onEvent(EventCommunity event) {
         svSteward.fullScroll(ScrollView.FOCUS_UP);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
-    }
-
-    private void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogHelper.loading(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    private void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
     }
 }
 

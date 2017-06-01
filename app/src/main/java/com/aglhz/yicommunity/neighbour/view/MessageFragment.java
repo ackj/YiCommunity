@@ -13,15 +13,12 @@ import android.view.ViewGroup;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.NeighbourListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
@@ -41,8 +38,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Author: LiuJia on 2017/5/11 0011 14:06.
@@ -105,21 +100,8 @@ public class MessageFragment extends BaseFragment<NeighbourContract.Presenter> i
         super.onViewCreated(view, savedInstanceState);
         initData();
         initListener();
-        initPtrFrameLayout();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
-
-//    /**
-//     * 懒加载
-//     */
-//    @SuppressLint("RestrictedApi")
-//    @Override
-//    protected void initLazyView(@Nullable Bundle savedInstanceState) {
-//        if (savedInstanceState == null) {
-//            initData();
-//            initListener();
-//            initPtrFrameLayout();
-//        }
-//    }
 
     private void initData() {
         //假数据
@@ -200,33 +182,12 @@ public class MessageFragment extends BaseFragment<NeighbourContract.Presenter> i
         }
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-                params.page = 1;
-                params.pageSize = Constants.PAGE_SIZE;
-                params.cmnt_c = UserHelper.communityCode;
-                requestNet();
-            }
-        });
+    @Override
+    public void onRefresh() {
+        params.page = 1;
+        params.pageSize = Constants.PAGE_SIZE;
+        params.cmnt_c = UserHelper.communityCode;
+        requestNet();
     }
 
     public void requestNet() {

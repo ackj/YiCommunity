@@ -13,20 +13,16 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.bean.MyHousesBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.mine.contract.MyHousesContract;
 import com.aglhz.yicommunity.mine.presenter.MyHousesPresenter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,8 +34,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Author: LiuJia on 2017/5/17 0017 15:29.
@@ -84,36 +78,15 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
-        initPtrFrameLayout();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-                params.page = 1;
-                params.pageSize = Constants.PAGE_SIZE;
-                params.cmnt_c = UserHelper.communityCode;
-                mPresenter.requsetMyHouse(params);
-            }
-        });
+    @Override
+    public void onRefresh() {
+        params.page = 1;
+        params.pageSize = Constants.PAGE_SIZE;
+        params.cmnt_c = UserHelper.communityCode;
+        mPresenter.requsetMyHouse(params);
     }
 
     private void initToolbar() {

@@ -15,15 +15,12 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.mvp.view.base.Decoration;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.message.contract.MessageCenterContract;
@@ -41,8 +38,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Created by leguang on 2017/5/7 0007.
@@ -75,6 +70,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     private static final String REPAIR_REPLY = "repair_reply";// 物业报修回复
     private static final String NOTICE_PUBLISH = "notice_publish";// 公告发布
     private static final String PROPERTY_BILL = "property_bill";// 物业账单
+    private static final String COMPLAINT_REPLY = "complaint_reply";// 物业投诉回复
     private int clickPosition;
 
     public static MessageCenterFragment newInstance() {
@@ -101,7 +97,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
-        initPtrFrameLayout();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initListener();
     }
 
@@ -162,7 +158,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                     case HOUSE_RENTER_APPROVE://租客申请审核结果
                         start(ApplyResultFragment.newInstance(bean.getTitle(), bean.getDes()));
                         break;
-                    case FEEDBACK_REPLY://信息反馈回复
+                    case FEEDBACK_REPLY://反馈回复
                         break;
                     case REPAIR_REPLY://物业报修回复
                         start(RepairDetailFragment.newInstance(bean.getSfid()));
@@ -173,36 +169,19 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                     case SMARTDOOR_PUSHREC://
                         //无动作
                         break;
+                    case COMPLAINT_REPLY://物业投诉回复
+                        start(PropertyPayFragment.newInstance());
+                        break;
                 }
             }
         });
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了…………");
-                params.page = 1;
-                params.pageSize = Constants.PAGE_SIZE;
-                mPresenter.start(params);
-            }
-        });
+    @Override
+    public void onRefresh() {
+        params.page = 1;
+        params.pageSize = Constants.PAGE_SIZE;
+        mPresenter.start(params);
     }
 
     @Override

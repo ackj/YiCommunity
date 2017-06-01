@@ -229,17 +229,4 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         showLoadingDialog();
         mPresenter.post(params);
     }
-
-    private void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogHelper.loading(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    private void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
-    }
 }

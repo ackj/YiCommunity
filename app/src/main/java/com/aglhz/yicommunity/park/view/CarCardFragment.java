@@ -14,15 +14,12 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CarCardListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.park.contract.CarCardContract;
 import com.aglhz.yicommunity.park.presenter.CarCardPresenter;
 
@@ -33,8 +30,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Created by Administrator on 2017/4/19 9:39.
@@ -79,7 +74,7 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
-        initPtrFrameLayout();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initData();
         initListener();
     }
@@ -92,32 +87,11 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                                                                                                                                                                                                                                                                                    return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-                params.page = 1;
-                params.pageSize = Constants.PAGE_SIZE;
-                mPresenter.requestCarCardList(params);
-            }
-        });
+    @Override
+    public void onRefresh() {
+        params.page = 1;
+        params.pageSize = Constants.PAGE_SIZE;
+        mPresenter.requestCarCardList(params);
     }
 
     private void initData() {

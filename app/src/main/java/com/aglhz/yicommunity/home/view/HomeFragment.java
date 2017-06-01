@@ -292,18 +292,4 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "开门成功，欢迎回家，我的主人！");
     }
-
-
-    private void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogHelper.loading(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    private void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
-    }
 }

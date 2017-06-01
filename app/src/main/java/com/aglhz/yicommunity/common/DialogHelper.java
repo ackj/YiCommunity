@@ -46,5 +46,4 @@ public class DialogHelper {
     public static Dialog loading(Activity activity) {
         return new LoadingDialog(activity);
     }
-
 }
