@@ -6,9 +6,15 @@
 
     <!-- 常用颜色值 -->
     <color name="base_color">#E95D5A</color>
+    <color name="default_color">#E95D5A</color>
+
     <color name="base_line">#E7E7E7</color>
+
     <color name="base_grey">#F3F5F7</color>
+    <color name="default_gray">#999</color>
+
     <color name="base_black">#222222</color>
+
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="gray">#808080</color>

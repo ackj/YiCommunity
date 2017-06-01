@@ -7,7 +7,7 @@ import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.NeighbourListBean;
+import com.aglhz.yicommunity.bean.SocialityListBean;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -18,7 +18,7 @@ import java.util.List;
  * Email: liujia95me@126.com
  */
 
-public class ImagesGridRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBean.DataBean.PicsBean, BaseViewHolder> {
+public class ImagesGridRVAdapter extends BaseRecyclerViewAdapter<SocialityListBean.DataBean.PicsBean, BaseViewHolder> {
 
     int displayWidth = DensityUtils.getDisplayWidth(BaseApplication.mContext);
 
@@ -27,12 +27,12 @@ public class ImagesGridRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBe
         return getData().size() > 3 ? 3 : getData().size();
     }
 
-    public ImagesGridRVAdapter(List<NeighbourListBean.DataBean.PicsBean> data) {
+    public ImagesGridRVAdapter(List<SocialityListBean.DataBean.PicsBean> data) {
         super(R.layout.item_image, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, NeighbourListBean.DataBean.PicsBean item) {
+    protected void convert(BaseViewHolder helper, SocialityListBean.DataBean.PicsBean item) {
         helper.addOnClickListener(R.id.image_item_image);
         ImageView iv = helper.getView(R.id.image_item_image);
 

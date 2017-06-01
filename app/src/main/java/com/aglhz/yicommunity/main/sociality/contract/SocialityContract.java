@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.sociality.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.NeighbourListBean;
+import com.aglhz.yicommunity.bean.SocialityListBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
@@ -16,10 +16,10 @@ import io.reactivex.Observable;
  * <p>
  * 邻里模块所对应的各层对象应有的接口。
  */
-public interface NeighbourContract {
+public interface SocialityContract {
 
     interface View extends BaseContract.View {
-        void responseSuccess(List<NeighbourListBean.DataBean.MomentsListBean> datas);
+        void responseSuccess(List<SocialityListBean.DataBean.MomentsListBean> datas);
 
         void removeSuccess(BaseBean bean);
     }
@@ -45,17 +45,17 @@ public interface NeighbourContract {
     }
 
     interface Model extends BaseContract.Model {
-        Observable<NeighbourListBean> requestNeighbourList(Params params);
+        Observable<SocialityListBean> requestNeighbourList(Params params);
 
-        Observable<NeighbourListBean> getExchangeList(Params params);
+        Observable<SocialityListBean> getExchangeList(Params params);
 
-        Observable<NeighbourListBean> getCarpoolList(Params params);
+        Observable<SocialityListBean> getCarpoolList(Params params);
 
-        Observable<NeighbourListBean> getMyNeihbourList(Params params);
+        Observable<SocialityListBean> getMyNeihbourList(Params params);
 
-        Observable<NeighbourListBean> getMyExchangeList(Params params);
+        Observable<SocialityListBean> getMyExchangeList(Params params);
 
-        Observable<NeighbourListBean> getMyCarpoolList(Params params);
+        Observable<SocialityListBean> getMyCarpoolList(Params params);
 
         Observable<BaseBean> removeMyCarpool(Params params);
 

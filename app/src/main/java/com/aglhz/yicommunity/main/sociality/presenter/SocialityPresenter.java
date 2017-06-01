@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.main.sociality.contract.NeighbourContract;
-import com.aglhz.yicommunity.main.sociality.model.NeighbourModel;
+import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
+import com.aglhz.yicommunity.main.sociality.model.SocialityModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -16,17 +16,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * 负责邻里模块Presenter层内容。
  */
 
-public class NeighbourPresenter extends BasePresenter<NeighbourContract.View, NeighbourContract.Model> implements NeighbourContract.Presenter {
-    private final String TAG = NeighbourPresenter.class.getSimpleName();
+public class SocialityPresenter extends BasePresenter<SocialityContract.View, SocialityContract.Model> implements SocialityContract.Presenter {
+    private final String TAG = SocialityPresenter.class.getSimpleName();
 
-    public NeighbourPresenter(NeighbourContract.View mView) {
+    public SocialityPresenter(SocialityContract.View mView) {
         super(mView);
     }
 
     @NonNull
     @Override
-    protected NeighbourContract.Model createModel() {
-        return new NeighbourModel();
+    protected SocialityContract.Model createModel() {
+        return new SocialityModel();
     }
 
 

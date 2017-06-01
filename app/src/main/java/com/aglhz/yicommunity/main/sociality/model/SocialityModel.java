@@ -4,10 +4,10 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.NeighbourListBean;
+import com.aglhz.yicommunity.bean.SocialityListBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.main.sociality.contract.NeighbourContract;
+import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -19,8 +19,8 @@ import io.reactivex.schedulers.Schedulers;
  * 负责邻里模块的Model层内容。
  */
 
-public class NeighbourModel extends BaseModel implements NeighbourContract.Model {
-    private final String TAG = NeighbourModel.class.getSimpleName();
+public class SocialityModel extends BaseModel implements SocialityContract.Model {
+    private final String TAG = SocialityModel.class.getSimpleName();
 
     @Override
     public void start(Object request) {
@@ -28,7 +28,7 @@ public class NeighbourModel extends BaseModel implements NeighbourContract.Model
     }
 
     @Override
-    public Observable<NeighbourListBean> requestNeighbourList(Params params) {
+    public Observable<SocialityListBean> requestNeighbourList(Params params) {
         ALog.e(params.token);
         ALog.e(params.cmnt_c);
         ALog.e(params.page);
@@ -44,32 +44,32 @@ public class NeighbourModel extends BaseModel implements NeighbourContract.Model
     }
 
     @Override
-    public Observable<NeighbourListBean> getExchangeList(Params params) {
+    public Observable<SocialityListBean> getExchangeList(Params params) {
         return HttpHelper.getService(ApiService.class).requestExchangeList(ApiService.requestExchangeList, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<NeighbourListBean> getCarpoolList(Params params) {
+    public Observable<SocialityListBean> getCarpoolList(Params params) {
         return HttpHelper.getService(ApiService.class).requestCarpoolList(ApiService.requestCarpoolList + params.carpoolType,
                 params.token, params.cmnt_c, params.currentPositionLat, params.currentPositionLng, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<NeighbourListBean> getMyNeihbourList(Params params) {
+    public Observable<SocialityListBean> getMyNeihbourList(Params params) {
         return HttpHelper.getService(ApiService.class).requestMyNeighbourList(ApiService.requestMyNeighbourList, params.token, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<NeighbourListBean> getMyExchangeList(Params params) {
+    public Observable<SocialityListBean> getMyExchangeList(Params params) {
         return HttpHelper.getService(ApiService.class).requestMyExchangeList(ApiService.requestMyExchangeList, params.token, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<NeighbourListBean> getMyCarpoolList(Params params) {
+    public Observable<SocialityListBean> getMyCarpoolList(Params params) {
         return HttpHelper.getService(ApiService.class).requestMyCarpoolList(ApiService.requestMyCarpoolList, params.token, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }

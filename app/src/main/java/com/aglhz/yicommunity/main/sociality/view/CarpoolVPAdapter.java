@@ -22,8 +22,8 @@ public class CarpoolVPAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        int type = position == 0 ? MessageFragment.TYPE_CARPOOL_OWNER : MessageFragment.TYPE_CARPOOL_passenger;
-        return MessageFragment.newInstance(type);
+        int type = position == 0 ? SocialityListFragment.TYPE_CARPOOL_OWNER : SocialityListFragment.TYPE_CARPOOL_passenger;
+        return SocialityListFragment.newInstance(type);
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.bean.MonthCardBillListBean;
 import com.aglhz.yicommunity.bean.MonthCardRuleListBean;
 import com.aglhz.yicommunity.bean.MyHousesBean;
-import com.aglhz.yicommunity.bean.NeighbourListBean;
+import com.aglhz.yicommunity.bean.SocialityListBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.bean.ParkOrderBean;
@@ -452,7 +452,7 @@ public interface ApiService {
     String requestNeighbourList = BASE_PROPERTY + "/neighbor/moments/to-client/moments-list";
 
     @POST
-    Observable<NeighbourListBean> requestNeighbourList(@Url String url,
+    Observable<SocialityListBean> requestNeighbourList(@Url String url,
                                                        @Query("token") String token,
                                                        @Query("cmnt_c") String cmnt_c,
                                                        @Query("page") int page,
@@ -462,13 +462,13 @@ public interface ApiService {
     String requestExchangeList = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-list";
 
     @POST
-    Observable<NeighbourListBean> requestExchangeList(@Url String url, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<SocialityListBean> requestExchangeList(@Url String url, @Query("page") int page, @Query("pageSize") int pageSize);
 
     //获取拼车服务
     String requestCarpoolList = BASE_PROPERTY + "/neighbor/carpool/to-client/carpool-list/";
 
     @POST
-    Observable<NeighbourListBean> requestCarpoolList(@Url String url,
+    Observable<SocialityListBean> requestCarpoolList(@Url String url,
                                                      @Query("token") String token,
                                                      @Query("cmnt_c") String cmnt_c,
                                                      @Query("currentPositionLat") String currentPositionLat,
@@ -480,19 +480,19 @@ public interface ApiService {
     String requestMyExchangeList = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-mine-list";
 
     @POST/*("sub_property_ysq/neighbor/exchange/to-client/exchange-mine-list")*/
-    Observable<NeighbourListBean> requestMyExchangeList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<SocialityListBean> requestMyExchangeList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
 
     String requestMyNeighbourList = BASE_PROPERTY + "/neighbor/moments/to-client/moments-mine-list";
 
     //获取我发布的邻里圈列表
     @POST
-    Observable<NeighbourListBean> requestMyNeighbourList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<SocialityListBean> requestMyNeighbourList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
 
     String requestMyCarpoolList = BASE_PROPERTY + "/neighbor/carpool/to-client/carpool-mine-list";
 
     //获取我发布的拼车服务列表
     @POST
-    Observable<NeighbourListBean> requestMyCarpoolList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<SocialityListBean> requestMyCarpoolList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
 
 
     //首页获取公告列表

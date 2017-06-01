@@ -44,13 +44,13 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
-import static com.aglhz.yicommunity.main.sociality.view.MessageFragment.TYPE_CARPOOL_OWNER;
-import static com.aglhz.yicommunity.main.sociality.view.MessageFragment.TYPE_CARPOOL_passenger;
-import static com.aglhz.yicommunity.main.sociality.view.MessageFragment.TYPE_EXCHANGE;
-import static com.aglhz.yicommunity.main.sociality.view.MessageFragment.TYPE_MY_CARPOOL;
-import static com.aglhz.yicommunity.main.sociality.view.MessageFragment.TYPE_MY_EXCHANGE;
-import static com.aglhz.yicommunity.main.sociality.view.MessageFragment.TYPE_MY_NEIGHBOUR;
-import static com.aglhz.yicommunity.main.sociality.view.MessageFragment.TYPE_NEIGHBOUR;
+import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_CARPOOL_OWNER;
+import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_CARPOOL_passenger;
+import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_EXCHANGE;
+import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_MY_CARPOOL;
+import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_MY_EXCHANGE;
+import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_MY_NEIGHBOUR;
+import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_NEIGHBOUR;
 
 /**
  * Author: LiuJia on 2017/5/11 0011 15:52.
