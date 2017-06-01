@@ -144,8 +144,12 @@ public class DateUtils {
     }
 
     public static long formatTime2Long(String dateString) {
+        return formatTime2Long("yyyy-MM-dd HH:mm:ss",dateString);
+    }
+
+    public static long formatTime2Long(String pattern,String dateString) {
         Date date = null;
-        SimpleDateFormat formatTiem2long = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatTiem2long = new SimpleDateFormat(pattern);
         try {
             date = formatTiem2long.parse(dateString);
         } catch (ParseException e) {

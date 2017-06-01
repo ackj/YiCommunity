@@ -24,7 +24,7 @@ public class ParkPickerModel extends BaseModel implements ParkPickerContract.Mod
     @Override
     public Observable<ParkSelectBean> requestParkList(Params params) {
         return HttpHelper.getService(ApiService.class).requestParkList(ApiService.requestParkList
-                , params.token, params.page, params.pageSize)
+                , params.token, params.page, params.pageSize, params.city)
                 .subscribeOn(Schedulers.io());
     }
 }

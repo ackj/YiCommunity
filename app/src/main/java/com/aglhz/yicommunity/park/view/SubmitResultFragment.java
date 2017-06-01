@@ -98,6 +98,6 @@ public class SubmitResultFragment extends BaseFragment {
     @OnClick(R.id.bt_go_back_home)
     public void onViewClicked() {
         setFragmentResult(RESULT_OK, null);
-        pop();
+        _mActivity.finish();
     }
 }

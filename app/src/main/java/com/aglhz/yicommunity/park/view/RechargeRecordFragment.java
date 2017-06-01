@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.MonthCardBillListBean;
@@ -24,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Author: LiuJia on 2017/5/24 0024 17:48.
@@ -38,6 +40,8 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.ptrFrameLayout)
+    PtrFrameLayout ptrFrameLayout;
 
     private Unbinder unbinder;
     Params params = Params.getInstance();
@@ -65,8 +69,16 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initData();
         initListener();
+    }
+
+    @Override
+    public void onRefresh() {
+        params.page = 1;
+        params.pageSize = 10;
+        mPresenter.requestMonthCardBillList(params);
     }
 
     private void initToolbar() {
@@ -77,12 +89,15 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
     }
 
     private void initData() {
-        params.page = 1;
-        params.pageSize = 10;
-        mPresenter.requestMonthCardBillList(params);
+        onRefresh();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new RechargeReocrdRVAdapter();
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(() -> {
+            params.page++;
+            mPresenter.requestMonthCardBillList(params);
+        }, recyclerView);
         recyclerView.setAdapter(adapter);
     }
 
@@ -110,11 +125,31 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
 
     @Override
     public void error(String errorMessage) {
+        ptrFrameLayout.refreshComplete();
+        if (params.page == 1) {
+            //为后面的pageState做准备
+        } else if (params.page > 1) {
+            adapter.loadMoreFail();
+            params.page--;
+        }
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseRechargeRecord(List<MonthCardBillListBean.DataBean.MonthCardBillBean> datas) {
-        adapter.setNewData(datas);
+        ptrFrameLayout.refreshComplete();
+        if (datas == null || datas.isEmpty()) {
+            adapter.loadMoreEnd();
+            return;
+        }
+        ALog.e("datas::" + datas.size());
+        if (params.page == 1) {
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
+        } else {
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 }

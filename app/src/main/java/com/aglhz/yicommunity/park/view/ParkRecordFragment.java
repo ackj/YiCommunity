@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.DateUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.ParkRecordListBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -93,6 +95,11 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
 
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new ParkRecordRVAdapter();
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(() -> {
+            params.page++;
+            mPresenter.requestParkReocrd(params);
+        }, recyclerView);
         recyclerView.setAdapter(adapter);
     }
 
@@ -103,12 +110,32 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
 
     @Override
     public void error(String errorMessage) {
+        dismissLoadingDialog();
+        if (params.page == 1) {
+            //为后面的pageState做准备
+        } else if (params.page > 1) {
+            adapter.loadMoreFail();
+            params.page--;
+        }
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseParkRecord(List<ParkRecordListBean.PackRecordBean> datas) {
-        adapter.setNewData(datas);
+        dismissLoadingDialog();
+        if (datas == null || datas.isEmpty()) {
+            adapter.loadMoreEnd();
+            return;
+        }
+        ALog.e("datas::" + datas.size());
+        if (params.page == 1) {
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
+        } else {
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 
     @Override
@@ -131,20 +158,27 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
 
     private void setTime(TextView tv) {
         TimePickerView pvTime = new TimePickerView.Builder(_mActivity, (date, v) -> {
-
             tv.setText(getTime(date));
             requestSearch();
         })
                 .setType(TimePickerView.Type.YEAR_MONTH_DAY)
                 .build();
-        pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(DateUtils.formatTime2Long("yyyy-MM-dd",tv.getText().toString())));
+        pvTime.setDate(calendar);//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         pvTime.show();
     }
 
     private void requestSearch() {
         params.searchStartTime = tvStartTime.getText().toString().trim();
         params.searchEndTime = tvEndTime.getText().toString().trim();
+        params.page = 1;
+        if (adapter != null) {
+            adapter.getData().clear();
+            adapter.notifyDataSetChanged();
+        }
         mPresenter.requestParkReocrd(params);
+        showLoadingDialog();
     }
 
     private String getTime(Date date) {//可根据需要自行截取数据显示

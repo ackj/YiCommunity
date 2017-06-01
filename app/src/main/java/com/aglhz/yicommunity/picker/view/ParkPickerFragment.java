@@ -102,7 +102,6 @@ public class ParkPickerFragment extends BaseFragment<ParkPickerPresenter> implem
         });
     }
 
-
     private void initToolbar() {
         initStateBar(toolbar);
         tvTitle.setText("选择停车场");
