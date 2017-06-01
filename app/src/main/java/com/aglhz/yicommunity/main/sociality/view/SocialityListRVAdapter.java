@@ -22,7 +22,7 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.CommentBean;
-import com.aglhz.yicommunity.bean.NeighbourListBean;
+import com.aglhz.yicommunity.bean.SocialityListBean;
 import com.aglhz.yicommunity.preview.PreviewActivity;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -38,17 +38,17 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  * Email：langmanleguang@qq.com
  */
 
-public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBean.DataBean.MomentsListBean, BaseViewHolder> {
-    private static final String TAG = NeighbourRVAdapter.class.getSimpleName();
+public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityListBean.DataBean.MomentsListBean, BaseViewHolder> {
+    private static final String TAG = SocialityListRVAdapter.class.getSimpleName();
 
-    public NeighbourRVAdapter() {
+    public SocialityListRVAdapter() {
         super(R.layout.item_moments_list);
     }
 
     private int type;
 
     @Override
-    protected void convert(BaseViewHolder helper, NeighbourListBean.DataBean.MomentsListBean item) {
+    protected void convert(BaseViewHolder helper, SocialityListBean.DataBean.MomentsListBean item) {
 
 //        ALog.e(">>>>>>>>>>>>>>", "position:" + helper.getLayoutPosition());
 
@@ -62,7 +62,7 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //-------------- 删除 ---------------
         TextView tvRemove = helper.getView(R.id.tv_remove_item_moments_list);
-        if (type == MessageFragment.TYPE_MY_CARPOOL || type == MessageFragment.TYPE_MY_EXCHANGE || type == MessageFragment.TYPE_MY_NEIGHBOUR) {
+        if (type == SocialityListFragment.TYPE_MY_CARPOOL || type == SocialityListFragment.TYPE_MY_EXCHANGE || type == SocialityListFragment.TYPE_MY_NEIGHBOUR) {
             tvRemove.setVisibility(View.VISIBLE);
         } else {
             tvRemove.setVisibility(View.GONE);
@@ -70,9 +70,9 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //-------------- 当前地址 --------------
         TextView tvAddress = helper.getView(R.id.tv_location_item_moments_list);
-//        if (type == MessageFragment.TYPE_CARPOOL_OWNER
-//                || type == MessageFragment.TYPE_CARPOOL_passenger
-//                || type == MessageFragment.TYPE_MY_CARPOOL) {
+//        if (type == SocialityListFragment.TYPE_CARPOOL_OWNER
+//                || type == SocialityListFragment.TYPE_CARPOOL_passenger
+//                || type == SocialityListFragment.TYPE_MY_CARPOOL) {
 //            tvAddress.setText(item.getPublishPositionAddress());
 //        } else {
             tvAddress.setText(item.getCommunityName());
@@ -80,9 +80,9 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //--------------- 内容 ------------
         TextView tvContent = helper.getView(R.id.tv_content_item_moments_list);
-        if (type == MessageFragment.TYPE_CARPOOL_OWNER
-                || type == MessageFragment.TYPE_CARPOOL_passenger
-                || type == MessageFragment.TYPE_MY_CARPOOL) {
+        if (type == SocialityListFragment.TYPE_CARPOOL_OWNER
+                || type == SocialityListFragment.TYPE_CARPOOL_passenger
+                || type == SocialityListFragment.TYPE_MY_CARPOOL) {
             String route = item.getStartPlace() + "——" + item.getEndPlace() + "\n";
             String outTime = item.getSetOutTime() + "\n";
             String content = item.getContent();
@@ -93,7 +93,7 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
 
         //--------------- 根据type显隐------------
         TextView tvMoney = helper.getView(R.id.tv_money_item_moments_list);
-        if (type == MessageFragment.TYPE_EXCHANGE || type == MessageFragment.TYPE_MY_EXCHANGE) {
+        if (type == SocialityListFragment.TYPE_EXCHANGE || type == SocialityListFragment.TYPE_MY_EXCHANGE) {
             tvMoney.setVisibility(View.VISIBLE);
             tvMoney.setText(item.getPrice() + "元");
         } else {
@@ -116,7 +116,7 @@ public class NeighbourRVAdapter extends BaseRecyclerViewAdapter<NeighbourListBea
             JCVideoPlayerStandard jcVideoPlayerStandard = helper.getView(R.id.videoplayer);
             RecyclerView recyclerView = helper.getView(R.id.rv_pics_item_moments_list);
 
-            NeighbourListBean.DataBean.PicsBean firstPicBean = item.getPics().get(0);
+            SocialityListBean.DataBean.PicsBean firstPicBean = item.getPics().get(0);
             if (firstPicBean.getType() == 2) {
                 //-------------- 视频  ---------------
                 jcVideoPlayerStandard.setVisibility(View.VISIBLE);

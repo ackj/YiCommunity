@@ -16,7 +16,7 @@ import com.aglhz.yicommunity.bean.HomeBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.main.sociality.view.CarpoolFragment;
-import com.aglhz.yicommunity.main.sociality.view.MessageFragment;
+import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.aglhz.yicommunity.main.sociality.view.NeighbourFragment;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -109,7 +109,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 qualityLifeAdapter.setOnItemClickListener((adapter1, view, position) -> {
                     switch (position) {
                         case 0:
-                            ((BaseActivity) fragment.getActivity()).start(NeighbourFragment.newInstance(MessageFragment.TYPE_EXCHANGE));
+                            ((BaseActivity) fragment.getActivity()).start(NeighbourFragment.newInstance(SocialityListFragment.TYPE_EXCHANGE));
                             break;
                         case 1:
                             fragment.go2Web("快递查询", ApiService.WULIU_SEARCH + UserHelper.token);

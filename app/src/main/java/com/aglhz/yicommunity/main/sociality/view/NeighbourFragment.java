@@ -50,7 +50,7 @@ public class NeighbourFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
         int type = getArguments().getInt("type");
-        if (type == MessageFragment.TYPE_EXCHANGE) {
+        if (type == SocialityListFragment.TYPE_EXCHANGE) {
             view = attachToSwipeBack(view);
         }
         return view;
@@ -60,22 +60,22 @@ public class NeighbourFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         type = getArguments().getInt("type");
-        loadRootFragment(R.id.fl_container_fragment_fragment, MessageFragment.newInstance(type));
+        loadRootFragment(R.id.fl_container_fragment_fragment, SocialityListFragment.newInstance(type));
         initToolbar();
     }
 
     private void initToolbar() {
         initStateBar(toolbar);
         switch (type) {
-            case MessageFragment.TYPE_EXCHANGE:
+            case SocialityListFragment.TYPE_EXCHANGE:
                 toolbarTitle.setText("闲置交换");
                 break;
-            case MessageFragment.TYPE_NEIGHBOUR:
+            case SocialityListFragment.TYPE_NEIGHBOUR:
                 toolbarTitle.setText("左邻右里");
                 break;
         }
         toolbarMenu.setText("发布");
-        if (type == MessageFragment.TYPE_EXCHANGE) {
+        if (type == SocialityListFragment.TYPE_EXCHANGE) {
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
             toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         }
@@ -90,10 +90,10 @@ public class NeighbourFragment extends BaseFragment {
     @OnClick(R.id.toolbar_menu)
     public void onViewClicked() {
         switch (type) {
-            case MessageFragment.TYPE_EXCHANGE:
+            case SocialityListFragment.TYPE_EXCHANGE:
                 start(PublishExchangeFragment.newInstance());
                 break;
-            case MessageFragment.TYPE_NEIGHBOUR:
+            case SocialityListFragment.TYPE_NEIGHBOUR:
                 String[] arr = {"发布照片", "发布视频"};
                 new AlertDialog.Builder(_mActivity)
                         .setItems(arr, (dialog, which) -> {
