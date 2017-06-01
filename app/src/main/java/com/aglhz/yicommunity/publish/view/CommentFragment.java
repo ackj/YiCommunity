@@ -19,23 +19,18 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.ScreenUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CommentBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.KeyboardChangeListener;
-import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.publish.contract.CommentContract;
 import com.aglhz.yicommunity.publish.presenter.CommentPresenter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,8 +43,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_CARPOOL_OWNER;
 import static com.aglhz.yicommunity.neighbour.view.MessageFragment.TYPE_CARPOOL_passenger;
@@ -108,7 +101,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ALog.e(TAG, "onCreateView type:" + type);
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
@@ -123,7 +115,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         type = bundle.getInt("type");
         initToolbar();
         initData();
-        initPtrFrameLayout();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initListener();
     }
 
@@ -134,33 +126,12 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-                commentListParams.fid = fid;
-                commentListParams.page = 1;
-                commentListParams.pageSize = Constants.PAGE_SIZE;
-                requestComments();
-            }
-        });
+    @Override
+    public void onRefresh() {
+        commentListParams.fid = fid;
+        commentListParams.page = 1;
+        commentListParams.pageSize = Constants.PAGE_SIZE;
+        requestComments();
     }
 
     private KeyboardChangeListener mKeyboardChangeListener;
@@ -216,7 +187,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             commentListParams.page++;
-            ALog.e("加载更多………………………………");
             requestComments();
         }, recyclerView);
 
@@ -224,7 +194,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     }
 
     private void requestComments() {
-        ALog.e(" commentListParams.page++" + commentListParams.page);
         switch (type) {
             case TYPE_EXCHANGE:
             case TYPE_MY_EXCHANGE:

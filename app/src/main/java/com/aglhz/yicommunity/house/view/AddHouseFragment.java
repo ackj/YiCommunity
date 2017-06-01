@@ -423,19 +423,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     }
 
-    private void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogHelper.loading(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    private void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
-    }
-
     @Override
     public void error(String errorMessage) {
         dismissLoadingDialog();

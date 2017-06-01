@@ -13,10 +13,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.message.contract.CompainsReplyContract;
 import com.aglhz.yicommunity.message.presenter.CompainReplyPresenter;
 
@@ -27,8 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Author: LiuJia on 2017/5/18 0018 17:36.
@@ -36,9 +31,7 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  */
 
 public class CompainsReplyFragment extends BaseFragment<CompainReplyPresenter> implements CompainsReplyContract.View {
-
     private static final String TAG = CompainsReplyFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -73,8 +66,8 @@ public class CompainsReplyFragment extends BaseFragment<CompainReplyPresenter> i
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
-        initPtrFrameLayout();
         initData();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
     private void initToolbar() {
@@ -84,28 +77,9 @@ public class CompainsReplyFragment extends BaseFragment<CompainReplyPresenter> i
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-            }
-        });
+    @Override
+    public void onRefresh() {
+        super.onRefresh();
     }
 
     private void initData() {

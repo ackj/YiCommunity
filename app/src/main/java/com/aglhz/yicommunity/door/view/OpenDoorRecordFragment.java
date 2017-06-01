@@ -13,14 +13,11 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.door.contract.OpenDoorRecordContract;
 import com.aglhz.yicommunity.door.presenter.OpenDoorRecordPresenter;
@@ -36,10 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
-
-import static com.aglhz.yicommunity.R.id.recyclerView;
 
 /**
  * Author: LiuJia on 2017/4/21 10:31.
@@ -47,13 +40,12 @@ import static com.aglhz.yicommunity.R.id.recyclerView;
  */
 public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.Presenter> implements OpenDoorRecordContract.View {
     private static final String TAG = OpenDoorRecordFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(recyclerView)
-    RecyclerView rvOpenDoorRecord;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
     private OpenDoorRecordRVAdapter mAdapter;
@@ -83,10 +75,9 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initToolbar();
         initData();
-        initPtrFrameLayout();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
     private void initToolbar() {
@@ -97,45 +88,23 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     }
 
     private void initData() {
-        rvOpenDoorRecord.setLayoutManager(new LinearLayoutManager(_mActivity));
+        recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new OpenDoorRecordRVAdapter();
         mAdapter.setEnableLoadMore(true);
         mAdapter.setOnLoadMoreListener(() -> {
             ALog.e("加载更多………………………………");
             params.page++;
             mPresenter.requestRecord(params);
-        }, rvOpenDoorRecord);
-        rvOpenDoorRecord.setAdapter(mAdapter);
+        }, recyclerView);
+        recyclerView.setAdapter(mAdapter);
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(rvOpenDoorRecord);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-//                mPresenter.start();
-                params.page = 1;
-                params.pageSize = Constants.PAGE_SIZE;
-                params.cmnt_c = UserHelper.communityCode;
-                mPresenter.requestRecord(params);
-            }
-        });
+    @Override
+    public void onRefresh() {
+        params.page = 1;
+        params.pageSize = Constants.PAGE_SIZE;
+        params.cmnt_c = UserHelper.communityCode;
+        mPresenter.requestRecord(params);
     }
 
     @Override
@@ -148,7 +117,7 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
 
         if (params.page == 1) {
             mAdapter.setNewData(datas);
-            mAdapter.disableLoadMoreIfNotFullPage(rvOpenDoorRecord);
+            mAdapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
             mAdapter.addData(datas);
             mAdapter.setEnableLoadMore(true);

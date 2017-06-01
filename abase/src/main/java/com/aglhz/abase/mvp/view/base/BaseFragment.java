@@ -4,13 +4,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.AbsListView;
+import android.widget.ScrollView;
 
+import com.aglhz.abase.R;
+import com.aglhz.abase.common.ScrollingHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.utils.ScreenUtils;
+import com.aglhz.abase.widget.Dialog.LoadingDialog;
 
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.MaterialHeader;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
@@ -24,6 +34,7 @@ import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 public abstract class BaseFragment<P extends BaseContract.Presenter> extends SwipeBackFragment {
     private final String TAG = BaseFragment.class.getSimpleName();
     public P mPresenter;
+    private LoadingDialog loadingDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,13 +70,10 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
     }
 
     public void initStateBar(View view) {
-        Log.e("状态栏：", "状态栏：" + ScreenUtils.getStatusBarHeight(_mActivity) + "");
-
         if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
             view.setPadding(view.getPaddingLeft(),
                     view.getPaddingTop() + ScreenUtils.getStatusBarHeight(_mActivity),
                     view.getPaddingRight(), view.getPaddingBottom());
-            Log.e("状态栏：", "状态栏：" + ScreenUtils.getStatusBarHeight(_mActivity) + "");
         }
     }
 
@@ -79,5 +87,67 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
         // return new FragmentAnimator(enter,exit,popEnter,popExit);
         // 默认竖向(和安卓5.0以上的动画相同)
 //        return super.onCreateFragmentAnimator();
+    }
+
+    public void initPtrFrameLayout(final PtrFrameLayout ptrFrameLayout, final View view) {
+        if (ptrFrameLayout == null || view == null) {
+            return;
+        }
+
+        final MaterialHeader header = new MaterialHeader(getContext());
+        int[] colors = getResources().getIntArray(R.array.google_colors);
+        header.setColorSchemeColors(colors);
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setPadding(0, DensityUtils.dp2px(_mActivity, 15F), 0, DensityUtils.dp2px(_mActivity, 10F));
+        header.setPtrFrameLayout(ptrFrameLayout);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+
+        ptrFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrFrameLayout.autoRefresh(true);
+            }
+        }, 100);
+
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                if (view instanceof ScrollView || view instanceof WebView) {
+                    ALog.e("111111");
+                    return ScrollingHelper.isScrollViewOrWebViewToTop(view);
+                } else if (view instanceof RecyclerView) {
+                    ALog.e("22222");
+                    return ScrollingHelper.isRecyclerViewToTop((RecyclerView) view);
+                } else if (view instanceof AbsListView) {
+                    ALog.e("333333");
+                    return ScrollingHelper.isAbsListViewToTop((AbsListView) view);
+                }
+
+                return true;
+            }
+
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                onRefresh();
+            }
+        });
+    }
+
+    public void onRefresh() {
+        ALog.e("______________onRefresh________________");
+    }
+
+    public void showLoadingDialog() {
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    public void dismissLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 }

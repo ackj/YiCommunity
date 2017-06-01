@@ -116,7 +116,6 @@ public class DoorManager {
 
                 if (webReponse != null && webReponse.getStatusCode() == 200) {
                     // 登陆成功，启动对讲服务
-                    ALog.e("111111111111111111" + userName);
                     UserHelper.setSip(userName);
                     // 登陆失败，显示提示信息
 //                    Toast.makeText(BaseApplication.mContext, "对讲服务启动成功", Toast.LENGTH_LONG).show();

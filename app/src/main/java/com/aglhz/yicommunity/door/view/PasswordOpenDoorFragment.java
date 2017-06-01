@@ -134,18 +134,4 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
         dismissLoadingDialog();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
-
-
-    private void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogHelper.loading(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    private void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
-    }
 }

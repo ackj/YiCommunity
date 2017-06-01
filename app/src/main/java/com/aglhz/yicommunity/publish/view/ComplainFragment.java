@@ -226,20 +226,6 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         showLoadingDialog();
     }
 
-
-    private void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogHelper.loading(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    private void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         tvCommunity.setText(UserHelper.communityName);

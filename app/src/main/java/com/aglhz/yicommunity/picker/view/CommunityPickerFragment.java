@@ -17,15 +17,12 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.picker.contract.CommunityPickerContract;
@@ -37,10 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.MaterialHeader;
-
-import static com.aglhz.yicommunity.common.UserHelper.city;
 
 
 /**
@@ -86,27 +79,11 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        initLocate();
         initToolbar();
         initData();
         initListener();
-        initPtrFrameLayout();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
-
-//    private void initLocate() {
-//        LbsManager.getInstance().startLocation(aMapLocation -> {
-//            if (aMapLocation != null) {
-//                if (aMapLocation.getErrorCode() == 0) {
-//                    String city = aMapLocation.getCity();
-//                    if (!TextUtils.isEmpty(city)) {
-//                        tvCity.setText(city);
-//                        UserHelper.setCity(city);
-//                        LbsManager.getInstance().stopLocation();
-//                    }
-//                }
-//            }
-//        });
-//    }
 
     private void initToolbar() {
         initStateBar(toolbar);
@@ -170,30 +147,10 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
         });
     }
 
-    private void initPtrFrameLayout() {
-        final MaterialHeader header = new MaterialHeader(getContext());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DensityUtils.dp2px(BaseApplication.mContext, 15F), 0, DensityUtils.dp2px(BaseApplication.mContext, 10F));
-        header.setPtrFrameLayout(ptrFrameLayout);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(true), 100);
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //判断是否滑动到顶部。
-                return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-            }
-
-            @Override
-            public void onRefreshBegin(final PtrFrameLayout frame) {
-                ALog.e("开始刷新了");
-                params.city = UserHelper.city;
-                mPresenter.requestCommunitys(params);
-            }
-        });
+    @Override
+    public void onRefresh() {
+        params.city = UserHelper.city;
+        mPresenter.requestCommunitys(params);
     }
 
     @Override

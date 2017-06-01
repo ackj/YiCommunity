@@ -282,17 +282,4 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
             }
         }
     }
-
-    private void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogHelper.loading(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    private void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
-    }
 }
