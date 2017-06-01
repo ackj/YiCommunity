@@ -83,7 +83,7 @@ public class MinePresenter extends BasePresenter<MineContract.View, MineContract
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bean -> {
                     if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-                        getView().responseLogout(bean.getOther().getMessage());
+                        getView().responseUnreadMark(bean);
                     } else {
                         getView().error(bean.getOther().getMessage());
                     }
