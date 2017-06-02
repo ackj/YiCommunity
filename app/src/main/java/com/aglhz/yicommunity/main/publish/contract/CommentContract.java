@@ -30,11 +30,11 @@ public interface CommentContract {
 
         void requestNeighbourCommentList(Params params);
 
-        void postExchangeComment(Params params);
+        void requestSubmitExchangeComment(Params params);
 
-        void postCarpoolComment(Params params);
+        void requestSubmitCarpoolComment(Params params);
 
-        void postNeighbourComment(Params params);
+        void requestSubmitNeighbourComment(Params params);
 
     }
 
@@ -45,11 +45,11 @@ public interface CommentContract {
 
         Observable<CommentListBean> requestNeighbourCommentList(Params params);
 
-        Observable<BaseBean> postExchangeComment(Params params);
+        Observable<BaseBean> requestSubmitExchangeComment(Params params);
 
-        Observable<BaseBean> postCarpoolComment(Params params);
+        Observable<BaseBean> requestSubmitCarpoolComment(Params params);
 
-        Observable<BaseBean> postNeighbourComment(Params params);
+        Observable<BaseBean> requestSubmitNeighbourComment(Params params);
     }
 
 }

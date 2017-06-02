@@ -44,51 +44,51 @@ public class SocialityModel extends BaseModel implements SocialityContract.Model
     }
 
     @Override
-    public Observable<SocialityListBean> getExchangeList(Params params) {
+    public Observable<SocialityListBean> requestExchangeList(Params params) {
         return HttpHelper.getService(ApiService.class).requestExchangeList(ApiService.requestExchangeList, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<SocialityListBean> getCarpoolList(Params params) {
+    public Observable<SocialityListBean> requestCarpoolList(Params params) {
         return HttpHelper.getService(ApiService.class).requestCarpoolList(ApiService.requestCarpoolList + params.carpoolType,
                 params.token, params.cmnt_c, params.currentPositionLat, params.currentPositionLng, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<SocialityListBean> getMyNeihbourList(Params params) {
+    public Observable<SocialityListBean> requestMyNeihbourList(Params params) {
         return HttpHelper.getService(ApiService.class).requestMyNeighbourList(ApiService.requestMyNeighbourList, params.token, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<SocialityListBean> getMyExchangeList(Params params) {
+    public Observable<SocialityListBean> requestMyExchangeList(Params params) {
         return HttpHelper.getService(ApiService.class).requestMyExchangeList(ApiService.requestMyExchangeList, params.token, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<SocialityListBean> getMyCarpoolList(Params params) {
+    public Observable<SocialityListBean> requestMyCarpoolList(Params params) {
         return HttpHelper.getService(ApiService.class).requestMyCarpoolList(ApiService.requestMyCarpoolList, params.token, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> removeMyCarpool(Params params) {
-        return HttpHelper.getService(ApiService.class).removeCarpoolMessage(ApiService.removeCarpoolMessage, params.token, params.fid)
+    public Observable<BaseBean> requestRemoveMyCarpool(Params params) {
+        return HttpHelper.getService(ApiService.class).requestRemoveCarpool(ApiService.requestRemoveCarpool, params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> removeMyExchange(Params params) {
-        return HttpHelper.getService(ApiService.class).removeExchangeMessage(ApiService.removeExchangeMessage, params.token, params.fid)
+    public Observable<BaseBean> requestRemoveMyExchange(Params params) {
+        return HttpHelper.getService(ApiService.class).requestRemoveExchange(ApiService.requestRemoveExchange, params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> removeMyNeighbour(Params params) {
-        return HttpHelper.getService(ApiService.class).removeNeighbourMessage(ApiService.removeNeighbourMessage, params.token, params.fid)
+    public Observable<BaseBean> requestRemoveMyNeighbour(Params params) {
+        return HttpHelper.getService(ApiService.class).requestRemoveNeighbour(ApiService.requestRemoveNeighbour, params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }
 

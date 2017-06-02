@@ -37,31 +37,31 @@ public interface SocialityContract {
 
         void requestMyCarpoolList(Params params);
 
-        void removeMyCarpool(Params params);
+        void requestRemoveMyCarpool(Params params);
 
-        void removeMyExchange(Params params);
+        void requestRemoveMyExchange(Params params);
 
-        void removeMyNeighbour(Params params);
+        void requestRemoveMyNeighbour(Params params);
     }
 
     interface Model extends BaseContract.Model {
         Observable<SocialityListBean> requestNeighbourList(Params params);
 
-        Observable<SocialityListBean> getExchangeList(Params params);
+        Observable<SocialityListBean> requestExchangeList(Params params);
 
-        Observable<SocialityListBean> getCarpoolList(Params params);
+        Observable<SocialityListBean> requestCarpoolList(Params params);
 
-        Observable<SocialityListBean> getMyNeihbourList(Params params);
+        Observable<SocialityListBean> requestMyNeihbourList(Params params);
 
-        Observable<SocialityListBean> getMyExchangeList(Params params);
+        Observable<SocialityListBean> requestMyExchangeList(Params params);
 
-        Observable<SocialityListBean> getMyCarpoolList(Params params);
+        Observable<SocialityListBean> requestMyCarpoolList(Params params);
 
-        Observable<BaseBean> removeMyCarpool(Params params);
+        Observable<BaseBean> requestRemoveMyCarpool(Params params);
 
-        Observable<BaseBean> removeMyExchange(Params params);
+        Observable<BaseBean> requestRemoveMyExchange(Params params);
 
-        Observable<BaseBean> removeMyNeighbour(Params params);
+        Observable<BaseBean> requestRemoveMyNeighbour(Params params);
 
     }
 }

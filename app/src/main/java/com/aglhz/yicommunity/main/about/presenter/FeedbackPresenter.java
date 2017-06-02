@@ -32,7 +32,7 @@ public class FeedbackPresenter extends BasePresenter<FeedbackContract.View, Feed
 
     @Override
     public void start(Object request) {
-        mRxManager.add(mModel.submitFeedback((Params) request)
+        mRxManager.add(mModel.requestSubmitFeedback((Params) request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

@@ -21,18 +21,18 @@ public interface CarCardContract {
     interface View extends BaseContract.View {
         void responseCarCardList(List<CarCardListBean.DataBean.CardListBean> datas);
 
-        void deleteSuccess(BaseBean baseBean);
+        void responseDeleteSuccess(BaseBean baseBean);
     }
 
     interface Presenter extends BaseContract.Presenter {
         void requestCarCardList(Params params);
 
-        void deleteCarCard(Params params);
+        void requestDeleteCarCard(Params params);
     }
 
     interface Model extends BaseContract.Model {
         Observable<CarCardListBean> requestCarCardList(Params params);
 
-        Observable<BaseBean> deleteCarCard(Params params);
+        Observable<BaseBean> requestDeleteCarCard(Params params);
     }
 }

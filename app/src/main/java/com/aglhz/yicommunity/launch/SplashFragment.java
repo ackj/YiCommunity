@@ -92,7 +92,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
 
     private void checkLogin() {
         rxManager.add(HttpHelper.getService(ApiService.class)
-                .checkToken(ApiService.checkToken, UserHelper.token)
+                .requestCheckToken(ApiService.requestCheckToken, UserHelper.token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bean -> {

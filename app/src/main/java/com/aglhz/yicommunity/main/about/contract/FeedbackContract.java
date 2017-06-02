@@ -22,6 +22,6 @@ public interface FeedbackContract {
     }
 
     interface Model extends BaseContract.Model {
-        Observable<BaseBean> submitFeedback(Params params);
+        Observable<BaseBean> requestSubmitFeedback(Params params);
     }
 }

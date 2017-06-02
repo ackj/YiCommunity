@@ -25,9 +25,9 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventPark;
+import com.aglhz.yicommunity.main.park.contract.PublishOwnerCardContract;
 import com.aglhz.yicommunity.main.park.presenter.PublishOwnerCardPresenter;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
-import com.aglhz.yicommunity.main.publish.contract.PublishContract;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,7 +41,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2017/4/19 9:40.
  */
-public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPresenter> implements PublishContract.View {
+public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContract.Presenter> implements PublishOwnerCardContract.View {
 
     private final String TAG = PublishOwnerCardFragment.class.getSimpleName();
 
@@ -79,7 +79,7 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
 
     @NonNull
     @Override
-    protected PublishOwnerCardPresenter createPresenter() {
+    protected PublishOwnerCardContract.Presenter createPresenter() {
         return new PublishOwnerCardPresenter(this);
     }
 
@@ -179,7 +179,7 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardPrese
         if (isUpdate) {
             mPresenter.requestModifyOwnerCard(params);
         } else {
-            mPresenter.post(params);
+            mPresenter.requestSubmitOwnerCard(params);
         }
     }
 

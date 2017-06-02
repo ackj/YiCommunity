@@ -23,8 +23,8 @@ public class FeedbackModel extends BaseModel implements FeedbackContract.Model {
 
 
     @Override
-    public Observable<BaseBean> submitFeedback(Params params) {
-        return HttpHelper.getService(ApiService.class).feedback(ApiService.feedback,params.token, params.cmnt_c, params.des, params.contact)
+    public Observable<BaseBean> requestSubmitFeedback(Params params) {
+        return HttpHelper.getService(ApiService.class).requestSubmitFeedback(ApiService.requestSubmitFeedback,params.token, params.cmnt_c, params.des, params.contact)
                 .subscribeOn(Schedulers.io());
     }
 

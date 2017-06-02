@@ -8,7 +8,7 @@ import com.aglhz.yicommunity.bean.CardRechargeBean;
 import com.aglhz.yicommunity.bean.MonthCardRuleListBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.main.publish.contract.PublishContract;
+import com.aglhz.yicommunity.main.park.contract.PublishMonthCardContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -19,13 +19,13 @@ import okhttp3.MultipartBody;
  * Email: liujia95me@126.com
  */
 
-public class PublishMonthCardModel extends BaseModel implements PublishContract.Model {
+public class PublishMonthCardModel extends BaseModel implements PublishMonthCardContract.Model {
     @Override
     public void start(Object request) {
     }
 
     @Override
-    public Observable<BaseBean> post(Params params) {
+    public Observable<BaseBean> requestSubmitMonthCard(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("parkPlaceFid", params.fid);
@@ -36,7 +36,7 @@ public class PublishMonthCardModel extends BaseModel implements PublishContract.
         builder.addFormDataPart("monthCount", params.monthCount + "");
         builder.addFormDataPart("money", params.price);
 
-        return HttpHelper.getService(ApiService.class).postMothCarPay(ApiService.postMothCarPay,
+        return HttpHelper.getService(ApiService.class).requestSubmitMonthCard(ApiService.requestSubmitMonthCard,
                 builder.build())
                 .subscribeOn(Schedulers.io());
     }

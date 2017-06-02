@@ -216,7 +216,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     params.field = "sex";//写死就好
                     params.val = which + "";
                     showLoadingDialog();
-                    mPresenter.updateUserData(params);
+                    mPresenter.requestUpdateUserData(params);
                 }).show();
 
                 break;
@@ -238,7 +238,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                 params.field = "nickName";//写死就好
                 params.val = etNickname.getText().toString();
                 showLoadingDialog();
-                mPresenter.updateUserData(params);
+                mPresenter.requestUpdateUserData(params);
                 break;
 
             case R.id.bt_submit_user_data_fragment:
@@ -257,7 +257,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     return;
                 }
                 showLoadingDialog();
-                mPresenter.updatePassword(params);
+                mPresenter.requestUpdatePassword(params);
                 break;
         }
     }
@@ -278,7 +278,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
                 params.file = file;
                 showLoadingDialog();
-                mPresenter.changePortrait(params);
+                mPresenter.requestChangePortrait(params);
             }
         }
     }

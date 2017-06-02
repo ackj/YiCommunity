@@ -33,7 +33,7 @@ public class ComplainModel extends BaseModel implements PublishContract.Model {
     }
 
     @Override
-    public Observable<BaseBean> post(Params params) {
+    public Observable<BaseBean> requestSubmit(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("cmnt_c", params.cmnt_c);
@@ -53,6 +53,7 @@ public class ComplainModel extends BaseModel implements PublishContract.Model {
                 builder.build())
                 .subscribeOn(Schedulers.io());
     }
+
 
 
 }

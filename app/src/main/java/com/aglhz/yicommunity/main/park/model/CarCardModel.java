@@ -32,8 +32,8 @@ public class CarCardModel extends BaseModel implements CarCardContract.Model {
     }
 
     @Override
-    public Observable<BaseBean> deleteCarCard(Params params) {
-        return HttpHelper.getService(ApiService.class).deleteCarCard(ApiService.deleteCarCard
+    public Observable<BaseBean> requestDeleteCarCard(Params params) {
+        return HttpHelper.getService(ApiService.class).requestDeleteCarCard(ApiService.requestDeleteCarCard
                 , params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }

@@ -218,7 +218,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
 
     private void submit(Params params) {
         params.cmnt_c = UserHelper.communityCode;
-        mPresenter.post(params);//上传
+        mPresenter.requestSubmit(params);//上传
         showLoadingDialog();
     }
 

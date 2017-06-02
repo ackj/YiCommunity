@@ -37,6 +37,6 @@ public interface QuickOpenDoorContract {
     interface Model extends BaseContract.Model {
         Observable<DoorListBean> requestDoors(Params params);
 
-        Observable<BaseBean> setQuickOpenDoor(Params params);
+        Observable<BaseBean> requestSetQuickOpenDoor(Params params);
     }
 }

@@ -38,6 +38,6 @@ public interface AppointOpenDoorContract {
 
         Observable<DoorListBean> requestDoors(Params params);
 
-        Observable<BaseBean> appointOpenDoor(Params params);
+        Observable<BaseBean> requestAppointOpenDoor(Params params);
     }
 }

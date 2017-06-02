@@ -28,9 +28,9 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventPark;
+import com.aglhz.yicommunity.main.park.contract.PublishMonthCardContract;
 import com.aglhz.yicommunity.main.park.presenter.PublishMonthCardPresenter;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
-import com.aglhz.yicommunity.main.publish.contract.PublishContract;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +46,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2017/4/19 9:28.
  */
-public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPresenter> implements PublishContract.View {
+public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContract.Presenter> implements PublishMonthCardContract.View {
 
     private static final String TAG = PublishMonthCardFragment.class.getSimpleName();
 
@@ -114,7 +114,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
 
     @NonNull
     @Override
-    protected PublishMonthCardPresenter createPresenter() {
+    protected PublishMonthCardContract.Presenter createPresenter() {
         return new PublishMonthCardPresenter(this);
     }
 
@@ -237,7 +237,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
             DialogHelper.warningSnackbar(getView(), "请输入联系方式");
             return;
         }
-        mPresenter.post(params);
+        mPresenter.requestSubmitMonthCard(params);
     }
 
     @Override
@@ -259,11 +259,12 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
     }
 
     @Override
-    public void responseSuccess(BaseBean bean) {
+    public void responseSubmitSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), bean.getOther().getMessage());
         pop();
     }
 
+    @Override
     public void responseRuleList(List<MonthCardRuleBean> datas) {
         showRuleDialog(datas);
     }
@@ -281,6 +282,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardPrese
         builder.show();
     }
 
+    @Override
     public void responseCardPay(CarCardBean.DataBean bean) {
         String carNo = bean.getCarNo();
         tvCarCity.setText(carNo.substring(0, 1));

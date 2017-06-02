@@ -18,11 +18,11 @@ public interface PublishContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void post(Params params);
+        void requestSubmit(Params params);
     }
 
     interface Model extends BaseContract.Model {
-        Observable<BaseBean> post(Params params);
+        Observable<BaseBean> requestSubmit(Params params);
     }
 
 }

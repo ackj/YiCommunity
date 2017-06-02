@@ -242,6 +242,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
         params.cmnt_c = UserHelper.communityCode;
         params.content = content;
         showLoadingDialog();
-        mPresenter.post(params);
+        mPresenter.requestSubmit(params);
     }
 }

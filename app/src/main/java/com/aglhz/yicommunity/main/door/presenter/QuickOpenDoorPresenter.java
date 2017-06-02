@@ -50,7 +50,7 @@ public class QuickOpenDoorPresenter extends BasePresenter<QuickOpenDoorContract.
 
     @Override
     public void requestQuickOpenDoor(Params params) {
-        mRxManager.add(mModel.setQuickOpenDoor(params)
+        mRxManager.add(mModel.requestSetQuickOpenDoor(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

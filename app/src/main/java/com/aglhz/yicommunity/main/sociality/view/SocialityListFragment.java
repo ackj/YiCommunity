@@ -171,13 +171,13 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         params.fid = fid;
         switch (type) {
             case TYPE_MY_CARPOOL:
-                mPresenter.removeMyCarpool(params);
+                mPresenter.requestRemoveMyCarpool(params);
                 break;
             case TYPE_MY_EXCHANGE:
-                mPresenter.removeMyExchange(params);
+                mPresenter.requestRemoveMyExchange(params);
                 break;
             case TYPE_MY_NEIGHBOUR:
-                mPresenter.removeMyNeighbour(params);
+                mPresenter.requestRemoveMyNeighbour(params);
                 break;
         }
     }
