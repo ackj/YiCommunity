@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 
 import butterknife.BindView;
@@ -43,8 +44,8 @@ public class ApplyResultFragment extends BaseFragment {
     public static ApplyResultFragment newInstance(String title, String des) {
         ApplyResultFragment fragment = new ApplyResultFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("des", des);
+        bundle.putString(Constants.KEY_TITLE, title);
+        bundle.putString(Constants.KEY_DES, des);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -52,8 +53,8 @@ public class ApplyResultFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        title = getArguments().getString("title");
-        des = getArguments().getString("des");
+        title = getArguments().getString(Constants.KEY_TITLE);
+        des = getArguments().getString(Constants.KEY_DES);
     }
 
     @Nullable

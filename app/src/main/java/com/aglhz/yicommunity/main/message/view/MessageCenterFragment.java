@@ -135,8 +135,8 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                 switch (bean.getOpType()) {
                     case NOTICE_PUBLISH://todo:公告发布
                         Intent intent = new Intent(_mActivity, WebActivity.class);
-                        intent.putExtra("title", bean.getTitle());
-                        intent.putExtra("link", "");
+                        intent.putExtra(Constants.KEY_TITLE, bean.getTitle());
+                        intent.putExtra(Constants.KEY_LINK, "");
                         _mActivity.startActivity(intent);
                         break;
                     case HOUSE_OWNER_APPLY: //业主申请

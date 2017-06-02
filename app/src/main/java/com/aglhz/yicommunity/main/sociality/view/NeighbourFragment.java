@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.main.publish.view.PublishExchangeFragment;
 import com.aglhz.yicommunity.main.publish.view.PublishNeighbourFragment;
 
@@ -39,9 +40,15 @@ public class NeighbourFragment extends BaseFragment {
     public static NeighbourFragment newInstance(int type) {
         NeighbourFragment fragment = new NeighbourFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
+        bundle.putInt(Constants.KEY_TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        type = getArguments().getInt(Constants.KEY_TYPE);
     }
 
     @Nullable
@@ -49,7 +56,6 @@ public class NeighbourFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
-        int type = getArguments().getInt("type");
         if (type == SocialityListFragment.TYPE_EXCHANGE) {
             view = attachToSwipeBack(view);
         }
@@ -59,7 +65,6 @@ public class NeighbourFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        type = getArguments().getInt("type");
         loadRootFragment(R.id.fl_container_fragment_fragment, SocialityListFragment.newInstance(type));
         initToolbar();
     }

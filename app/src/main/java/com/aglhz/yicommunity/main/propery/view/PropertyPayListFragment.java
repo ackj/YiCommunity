@@ -64,7 +64,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
 
     public static PropertyPayListFragment newInstance(int position) {
         Bundle bundle = new Bundle();
-        bundle.putInt(Constants.PAY_STATE, position);
+        bundle.putInt(Constants.KEY_PAY_STATE, position);
 
         PropertyPayListFragment fragment = new PropertyPayListFragment();
         fragment.setArguments(bundle);
@@ -77,7 +77,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            payState = bundle.getInt(Constants.PAY_STATE);
+            payState = bundle.getInt(Constants.KEY_PAY_STATE);
         }
     }
 

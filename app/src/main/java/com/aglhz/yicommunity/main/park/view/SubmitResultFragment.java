@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,8 +41,8 @@ public class SubmitResultFragment extends BaseFragment {
     public static SubmitResultFragment newInstance(String cardType, boolean isPass) {
         SubmitResultFragment fragment = new SubmitResultFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("cardType", cardType);
-        bundle.putBoolean("isPass", isPass);
+        bundle.putString(Constants.KEY_TYPE, cardType);
+        bundle.putBoolean(Constants.KEY_IS_PASS, isPass);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -49,8 +50,8 @@ public class SubmitResultFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cardType = getArguments().getString("cardType");
-        isPass = getArguments().getBoolean("isPass");
+        cardType = getArguments().getString(Constants.KEY_TYPE);
+        isPass = getArguments().getBoolean(Constants.KEY_IS_PASS);
     }
 
     @Nullable

@@ -127,8 +127,8 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
 
     private void go2Web(String title, String link) {
         Intent intent = new Intent(_mActivity, WebActivity.class);
-        intent.putExtra("title", title);
-        intent.putExtra("link", link);
+        intent.putExtra(Constants.KEY_TITLE, title);
+        intent.putExtra(Constants.KEY_LINK, link);
         _mActivity.startActivity(intent);
     }
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.RepairDetailBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.message.contract.RepairDetailContract;
@@ -63,7 +64,7 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailContract.Pres
     public static RepairDetailFragment newInstance(String fid) {
         RepairDetailFragment detailFragment = new RepairDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("fid", fid);
+        bundle.putString(Constants.KEY_FID, fid);
         detailFragment.setArguments(bundle);
         return detailFragment;
     }
@@ -77,7 +78,7 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailContract.Pres
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        params.fid = getArguments().getString("fid");
+        params.fid = getArguments().getString(Constants.KEY_FID);
     }
 
     @Nullable

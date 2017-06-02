@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.publish.view;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,14 +19,15 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
-import com.aglhz.yicommunity.main.publish.contract.PublishContract;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
 import com.aglhz.yicommunity.main.picker.view.CityPickerFragment;
+import com.aglhz.yicommunity.main.publish.contract.PublishContract;
 import com.aglhz.yicommunity.main.publish.presenter.PublishCarpoolPresenter;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bilibili.boxing.Boxing;
@@ -250,12 +250,12 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_END_POINT_CODE) {
                 ALog.d(TAG, "onFragmentResult end code:" + data.getString("city"));
-                params.endPlace = data.getString("city");
-                tvSelectEndPoint.setText(data.getString("city"));
+                params.endPlace = data.getString(Constants.KEY_CITY);
+                tvSelectEndPoint.setText(data.getString(Constants.KEY_CITY));
             } else if (requestCode == REQUEST_START_POINT_CODE) {
                 ALog.d(TAG, "onFragmentResult start code:" + data.getString("city"));
-                params.startPlace = data.getString("city");
-                tvSelectStartPoint.setText(data.getString("city"));
+                params.startPlace = data.getString(Constants.KEY_CITY);
+                tvSelectStartPoint.setText(data.getString(Constants.KEY_CITY));
             }
         }
     }

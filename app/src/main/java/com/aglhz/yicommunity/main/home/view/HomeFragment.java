@@ -18,6 +18,7 @@ import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.HomeBean;
 import com.aglhz.yicommunity.bean.ServiceBean;
 import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
@@ -236,8 +237,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     public void go2Web(String title, String link) {
         Intent intent = new Intent(_mActivity, WebActivity.class);
-        intent.putExtra("title", title);
-        intent.putExtra("link", link);
+        intent.putExtra(Constants.KEY_TITLE, title);
+        intent.putExtra(Constants.KEY_LINK, link);
         _mActivity.startActivity(intent);
     }
 

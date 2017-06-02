@@ -13,6 +13,7 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.message.contract.ApplyCheckContract;
@@ -46,7 +47,7 @@ public class ApplyCheckFragment extends BaseFragment<ApplyCheckContract.Presente
     public static ApplyCheckFragment newInstance(MessageCenterBean.DataBean.MemNewsBean bean) {
         ApplyCheckFragment checkFragment = new ApplyCheckFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("bean", bean);
+        bundle.putSerializable(Constants.KEY_BEAN, bean);
         checkFragment.setArguments(bundle);
         return checkFragment;
     }
@@ -60,7 +61,7 @@ public class ApplyCheckFragment extends BaseFragment<ApplyCheckContract.Presente
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments().getSerializable("bean") != null) {
+        if (getArguments().getSerializable(Constants.KEY_BEAN) != null) {
             bean = (MessageCenterBean.DataBean.MemNewsBean) getArguments().getSerializable("bean");
         }
     }

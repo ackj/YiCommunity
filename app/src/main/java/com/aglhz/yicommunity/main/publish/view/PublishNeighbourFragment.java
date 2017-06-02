@@ -20,6 +20,7 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
@@ -82,7 +83,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     public static PublishNeighbourFragment newInstance(int which) {
         PublishNeighbourFragment fragment = new PublishNeighbourFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("which", which);
+        bundle.putInt(Constants.KEY_WHICH, which);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -98,7 +99,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_publish_neighbour, container, false);
         unbinder = ButterKnife.bind(this, view);
-        which = getArguments().getInt("which");
+        which = getArguments().getInt(Constants.KEY_WHICH);
         return attachToSwipeBack(view);
     }
 

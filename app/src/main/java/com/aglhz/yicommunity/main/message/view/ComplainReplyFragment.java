@@ -48,7 +48,7 @@ public class ComplainReplyFragment extends BaseFragment<ComplainReplyContract.Pr
     public static ComplainReplyFragment newInstance(String complaintFid) {
         ComplainReplyFragment fragment = new ComplainReplyFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.COMPLAINT_FID, complaintFid);
+        bundle.putString(Constants.KEY_FID, complaintFid);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -64,7 +64,7 @@ public class ComplainReplyFragment extends BaseFragment<ComplainReplyContract.Pr
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            params.complaintFid = args.getString(Constants.COMPLAINT_FID);
+            params.complaintFid = args.getString(Constants.KEY_FID);
         }
     }
 

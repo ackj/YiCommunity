@@ -60,7 +60,7 @@ public class PropertyNotPayDetailFragment extends BaseFragment<PropertyPayContra
 
     public static PropertyNotPayDetailFragment newInstance(String fid) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.PROPERTY_BILL_FID, fid);
+        bundle.putString(Constants.KEY_FID, fid);
 
         PropertyNotPayDetailFragment fragment = new PropertyNotPayDetailFragment();
         fragment.setArguments(bundle);
@@ -73,7 +73,7 @@ public class PropertyNotPayDetailFragment extends BaseFragment<PropertyPayContra
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            params.fid = bundle.getString(Constants.PROPERTY_BILL_FID);
+            params.fid = bundle.getString(Constants.KEY_FID);
         }
     }
 

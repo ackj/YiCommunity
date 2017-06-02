@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.CarCityListBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -76,7 +77,7 @@ public class CarCityFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             CarCityListBean.CarCityBean bean = (CarCityListBean.CarCityBean) adapter.getData().get(position);
             Bundle bundle = new Bundle();
-            bundle.putString("shortfrom", bean.shortfrom);
+            bundle.putString(Constants.KEY_SHORTFROM, bean.shortfrom);
             setFragmentResult(RESULT_OK, bundle);
             pop();
         });

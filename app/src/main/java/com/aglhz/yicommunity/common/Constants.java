@@ -14,9 +14,11 @@ public class Constants {
     }
 
     public static final String PRESS_AGAIN = "再按一次退出";
-    public static final int PAGE_SIZE = 20;
 
+    public static final int PAGE_SIZE = 20;
     public static final String COMMUNITY_CODE = "community_code";
+
+
     public static final String COMMUNITY_NAME = "community_name";
 
     //网络部分
@@ -73,17 +75,24 @@ public class Constants {
     public static final int TYPE_WXPAY = 2;
     public static final String ALIPAY = "支付宝支付";
     public static final String WXPAY = "微信支付";
-    public static final String PAY_STATE = "pay_position";
-    public static final String PROPERTY_BILL_FID = "property_bill_fid";
+
+//    public static final String PROPERTY_BILL_FID = "property_bill_fid";
 
     //********************以上为物业缴费模块************************
 
-    //消息中心
-    public static final String COMPLAINT_FID = "complaint_fid";
 
     //******************** Bundle key ***********************
     public static final String KEY_TITLE = "title";
     public static final String KEY_FID = "fid";
+    public static final String KEY_ID = "id";
     public static final String KEY_BEAN = "bean";
     public static final String KEY_LINK = "link";
+    public static final String KEY_DES = "des";
+    public static final String KEY_SHORTFROM = "shortfrom";
+    public static final String KEY_CARNO = "carNo";
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_CITY = "city";
+    public static final String KEY_WHICH = "which";
+    public static final String KEY_IS_PASS = "isPass";
+    public static final String KEY_PAY_STATE = "pay_position";
 }
