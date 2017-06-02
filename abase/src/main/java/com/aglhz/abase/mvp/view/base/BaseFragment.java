@@ -114,13 +114,10 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 if (view instanceof ScrollView || view instanceof WebView) {
-                    ALog.e("111111");
                     return ScrollingHelper.isScrollViewOrWebViewToTop(view);
                 } else if (view instanceof RecyclerView) {
-                    ALog.e("22222");
                     return ScrollingHelper.isRecyclerViewToTop((RecyclerView) view);
                 } else if (view instanceof AbsListView) {
-                    ALog.e("333333");
                     return ScrollingHelper.isAbsListViewToTop((AbsListView) view);
                 }
                 return true;

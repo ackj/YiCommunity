@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.main.house.model;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -31,20 +32,27 @@ public class HouseRightsModel extends BaseModel implements HouseRightsContract.M
     public Observable<HouseRightsBean> requestRights(Params params) {
         return HttpHelper.getService(ApiService.class)
                 .requestRights(ApiService.requestRights
-                , params.token
-                , params.fid)
+                        , params.token
+                        , params.fid)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<BaseBean> requestUpdateRights(Params params) {
+        ALog.e(params.url);
+        ALog.e(params.token);
+        ALog.e(params.mfid);
+        ALog.e(params.rfid);
+        ALog.e(params.picode);
+        ALog.e(params.status);
+
         return HttpHelper.getService(ApiService.class)
                 .requestUpdateRights(params.url
-                , params.token
-                , params.mfid
-                , params.fid
-                , params.picode
-                , params.status)
+                        , params.token
+                        , params.mfid
+                        , params.rfid
+                        , params.picode
+                        , params.status)
                 .subscribeOn(Schedulers.io());
     }
 
@@ -52,9 +60,9 @@ public class HouseRightsModel extends BaseModel implements HouseRightsContract.M
     public Observable<BaseBean> requestDelete(Params params) {
         return HttpHelper.getService(ApiService.class)
                 .requestDelete(ApiService.requestRights
-                , params.token
-                , params.mfid
-                , params.fid)
+                        , params.token
+                        , params.mfid
+                        , params.fid)
                 .subscribeOn(Schedulers.io());
     }
 }

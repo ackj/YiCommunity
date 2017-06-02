@@ -154,6 +154,7 @@ public class HouseRightsBean {
              */
 
             private String fid;
+            private String rfid;
             private String icon;
             private int isOwner;
             private String mname;
@@ -165,6 +166,14 @@ public class HouseRightsBean {
 
             public void setFid(String fid) {
                 this.fid = fid;
+            }
+
+            public String getRfid() {
+                return rfid;
+            }
+
+            public void setRfid(String rfid) {
+                this.rfid = rfid;
             }
 
             public String getIcon() {

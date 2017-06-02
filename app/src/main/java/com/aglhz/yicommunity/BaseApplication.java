@@ -30,6 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import me.yokeyword.fragmentation.Fragmentation;
 
 
 /**
@@ -50,7 +51,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
         initPush();
 //        registerActivityLifecycleCallbacks(this);
 
-//        tempInit();
+        tempInit();
 
         initBoxing();
 
@@ -67,9 +68,9 @@ public class BaseApplication extends MultiDexApplication implements Application.
     }
 
     private void tempInit() {
-//        Fragmentation.builder()
-//                .stackViewMode(Fragmentation.BUBBLE)
-//                .install();
+        Fragmentation.builder()
+                .stackViewMode(Fragmentation.BUBBLE)
+                .install();
 //
 //        //初始化内存泄露监听
 //        mRefWatcher = LeakCanary.install(this);
@@ -77,7 +78,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
 //        // 初始化卡顿监听
 //        BlockCanary.install(this, new AppContext()).start();
 
-        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
+//        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
         ALog.init(true, "ysq");
 
     }
@@ -149,7 +150,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(baseBean -> ALog.e(TAG, baseBean.getOther().getMessage()));
-
             }
 
             @Override

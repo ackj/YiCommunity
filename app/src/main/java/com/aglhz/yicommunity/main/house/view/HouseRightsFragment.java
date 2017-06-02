@@ -55,7 +55,8 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
     TextView toolbarMenu;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-    private int prePosition = 0;
+    private int memberPosition = 0;
+    private int permissionPosition;
     private MemberRVAdapter memberAdapter;
     private PermissionRVAdapter permissionAdapter;
     private View footerView;
@@ -103,7 +104,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
-        initPtrFrameLayout(ptrFrameLayout,rvPermission);
+        initPtrFrameLayout(ptrFrameLayout, rvPermission);
         initData();
         initListener();
     }
@@ -155,10 +156,10 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         //每选中一次，重新赋值选中的那个成员对象
         memberAdapter.setOnItemClickListener((adapter, view, position) -> {
             permissionAdapter.setNewData(mHouseRights.getData().get(position).getAuthority());
-            adapter.getViewByPosition(rvMember, prePosition, R.id.iv_avatar).setBackgroundResource(0);
+            adapter.getViewByPosition(rvMember, memberPosition, R.id.iv_avatar).setBackgroundResource(0);
             view.findViewById(R.id.iv_avatar).setBackgroundResource(R.drawable.shape_stroke_round_red_border);
-            prePosition = position;
-            ALog.e("prePosition::" + prePosition);
+            memberPosition = position;
+            ALog.e("prePosition::" + memberPosition);
 
             if (position == 0) {
                 permissionAdapter.removeFooterView(footerView);
@@ -169,25 +170,30 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         });
 
         footerView.setOnClickListener(v -> {
-            ALog.e("prePosition::" + prePosition);
-            params.mfid = memberAdapter.getData().get(prePosition).getMember().getFid();
+            ALog.e("prePosition::" + memberPosition);
+            params.mfid = memberAdapter.getData().get(memberPosition).getMember().getFid();
             mPresenter.requestDelete(params);
+            showLoadingDialog();
         });
 
         permissionAdapter.setOnItemClickListener((adapter, view, position) -> {
+
+            permissionPosition = position;
             SwitchButton switchButton = (SwitchButton) view.findViewById(R.id.switch_button);
-            switchButton.setChecked(!switchButton.isChecked());
-            params.mfid = memberAdapter.getData().get(prePosition).getMember().getFid();
+//            switchButton.setChecked(!switchButton.isChecked());
+
+            params.mfid = memberAdapter.getData().get(memberPosition).getMember().getFid();
+            params.rfid = memberAdapter.getData().get(memberPosition).getMember().getRfid();
             params.picode = permissionAdapter.getData().get(position).getCode();
 
             ALog.e("switchButton.isChecked()::" + switchButton.isChecked());
 
-            params.status = switchButton.isChecked() ? 1 : 0;
+            params.status = switchButton.isChecked() ? 0 : 1;
 
             if (memberAdapter.getData().size() == 1) {
                 params.url = ApiService.UPDATE_RIGHTS_MYSELF;
             } else {
-                if (memberAdapter.getData().get(prePosition).getMember().getIsOwner() == 0) {
+                if (memberAdapter.getData().get(memberPosition).getMember().getIsOwner() == 0) {
                     params.url = ApiService.UPDATE_RIGHTS_OTHER;
                 } else {
                     params.url = ApiService.UPDATE_RIGHTS_MYSELF;
@@ -195,6 +201,8 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
             }
 
             mPresenter.requestUpdateRights(params);
+            showLoadingDialog();
+
         });
     }
 
@@ -203,23 +211,22 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         ptrFrameLayout.refreshComplete();
         this.mHouseRights = mHouseRights;
         memberAdapter.setNewData(mHouseRights.getData());
-        permissionAdapter.setNewData(mHouseRights.getData().get(prePosition).getAuthority());
+        permissionAdapter.setNewData(mHouseRights.getData().get(memberPosition).getAuthority());
     }
 
     @Override
     public void responseUpdateRights(BaseBean mBaseBean) {
-        /**
-         * 暂时只能这么做，其实这么做也是有问题的，比如同时快速点击各个权限时。
-         */
-        permissionAdapter.getData().get(prePosition).setStatus(params.status);
+        dismissLoadingDialog();
+        permissionAdapter.getData().get(permissionPosition).setStatus(params.status);
         permissionAdapter.notifyDataSetChanged();
         DialogHelper.successSnackbar(getView(), mBaseBean.getOther().getMessage());
     }
 
     @Override
     public void responseDelete(BaseBean mBaseBean) {
+        dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), mBaseBean.getOther().getMessage());
-        memberAdapter.remove(prePosition);
+        memberAdapter.remove(memberPosition);
         permissionAdapter.setNewData(null);
         if (memberAdapter.getData().size() == 1) {
             permissionAdapter.removeFooterView(footerView);
@@ -233,6 +240,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
 
     @Override
     public void error(String errorMessage) {
+        dismissLoadingDialog();
         permissionAdapter.notifyDataSetChanged();
         ptrFrameLayout.refreshComplete();
         DialogHelper.errorSnackbar(getView(), errorMessage);
