@@ -80,4 +80,10 @@ public class Constants {
 
     //消息中心
     public static final String COMPLAINT_FID = "complaint_fid";
+
+    //******************** Bundle key ***********************
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_FID = "fid";
+    public static final String KEY_BEAN = "bean";
+    public static final String KEY_LINK = "link";
 }

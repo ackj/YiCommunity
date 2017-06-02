@@ -30,7 +30,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class RepairDetailFragment extends BaseFragment<RepairDetailPresenter> implements RepairDetailContract.View {
+public class RepairDetailFragment extends BaseFragment<RepairDetailContract.Presenter> implements RepairDetailContract.View {
 
     private static final String TAG = RepairDetailFragment.class.getSimpleName();
 
@@ -70,7 +70,7 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailPresenter> im
 
     @NonNull
     @Override
-    protected RepairDetailPresenter createPresenter() {
+    protected RepairDetailContract.Presenter createPresenter() {
         return new RepairDetailPresenter(this);
     }
 

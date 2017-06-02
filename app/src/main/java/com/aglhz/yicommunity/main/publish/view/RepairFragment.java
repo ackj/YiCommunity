@@ -30,8 +30,8 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
-import com.aglhz.yicommunity.main.publish.contract.PublishContract;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
+import com.aglhz.yicommunity.main.publish.contract.PublishContract;
 import com.aglhz.yicommunity.main.publish.presenter.RepairPresenter;
 import com.bilibili.boxing.Boxing;
 import com.bilibili.boxing.model.config.BoxingConfig;
@@ -211,15 +211,16 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
                 params.des = etContent.getText().toString().trim();
                 params.contact = etPhone.getText().toString().trim();
                 params.single = isPrivate;
-                if (params.name.isEmpty()) {
+
+                if (TextUtils.isEmpty(params.name)) {
                     DialogHelper.errorSnackbar(getView(), "请输入联系人");
                     return;
                 }
-                if (params.contact.isEmpty()) {
+                if (TextUtils.isEmpty(params.contact)) {
                     DialogHelper.errorSnackbar(getView(), "请输入您的联系方式");
                     return;
                 }
-                if (params.des.isEmpty()) {
+                if (TextUtils.isEmpty(params.des)) {
                     DialogHelper.errorSnackbar(getView(), "请输入详情");
                     return;
                 }

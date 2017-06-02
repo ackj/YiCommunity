@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
 
 /**
  * 加载网页
@@ -14,6 +15,7 @@ import com.aglhz.yicommunity.R;
 
 public class WebActivity extends BaseActivity {
     private static final String TAG = WebActivity.class.getSimpleName();
+    public static final String LINK = "link";
     private String title;
     private String link;
 
@@ -29,8 +31,8 @@ public class WebActivity extends BaseActivity {
     }
 
     private void initData() {
-        title = getIntent().getStringExtra("title");
-        link = getIntent().getStringExtra("link");
+        title = getIntent().getStringExtra(Constants.KEY_TITLE);
+        link = getIntent().getStringExtra(Constants.KEY_LINK);
         ALog.e(link);
     }
 }

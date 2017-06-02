@@ -230,13 +230,14 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                 //添加右边箭头的动画
                 break;
             case R.id.toolbar_menu:
-                if (TextUtils.isEmpty(etNickname.getText().toString())) {
+                String nickName = etNickname.getText().toString().trim();
+                if (TextUtils.isEmpty(nickName)) {
                     DialogHelper.warningSnackbar(getView(), "昵称不能为空");
                     return;
                 }
                 //网络请求
                 params.field = "nickName";//写死就好
-                params.val = etNickname.getText().toString();
+                params.val = nickName;
                 showLoadingDialog();
                 mPresenter.requestUpdateUserData(params);
                 break;

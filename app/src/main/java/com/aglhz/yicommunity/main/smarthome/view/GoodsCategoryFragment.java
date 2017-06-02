@@ -31,7 +31,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Email: liujia95me@126.com
  */
 
-public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryPresenter> implements GoodsCategoryContract.View {
+public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryContract.Presenter> implements GoodsCategoryContract.View {
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -52,7 +52,7 @@ public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryPresenter> 
 
     @NonNull
     @Override
-    protected GoodsCategoryPresenter createPresenter() {
+    protected GoodsCategoryContract.Presenter createPresenter() {
         return new GoodsCategoryPresenter(this);
     }
 

@@ -91,14 +91,10 @@ public class MainFragment extends BaseFragment {
         ahbn.setInactiveColor(getResources().getColor(R.color.black));
         ahbn.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
 
-        ahbn.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, final boolean wasSelected) {
-
-                showHideFragment(mFragments[position], mFragments[prePosition]);
-                prePosition = position;
-                return true;
-            }
+        ahbn.setOnTabSelectedListener((position, wasSelected) -> {
+            showHideFragment(mFragments[position], mFragments[prePosition]);
+            prePosition = position;
+            return true;
         });
         ahbn.setCurrentItem(0);
     }

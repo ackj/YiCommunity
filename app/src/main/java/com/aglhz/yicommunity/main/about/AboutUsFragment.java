@@ -16,6 +16,7 @@ import com.aglhz.abase.utils.AppUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.web.WebActivity;
 
 import butterknife.BindView;
@@ -77,14 +78,14 @@ public class AboutUsFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.ll_product_introduction:
                 Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
-                introductionIntent.putExtra("title", "产品介绍");
-                introductionIntent.putExtra("link", ApiService.PRODUCT_INTRODUCTION);
+                introductionIntent.putExtra(Constants.KEY_TITLE, "产品介绍");
+                introductionIntent.putExtra(Constants.KEY_LINK, ApiService.PRODUCT_INTRODUCTION);
                 startActivity(introductionIntent);
                 break;
             case R.id.ll_service_terms:
                 Intent termsIntent = new Intent(_mActivity, WebActivity.class);
-                termsIntent.putExtra("title", "服务条款");
-                termsIntent.putExtra("link", ApiService.SERVICE_TERMS);
+                termsIntent.putExtra(Constants.KEY_TITLE, "服务条款");
+                termsIntent.putExtra(Constants.KEY_LINK, ApiService.SERVICE_TERMS);
                 startActivity(termsIntent);
                 break;
             case R.id.ll_feedback:

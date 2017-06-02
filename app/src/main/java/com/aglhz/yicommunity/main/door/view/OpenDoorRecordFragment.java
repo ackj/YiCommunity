@@ -62,7 +62,6 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         return new OpenDoorRecordPresenter(this);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

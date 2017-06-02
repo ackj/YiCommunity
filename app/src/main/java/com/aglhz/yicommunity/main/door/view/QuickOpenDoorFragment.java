@@ -185,7 +185,6 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             mAdapter.loadMoreFail();
             params.page--;
         }
-
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 

@@ -34,7 +34,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallPresenter> implements SmartHomeMallContract.View {
+public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Presenter> implements SmartHomeMallContract.View {
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -60,7 +60,7 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallPresenter> 
 
     @NonNull
     @Override
-    protected SmartHomeMallPresenter createPresenter() {
+    protected SmartHomeMallContract.Presenter createPresenter() {
         return new SmartHomeMallPresenter(this);
     }
 

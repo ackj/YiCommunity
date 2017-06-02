@@ -204,8 +204,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_submit:
-                String content = etInputContent.getText().toString().trim();
-                params.content = content;
+
                 submit();
                 break;
             case R.id.ll_location:
@@ -286,6 +285,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
             DialogHelper.errorSnackbar(getView(), "请选择拼车类型!");
             return;
         }
+        params.content = etInputContent.getText().toString().trim();
         if (TextUtils.isEmpty(params.content)) {
             DialogHelper.errorSnackbar(getView(), "请输入留言!");
             return;

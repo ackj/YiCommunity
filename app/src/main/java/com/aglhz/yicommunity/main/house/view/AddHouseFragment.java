@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.abase.utils.RegexUtils;
 import com.aglhz.abase.widget.selector.SelectorDialog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
@@ -34,8 +35,6 @@ import com.aglhz.yicommunity.main.house.contract.AddHouseContract;
 import com.aglhz.yicommunity.main.house.presenter.AddHousePresenter;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -207,11 +206,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 } else {
                     params.isProprietor = isProprietor;
                     params.name = etName.getText().toString().trim();
-                    String regEx = "(^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}$)";
                     String idCard = etIdcard.getText().toString().trim();
-                    Pattern pattern = Pattern.compile(regEx);
-                    Matcher matcher = pattern.matcher(idCard);
-                    if (!matcher.matches()) {
+                    if (!(RegexUtils.isIDCard15(idCard) || RegexUtils.isIDCard18(idCard))) {
                         DialogHelper.warningSnackbar(getView(), "请输入正确的身份证号码!");
                         return;
                     }

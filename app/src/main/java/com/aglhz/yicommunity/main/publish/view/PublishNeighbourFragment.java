@@ -51,7 +51,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  */
 
-public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPresenter> implements PublishContract.View {
+public class PublishNeighbourFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = PublishNeighbourFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
@@ -89,7 +89,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishNeighbourPrese
 
     @NonNull
     @Override
-    protected PublishNeighbourPresenter createPresenter() {
+    protected PublishContract.Presenter createPresenter() {
         return new PublishNeighbourPresenter(this);
     }
 

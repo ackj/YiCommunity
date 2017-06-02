@@ -41,7 +41,7 @@ import static com.aglhz.yicommunity.common.UserHelper.city;
  * Email: liujia95me@126.com
  */
 
-public class ParkPickerFragment extends BaseFragment<ParkPickerPresenter> implements ParkPickerContract.View {
+public class ParkPickerFragment extends BaseFragment<ParkPickerContract.Presenter> implements ParkPickerContract.View {
     private static final String TAG = ParkPickerFragment.class.getSimpleName();
     private PtrFrameLayout ptrFrameLayout;
     private RecyclerView recyclerView;
@@ -61,7 +61,7 @@ public class ParkPickerFragment extends BaseFragment<ParkPickerPresenter> implem
 
     @NonNull
     @Override
-    protected ParkPickerPresenter createPresenter() {
+    protected ParkPickerContract.Presenter createPresenter() {
         return new ParkPickerPresenter(this);
     }
 

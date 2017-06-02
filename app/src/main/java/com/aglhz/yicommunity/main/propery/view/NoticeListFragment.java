@@ -43,7 +43,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Email: liujia95me@126.com
  */
 
-public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implements NoticeListContract.View {
+public class NoticeListFragment extends BaseFragment<NoticeListContract.Presenter> implements NoticeListContract.View {
     public static final String TAG = NoticeListFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -64,7 +64,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListPresenter> implem
 
     @NonNull
     @Override
-    protected NoticeListPresenter createPresenter() {
+    protected NoticeListContract.Presenter createPresenter() {
         return new NoticeListPresenter(this);
     }
 
