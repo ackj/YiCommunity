@@ -86,8 +86,8 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         ALog.e(TAG, "newInstance type:" + type);
         CommentFragment fragment = new CommentFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("fid", fid);
-        bundle.putInt("type", type);
+        bundle.putString(Constants.KEY_FID, fid);
+        bundle.putInt(Constants.KEY_TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -111,8 +111,8 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
-        fid = bundle.getString("fid");
-        type = bundle.getInt("type");
+        fid = bundle.getString(Constants.KEY_FID);
+        type = bundle.getInt(Constants.KEY_TYPE);
         initToolbar();
         initData();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);

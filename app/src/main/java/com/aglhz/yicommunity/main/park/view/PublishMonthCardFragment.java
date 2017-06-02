@@ -98,8 +98,8 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     public static PublishMonthCardFragment newInstance(int type, String fid) {
         PublishMonthCardFragment fragment = new PublishMonthCardFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
-        bundle.putString("fid", fid);
+        bundle.putString(Constants.KEY_FID, fid);
+        bundle.putInt(Constants.KEY_TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -108,8 +108,8 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        type = bundle.getInt("type");
-        fid = bundle.getString("fid");
+        type = bundle.getInt(Constants.KEY_TYPE);
+        fid = bundle.getString(Constants.KEY_FID);
     }
 
     @NonNull
@@ -244,7 +244,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 100) {
-            tvCarCity.setText(data.getString("shortfrom"));
+            tvCarCity.setText(data.getString(Constants.KEY_SHORTFROM));
         }
     }
 

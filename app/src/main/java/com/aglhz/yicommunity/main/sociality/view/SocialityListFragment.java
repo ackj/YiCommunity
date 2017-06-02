@@ -69,7 +69,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     public static SocialityListFragment newInstance(int type) {
         SocialityListFragment fragment = new SocialityListFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
+        bundle.putInt(Constants.KEY_TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -83,7 +83,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        type = getArguments().getInt("type");
+        type = getArguments().getInt(Constants.KEY_TYPE);
     }
 
     @Nullable
@@ -133,8 +133,8 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
                 case R.id.ll_comment_item_moments_list:
                 case R.id.tv_comment_count_item_moments_list:
                     Intent intent = new Intent(_mActivity, CommentActivity.class);
-                    intent.putExtra("fid", bean.getFid());
-                    intent.putExtra("type", type);
+                    intent.putExtra(Constants.KEY_FID, bean.getFid());
+                    intent.putExtra(Constants.KEY_TYPE, type);
                     _mActivity.startActivity(intent);
                     break;
                 case R.id.tv_remove_item_moments_list:

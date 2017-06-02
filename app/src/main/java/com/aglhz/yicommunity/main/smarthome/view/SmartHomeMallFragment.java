@@ -17,6 +17,7 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.GoodsBean;
 import com.aglhz.yicommunity.bean.SubCategoryBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.smarthome.contract.SmartHomeMallContract;
@@ -53,7 +54,7 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
     public static SmartHomeMallFragment newInstance(String id) {
         SmartHomeMallFragment fragment = new SmartHomeMallFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("id", id);
+        bundle.putString(Constants.KEY_ID, id);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -67,7 +68,7 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        params.id = getArguments().getString("id");
+        params.id = getArguments().getString(Constants.KEY_ID);
     }
 
     @Nullable
@@ -118,8 +119,8 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
         goodsAdapter.setOnItemClickListener((adapter, view, position) -> {
             GoodsBean.DataBean bean = (GoodsBean.DataBean) adapter.getData().get(position);
             Intent intent = new Intent(_mActivity, WebActivity.class);
-            intent.putExtra("title", bean.getName());
-            intent.putExtra("link", bean.getLink());
+            intent.putExtra(Constants.KEY_TITLE, bean.getName());
+            intent.putExtra(Constants.KEY_LINK, bean.getLink());
             _mActivity.startActivity(intent);
         });
     }

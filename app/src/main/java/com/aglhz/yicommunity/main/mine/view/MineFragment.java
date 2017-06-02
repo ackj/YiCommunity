@@ -323,8 +323,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     private void go2Web(String title, String link) {
         Intent intent = new Intent(getContext(), WebActivity.class);
-        intent.putExtra("title", title);
-        intent.putExtra("link", link);
+        intent.putExtra(Constants.KEY_TITLE, title);
+        intent.putExtra(Constants.KEY_LINK, link);
         startActivity(intent);
     }
 

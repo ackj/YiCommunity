@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.main.publish.view.CommentFragment;
 
 /**
@@ -18,8 +19,8 @@ public class CommentActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            String fid = getIntent().getStringExtra("fid");
-            int type = getIntent().getIntExtra("type", 0);
+            String fid = getIntent().getStringExtra(Constants.KEY_FID);
+            int type = getIntent().getIntExtra(Constants.KEY_TYPE, 0);
             loadRootFragment(R.id.fl_main_activity, CommentFragment.newInstance(fid, type));
         }
     }

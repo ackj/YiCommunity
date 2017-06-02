@@ -37,7 +37,6 @@ import butterknife.OnClick;
  */
 public class CityPickerFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = CityPickerFragment.class.getSimpleName();
-    public static final String CITY = "city";
     private ListView mListView;
     private ListView mResultListView;
     private SideLetterBar mLetterBar;
@@ -237,7 +236,7 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         saveUsedCity2Local(city);
         //服务器端数据库要求城市参数得有完整的名称，也就是有市结尾，比如武汉，必须为武汉市。
         Bundle bundle = new Bundle();
-        bundle.putString(CITY, city.endsWith("市") ? city : city + "市");
+        bundle.putString(Constants.KEY_CITY, city.endsWith("市") ? city : city + "市");
         setFragmentResult(RESULT_OK, bundle);
         pop();
     }

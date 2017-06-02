@@ -51,7 +51,7 @@ public class PropertyPayedDetailFragment extends BaseFragment<PropertyPayContrac
 
     public static PropertyPayedDetailFragment newInstance(String fid) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.PROPERTY_BILL_FID, fid);
+        bundle.putString(Constants.KEY_FID, fid);
 
         PropertyPayedDetailFragment fragment = new PropertyPayedDetailFragment();
         fragment.setArguments(bundle);
@@ -64,7 +64,7 @@ public class PropertyPayedDetailFragment extends BaseFragment<PropertyPayContrac
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            params.fid = bundle.getString(Constants.PROPERTY_BILL_FID);
+            params.fid = bundle.getString(Constants.KEY_FID);
         }
     }
 

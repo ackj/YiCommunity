@@ -15,7 +15,6 @@ import com.aglhz.yicommunity.common.Constants;
 
 public class WebActivity extends BaseActivity {
     private static final String TAG = WebActivity.class.getSimpleName();
-    public static final String LINK = "link";
     private String title;
     private String link;
 

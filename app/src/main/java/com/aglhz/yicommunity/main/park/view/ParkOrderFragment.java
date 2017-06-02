@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.ParkOrderBean;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.park.contract.ParkOrderContract;
@@ -59,8 +60,8 @@ public class ParkOrderFragment extends BaseFragment<ParkOrderContract.Presenter>
     public static ParkOrderFragment newInstance(String parkFid, String carNo) {
         ParkOrderFragment fragment = new ParkOrderFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("parkFid", parkFid);
-        bundle.putString("carNo", carNo);
+        bundle.putString(Constants.KEY_FID, parkFid);
+        bundle.putString(Constants.KEY_CARNO, carNo);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -68,8 +69,8 @@ public class ParkOrderFragment extends BaseFragment<ParkOrderContract.Presenter>
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parkFid = getArguments().getString("parkFid");
-        carNo = getArguments().getString("carNo");
+        parkFid = getArguments().getString(Constants.KEY_FID);
+        carNo = getArguments().getString(Constants.KEY_CARNO);
     }
 
     @NonNull

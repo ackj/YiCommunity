@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.steward.view;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -323,8 +322,8 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     private void go2SmartDevice() {
         Intent intent = new Intent(_mActivity, WebActivity.class);
-        intent.putExtra("title", "智能设备");
-        intent.putExtra("link", ApiService.SMART_DEVICE);
+        intent.putExtra(Constants.KEY_TITLE, "智能设备");
+        intent.putExtra(Constants.KEY_LINK, ApiService.SMART_DEVICE);
         startActivity(intent);
     }
 

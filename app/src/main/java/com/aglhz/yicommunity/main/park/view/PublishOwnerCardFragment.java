@@ -72,7 +72,7 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContr
     public static PublishOwnerCardFragment newInstance(CarCardListBean.DataBean.CardListBean bean) {
         PublishOwnerCardFragment fragment = new PublishOwnerCardFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("bean", bean);
+        bundle.putSerializable(Constants.KEY_BEAN, bean);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -86,7 +86,7 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContr
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bean = (CarCardListBean.DataBean.CardListBean) getArguments().getSerializable("bean");
+        bean = (CarCardListBean.DataBean.CardListBean) getArguments().getSerializable(Constants.KEY_BEAN);
     }
 
     @Nullable
