@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.bean.IconBean;
 import com.aglhz.yicommunity.common.ApiService;
@@ -26,18 +27,18 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.door.DoorActivity;
 import com.aglhz.yicommunity.main.door.call.CallActivity;
-import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.house.HouseActivity;
-import com.aglhz.yicommunity.login.LoginActivity;
-import com.aglhz.yicommunity.main.steward.contract.StewardContract;
-import com.aglhz.yicommunity.main.steward.presenter.StewardPresenter;
 import com.aglhz.yicommunity.main.park.ParkActivity;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
 import com.aglhz.yicommunity.main.publish.PropertyActivity;
-import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.main.smarthome.view.GoodsCategoryFragment;
+import com.aglhz.yicommunity.main.steward.contract.StewardContract;
+import com.aglhz.yicommunity.main.steward.presenter.StewardPresenter;
+import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 import com.aglhz.yicommunity.web.WebActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -90,7 +91,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     private List<IconBean> listMyhouses;
     private Params params = Params.getInstance();
     private final static int SELECT_COMMUNIT = 100;   //选择社区
-    private Dialog loadingDialog;
     private Unbinder unbinder;
 
     public static StewardFragment newInstance() {
@@ -418,10 +418,21 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
         new AlertDialog.Builder(_mActivity)
                 .setTitle("选择门禁")
-                .setItems(arrayDoors, (dialog, which) -> DoorManager
-                        .getInstance()
-                        .callOut(bean.getData().get(which).getDir()))
+                .setItems(arrayDoors, (dialog, which) -> {
+                    params.dir = bean.getData().get(which).getDir();
+                    params.powerCode = "RemoteWatch";
+                    mPresenter.requestCheckPermission(params);
+                    showLoadingDialog();
+                })
                 .show();
+    }
+
+    @Override
+    public void responseCheckPermission(BaseBean mBaseBean) {
+        dismissLoadingDialog();
+        DoorManager
+                .getInstance()
+                .callOut(params.dir);
     }
 
 //    @Override

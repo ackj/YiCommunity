@@ -82,7 +82,6 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     private Params params = Params.getInstance();
     private int REQUEST_START_POINT_CODE = 100;
     private int REQUEST_END_POINT_CODE = 101;
-    private Dialog loadingDialog;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {

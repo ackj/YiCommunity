@@ -5,6 +5,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.ContactBean;
 import com.aglhz.yicommunity.bean.DoorListBean;
 import com.aglhz.yicommunity.bean.IconBean;
@@ -64,6 +65,17 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
         return HttpHelper.getService(ApiService.class)
                 .requestDoors(ApiService.requestDoors,
                         params.token, params.cmnt_c)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseBean> requestCheckPermission(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestCheckPermission(
+                        ApiService.requestCheckPermission,
+                        params.token,
+                        params.dir,
+                        params.powerCode)
                 .subscribeOn(Schedulers.io());
     }
 }

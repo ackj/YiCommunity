@@ -95,7 +95,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     private Params params = Params.getInstance();
     private String title;
     private Unbinder unbinder;
-    private Dialog loadingDialog;
 
     public static AddHouseFragment newInstance(String address) {
         Bundle args = new Bundle();

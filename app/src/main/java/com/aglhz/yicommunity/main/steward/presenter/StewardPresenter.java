@@ -79,5 +79,16 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
                 }, this::error));
     }
 
-
+    @Override
+    public void requestCheckPermission(Params params) {
+        mRxManager.add(mModel.requestCheckPermission(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> {
+                    if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseCheckPermission(bean);
+                    } else {
+                        getView().error(bean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }
