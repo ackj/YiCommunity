@@ -56,7 +56,7 @@ public class AppointOpenDoorPresenter extends BasePresenter<AppointOpenDoorContr
 
     @Override
     public void requestAppointOpenDoor(Params params) {
-        mRxManager.add(mModel.appointOpenDoor(params)
+        mRxManager.add(mModel.requestAppointOpenDoor(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

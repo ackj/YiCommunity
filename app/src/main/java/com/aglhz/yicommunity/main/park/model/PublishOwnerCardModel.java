@@ -5,7 +5,7 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.main.publish.contract.PublishContract;
+import com.aglhz.yicommunity.main.park.contract.PublishOwnerCardContract;
 
 import java.util.HashMap;
 
@@ -18,7 +18,7 @@ import okhttp3.MultipartBody;
  * Email: liujia95me@126.com
  */
 
-public class PublishOwnerCardModel extends BaseModel implements PublishContract.Model {
+public class PublishOwnerCardModel extends BaseModel implements PublishOwnerCardContract.Model {
 
     @Override
     public void start(Object request) {
@@ -26,30 +26,17 @@ public class PublishOwnerCardModel extends BaseModel implements PublishContract.
     }
 
     @Override
-    public Observable<BaseBean> post(Params params) {
+    public Observable<BaseBean> requestSubmitOwnerCard(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("parkPlaceFid", params.parkPlaceFid);
         builder.addFormDataPart("carNo", params.carNo);
         builder.addFormDataPart("customerName", params.name);
         builder.addFormDataPart("phoneNo", params.phoneNo);
-        return HttpHelper.getService(ApiService.class).postOwnerCard(ApiService.postOwnerCard,
+        return HttpHelper.getService(ApiService.class).requestSubmitOwnerCard(ApiService.requestSubmitOwnerCard,
                 builder.build())
                 .subscribeOn(Schedulers.io());
     }
-
-//    public Observable<BaseBean> requestModifyOwnerCard(Params params){
-//        MultipartBody.Builder builder = new MultipartBody.Builder();
-//        builder.addFormDataPart("token", params.token);
-//        builder.addFormDataPart("parkCardFid", params.parkCardFid);
-//        builder.addFormDataPart("parkPlaceFid", params.parkPlaceFid);
-//        builder.addFormDataPart("carNo", params.carNo);
-//        builder.addFormDataPart("customerName", params.name);
-//        builder.addFormDataPart("phoneNo", params.phoneNo);
-//        return HttpHelper.getService(ApiService.class).requestModifyOwnerCard(ApiService.requestModifyOwnerCard,
-//                builder.build())
-//                .subscribeOn(Schedulers.io());
-//    }
 
     public Observable<BaseBean> requestModifyOwnerCard(Params params) {
         HashMap<String, String> map = new HashMap<>();

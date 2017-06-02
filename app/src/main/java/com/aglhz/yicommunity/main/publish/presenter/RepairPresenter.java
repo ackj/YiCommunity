@@ -67,7 +67,7 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
     }
 
     @Override
-    public void post(Params params) {
+    public void requestSubmit(Params params) {
         if (params.type == 1) {
             compress(params);
         } else {
@@ -97,7 +97,7 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
     }
 
     private void beginPost(Params params) {
-        mRxManager.add(mModel.post(params)
+        mRxManager.add(mModel.requestSubmit(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

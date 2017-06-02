@@ -28,7 +28,7 @@ public class PublishExchangeModel extends BaseModel implements PublishContract.M
     }
 
     @Override
-    public Observable<BaseBean> post(Params params) {
+    public Observable<BaseBean> requestSubmit(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("cmnt_c", params.cmnt_c);
@@ -43,7 +43,7 @@ public class PublishExchangeModel extends BaseModel implements PublishContract.M
                 builder.addFormDataPart("file", f.getName(), requestBody);
             }
         }
-        return HttpHelper.getService(ApiService.class).postExchangeMessage(ApiService.postExchangeMessage
+        return HttpHelper.getService(ApiService.class).requestSubmitExchange(ApiService.requestSubmitExchange
                 , builder.build())
                 .subscribeOn(Schedulers.io());
     }

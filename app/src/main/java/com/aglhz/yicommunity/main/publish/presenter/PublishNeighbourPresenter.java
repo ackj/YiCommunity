@@ -42,7 +42,7 @@ public class PublishNeighbourPresenter extends BasePresenter<PublishContract.Vie
     }
 
     @Override
-    public void post(Params params) {
+    public void requestSubmit(Params params) {
         if (params.type == 1) {
             compress(params);
         } else {
@@ -69,7 +69,7 @@ public class PublishNeighbourPresenter extends BasePresenter<PublishContract.Vie
     }
 
     public void upload(Params params) {
-        mRxManager.add(mModel.post(params)
+        mRxManager.add(mModel.requestSubmit(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

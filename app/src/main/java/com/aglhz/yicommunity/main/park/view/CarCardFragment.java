@@ -138,7 +138,7 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
                     builder.setPositiveButton("确认", (dialog, which) -> {
                         removePosition = position;
                         params.fid = bean.getFid();
-                        mPresenter.deleteCarCard(params);
+                        mPresenter.requestDeleteCarCard(params);
                     });
                     builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
                     builder.create().show();
@@ -204,7 +204,7 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
     }
 
     @Override
-    public void deleteSuccess(BaseBean baseBean) {
+    public void responseDeleteSuccess(BaseBean baseBean) {
         adapter.remove(removePosition);
     }
 

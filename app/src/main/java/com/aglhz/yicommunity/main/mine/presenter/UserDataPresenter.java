@@ -40,7 +40,7 @@ public class UserDataPresenter extends BasePresenter<UserDataContract.View, User
     }
 
     @Override
-    public void changePortrait(Params params) {
+    public void requestChangePortrait(Params params) {
         compress(params);
     }
 
@@ -58,7 +58,7 @@ public class UserDataPresenter extends BasePresenter<UserDataContract.View, User
     }
 
     private void updatePortait(Params params) {
-        mRxManager.add(mModel.updatePortrait(params)
+        mRxManager.add(mModel.requestChangePortrait(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userDataBean -> {
                     if (userDataBean.getOther().getCode() == 200) {
@@ -73,8 +73,8 @@ public class UserDataPresenter extends BasePresenter<UserDataContract.View, User
     }
 
     @Override
-    public void updateUserData(Params params) {
-        mRxManager.add(mModel.updateUserData(params)
+    public void requestUpdateUserData(Params params) {
+        mRxManager.add(mModel.requestUpdateUserData(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {
@@ -87,8 +87,8 @@ public class UserDataPresenter extends BasePresenter<UserDataContract.View, User
     }
 
     @Override
-    public void updatePassword(Params params) {
-        mRxManager.add(mModel.updatePassword(params)
+    public void requestUpdatePassword(Params params) {
+        mRxManager.add(mModel.requestUpdatePassword(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

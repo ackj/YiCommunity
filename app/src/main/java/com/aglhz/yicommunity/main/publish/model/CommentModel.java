@@ -38,7 +38,7 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
         ALog.e("page::" + params.page);
 
         return HttpHelper.getService(ApiService.class)
-                .getCarpoolComments(ApiService.getCarpoolComments, params.fid, params.page, params.pageSize)
+                .requestCarpoolComments(ApiService.requestCarpoolComments, params.fid, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
@@ -48,41 +48,41 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
 
 
         return HttpHelper.getService(ApiService.class)
-                .getNeighbourComments(ApiService.getNeighbourComments, params.fid, params.page, params.pageSize)
+                .requestNeighbourComments(ApiService.requestNeighbourComments, params.fid, params.page, params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> postExchangeComment(Params params) {
+    public Observable<BaseBean> requestSubmitExchangeComment(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("exchangeFid", params.fid);
         builder.addFormDataPart("content", params.content);
 
         return HttpHelper.getService(ApiService.class)
-                .postExchangeComment(ApiService.postExchangeComment, builder.build())
+                .requestSubmitExchangeComment(ApiService.requestSubmitExchangeComment, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> postCarpoolComment(Params params) {
+    public Observable<BaseBean> requestSubmitCarpoolComment(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("carpoolFid", params.fid);
         builder.addFormDataPart("content", params.content);
         return HttpHelper.getService(ApiService.class)
-                .postCarpoolComment(ApiService.postCarpoolComment, builder.build())
+                .requestSubmitCarpoolComment(ApiService.requestSubmitCarpoolComment, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> postNeighbourComment(Params params) {
+    public Observable<BaseBean> requestSubmitNeighbourComment(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("momentsFid", params.fid);
         builder.addFormDataPart("content", params.content);
         return HttpHelper.getService(ApiService.class)
-                .postNeighbourComment(ApiService.postNeighbourComment, builder.build())
+                .requestSubmitNeighbourComment(ApiService.requestSubmitNeighbourComment, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 }

@@ -54,12 +54,12 @@ public class CarCardPresenter extends BasePresenter<CarCardContract.View, CarCar
     }
 
     @Override
-    public void deleteCarCard(Params params) {
-        mRxManager.add(mModel.deleteCarCard(params)
+    public void requestDeleteCarCard(Params params) {
+        mRxManager.add(mModel.requestDeleteCarCard(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-                        getView().deleteSuccess(baseBean);
+                        getView().responseDeleteSuccess(baseBean);
                     } else {
                         getView().error(baseBean.getOther().getMessage());
                     }

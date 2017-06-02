@@ -32,33 +32,33 @@ public class UserDataModel extends BaseModel implements UserDataContract.Model {
     }
 
     @Override
-    public Observable<UserDataBean> updatePortrait(Params params) {
+    public Observable<UserDataBean> requestChangePortrait(Params params) {
         // 创建 RequestBody，用于封装构建RequestBody
         MultipartBody.Builder builder = new MultipartBody.Builder();
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), params.file);
         builder.addFormDataPart("file", params.file.getName(), requestBody);
 
         return HttpHelper.getService(ApiService.class)
-                .updatePortrait(ApiService.updatePortrait,
+                .requestUpdatePortrait(ApiService.requestUpdatePortrait,
                 params.token, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> updateUserData(Params params) {
+    public Observable<BaseBean> requestUpdateUserData(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("field", params.field);
         builder.addFormDataPart("val", params.val);
         return HttpHelper.getService(ApiService.class)
-                .updateUserData(ApiService.updateUserData, builder.build())
+                .requsetUpdateUserData(ApiService.requsetUpdateUserData, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<BaseBean> updatePassword(Params params) {
+    public Observable<BaseBean> requestUpdatePassword(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .updatePassword(ApiService.updatePassword,
+                .requestUpdatePassword(ApiService.requestUpdatePassword,
                         params.token,
                         params.pwd0,
                         params.pwd1,

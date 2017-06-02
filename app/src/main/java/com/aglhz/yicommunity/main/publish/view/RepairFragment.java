@@ -231,7 +231,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     private void submit(Params params) {
         showLoadingDialog();
         params.cmnt_c = UserHelper.communityCode;
-        mPresenter.post(params);
+        mPresenter.requestSubmit(params);
     }
 
     @Override

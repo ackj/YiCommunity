@@ -40,7 +40,7 @@ public class PublishCarpoolPresenter extends BasePresenter<PublishContract.View,
     }
 
     @Override
-    public void post(Params params) {
+    public void requestSubmit(Params params) {
         if (params.type == 1) {
             compress(params);
         }else{
@@ -66,7 +66,7 @@ public class PublishCarpoolPresenter extends BasePresenter<PublishContract.View,
     }
 
     private void beginPost(Params params) {
-        mRxManager.add(mModel.post(params)
+        mRxManager.add(mModel.requestSubmit(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

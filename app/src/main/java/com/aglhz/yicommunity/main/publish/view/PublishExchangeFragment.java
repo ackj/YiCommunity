@@ -226,6 +226,6 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         params.content = content;
         params.price = money;
         showLoadingDialog();
-        mPresenter.post(params);
+        mPresenter.requestSubmit(params);
     }
 }

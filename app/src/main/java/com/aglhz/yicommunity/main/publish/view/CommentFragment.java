@@ -284,16 +284,16 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         switch (type) {
             case TYPE_EXCHANGE:
             case TYPE_MY_EXCHANGE:
-                mPresenter.postExchangeComment(commentPostParams);
+                mPresenter.requestSubmitExchangeComment(commentPostParams);
                 break;
             case TYPE_CARPOOL_OWNER:
             case TYPE_CARPOOL_passenger:
             case TYPE_MY_CARPOOL:
-                mPresenter.postCarpoolComment(commentPostParams);
+                mPresenter.requestSubmitCarpoolComment(commentPostParams);
                 break;
             case TYPE_NEIGHBOUR:
             case TYPE_MY_NEIGHBOUR:
-                mPresenter.postNeighbourComment(commentPostParams);
+                mPresenter.requestSubmitNeighbourComment(commentPostParams);
                 break;
         }
     }

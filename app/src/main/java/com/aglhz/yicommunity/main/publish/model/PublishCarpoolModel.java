@@ -28,7 +28,7 @@ public class PublishCarpoolModel extends BaseModel implements PublishContract.Mo
     }
 
     @Override
-    public Observable<BaseBean> post(Params params) {
+    public Observable<BaseBean> requestSubmit(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("cmnt_c", params.cmnt_c);
@@ -53,7 +53,7 @@ public class PublishCarpoolModel extends BaseModel implements PublishContract.Mo
             }
         }
         return HttpHelper.getService(ApiService.class)
-                .postCarpoolMessage(ApiService.postCarpoolMessage,
+                .requestSubmitCarpool(ApiService.requestSubmitCarpool,
                         builder.build())
                 .subscribeOn(Schedulers.io());
     }

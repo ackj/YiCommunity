@@ -283,7 +283,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
             return;
         }
         if (params.carpoolType == 0) {
-            DialogHelper.errorSnackbar(getView(), "请选择拼车类型!!");
+            DialogHelper.errorSnackbar(getView(), "请选择拼车类型!");
             return;
         }
         if (TextUtils.isEmpty(params.content)) {
@@ -296,6 +296,6 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         params.positionAddress = UserHelper.positionAddress;
         params.positionType = 2;
         showLoadingDialog();
-        mPresenter.post(params);
+        mPresenter.requestSubmit(params);
     }
 }

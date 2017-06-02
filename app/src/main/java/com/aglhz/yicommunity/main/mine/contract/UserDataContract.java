@@ -21,19 +21,19 @@ public interface UserDataContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void changePortrait(Params params);
+        void requestChangePortrait(Params params);
 
-        void updateUserData(Params params);
+        void requestUpdateUserData(Params params);
 
-        void updatePassword(Params params);
+        void requestUpdatePassword(Params params);
     }
 
     interface Model extends BaseContract.Model {
-        Observable<UserDataBean> updatePortrait(Params params);
+        Observable<UserDataBean> requestChangePortrait(Params params);
 
-        Observable<BaseBean> updateUserData(Params params);
+        Observable<BaseBean> requestUpdateUserData(Params params);
 
-        Observable<BaseBean> updatePassword(Params params);
+        Observable<BaseBean> requestUpdatePassword(Params params);
 
     }
 }

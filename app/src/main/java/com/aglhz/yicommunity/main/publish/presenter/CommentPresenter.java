@@ -75,8 +75,8 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
     }
 
     @Override
-    public void postExchangeComment(Params params) {
-        mRxManager.add(mModel.postExchangeComment(params)
+    public void requestSubmitExchangeComment(Params params) {
+        mRxManager.add(mModel.requestSubmitExchangeComment(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {
@@ -88,8 +88,8 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
     }
 
     @Override
-    public void postCarpoolComment(Params params) {
-        mRxManager.add(mModel.postCarpoolComment(params)
+    public void requestSubmitCarpoolComment(Params params) {
+        mRxManager.add(mModel.requestSubmitCarpoolComment(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {
@@ -101,8 +101,8 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
     }
 
     @Override
-    public void postNeighbourComment(Params params) {
-        mRxManager.add(mModel.postNeighbourComment(params)
+    public void requestSubmitNeighbourComment(Params params) {
+        mRxManager.add(mModel.requestSubmitNeighbourComment(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

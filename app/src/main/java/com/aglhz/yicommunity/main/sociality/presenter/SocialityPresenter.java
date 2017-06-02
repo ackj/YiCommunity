@@ -50,7 +50,7 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
 
     @Override
     public void requestExchangeList(Params params) {
-        mRxManager.add(mModel.getExchangeList(params)
+        mRxManager.add(mModel.requestExchangeList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {
@@ -63,7 +63,7 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
 
     @Override
     public void requestCarpoolList(Params params) {
-        mRxManager.add(mModel.getCarpoolList(params)
+        mRxManager.add(mModel.requestCarpoolList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {
@@ -76,7 +76,7 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
 
     @Override
     public void requestMyNeihbourList(Params params) {
-        mRxManager.add(mModel.getMyNeihbourList(params)
+        mRxManager.add(mModel.requestMyNeihbourList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {
@@ -89,7 +89,7 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
 
     @Override
     public void requestMyExchangeList(Params params) {
-        mRxManager.add(mModel.getMyExchangeList(params)
+        mRxManager.add(mModel.requestMyExchangeList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {
@@ -102,7 +102,7 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
 
     @Override
     public void requestMyCarpoolList(Params params) {
-        mRxManager.add(mModel.getMyCarpoolList(params)
+        mRxManager.add(mModel.requestMyCarpoolList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(neighbourListBean -> {
                     if (neighbourListBean.getOther().getCode() == 200) {
@@ -114,8 +114,8 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
     }
 
     @Override
-    public void removeMyCarpool(Params params) {
-        mRxManager.add(mModel.removeMyCarpool(params)
+    public void requestRemoveMyCarpool(Params params) {
+        mRxManager.add(mModel.requestRemoveMyCarpool(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {
@@ -127,8 +127,8 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
     }
 
     @Override
-    public void removeMyExchange(Params params) {
-        mRxManager.add(mModel.removeMyExchange(params)
+    public void requestRemoveMyExchange(Params params) {
+        mRxManager.add(mModel.requestRemoveMyExchange(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {
@@ -140,8 +140,8 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
     }
 
     @Override
-    public void removeMyNeighbour(Params params) {
-        mRxManager.add(mModel.removeMyNeighbour(params)
+    public void requestRemoveMyNeighbour(Params params) {
+        mRxManager.add(mModel.requestRemoveMyNeighbour(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

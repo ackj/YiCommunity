@@ -28,7 +28,7 @@ public class PublishNeighbourModel extends BaseModel implements PublishContract.
     }
 
     @Override
-    public Observable<BaseBean> post(Params params) {
+    public Observable<BaseBean> requestSubmit(Params params) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.addFormDataPart("token", params.token);
         builder.addFormDataPart("cmnt_c", params.cmnt_c);
@@ -42,7 +42,7 @@ public class PublishNeighbourModel extends BaseModel implements PublishContract.
                 builder.addFormDataPart("file", f.getName(), requestBody);
             }
         }
-        return HttpHelper.getService(ApiService.class).postNeighbourMessage(ApiService.postNeighbourMessage, builder.build())
+        return HttpHelper.getService(ApiService.class).requestSubmitNeighbour(ApiService.requestSubmitNeighbour, builder.build())
                 .subscribeOn(Schedulers.io());
     }
 }

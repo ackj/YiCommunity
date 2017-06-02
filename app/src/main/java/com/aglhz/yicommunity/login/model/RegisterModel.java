@@ -23,7 +23,7 @@ public class RegisterModel extends BaseModel implements RegisterContract.Model {
 
     @Override
     public Observable<BaseBean> register(Params params) {
-        return HttpHelper.getService(ApiService.class).register(ApiService.register, params.sc, params.account, params.verifyCode, params.password1, params.password2)
+        return HttpHelper.getService(ApiService.class).requestRegister(ApiService.requestRegister, params.sc, params.account, params.verifyCode, params.password1, params.password2)
                 .subscribeOn(Schedulers.io());
     }
 
