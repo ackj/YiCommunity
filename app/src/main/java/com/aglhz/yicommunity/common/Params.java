@@ -87,6 +87,8 @@ public class Params {
     // 而设置权限接口也要用到fid这个参数，但是传的请求权限接口中的一个叫rfid的字段的值，
     // 也就是说同一个页面两个接口都要一个叫fid的参数，但是值不一样，所以用rfid进行区分。
     public String rfid;
+    public String powerCode;//设置某项权限
+
 
     private Params() {
     }

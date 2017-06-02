@@ -175,10 +175,10 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> requestUpdatePassword(@Url String url,
-                                        @Query("token") String token,
-                                        @Query("pwd0") String pwd0,
-                                        @Query("pwd1") String pwd1,
-                                        @Query("pwd2") String pwd2);
+                                               @Query("token") String token,
+                                               @Query("pwd0") String pwd0,
+                                               @Query("pwd1") String pwd1,
+                                               @Query("pwd2") String pwd2);
 
 
     //更新头像
@@ -425,6 +425,17 @@ public interface ApiService {
             , @Query("mfid") String mfid
             , @Query("fid") String fid);
 
+    String requestCheckPermission = BASE_PROPERTY + "/smartdoor/client/checkAcsPower";
+
+    @POST
+    Observable<BaseBean> requestCheckPermission(@Url String url
+            , @Query("token") String token
+            , @Query("dir") String dir
+            , @Query("powerCode") String powerCode);
+
+    //***********以上房屋权限系列接口********************************
+
+
     //获取物业公告列表
 //    @POST("/sub_property_ysq/client/info/noticeList")
     String requestNotices = BASE_PROPERTY + "/client/info/noticeList";
@@ -552,8 +563,8 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> requestSubmitExchange(@Url String url,
-                                             @Body MultipartBody file
-                                             //附件类型（1=图片, 大小不能超过300K，2=视频，大小不能超过10M）
+                                               @Body MultipartBody file
+                                               //附件类型（1=图片, 大小不能超过300K，2=视频，大小不能超过10M）
     );
 
 
@@ -562,7 +573,7 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> requestSubmitCarpool(@Url String url,
-                                            @Body MultipartBody file);//附件类型（1=图片,大小不能超过300K，2=视频，大小不能超过10M）
+                                              @Body MultipartBody file);//附件类型（1=图片,大小不能超过300K，2=视频，大小不能超过10M）
 
     //发送邻里圈信息
     String requestSubmitNeighbour = BASE_PROPERTY + "/neighbor/moments/from-client/moments-create";
