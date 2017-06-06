@@ -7,7 +7,6 @@
         <attr name="text" format="string" />
     </declare-styleable>
 
-
     <declare-styleable name="AutoScrollHeight">
         <attr name="size" format="dimension" />
         <attr name="padding" format="dimension" />
@@ -16,4 +15,10 @@
         <attr name="color" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="StateLayout">
+        <attr name="loadingLayout" format="reference" />
+        <attr name="errorLayout" format="reference" />
+        <attr name="netErrorLayout" format="reference" />
+        <attr name="emptyLayout" format="reference" />
+    </declare-styleable>
 </resources>

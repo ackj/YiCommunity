@@ -75,10 +75,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
             return TYPE.IMAGE;
         }
     };
-
-
     private int which;
-    private Dialog loadingDialog;
 
     public static PublishNeighbourFragment newInstance(int which) {
         PublishNeighbourFragment fragment = new PublishNeighbourFragment();
