@@ -26,6 +26,7 @@ import butterknife.Unbinder;
  */
 
 public class NeighbourFragment extends BaseFragment {
+    private static final String TAG = NeighbourFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;

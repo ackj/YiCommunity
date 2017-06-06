@@ -158,7 +158,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         listSmartDoor.add(new IconBean(R.drawable.ic_key_green_140px_140px, "设置开门", ""));
         listSmartDoor.add(new IconBean(R.drawable.ic_open_door_green_140px, "指定开门", ""));
         listSmartDoor.add(new IconBean(R.drawable.ic_password_open_door_green_140px, "密码开门", ""));
-        listSmartDoor.add(new IconBean(R.drawable.ic_call_door_green_140px, "呼叫门禁", ""));
+        listSmartDoor.add(new IconBean(R.drawable.ic_call_door_green_140px, "门禁监控", ""));
         listSmartDoor.add(new IconBean(R.drawable.ic_open_recording_green_140px, "开门记录", ""));
         smartDoorAdapter.setNewData(listSmartDoor);
 

@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.home.view;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -63,7 +62,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     private HomeRVAdapter adapter;
     private LinearLayoutManager layoutManager;
-    private Dialog loadingDialog;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -72,7 +70,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(recyclerview, container, false);
+        View view = inflater.inflate(R.layout.recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         return view;

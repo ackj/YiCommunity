@@ -10,9 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateLayout;
+import com.aglhz.abase.widget.statemanager.StateListener;
+import com.aglhz.abase.widget.statemanager.StateManager;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.SocialityListBean;
@@ -22,9 +27,9 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
-import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
-import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
 import com.aglhz.yicommunity.main.publish.CommentActivity;
+import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
+import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,7 +55,8 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
+    @BindView(R.id.stateLayout)
+    StateLayout stateLayout;
     public static final int TYPE_EXCHANGE = 100;
     public static final int TYPE_CARPOOL_OWNER = 101;
     public static final int TYPE_CARPOOL_passenger = 106;
@@ -65,6 +71,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     private int type;
     private int removePosition;
     private Params params = Params.getInstance();
+    private StateManager mStateManager;
 
     public static SocialityListFragment newInstance(int type) {
         SocialityListFragment fragment = new SocialityListFragment();
@@ -101,6 +108,24 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         initData();
         initListener();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
+
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setLoadingView(R.layout.state_loading)
+                .setErrorView(R.layout.state_error)
+                .setNetErrorView(R.layout.state_net_error)
+                .setErrorOnClickListener(v -> ALog.e("刷新"))
+                .setEmptyOnClickListener(v -> ALog.e("刷新"))
+                .setEmptyImage(R.drawable.ic_call_hangup)
+                .setEmptyText("空空如也")
+                .setErrorImage(R.drawable.ic_add_house_red_140px)
+                .setErrorText("错误")
+                .setNetErrorImage(R.drawable.ic_minehome_84px)
+                .setNetErrorText("网络错误")
+                .build(stateLayout);
+
+        mStateManager.showNetError();
     }
 
     private void initData() {

@@ -7,7 +7,7 @@ android {
         debug {
             keyAlias 'agl'
             keyPassword 'aglandroid'
-            storeFile file('F:/gaocheng/agl.keystore')
+            storeFile file('D:/Android/Workspace/gckj/agl.keystore')
             storePassword 'aglandroid'
         }
         release {
@@ -68,6 +68,8 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     //基础module
     compile project(':abase')
+    //友盟推送
+    compile project(':PushSDK')
     //黄油刀系列
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -85,12 +87,8 @@ dependencies {
     compile 'com.bilibili:boxing-impl:0.7.0'
     //switchbutton
     compile 'com.kyleduo.switchbutton:library:1.4.5'
-    //键盘冲突
-    //    compile 'cn.dreamtobe.kpswitch:library:1.6.0'
     //时间选择器
     compile 'com.contrarywind:Android-PickerView:3.2.4'
-    //友盟推送
-    compile project(':PushSDK')
     //视频播放
     compile 'fm.jiecao:jiecaovideoplayer:5.5.4'
     //Banner
@@ -99,4 +97,7 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     //监控卡顿
     debugCompile 'com.github.markzhai:blockcanary-android:1.5.0'
+
+    //页面状态管理
+//    compile 'com.github.hss01248:PageStateManager:1.0.3'
 }
