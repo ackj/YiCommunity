@@ -127,24 +127,14 @@ public class ScrollingHelper {
 
     public static void scrollToBottom(final ScrollView scrollView) {
         if (scrollView != null) {
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                }
-            });
+            scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
         }
     }
 
     public static void scrollToBottom(final AbsListView absListView) {
         if (absListView != null) {
             if (absListView.getAdapter() != null && absListView.getAdapter().getCount() > 0) {
-                absListView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        absListView.setSelection(absListView.getAdapter().getCount() - 1);
-                    }
-                });
+                absListView.post(() -> absListView.setSelection(absListView.getAdapter().getCount() - 1));
             }
         }
     }
@@ -152,12 +142,7 @@ public class ScrollingHelper {
     public static void scrollToBottom(final RecyclerView recyclerView) {
         if (recyclerView != null) {
             if (recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0) {
-                recyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                    }
-                });
+                recyclerView.post(() -> recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1));
             }
         }
     }

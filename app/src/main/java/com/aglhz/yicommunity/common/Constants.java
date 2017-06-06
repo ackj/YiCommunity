@@ -14,21 +14,11 @@ public class Constants {
     }
 
     public static final String PRESS_AGAIN = "再按一次退出";
-
     public static final int PAGE_SIZE = 20;
-    public static final String COMMUNITY_CODE = "community_code";
-
-
-    public static final String COMMUNITY_NAME = "community_name";
 
     //网络部分
     public static final int RESPONSE_CODE_NOMAL = 200;
     public static final int RESPONSE_CODE_LOGOUT = 123;
-
-    //web模块
-    public static final String WEB_LINK = "link";
-    public static final String WEB_TITLE = "title";
-    public static final String FROM_TO = "from_to";
 
     //停车模块
     public static final int MY_CARD = 0;
@@ -49,12 +39,6 @@ public class Constants {
     //房屋模块
     public static final int ADD_HOUSE = 1;
     public static final int HOUSE_RIGHTS = 0;
-    public static final String HOUSE_FID = "house_fid";
-    public static final String HOUSE_ADDRESS = "house_address";
-
-
-    //Picker模块
-    public static final String SP_KEY_USED_CITYS = "sp_key_used_citys";
 
     //**************以下是EventBus系列,值是随便取，只要不相同即可。**********************************************************************
     //登录成功
@@ -76,8 +60,6 @@ public class Constants {
     public static final String ALIPAY = "支付宝支付";
     public static final String WXPAY = "微信支付";
 
-//    public static final String PROPERTY_BILL_FID = "property_bill_fid";
-
     //********************以上为物业缴费模块************************
 
 
@@ -95,4 +77,9 @@ public class Constants {
     public static final String KEY_WHICH = "which";
     public static final String KEY_IS_PASS = "isPass";
     public static final String KEY_PAY_STATE = "pay_position";
+    public static final String KEY_FROM_TO = "from_to";
+    public static final String KEY_ADDRESS = "address";
+
+    //******************** SP key ***********************
+    public static final String SP_KEY_USED_CITYS = "sp_key_used_citys";
 }

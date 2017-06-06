@@ -32,6 +32,7 @@ public class CommentRVAdapter extends BaseRecyclerViewAdapter<CommentBean, BaseV
         ImageView ivHead = helper.getView(R.id.iv_head_item_comment);
         Glide.with(BaseApplication.mContext)
                 .load(item.getMember().getAvator())
+                .placeholder(R.drawable.ic_default_head_image_200px)
                 .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
                 .into(ivHead);
     }

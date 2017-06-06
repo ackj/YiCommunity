@@ -2,6 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <ImageView
@@ -29,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_username_item_comment"
+        android:layout_marginBottom="5dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/iv_head_item_comment" />

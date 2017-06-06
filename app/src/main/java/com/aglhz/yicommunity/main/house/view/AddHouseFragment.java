@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.house.view;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -97,7 +96,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     public static AddHouseFragment newInstance(String address) {
         Bundle args = new Bundle();
-        args.putString(Constants.HOUSE_ADDRESS, address);
+        args.putString(Constants.KEY_ADDRESS, address);
         AddHouseFragment fragment = new AddHouseFragment();
         fragment.setArguments(args);
         return fragment;
@@ -108,7 +107,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            title = args.getString(Constants.HOUSE_ADDRESS);
+            title = args.getString(Constants.KEY_ADDRESS);
         }
     }
 

@@ -1,5 +1,10 @@
 package com.aglhz.yicommunity.main.publish.view;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +26,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.ScreenUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CommentBean;
@@ -81,6 +87,8 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     private String fid;
     private int type;
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
+    String[] arr = {"回复", "复制"};
+    private String replyName;
 
     public static CommentFragment newInstance(String fid, int type) {
         ALog.e(TAG, "newInstance type:" + type);
@@ -138,6 +146,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
 
     private boolean isVisiableForLast;
 
+    @SuppressLint("SetTextI18n")
     private void initListener() {
         mKeyboardChangeListener = new KeyboardChangeListener(_mActivity);
         mKeyboardChangeListener.setKeyBoardListener((isShow, keyboardHeight) -> ALog.e(TAG, "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]"));
@@ -163,6 +172,32 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         };
         //注册布局变化监听
         decorView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
+
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            CommentBean bean = (CommentBean) adapter.getData().get(position);
+            AlertDialog.Builder builder = new AlertDialog.Builder(_mActivity);
+            builder.setItems(arr, (dialog, which) -> {
+                switch (which) {
+                    case 0:
+                        //
+                        String inputContent = etInputFragmentComment.getText().toString();
+                        if (!TextUtils.isEmpty(inputContent) && inputContent.contains(replyName)) {
+                            inputContent = inputContent.substring(replyName.length());
+                        }
+                        replyName = "@" + bean.getMember().getMemberNickName() + " ";
+                        if (!inputContent.startsWith(replyName)) {
+                            etInputFragmentComment.setText(replyName + inputContent);
+                        }
+                        break;
+                    case 1:
+                        ClipboardManager cm = (ClipboardManager) _mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm.setPrimaryClip(ClipData.newPlainText(null, bean.getContent()));
+                        ToastUtils.showToast(_mActivity, "复制成功");
+                        break;
+                }
+            });
+            builder.show();
+        });
     }
 
     IKeyBoardVisibleListener listener = (visible, windowBottom) -> {
@@ -189,7 +224,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
             commentListParams.page++;
             requestComments();
         }, recyclerView);
-
         recyclerView.setAdapter(adapter);
     }
 
@@ -245,7 +279,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     @Override
     public void responseCommentList(List<CommentBean> datas) {
         ptrFrameLayout.refreshComplete();
-
         if (datas == null || datas.isEmpty()) {
             adapter.loadMoreEnd();
             return;

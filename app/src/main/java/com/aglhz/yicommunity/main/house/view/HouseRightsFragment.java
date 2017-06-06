@@ -68,8 +68,8 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
 
     public static HouseRightsFragment newInstance(String fid, String address) {
         Bundle args = new Bundle();
-        args.putString(Constants.HOUSE_FID, fid);
-        args.putString(Constants.HOUSE_ADDRESS, address);
+        args.putString(Constants.KEY_FID, fid);
+        args.putString(Constants.KEY_ADDRESS, address);
         HouseRightsFragment fragment = new HouseRightsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -80,8 +80,8 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            params.fid = args.getString(Constants.HOUSE_FID);
-            title = args.getString(Constants.HOUSE_ADDRESS);
+            params.fid = args.getString(Constants.KEY_FID);
+            title = args.getString(Constants.KEY_ADDRESS);
         }
     }
 

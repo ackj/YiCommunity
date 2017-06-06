@@ -1,12 +1,16 @@
 package com.aglhz.yicommunity.preview;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Outline;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
@@ -41,6 +45,7 @@ public class PreviewActivity extends BaseActivity {
         setContentView(R.layout.activity_preview);
         unbinder = ButterKnife.bind(this);
         initData();
+        initListener();
     }
 
     private void initData() {
@@ -54,6 +59,9 @@ public class PreviewActivity extends BaseActivity {
 
         viewpager.setAdapter(new PreviewAdapter());
         viewpager.setCurrentItem(position);
+    }
+
+    private void initListener() {
     }
 
     @Override
@@ -74,6 +82,7 @@ public class PreviewActivity extends BaseActivity {
             return view == object;
         }
 
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             PhotoView photoView = (PhotoView) LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_preview, null, false);
@@ -82,6 +91,15 @@ public class PreviewActivity extends BaseActivity {
                     .error(R.drawable.ic_default_img_120px)
                     .placeholder(R.drawable.ic_default_img_120px)
                     .into(photoView);
+            photoView.setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    ALog.e(TAG, "out line:" + outline.canClip());
+                    if (outline.canClip()) {
+                        finish();
+                    }
+                }
+            });
             container.addView(photoView);
             return photoView;
         }

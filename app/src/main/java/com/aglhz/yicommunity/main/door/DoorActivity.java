@@ -39,6 +39,6 @@ public class DoorActivity extends BaseActivity {
     }
 
     private void initData() {
-        intFromTo = getIntent().getIntExtra(Constants.FROM_TO, 0);
+        intFromTo = getIntent().getIntExtra(Constants.KEY_FROM_TO, 0);
     }
 }

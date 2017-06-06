@@ -51,12 +51,16 @@ import static com.aglhz.yicommunity.R.layout.recyclerview;
  * Created by Administrator on 2017/4/19 9:15.
  */
 public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements HomeContract.View {
+
     private static final String TAG = HomeFragment.class.getSimpleName();
+
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
+
     Unbinder unbinder;
+
     private HomeRVAdapter adapter;
     private LinearLayoutManager layoutManager;
     private Dialog loadingDialog;
@@ -116,7 +120,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         ServiceBean serviceBean1 = new ServiceBean("家居维修", "专业品质服务，大可放心！", R.drawable.bg_homemaintenanc_900px_540px);
         ServiceBean serviceBean2 = new ServiceBean("送水上门", "社区周边送水上门服务！", R.drawable.bg_watersupply_900px_540px);
 
-
         HomeBean serviceBeans = new HomeBean();
         List<ServiceBean> serviceBeanList = new ArrayList<>();
         serviceBeanList.add(serviceBean0);
@@ -149,8 +152,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         //add footer
         View footerView = LayoutInflater.from(_mActivity).inflate(R.layout.footer_no_anymore, null, false);
         adapter.addFooterView(footerView);
-
-
     }
 
     private void initPtrFrameLayout() {

@@ -115,23 +115,12 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initToolbar(toolbar);
-        initSmartDoor();
         initPtrFrameLayout(ptrFrameLayout, svSteward);
-        initRecyclerView();
+        initData();
         setListener();
     }
 
-    private void initSmartDoor() {
-        DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
-            if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
-                // 启动CallOutgoingActivity
-                _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
-            }
-        });
-    }
-
-    private void initRecyclerView() {
-
+    private void initData() {
         //我的房屋卡片
         rvMyHouse.setLayoutManager(new GridLayoutManager(_mActivity, 3) {
             @Override
@@ -143,21 +132,18 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         listMyhouses = new ArrayList<IconBean>();
         listMyhouses.add(new IconBean(R.drawable.ic_add_house_red_140px, "添加房屋", ""));
         myHouseAdapter.setNewData(listMyhouses);
-
         //智能家居卡片
         rvSmartHome.setLayoutManager(new GridLayoutManager(_mActivity, 3) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
-
         });
         rvSmartHome.setAdapter(smartHomeAdapter = new StewardRVAdapter());
         List<IconBean> listSmartHome = new ArrayList<IconBean>();
         listSmartHome.add(new IconBean(R.drawable.ic_smart_device_blue_140px, "智能设备", ""));
         listSmartHome.add(new IconBean(R.drawable.ic_smart_store_blue_140px, "智能设备商城", ""));
         listSmartHome.add(new IconBean(R.drawable.ic_add_smart_blue_140px, "添加主机", ""));
-
         smartHomeAdapter.setNewData(listSmartHome);
 
         //智慧门禁卡片
@@ -174,7 +160,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         listSmartDoor.add(new IconBean(R.drawable.ic_password_open_door_green_140px, "密码开门", ""));
         listSmartDoor.add(new IconBean(R.drawable.ic_call_door_green_140px, "呼叫门禁", ""));
         listSmartDoor.add(new IconBean(R.drawable.ic_open_recording_green_140px, "开门记录", ""));
-
         smartDoorAdapter.setNewData(listSmartDoor);
 
         //智慧停车卡片
@@ -189,7 +174,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         listSmartPark.add(new IconBean(R.drawable.ic_car_card_200px, "我的车卡", ""));
         listSmartPark.add(new IconBean(R.drawable.ic_stop_record_140px, "停车记录", ""));
         listSmartPark.add(new IconBean(R.drawable.ic_add_car_card_200px, "办理车卡", ""));
-
         smartParkAdapter.setNewData(listSmartPark);
 
         //物业服务卡片
@@ -204,12 +188,18 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         listPropertyService.add(new IconBean(R.drawable.ic_repair_orange_140px, "物业报修", ""));
         listPropertyService.add(new IconBean(R.drawable.ic_call_property_orange_140px, "联系物业", ""));
         listPropertyService.add(new IconBean(R.drawable.ic_property_complaints_orange_140px, "管理投诉", ""));
-
         propertyServiceAdapter.setNewData(listPropertyService);
 
     }
 
     private void setListener() {
+        DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
+            if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
+                // 启动CallOutgoingActivity
+                _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
+            }
+        });
+
         //设置我的房屋卡片的点击事件。
         myHouseAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == adapter.getData().size() - 1) {
@@ -272,41 +262,41 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
             return false;
         } else if (!UserHelper.hasCommunity()) {
             DialogHelper.warningSnackbar(getView(), "需要先选择社区！");
-
             Intent intent = new Intent(_mActivity, PickerActivity.class);
             startActivityForResult(intent, SELECT_COMMUNIT);
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
 
     //跳转到智能门禁模块。
     private void go2SmartDoor(int position) {
         Intent intent = new Intent(_mActivity, DoorActivity.class);
-        intent.putExtra(Constants.FROM_TO, position);
+        intent.putExtra(Constants.KEY_FROM_TO, position);
         startActivity(intent);
     }
 
     //跳转到物业模块。
     private void go2PropertyService(int position) {
         Intent intent = new Intent(_mActivity, PropertyActivity.class);
-        intent.putExtra(Constants.FROM_TO, position);
+        intent.putExtra(Constants.KEY_FROM_TO, position);
         startActivity(intent);
     }
 
     //跳转到停车模块。
     private void go2Park(int position) {
         Intent intent = new Intent(_mActivity, ParkActivity.class);
-        intent.putExtra(Constants.FROM_TO, position);
+        intent.putExtra(Constants.KEY_FROM_TO, position);
         startActivity(intent);
     }
 
     //跳转到添加房屋模块。
     private void go2House(int position, String address, String fid) {
         Intent intent = new Intent(_mActivity, HouseActivity.class);
-        intent.putExtra(Constants.FROM_TO, position);
-        intent.putExtra(Constants.HOUSE_FID, fid);
-        intent.putExtra(Constants.HOUSE_ADDRESS, address);
+        intent.putExtra(Constants.KEY_FROM_TO, position);
+        intent.putExtra(Constants.KEY_FID, fid);
+        intent.putExtra(Constants.KEY_ADDRESS, address);
         startActivity(intent);
     }
 

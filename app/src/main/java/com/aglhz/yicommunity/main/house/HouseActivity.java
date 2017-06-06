@@ -38,9 +38,9 @@ public class HouseActivity extends BaseActivity {
     }
 
     private void initData() {
-        intFromTo = getIntent().getIntExtra(Constants.FROM_TO, 0);
-        fid = getIntent().getStringExtra(Constants.HOUSE_FID);
-        address = getIntent().getStringExtra(Constants.HOUSE_ADDRESS);
+        intFromTo = getIntent().getIntExtra(Constants.KEY_FROM_TO, 0);
+        fid = getIntent().getStringExtra(Constants.KEY_FID);
+        address = getIntent().getStringExtra(Constants.KEY_ADDRESS);
         ALog.e(intFromTo);
         ALog.e(fid);
     }

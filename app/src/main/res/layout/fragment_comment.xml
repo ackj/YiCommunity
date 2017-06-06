@@ -27,7 +27,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="#F0F0F0"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -35,11 +35,15 @@
         <EditText
             android:id="@+id/et_input_fragment_comment"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:hint="欢迎畅所欲言"
+            android:maxHeight="120dp"
+            android:minHeight="30dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:textSize="14sp" />

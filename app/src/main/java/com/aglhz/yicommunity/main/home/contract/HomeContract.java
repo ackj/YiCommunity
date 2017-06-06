@@ -33,6 +33,7 @@ public interface HomeContract {
         void requestHomeNotices();
 
         void requestOpenDoor();
+
     }
 
     interface Model extends BaseContract.Model {

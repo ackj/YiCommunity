@@ -88,7 +88,7 @@ public class TemporaryParkPayFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.ll_select_park:
                 Intent intent = new Intent(_mActivity, PickerActivity.class);
-                intent.putExtra(Constants.FROM_TO, 100);
+                intent.putExtra(Constants.KEY_FROM_TO, 100);
                 _mActivity.startActivity(intent);
                 break;
             case R.id.ll_scan_pay:

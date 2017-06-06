@@ -47,6 +47,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
+
     private AppointOpenDoorRVAdapter adapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();

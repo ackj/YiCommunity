@@ -331,7 +331,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     //跳转到智能门禁模块。
     private void go2SmartDoor(int position) {
         Intent intent = new Intent(_mActivity, DoorActivity.class);
-        intent.putExtra(Constants.FROM_TO, position);
+        intent.putExtra(Constants.KEY_FROM_TO, position);
         startActivity(intent);
     }
 }

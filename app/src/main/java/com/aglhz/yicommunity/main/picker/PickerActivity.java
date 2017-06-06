@@ -18,7 +18,7 @@ public class PickerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picker);
-        int intFromTo = getIntent().getIntExtra(Constants.FROM_TO, 0);
+        int intFromTo = getIntent().getIntExtra(Constants.KEY_FROM_TO, 0);
         if (savedInstanceState == null) {
             if(intFromTo == 100){
                 loadRootFragment(R.id.fl_picker_activity, ParkPickerFragment.newInstance());

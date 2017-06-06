@@ -48,8 +48,8 @@ public class WebFragment extends BaseFragment {
 
     public static WebFragment newInstance(String title, String link) {
         Bundle args = new Bundle();
-        args.putString(Constants.WEB_TITLE, title);
-        args.putString(Constants.WEB_LINK, link);
+        args.putString(Constants.KEY_TITLE, title);
+        args.putString(Constants.KEY_LINK, link);
 
         WebFragment fragment = new WebFragment();
         fragment.setArguments(args);
@@ -63,8 +63,8 @@ public class WebFragment extends BaseFragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            title = args.getString(Constants.WEB_TITLE);
-            link = args.getString(Constants.WEB_LINK);
+            title = args.getString(Constants.KEY_TITLE);
+            link = args.getString(Constants.KEY_LINK);
         }
     }
 

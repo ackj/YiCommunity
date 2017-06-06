@@ -18,4 +18,5 @@ public class LoginActivity extends BaseActivity {
             loadRootFragment(R.id.fl_main_activity, LoginFragment.newInstance());
         }
     }
+
 }

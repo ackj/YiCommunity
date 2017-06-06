@@ -24,8 +24,8 @@ public class SmartHomeGoodsRVAdapter extends BaseRecyclerViewAdapter<GoodsBean.D
 
     @Override
     protected void convert(BaseViewHolder helper, GoodsBean.DataBean item) {
+        //图片宽高需要动态设置
         ImageView image = helper.getView(R.id.iv_cover_item_goods);
-
         int width = (DensityUtils.getDisplayWidth(BaseApplication.mContext) - DensityUtils.dp2px(BaseApplication.mContext, 120)) / 2;
         int height = width;
         image.setLayoutParams(new LinearLayout.LayoutParams(width, height));
