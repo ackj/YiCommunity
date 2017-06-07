@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.alexvasilkov.gestures.Settings;
-import com.alexvasilkov.gestures.views.GestureImageView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -24,6 +21,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Author: LiuJia on 2017/5/10 0010 14:40.
@@ -85,21 +83,22 @@ public class PreviewActivity extends BaseActivity {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            GestureImageView iv = (GestureImageView) LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_preview, null, false);
-            iv.getController().enableScrollInViewPager(viewpager);
-            iv.getController().getSettings()
-                    .setMaxZoom(2f)
-                    .setDoubleTapZoom(-1f) // Falls back to max zoom level
-                    .setPanEnabled(true)
-                    .setZoomEnabled(true)
-                    .setDoubleTapEnabled(true)
-                    .setRotationEnabled(false)
-                    .setRestrictRotation(false)
-                    .setOverscrollDistance(0f, 0f)
-                    .setOverzoomFactor(2f)
-                    .setFillViewport(false)
-                    .setFitMethod(Settings.Fit.INSIDE)
-                    .setGravity(Gravity.CENTER);
+//            GestureImageView iv = (GestureImageView) LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_preview, null, false);
+            PhotoView iv = (PhotoView) LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_preview, null, false);
+//            iv.getController().enableScrollInViewPager(viewpager);
+//            iv.getController().getSettings()
+//                    .setMaxZoom(2f)
+//                    .setDoubleTapZoom(-1f) // Falls back to max zoom level
+//                    .setPanEnabled(true)
+//                    .setZoomEnabled(true)
+//                    .setDoubleTapEnabled(true)
+//                    .setRotationEnabled(false)
+//                    .setRestrictRotation(false)
+//                    .setOverscrollDistance(0f, 0f)
+//                    .setOverzoomFactor(2f)
+//                    .setFillViewport(false)
+//                    .setFitMethod(Settings.Fit.INSIDE)
+//                    .setGravity(Gravity.CENTER);
             Glide.with(BaseApplication.mContext)
                     .load(picsList.get(position))
                     .error(R.drawable.ic_default_img_120px)
