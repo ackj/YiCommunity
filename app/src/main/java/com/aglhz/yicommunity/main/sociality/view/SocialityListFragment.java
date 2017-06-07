@@ -59,7 +59,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     StateLayout stateLayout;
     public static final int TYPE_EXCHANGE = 100;
     public static final int TYPE_CARPOOL_OWNER = 101;
-    public static final int TYPE_CARPOOL_passenger = 106;
+    public static final int TYPE_CARPOOL_PASSENGER = 106;
     public static final int TYPE_NEIGHBOUR = 102;
     public static final int TYPE_MY_EXCHANGE = 103;
     public static final int TYPE_MY_CARPOOL = 104;
@@ -107,25 +107,70 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         super.onViewCreated(view, savedInstanceState);
         initData();
         initListener();
+        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
+
+        /**
+         * 以下为模板代码，随时可以删除。
+         */
+//        mStateManager = StateManager.builder(_mActivity)
+//                .setContent(recyclerView)
+//                .setEmptyView(R.layout.state_empty)
+//                .setLoadingView(R.layout.state_loading)
+//                .setErrorView(R.layout.state_error)
+//                .setNetErrorView(R.layout.state_net_error)
+//                .setErrorOnClickListener(v -> ALog.e("刷新"))
+//                .setEmptyOnClickListener(v -> ALog.e("刷新"))
+//                .setEmptyImage(R.drawable.ic_call_hangup)
+//                .setEmptyText("空空如也")
+//                .setErrorImage(R.drawable.ic_add_house_red_140px)
+//                .setErrorText("错误")
+//                .setNetErrorImage(R.drawable.ic_minehome_84px)
+//                .setNetErrorText("网络错误")
+//                .build(stateLayout);
+//
+//        mStateManager.showNetError();
+    }
+
+    private void initStateManager() {
+        String emptyText;
+        int emptyImage;
+        switch (type) {
+            case TYPE_EXCHANGE:
+                emptyText = "还没有闲置信息呢，赶紧去发布吧！";
+                emptyImage = R.drawable.ic_exchange_empty_state_gray_200px;
+                break;
+            case TYPE_CARPOOL_OWNER:
+                emptyText = "还没有乘客发布信息呢！";
+                emptyImage = R.drawable.ic_find_car_empty_state_gray_200px;
+                break;
+            case TYPE_CARPOOL_PASSENGER:
+                emptyText = "还没有车主发布信息呢！";
+                emptyImage = R.drawable.ic_find_passenger_empty_state_gray_200px;
+                break;
+            case TYPE_NEIGHBOUR:
+                emptyText = "赶紧发一条邻里圈，刷一下存在感！";
+                emptyImage = R.drawable.ic_neighbour_empty_state_gray_200px;
+                break;
+            case TYPE_MY_EXCHANGE:
+            case TYPE_MY_NEIGHBOUR:
+            case TYPE_MY_CARPOOL:
+                emptyText = "您还没发布过任何信息呢，赶快去发布吧！";
+                emptyImage = R.drawable.ic_publish_empty_state_gray_200px;
+                break;
+            default:
+                emptyText = "暂无信息，请点击刷新";
+                emptyImage = R.drawable.ic_comment_empty_state_gray_200px;
+        }
 
         mStateManager = StateManager.builder(_mActivity)
                 .setContent(recyclerView)
                 .setEmptyView(R.layout.state_empty)
-                .setLoadingView(R.layout.state_loading)
-                .setErrorView(R.layout.state_error)
-                .setNetErrorView(R.layout.state_net_error)
-                .setErrorOnClickListener(v -> ALog.e("刷新"))
-                .setEmptyOnClickListener(v -> ALog.e("刷新"))
-                .setEmptyImage(R.drawable.ic_call_hangup)
-                .setEmptyText("空空如也")
-                .setErrorImage(R.drawable.ic_add_house_red_140px)
-                .setErrorText("错误")
-                .setNetErrorImage(R.drawable.ic_minehome_84px)
-                .setNetErrorText("网络错误")
-                .build(stateLayout);
-
-        mStateManager.showNetError();
+                .setEmptyImage(emptyImage)
+                .setEmptyText(emptyText)
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
     }
 
     private void initData() {
@@ -220,7 +265,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
             mPresenter.requestExchangeList(params);
         } else if (type == TYPE_NEIGHBOUR) {
             mPresenter.requestNeighbourList(params);
-        } else if (type == TYPE_CARPOOL_OWNER || type == TYPE_CARPOOL_passenger) {
+        } else if (type == TYPE_CARPOOL_OWNER || type == TYPE_CARPOOL_PASSENGER) {
             params.currentPositionLat = UserHelper.latitude;
             params.currentPositionLng = UserHelper.longitude;
             params.carpoolType = type == TYPE_CARPOOL_OWNER ? 1 : 2;
@@ -245,6 +290,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
@@ -264,11 +310,15 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     public void responseSuccess(List<SocialityListBean.DataBean.MomentsListBean> datas) {
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
-        ALog.e("datas::" + datas.size());
+
         if (params.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CarCardListBean;
@@ -35,7 +36,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Created by Administrator on 2017/4/19 9:39.
  */
 public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> implements CarCardContract.View {
-
+    private static final String TAG = CarCardFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.recyclerView)
@@ -46,11 +47,11 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
     Toolbar toolbar;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
     private Unbinder unbinder;
     private CarCardRVAdapter adapter;
     Params params = Params.getInstance();
     private int removePosition;
+    private StateManager mStateManager;
 
     public static CarCardFragment newInstance() {
         return new CarCardFragment();
@@ -74,9 +75,10 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
-        initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initData();
         initListener();
+        initStateManager();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
     private void initToolbar() {
@@ -147,6 +149,17 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
         });
     }
 
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_car_card_empty_state_gray_200px)
+                .setEmptyText("您当前还未办理车卡！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
+    }
+
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
@@ -178,6 +191,7 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
@@ -189,11 +203,14 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
     public void responseCarCardList(List<CarCardListBean.DataBean.CardListBean> datas) {
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
-        ALog.e("datas::" + datas.size());
         if (params.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {

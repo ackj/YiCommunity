@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -15,10 +16,20 @@
         cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
         cube_ptr:ptr_resistance="1.7">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <com.aglhz.abase.widget.statemanager.StateLayout
+            android:id="@+id/stateLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:emptyLayout="@layout/state_empty"
+            app:errorLayout="@layout/state_error"
+            app:loadingLayout="@layout/state_loading"
+            app:netErrorLayout="@layout/state_net_error">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.aglhz.abase.widget.statemanager.StateLayout>
 
     </in.srain.cube.views.ptr.PtrFrameLayout>
 

@@ -40,10 +40,10 @@ android {
             ndk {
                 abiFilters "armeabi", "armeabi-v7a", "x86"
             }
-            //可调试
-            debuggable true
-            //给applicationId添加后缀，这样可同时在一部手机上存在多个版本
-            applicationIdSuffix ".debug"
+//            //可调试
+//            debuggable true
+//            //给applicationId添加后缀，这样可同时在一部手机上存在多个版本
+//            applicationIdSuffix ".debug"
         }
         release {
             ndk {

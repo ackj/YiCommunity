@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.common.ApiService;
@@ -56,6 +57,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
     private Unbinder unbinder;
     private NoticeListRVAdapter adapter;
     private Params params = Params.getInstance();
+    private StateManager mStateManager;
 
 
     public static NoticeListFragment newInstance() {
@@ -83,6 +85,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         initToolbar();
         initData();
         initListener();
+        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
@@ -101,7 +104,6 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         adapter = new NoticeListRVAdapter(data);
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
-            ALog.e("加载更多………………………………");
             params.page++;
             mPresenter.requestNotices(params);
 
@@ -115,6 +117,17 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
             NoticeBean.DataBean.NoticeListBean bean = (NoticeBean.DataBean.NoticeListBean) adapter.getData().get(position);
             go2Web("物业公告", ApiService.requestNoticeDetail + bean.getFid());
         });
+    }
+
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_publish_empty_state_gray_200px)
+                .setEmptyText("暂无物业公告！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
     }
 
     @Override
@@ -149,6 +162,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
@@ -161,12 +175,15 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         ptrFrameLayout.refreshComplete();
 
         if (datas == null || datas.isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
 
-        ALog.e("datas::" + datas.size());
         if (params.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {

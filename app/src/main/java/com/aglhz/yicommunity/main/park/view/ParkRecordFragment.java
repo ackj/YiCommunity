@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DateUtils;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.ParkRecordListBean;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -32,12 +33,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.aglhz.yicommunity.R.id.ptrFrameLayout;
+
 /**
  * Created by Administrator on 2017/4/19 9:35.
  */
 public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presenter> implements ParkRecordContract.View {
     private static final String TAG = ParkRecordFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -52,6 +54,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
     private Unbinder unbinder;
     private ParkRecordRVAdapter adapter;
     private Params params = Params.getInstance();
+    private StateManager mStateManager;
 
     public static ParkRecordFragment newInstance() {
         return new ParkRecordFragment();
@@ -76,6 +79,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
+        initStateManager();
     }
 
     private void initToolbar() {
@@ -90,9 +94,6 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
         tvStartTime.setText(getTime(date));
         tvEndTime.setText(getTime(date));
         requestSearch();
-
-        mPresenter.requestParkReocrd(params);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new ParkRecordRVAdapter();
         adapter.setEnableLoadMore(true);
@@ -101,6 +102,17 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
             mPresenter.requestParkReocrd(params);
         }, recyclerView);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_find_car_empty_state_gray_200px)
+                .setEmptyText("暂无停车记录！")
+                .setErrorOnClickListener(v -> requestSearch())
+                .setEmptyOnClickListener(v -> requestSearch())
+                .build();
     }
 
     @Override
@@ -113,6 +125,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
         dismissLoadingDialog();
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
@@ -124,11 +137,14 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
     public void responseParkRecord(List<ParkRecordListBean.PackRecordBean> datas) {
         dismissLoadingDialog();
         if (datas == null || datas.isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
-        ALog.e("datas::" + datas.size());
         if (params.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
@@ -164,7 +180,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
                 .setType(TimePickerView.Type.YEAR_MONTH_DAY)
                 .build();
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(DateUtils.formatTime2Long("yyyy-MM-dd",tv.getText().toString())));
+        calendar.setTime(new Date(DateUtils.formatTime2Long("yyyy-MM-dd", tv.getText().toString())));
         pvTime.setDate(calendar);//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         pvTime.show();
     }

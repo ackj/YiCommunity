@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.bean.PropertyPayDetailBean;
@@ -61,6 +62,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     private PropertyPayRVAdapter mAdapter;
     private Params params = Params.getInstance();
     private String[] arrPayType = {Constants.ALIPAY, Constants.WXPAY};
+    private StateManager mStateManager;
 
     public static PropertyPayListFragment newInstance(int position) {
         Bundle bundle = new Bundle();
@@ -74,7 +76,6 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             payState = bundle.getInt(Constants.KEY_PAY_STATE);
@@ -100,6 +101,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initData();
+        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
@@ -121,6 +123,17 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
                 }
             }
         });
+    }
+
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_property_pay_empty_state_gray_200px)
+                .setEmptyText("暂无缴费信息！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
     }
 
     @Override
@@ -148,6 +161,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        mStateManager.showError();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -186,26 +200,35 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
 
     @Override
     public void responsePropertyNotPay(PropertyPayBean bean) {
-        PropertyPayBean.DataBean data = bean.getData();
         ptrFrameLayout.refreshComplete();
-        mAdapter.setNewData(data.getObpptBills());
-        tvSum.setText("合计：" + data.getTotalAmt() + "元");
+        PropertyPayBean.DataBean data = bean.getData();
+        if (data.getObpptBills().isEmpty()) {
+            mStateManager.showEmpty();
+        } else {
+            mStateManager.showContent();
+            mAdapter.setNewData(data.getObpptBills());
+            tvSum.setText("合计：" + data.getTotalAmt() + "元");
 
-        //以下是为生成参数
-        StringBuilder sb = new StringBuilder();
-        for (PropertyPayBean.DataBean.ObpptBillsBean obpptBillsBean : data.getObpptBills()) {
-            sb.append(obpptBillsBean.getFid()).append(",");
-        }
-        params.billFids = sb.toString();
-        if (params.billFids.endsWith(",")) {
-            params.billFids = params.billFids.substring(0, params.billFids.length() - 1);
+            //以下是为生成参数
+            StringBuilder sb = new StringBuilder();
+            for (PropertyPayBean.DataBean.ObpptBillsBean obpptBillsBean : data.getObpptBills()) {
+                sb.append(obpptBillsBean.getFid()).append(",");
+            }
+            params.billFids = sb.toString();
+            if (params.billFids.endsWith(",")) {
+                params.billFids = params.billFids.substring(0, params.billFids.length() - 1);
+            }
         }
     }
 
     @Override
     public void responsePropertyPayed(PropertyPayBean bean) {
         ptrFrameLayout.refreshComplete();
-        mAdapter.setNewData(bean.getData().getObpptBills());
+        if (bean.getData().getObpptBills().isEmpty()) {
+            mStateManager.showEmpty();
+        } else {
+            mAdapter.setNewData(bean.getData().getObpptBills());
+        }
     }
 
     @Override

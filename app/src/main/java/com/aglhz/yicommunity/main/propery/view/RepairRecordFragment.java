@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.common.Constants;
@@ -35,6 +36,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
+import static com.aglhz.yicommunity.R.id.recyclerView;
+
 /**
  * Created by Administrator on 2017/4/19 14:27.
  * <p>
@@ -47,15 +50,14 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerview;
+    RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
-
     private Unbinder unbinder;
     private RepairRecordRVAdapter adapter;
     private Params params = Params.getInstance();
     public static final int REQUEST_CODE = 100;
+    private StateManager mStateManager;
 
     public static RepairRecordFragment newInstance() {
         return new RepairRecordFragment();
@@ -82,7 +84,8 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
         initToolbar();
         initData();
         initListener();
-        initPtrFrameLayout(ptrFrameLayout, recyclerview);
+        initStateManager();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
     @Override
@@ -102,15 +105,14 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
     }
 
     public void initData() {
-        recyclerview.setLayoutManager(new LinearLayoutManager(_mActivity));
+        recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new RepairRecordRVAdapter();
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
             mPresenter.requestRepairApplyList(params);
-
-        }, recyclerview);
-        recyclerview.setAdapter(adapter);
+        }, recyclerView);
+        recyclerView.setAdapter(adapter);
     }
 
     private void initListener() {
@@ -127,6 +129,17 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
             RepairApplyBean.DataBean.RepairApplysBean bean = (RepairApplyBean.DataBean.RepairApplysBean) adapter.getData().get(position);
             start(RepairDetailFragment.newInstance(bean.getFid()));
         });
+    }
+
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_property_repair_empty_state_gray_200px)
+                .setEmptyText("有问题，您找物业保修！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
     }
 
     @Override
@@ -146,6 +159,7 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
@@ -159,13 +173,17 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
 
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
 
         if (params.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas);
-            adapter.disableLoadMoreIfNotFullPage(recyclerview);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
             adapter.addData(datas);
             adapter.setEnableLoadMore(true);
