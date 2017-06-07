@@ -295,9 +295,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     params.bdg_u_c = "";
                     params.bdg_f_c = "";
                     params.bdg_f_h_c = "";
-
-                    ALog.e("params.cmnt_c ::" + params.cmnt_c);
-                    ALog.e("params.cmnt_c ::" + array[which]);
                 })
                 .show();
     }
@@ -324,9 +321,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     params.bdg_u_c = "";
                     params.bdg_f_c = "";
                     params.bdg_f_h_c = "";
-
-                    ALog.e("params.cmnt_c ::" + params.bdg_c);
-                    ALog.e("params.cmnt_c ::" + array[which]);
                 })
                 .show();
     }
@@ -351,9 +345,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
                     params.bdg_f_c = "";
                     params.bdg_f_h_c = "";
-
-                    ALog.e("params.cmnt_c ::" + params.bdg_u_c);
-                    ALog.e("params.cmnt_c ::" + array[which]);
                 })
                 .show();
     }
@@ -372,12 +363,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .setItems(array, (dialog, which) -> {
                     params.bdg_f_c = floors.get(which).getCode();
                     tvFloor.setText(array[which]);
-
                     tvRoom.setText("");
                     params.bdg_f_h_c = "";
-
-                    ALog.e("params.cmnt_c ::" + params.bdg_f_c);
-                    ALog.e("params.cmnt_c ::" + array[which]);
                 })
                 .show();
     }
@@ -396,9 +383,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .setItems(array, (dialog, which) -> {
                     params.bdg_f_h_c = rooms.get(which).getCode();
                     tvRoom.setText(array[which]);
-
-                    ALog.e("params.cmnt_c ::" + params.bdg_f_h_c);
-                    ALog.e("params.cmnt_c ::" + array[which]);
                 })
                 .show();
     }
