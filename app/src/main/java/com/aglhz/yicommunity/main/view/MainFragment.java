@@ -34,6 +34,7 @@ public class MainFragment extends BaseFragment {
     // 再点一次退出程序时间设置
     private static final long WAIT_TIME = 2000L;
     private long TOUCH_TIME = 0;
+
     @BindView(R.id.ahbn_main_fragment)
     AHBottomNavigation ahbn;
 
