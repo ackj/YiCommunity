@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.mvp.view.base.Decoration;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.MessageCenterBean;
@@ -72,6 +73,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     private static final String PROPERTY_BILL = "property_bill";// 物业账单
     private static final String COMPLAINT_REPLY = "complaint_reply";// 物业投诉回复
     private int clickPosition;
+    private StateManager mStateManager;
 
     public static MessageCenterFragment newInstance() {
         return new MessageCenterFragment();
@@ -97,8 +99,9 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
-        initPtrFrameLayout(ptrFrameLayout, recyclerView);
+        initStateManager();
         initListener();
+        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
     private void initData() {
@@ -177,6 +180,17 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         });
     }
 
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_message_empty_state_gray_200px)
+                .setEmptyText("暂无消息通知！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
+    }
+
     @Override
     public void onRefresh() {
         params.page = 1;
@@ -207,10 +221,14 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         List<MessageCenterBean.DataBean.MemNewsBean> datas = (List<MessageCenterBean.DataBean.MemNewsBean>) response;
 
         if (datas == null || datas.isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
         if (params.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
@@ -224,7 +242,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
-            //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;

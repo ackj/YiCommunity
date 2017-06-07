@@ -71,7 +71,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
         //-------------- 当前地址 --------------
         TextView tvAddress = helper.getView(R.id.tv_location_item_moments_list);
 //        if (type == SocialityListFragment.TYPE_CARPOOL_OWNER
-//                || type == SocialityListFragment.TYPE_CARPOOL_passenger
+//                || type == SocialityListFragment.TYPE_CARPOOL_PASSENGER
 //                || type == SocialityListFragment.TYPE_MY_CARPOOL) {
 //            tvAddress.setText(item.getPublishPositionAddress());
 //        } else {
@@ -81,7 +81,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
         //--------------- 内容 ------------
         TextView tvContent = helper.getView(R.id.tv_content_item_moments_list);
         if (type == SocialityListFragment.TYPE_CARPOOL_OWNER
-                || type == SocialityListFragment.TYPE_CARPOOL_passenger
+                || type == SocialityListFragment.TYPE_CARPOOL_PASSENGER
                 || type == SocialityListFragment.TYPE_MY_CARPOOL) {
             String route = item.getStartPlace() + "——" + item.getEndPlace() + "\n";
             String outTime = item.getSetOutTime() + "\n";

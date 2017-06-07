@@ -180,7 +180,6 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
 
             permissionPosition = position;
             SwitchButton switchButton = (SwitchButton) view.findViewById(R.id.switch_button);
-//            switchButton.setChecked(!switchButton.isChecked());
 
             params.mfid = memberAdapter.getData().get(memberPosition).getMember().getFid();
             params.rfid = memberAdapter.getData().get(memberPosition).getMember().getRfid();

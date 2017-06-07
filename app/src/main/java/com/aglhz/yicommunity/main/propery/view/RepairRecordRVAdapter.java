@@ -19,7 +19,7 @@ public class RepairRecordRVAdapter extends BaseRecyclerViewAdapter<RepairApplyBe
 
     @Override
     protected void convert(BaseViewHolder helper, RepairApplyBean.DataBean.RepairApplysBean item) {
-        helper.setText(R.id.tv_title, item.isSingle() ? "私人报修" : "公共报修")
+        helper.setText(R.id.tv_title, item.getType())
                 .setText(R.id.tv_date, item.getCtime())
                 .setText(R.id.tv_desc, item.getDes());
 

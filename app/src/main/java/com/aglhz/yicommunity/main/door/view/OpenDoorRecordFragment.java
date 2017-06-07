@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.common.Constants;
@@ -51,6 +52,7 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     private OpenDoorRecordRVAdapter mAdapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
+    private StateManager mStateManager;
 
     public static OpenDoorRecordFragment newInstance() {
         return new OpenDoorRecordFragment();
@@ -76,6 +78,7 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
+        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
@@ -91,11 +94,21 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         mAdapter = new OpenDoorRecordRVAdapter();
         mAdapter.setEnableLoadMore(true);
         mAdapter.setOnLoadMoreListener(() -> {
-            ALog.e("加载更多………………………………");
             params.page++;
             mPresenter.requestRecord(params);
         }, recyclerView);
         recyclerView.setAdapter(mAdapter);
+    }
+
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_open_record_empty_state_gray_200px)
+                .setEmptyText("暂无开门记录！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
     }
 
     @Override
@@ -110,11 +123,15 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     public void responseRecord(List<OpenDoorRecordBean.DataBean> datas) {
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             mAdapter.loadMoreEnd();
             return;
         }
 
         if (params.page == 1) {
+            mStateManager.showContent();
             mAdapter.setNewData(datas);
             mAdapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
@@ -133,6 +150,13 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
         DialogHelper.warningSnackbar(getView(), errorMessage);
+        if (params.page == 1) {
+            //为后面的pageState做准备
+            mStateManager.showError();
+        } else if (params.page > 1) {
+            mAdapter.loadMoreFail();
+            params.page--;
+        }
     }
 
     @Override

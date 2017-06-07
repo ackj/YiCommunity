@@ -27,6 +27,7 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.ScreenUtils;
 import com.aglhz.abase.utils.ToastUtils;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.CommentBean;
@@ -51,7 +52,7 @@ import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
 import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_CARPOOL_OWNER;
-import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_CARPOOL_passenger;
+import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_CARPOOL_PASSENGER;
 import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_EXCHANGE;
 import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_MY_CARPOOL;
 import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TYPE_MY_EXCHANGE;
@@ -79,7 +80,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     TextView toolbarMenu;
     @BindView(R.id.view_bottom_space)
     View viewBottomSpace;
-
     private Unbinder unbinder;
     private CommentRVAdapter adapter;
     private Params commentListParams = Params.getInstance();
@@ -89,6 +89,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
     String[] arr = {"回复", "复制"};
     private String replyName;
+    private StateManager mStateManager;
 
     public static CommentFragment newInstance(String fid, int type) {
         ALog.e(TAG, "newInstance type:" + type);
@@ -123,8 +124,20 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         type = bundle.getInt(Constants.KEY_TYPE);
         initToolbar();
         initData();
+        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initListener();
+    }
+
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_comment_empty_state_gray_200px)
+                .setEmptyText("快来抢沙发哦！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
     }
 
     private void initToolbar() {
@@ -234,7 +247,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
                 mPresenter.requestExchangeCommentList(commentListParams);
                 break;
             case TYPE_CARPOOL_OWNER:
-            case TYPE_CARPOOL_passenger:
+            case TYPE_CARPOOL_PASSENGER:
             case TYPE_MY_CARPOOL:
                 mPresenter.requestCarpoolCommentList(commentListParams);
                 break;
@@ -269,6 +282,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         ptrFrameLayout.refreshComplete();
         if (commentListParams.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (commentListParams.page > 1) {
             adapter.loadMoreFail();
             commentListParams.page--;
@@ -280,12 +294,15 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     public void responseCommentList(List<CommentBean> datas) {
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
+            if (commentListParams.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
 
-        ALog.e("datas::" + datas.size());
         if (commentListParams.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
@@ -320,7 +337,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
                 mPresenter.requestSubmitExchangeComment(commentPostParams);
                 break;
             case TYPE_CARPOOL_OWNER:
-            case TYPE_CARPOOL_passenger:
+            case TYPE_CARPOOL_PASSENGER:
             case TYPE_MY_CARPOOL:
                 mPresenter.requestSubmitCarpoolComment(commentPostParams);
                 break;

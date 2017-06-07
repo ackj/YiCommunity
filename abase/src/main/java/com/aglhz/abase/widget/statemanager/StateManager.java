@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aglhz.abase.R;
+
 
 /**
  * Created by zhy on 15/8/27.
@@ -119,13 +121,13 @@ public class StateManager {
     public static final class Builder {
         private Context context;
         private Object content;
-        private int loadingLayoutId;
+        private int loadingLayoutId = R.layout.state_loading;
         private View loadingView;
-        private int emptyLayoutId;
+        private int emptyLayoutId = R.layout.state_empty;
         private View emptyView;
-        private int errorLayoutId;
+        private int errorLayoutId = R.layout.state_error;
         private View errorView;
-        private int netErrorLayoutId;
+        private int netErrorLayoutId = R.layout.state_net_error;
         private View netErrorView;
         private int emptyImageId;
         private CharSequence emptyText;
