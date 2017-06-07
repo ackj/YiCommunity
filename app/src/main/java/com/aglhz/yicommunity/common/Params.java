@@ -52,7 +52,7 @@ public class Params {
     public String endPlace;
     public String outTime;
     public String currentPositionLat;
-    public String billFids;
+    public String billFids;     //多个时用“,”分隔。 现在已经改成ofids
     public String currentPositionLng;
     public String positionAddress;
     public String secondCategoryId;//二级菜单的id
@@ -68,7 +68,7 @@ public class Params {
     public boolean timeable;
     public boolean summerable;
     public int positionType;
-    public int type;
+    public int type;//1.支付宝;2.微信
     public int pageSize = Constants.PAGE_SIZE;
     public int status;
     public int page = 1;
@@ -88,6 +88,8 @@ public class Params {
     // 也就是说同一个页面两个接口都要一个叫fid的参数，但是值不一样，所以用rfid进行区分。
     public String rfid;
     public String powerCode;//设置某项权限
+    public String otype;//业务支付类型 pptbill-物业账单缴费、pktmp-临时停车缴费、pkmcd-停车月卡充值缴费
+    public String ofids; //多个时用“,”分隔。
 
 
     private Params() {

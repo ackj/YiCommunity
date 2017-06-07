@@ -198,6 +198,8 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
 
     private void pay() {
         //todo:跳支付宝 or 微信
+
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

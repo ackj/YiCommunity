@@ -55,12 +55,15 @@ public class PropertyPayModel extends BaseModel implements PropertyPayContract.M
 
     @Override
     public Observable<ResponseBody> requestOrder(Params params) {
+        ALog.e(params.otype);
+        ALog.e(params.type);
+        ALog.e(params.ofids);
 
         return HttpHelper.getService(ApiService.class)
                 .requestOrder(ApiService.requestOrder,
-                        params.token,
-                        params.payType,
-                        params.billFids)
+                        params.otype,
+                        params.type,
+                        params.ofids)
                 .subscribeOn(Schedulers.io());
     }
 }

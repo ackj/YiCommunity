@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -23,21 +24,21 @@ import com.aglhz.abase.network.http.LoginInterceptor;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.main.about.AboutActivity;
 import com.aglhz.yicommunity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.main.door.DoorActivity;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.login.LoginActivity;
+import com.aglhz.yicommunity.main.about.AboutActivity;
+import com.aglhz.yicommunity.main.door.DoorActivity;
+import com.aglhz.yicommunity.main.message.view.MessageCenterFragment;
 import com.aglhz.yicommunity.main.mine.contract.MineContract;
 import com.aglhz.yicommunity.main.mine.presenter.MinePresenter;
-import com.aglhz.yicommunity.main.view.MainFragment;
-import com.aglhz.yicommunity.main.message.view.MessageCenterFragment;
 import com.aglhz.yicommunity.main.mypublish.MyPublishActivity;
+import com.aglhz.yicommunity.main.view.MainFragment;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -92,6 +93,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     ImageView ivHeaderBackground;
     @BindView(R.id.view_unread_mark_mine_fragment)
     View viewUnreadMark;
+    @BindView(R.id.sv_mine_fragment)
+    ScrollView sv;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
 
@@ -199,6 +202,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 ivHeaderBackground.setImageResource(R.drawable.bg_mine_1920px_1080px);
                 tvLogout.setVisibility(View.GONE);
                 mPresenter.requestLogout(Params.getInstance());
+                sv.post(() -> sv.fullScroll(ScrollView.FOCUS_UP));
                 break;
         }
     }
@@ -234,8 +238,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     private void createShortCut() {
         Intent shortcutIntent = new Intent();
         //设置点击快捷方式时启动的Activity,因为是从Lanucher中启动，所以包名类名要写全。
-        shortcutIntent.setComponent(new ComponentName("com.aglhz.yicommunity"
-                , "QuickOpenActivity"));
+        shortcutIntent.setComponent(new ComponentName("com.aglhz.yicommunity", "com.aglhz.yicommunity.main.mine.QuickOpenActivity"));
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS | Intent.FLAG_ACTIVITY_NEW_TASK);
         Intent resultIntent = new Intent();
         //设置快捷方式图标

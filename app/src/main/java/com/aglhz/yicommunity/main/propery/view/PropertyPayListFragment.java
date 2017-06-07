@@ -171,12 +171,13 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
                 .setItems(arrPayType, (dialog, which) -> {
                     switch (which) {
                         case 0:
-                            params.payType = Constants.TYPE_ALIPAY;
+                            params.type = Constants.TYPE_ALIPAY;
                             break;
                         case 1:
-                            params.payType = Constants.TYPE_WXPAY;
+                            params.type = Constants.TYPE_WXPAY;
                             break;
                     }
+                    params.otype = "pptbill";
                     mPresenter.requestOrder(params);
                 })
                 .setNegativeButton("取消", null)
@@ -214,9 +215,9 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
             for (PropertyPayBean.DataBean.ObpptBillsBean obpptBillsBean : data.getObpptBills()) {
                 sb.append(obpptBillsBean.getFid()).append(",");
             }
-            params.billFids = sb.toString();
-            if (params.billFids.endsWith(",")) {
-                params.billFids = params.billFids.substring(0, params.billFids.length() - 1);
+            params.ofids = sb.toString();
+            if (params.ofids.endsWith(",")) {
+                params.ofids = params.ofids.substring(0, params.ofids.length() - 1);
             }
         }
     }

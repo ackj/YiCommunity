@@ -88,13 +88,13 @@ public class PropertyPayPresenter extends BasePresenter<PropertyPayContract.View
 
                         String code = jsonOther.optString("code");
                         if ("200".equals(code)) {
-                            if (params.payType == 1) {
+                            if (params.type == 1) {
                                 //支付宝
 
                                 JSONObject jsonData = jsonObject.optJSONObject("data");
                                 getView().responseALiPay(jsonData.optString("body"));
 
-                            } else if (params.payType == 2) {
+                            } else if (params.type == 2) {
                                 //微信
                                 WxPayHelper.WxPay(jsonObject.toString());
                             }

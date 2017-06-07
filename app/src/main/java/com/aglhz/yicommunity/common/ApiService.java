@@ -630,13 +630,14 @@ public interface ApiService {
                                                                @Query("fid") String fid);
 
     //微信、支付宝等第三方支付物业缴费订单 type为1.支付宝;2.微信
-    String requestOrder = BASE_PROPERTY + "/client/pay/generatePayJSON";
+//    String requestOrder = BASE_PROPERTY + "/client/pay/generatePayJSON";  改版后的接口也改了，各类支付改成统一接口
+    String requestOrder = BASE_PROPERTY + "/pay/client/generatePayJSON";
 
     @POST
     Observable<ResponseBody> requestOrder(@Url String url,
-                                          @Query("token") String token,
+                                          @Query("otype") String otype,
                                           @Query("type") int type,
-                                          @Query("billFids") String billFids);
+                                          @Query("ofids") String ofids);
 
     //友盟用户登记接口
     String requestUMeng = BASE_USER + "/client/logUMengParams.do";

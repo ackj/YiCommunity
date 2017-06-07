@@ -151,7 +151,7 @@ public class PropertyNotPayDetailFragment extends BaseFragment<PropertyPayContra
         mAdapter.setNewData(bean.getData().getPptBillDets());
         tvAddress.setText(bean.getData().getBuildingInfo().getAddress());
         tvSum.setText("合计：" + bean.getData().getTotalAmt() + "元");
-        params.billFids = bean.getData().getFid();
+        params.ofids = bean.getData().getFid();
     }
 
     @Override
@@ -165,12 +165,13 @@ public class PropertyNotPayDetailFragment extends BaseFragment<PropertyPayContra
                 .setItems(arrPayType, (dialog, which) -> {
                     switch (which) {
                         case 0:
-                            params.payType = Constants.TYPE_ALIPAY;
+                            params.type = Constants.TYPE_ALIPAY;
                             break;
                         case 1:
-                            params.payType = Constants.TYPE_WXPAY;
+                            params.type = Constants.TYPE_WXPAY;
                             break;
                     }
+                    params.otype = "pptbill";
                     mPresenter.requestOrder(params);
                 })
                 .setNegativeButton("取消", null)
