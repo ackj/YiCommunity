@@ -32,9 +32,7 @@ import butterknife.Unbinder;
  */
 
 public class RepairDetailFragment extends BaseFragment<RepairDetailContract.Presenter> implements RepairDetailContract.View {
-
     private static final String TAG = RepairDetailFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
