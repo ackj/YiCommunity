@@ -27,6 +27,9 @@ import butterknife.OnClick;
 /**
  * Author: LiuJia on 2017/4/21 17:41.
  * Email: liujia95me@126.com
+ *
+ * [关于我们]的View层。
+ * 打开方式：Start App-->我的-->关于我们
  */
 public class AboutUsFragment extends BaseFragment {
     private static final String TAG = AboutUsFragment.class.getSimpleName();
@@ -77,22 +80,22 @@ public class AboutUsFragment extends BaseFragment {
     @OnClick({R.id.ll_product_introduction, R.id.ll_service_terms, R.id.ll_feedback, R.id.ll_permission})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ll_product_introduction:
+            case R.id.ll_product_introduction://[产品介绍]页面跳转
                 Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
                 introductionIntent.putExtra(Constants.KEY_TITLE, "产品介绍");
                 introductionIntent.putExtra(Constants.KEY_LINK, ApiService.PRODUCT_INTRODUCTION);
                 startActivity(introductionIntent);
                 break;
-            case R.id.ll_service_terms:
+            case R.id.ll_service_terms://[服务条款]页面跳转
                 Intent termsIntent = new Intent(_mActivity, WebActivity.class);
                 termsIntent.putExtra(Constants.KEY_TITLE, "服务条款");
                 termsIntent.putExtra(Constants.KEY_LINK, ApiService.SERVICE_TERMS);
                 startActivity(termsIntent);
                 break;
-            case R.id.ll_feedback:
+            case R.id.ll_feedback://[意见反馈]页面跳转
                 start(FeedbackFragment.newInstance());
                 break;
-            case R.id.ll_permission:
+            case R.id.ll_permission://[权限管理]页面跳转
                 new PermissionHelper(_mActivity).gotoPermission();
                 break;
         }
