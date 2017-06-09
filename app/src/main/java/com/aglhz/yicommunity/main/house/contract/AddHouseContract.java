@@ -2,20 +2,17 @@ package com.aglhz.yicommunity.main.house.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.abase.widget.selector.ISelectAble;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.BuildingBean;
 import com.aglhz.yicommunity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.bean.FloorBean;
 import com.aglhz.yicommunity.bean.RoomBean;
-import com.aglhz.yicommunity.bean.SelectorBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23

@@ -30,6 +30,9 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/4/21 18:06.
  * Email: liujia95me@126.com
+ *
+ * [意见反馈] 的View层。
+ *
  */
 public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> implements FeedbackContract.View, TextWatcher {
     private static final String TAG = FeedbackFragment.class.getSimpleName();
