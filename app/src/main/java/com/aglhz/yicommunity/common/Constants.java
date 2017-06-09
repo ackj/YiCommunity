@@ -82,4 +82,14 @@ public class Constants {
 
     //******************** SP key ***********************
     public static final String SP_KEY_USED_CITYS = "sp_key_used_citys";
+    //\主界面
+    public static final String SP_KEY_GUIDE_MAIN = "sp_key_guide_main";
+    //月卡缴费
+    public static final String SP_KEY_GUIDE_CARD_PAY = "sp_key_guide_card_pay";
+    //我的车卡
+    public static final String SP_KEY_GUIDE_MY_CARD = "sp_key_guide_my_card";
+    //临停缴费
+    public static final String SP_KEY_GUIDE_TEMPPORARY_PARK_PAY = "sp_key_guide_tempporary_park_pay";
+
+
 }

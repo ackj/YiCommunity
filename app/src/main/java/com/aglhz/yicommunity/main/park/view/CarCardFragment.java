@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
@@ -21,6 +20,7 @@ import com.aglhz.yicommunity.bean.CarCardListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.park.contract.CarCardContract;
 import com.aglhz.yicommunity.main.park.presenter.CarCardPresenter;
 
@@ -208,6 +208,12 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
             }
             adapter.loadMoreEnd();
             return;
+        } else {
+            if (!GuideHelper.showed(_mActivity)) {
+                for (CarCardListBean.DataBean.CardListBean bean : datas) {
+                    GuideHelper.showMyCardGuide(_mActivity);
+                }
+            }
         }
         if (params.page == 1) {
             mStateManager.showContent();

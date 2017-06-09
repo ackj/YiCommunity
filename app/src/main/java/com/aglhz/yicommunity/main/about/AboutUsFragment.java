@@ -17,6 +17,7 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.PermissionHelper;
 import com.aglhz.yicommunity.web.WebActivity;
 
 import butterknife.BindView;
@@ -73,7 +74,7 @@ public class AboutUsFragment extends BaseFragment {
         tvVersionName.setText("版本：" + AppUtils.getVersionName(BaseApplication.mContext));
     }
 
-    @OnClick({R.id.ll_product_introduction, R.id.ll_service_terms, R.id.ll_feedback})
+    @OnClick({R.id.ll_product_introduction, R.id.ll_service_terms, R.id.ll_feedback, R.id.ll_permission})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_product_introduction:
@@ -90,6 +91,9 @@ public class AboutUsFragment extends BaseFragment {
                 break;
             case R.id.ll_feedback:
                 start(FeedbackFragment.newInstance());
+                break;
+            case R.id.ll_permission:
+                new PermissionHelper(_mActivity).gotoPermission();
                 break;
         }
     }

@@ -227,6 +227,10 @@
         <activity
             android:name=".main.message.MessageActivity"
             android:theme="@style/Transparent" />
+
+        <activity
+            android:name=".main.guide.GuideActivity"
+            android:theme="@style/Transparent" />
     </application>
 
 </manifest>
