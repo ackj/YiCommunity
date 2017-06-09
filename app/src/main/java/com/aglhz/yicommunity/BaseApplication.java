@@ -143,7 +143,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
             public void onSuccess(String deviceToken) {
-                ALog.e(TAG, "deviceToken::" + deviceToken);
 
                 HttpHelper.getService(ApiService.class)
                         .requestUMeng(ApiService.requestUMeng, UserHelper.token, deviceToken, UserHelper.account, "userType")

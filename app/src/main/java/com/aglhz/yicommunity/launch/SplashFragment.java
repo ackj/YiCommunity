@@ -64,8 +64,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     private void initData() {
 //        UserHelper.init();//此处初始化改在application里初始化了。
 
-        ALog.e(UserHelper.string());
-
         location();
         initDoorManager();
         checkLogin();
@@ -129,7 +127,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void go2Main() {
-        ALog.e("1111111111111");
         startActivity(new Intent(_mActivity, MainActivity.class));
         _mActivity.overridePendingTransition(0, 0);
         //此处之所以延迟退出是因为立即退出在小米手机上会有一个退出跳转动画，而我不想要这个垂直退出的跳转动画。

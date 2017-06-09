@@ -227,7 +227,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     //选择省市县
     private void showAddressSelector() {
-        ALog.e("1111111111111");
         if (addressSelector == null) {
             addressSelector = new BottomDialog(_mActivity);
             addressSelector.setOnAddressSelectedListener((province, city, county, street) -> {
@@ -239,12 +238,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 ALog.e(params.city);
                 ALog.e(params.county);
 
-                String s = (province == null ? "" : province.name + "　")
-                        + (city == null ? "" : city.name + "　")
-                        + (county == null ? "" : county.name + "　")
-                        + (street == null ? "" : street.name);
-
-
+                String s = province.name + "　" + city.name + "　" + county.name + "　" + (street == null ? "" : street.name);
                 tvArea.setText(s);
                 addressSelector.dismiss();
             });

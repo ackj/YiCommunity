@@ -77,7 +77,8 @@ public class DoorManager {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> SipService.instance().setActivityToLaunchOnIncomingReceived(CallActivity.class));
+                .subscribe(o -> SipService.instance()
+                        .setActivityToLaunchOnIncomingReceived(CallActivity.class));
     }
 
     public DoorManager initWebUserApi(String userName, AccessCallBack accessCallBack) {
