@@ -89,5 +89,25 @@
 
     <View
         style="@style/LineStyle"
+        android:layout_height="1dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_permission"
+        style="@style/MineItemLayoutStyle">
+
+        <TextView
+            style="@style/TvBaseBlack15sp"
+            android:layout_marginLeft="20dp"
+            android:text="权限管理" />
+
+        <View style="@style/MineItemHorizontalSpace" />
+
+        <ImageView
+            style="@style/MineItemViewMoreStyle"
+            android:layout_marginRight="10dp" />
+    </LinearLayout>
+
+    <View
+        style="@style/LineStyle"
         android:layout_height="match_parent" />
 </LinearLayout>

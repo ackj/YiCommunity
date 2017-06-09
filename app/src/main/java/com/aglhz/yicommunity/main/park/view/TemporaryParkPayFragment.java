@@ -16,6 +16,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.event.EventPark;
+import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -70,6 +71,8 @@ public class TemporaryParkPayFragment extends BaseFragment {
         toolbarTitle.setText("临停缴费");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+
+        GuideHelper.showTempporaryCardPayGuide(_mActivity);
     }
 
     private void initData() {

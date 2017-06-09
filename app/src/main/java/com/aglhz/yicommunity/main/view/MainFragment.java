@@ -11,10 +11,11 @@ import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.home.view.HomeFragment;
 import com.aglhz.yicommunity.main.mine.view.MineFragment;
-import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.aglhz.yicommunity.main.sociality.view.NeighbourFragment;
+import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.aglhz.yicommunity.main.steward.view.StewardFragment;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -98,6 +99,8 @@ public class MainFragment extends BaseFragment {
             return true;
         });
         ahbn.setCurrentItem(0);
+
+        GuideHelper.showHomeGuide(_mActivity);
     }
 
     @Override

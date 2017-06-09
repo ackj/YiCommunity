@@ -28,6 +28,7 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventPark;
+import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.park.contract.PublishMonthCardContract;
 import com.aglhz.yicommunity.main.park.presenter.PublishMonthCardPresenter;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
@@ -151,6 +152,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
             params.fid = fid;
             mPresenter.requestCardRecharge(params);
             btSubmit.setText("立即续费");
+            GuideHelper.showCardPaydGuide(_mActivity);
         }
     }
 
