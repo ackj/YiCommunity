@@ -87,13 +87,17 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     TextView tvFloor;
     @BindView(R.id.tv_room_add_house_fragment)
     TextView tvRoom;
-    private boolean isProprietor = true;
-    private BottomDialog addressSelector;
-    private SelectorDialog selector;
-    private Params params = Params.getInstance();
-    private String title;
+    private boolean isProprietor = true;//用于区分申请时是业主还是成员。
+    private BottomDialog addressSelector;//省、市、区选择。
+    private Params params = Params.getInstance();//参数对象，每一个有网络请求的页面有都。
+    private String title;//标题。
     private Unbinder unbinder;
 
+    /**
+     * AddHouseFragment的创建入口
+     * @param address 从管家页面点击进来时，传房间的具体详细地址，用于显示在toolbar上的。
+     * @return
+     */
     public static AddHouseFragment newInstance(String address) {
         Bundle args = new Bundle();
         args.putString(Constants.KEY_ADDRESS, address);
@@ -131,8 +135,12 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         initToolbar(toolbar);
     }
 
+    /**
+     * 初始化Toolbar,包括设置顶部的状态栏，标题，返回图标和事件等。
+     * @param toolbar
+     */
     protected void initToolbar(Toolbar toolbar) {
-        initStateBar(toolbar);
+        initStateBar(toolbar);//为了达到透明状态栏效果，给toolbar添加一定的padding值。
         toolbarTitle.setText(title);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.finish());
@@ -150,20 +158,20 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_proprietor_house_fragment:
-                resetIdentity(tvProprietor, tvMember, true);
+                resetIdentity(tvProprietor, tvMember, true);//当点击时，刷新背景。
                 break;
             case R.id.tv_member_house_fragment:
-                resetIdentity(tvMember, tvProprietor, false);
+                resetIdentity(tvMember, tvProprietor, false);//当点击时，刷新背景。
                 break;
             case R.id.ll_area_add_house_fragment:
-                showAddressSelector();//选择省市县
+                showAddressSelector();//选择省市县。
                 break;
             case R.id.ll_community_add_house_fragment:
                 if (TextUtils.isEmpty(tvArea.getText().toString())) {
                     DialogHelper.warningSnackbar(getView(), "请先选择区域！");
                 } else {
                     showLoadingDialog();
-                    mPresenter.requestCommunitys(params);
+                    mPresenter.requestCommunitys(params);//根据城市请求网络获取城市的社区列表信息并展示在dialog里，让用户选择。
                 }
                 break;
             case R.id.ll_building_add_house_fragment:
@@ -171,7 +179,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     DialogHelper.warningSnackbar(getView(), "请先选择小区！");
                 } else {
                     showLoadingDialog();
-                    mPresenter.requestBuildings(params);
+                    mPresenter.requestBuildings(params);//根据社区请求网络获取社区中的楼栋列表信息，
                 }
                 break;
             case R.id.ll_unit_add_house_fragment:
@@ -179,7 +187,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     DialogHelper.warningSnackbar(getView(), "请先选择楼栋！");
                 } else {
                     showLoadingDialog();
-                    mPresenter.requestUnits(params);
+                    mPresenter.requestUnits(params);//根据楼栋获取单元信息列表。
                 }
                 break;
             case R.id.ll_floor_add_house_fragment:
@@ -187,7 +195,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     DialogHelper.warningSnackbar(getView(), "请先选择单元！");
                 } else {
                     showLoadingDialog();
-                    mPresenter.requestFloors(params);
+                    mPresenter.requestFloors(params);//根据单元获取楼层信息列表。
                 }
                 break;
             case R.id.ll_room_add_house_fragment:
@@ -195,7 +203,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     DialogHelper.warningSnackbar(getView(), "请先选择楼层！");
                 } else {
                     showLoadingDialog();
-                    mPresenter.requestRooms(params);
+                    mPresenter.requestRooms(params);//根据楼层请求网络获取房屋号信息列表。
                 }
                 break;
             case R.id.bt_submit_house_fragment:
@@ -211,12 +219,18 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     }
                     params.idCard = idCard;
                     showLoadingDialog();
-                    mPresenter.requestApply(params);
+                    mPresenter.requestApply(params);//拿到用户填表的参数，请求网络，申请房屋。
                 }
                 break;
         }
     }
 
+    /**
+     * 刷新一下身份选择的空间，如：改变背景和字体颜色等。
+     * @param tvChecked 选中状态控件。
+     * @param tvUnChecked 未选中状态的控件。
+     * @param b 是否是业主。
+     */
     private void resetIdentity(TextView tvChecked, TextView tvUnChecked, boolean b) {
         tvChecked.setBackgroundResource(R.drawable.bg_checked_red_340px_180px);
         tvChecked.setTextColor(ContextCompat.getColor(BaseApplication.mContext, R.color.base_color));
@@ -249,15 +263,12 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        KeyBoardUtils.hideKeybord(getView(), _mActivity);
+        KeyBoardUtils.hideKeybord(getView(), _mActivity);//退出页面时，要隐藏键盘。
         unbinder.unbind();
     }
 
     @Override
     public void onDestroy() {
-        if (selector != null) {
-            selector = null;
-        }
         if (addressSelector != null) {
             addressSelector = null;
         }
@@ -265,7 +276,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         super.onDestroy();
     }
 
-
+    /**
+     * 响应请求社区的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中，同时要置空社区后面的选择项。
+     * @param communities
+     */
     @Override
     public void responseCommunitys(final List<CommunitySelectBean.DataBean.CommunitiesBean> communities) {
         dismissLoadingDialog();
@@ -280,9 +294,9 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     params.cmnt_c = communities.get(which).getCode();
                     tvCommunity.setText(array[which]);
 
-                    tvBuilding.setText("");
-                    tvUnit.setText("");
-                    tvFloor.setText("");
+                    tvBuilding.setText("");//这一部分操作是为了置控，
+                    tvUnit.setText("");    //因为当用户之前选择了小区楼栋单元等信息后，
+                    tvFloor.setText("");   //又更换了小区，那后面的楼栋单元等信息应该清空
                     tvRoom.setText("");
 
                     params.bdg_c = "";
@@ -293,6 +307,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .show();
     }
 
+    /**
+     * 响应请求楼栋的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中，同时要置空楼栋后面的选择项。
+     * @param buildings
+     */
     @Override
     public void responseBuildings(List<BuildingBean.DataBean.BuildingsBean> buildings) {
         dismissLoadingDialog();
@@ -319,6 +337,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .show();
     }
 
+    /**
+     * 响应请求单元的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中，同时要置空单元后面的选择项。
+     * @param units
+     */
     @Override
     public void responseUnits(List<UnitBean.DataBean.BuildingUnitsBean> units) {
         dismissLoadingDialog();
@@ -343,6 +365,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .show();
     }
 
+    /**
+     * 响应请求楼层的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中，同时要置空楼层后面的选择项。
+     * @param floors
+     */
     @Override
     public void responseFloors(List<FloorBean.DataBean.FloorsBean> floors) {
         dismissLoadingDialog();
@@ -363,6 +389,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .show();
     }
 
+    /**
+     * 响应请求房屋的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中。
+     * @param rooms
+     */
     @Override
     public void responseRooms(List<RoomBean.DataBean.HousesBean> rooms) {
         dismissLoadingDialog();
@@ -382,6 +412,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     }
 
 
+    /**
+     * 响应申请的结果，同时结束掉本页面。
+     * @param message
+     */
     @Override
     public void responseApply(String message) {
         dismissLoadingDialog();
@@ -395,6 +429,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     }
 
+    /**
+     * 所有的报错和异常信息都会归结到这个函数中。
+     * @param errorMessage
+     */
     @Override
     public void error(String errorMessage) {
         dismissLoadingDialog();
