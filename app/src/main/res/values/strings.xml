@@ -39,7 +39,7 @@
     <string name="car_card_name">姓名： %1$s</string>
     <string name="phone">电话： %1$s</string>
     <string name="parking">车位： %1$s</string>
-    <string name="term_of_validity">有效期： %1$s-%2$s</string>
+    <string name="term_of_validity">到期时间： %1$s</string>
     <string name="surplus_days">还有%1$s天</string>
     <string name="apply_card_result">您申请的%1$s正在审核中</string>
 

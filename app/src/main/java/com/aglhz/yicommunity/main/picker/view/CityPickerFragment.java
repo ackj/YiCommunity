@@ -34,6 +34,8 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/4/29 0029.
+ * [选择城市]的View层
+ * 打开方式：StartApp-->社区-->切换-->右上角城市按钮-->选择城市
  */
 public class CityPickerFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = CityPickerFragment.class.getSimpleName();
@@ -145,6 +147,10 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
         });
     }
 
+    /**
+     * [最近选择城市]的城市选择后存到本地
+     * @param name
+     */
     private void saveUsedCity2Local(String name) {
         String citysStr = (String) SPCache.get(_mActivity, Constants.SP_KEY_USED_CITYS, "");
         if (TextUtils.isEmpty(citysStr)) {

@@ -22,6 +22,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/16 0016 17:15.
  * Email: liujia95me@126.com
+ * [拼车服务]的View层。
+ * 打开方式：StartApp-->社区-->拼车服务
  */
 
 public class CarpoolFragment extends BaseFragment {

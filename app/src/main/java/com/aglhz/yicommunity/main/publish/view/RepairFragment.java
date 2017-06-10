@@ -53,6 +53,8 @@ import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/4/19 16:06.
+ * [我要报修]的View层。
+ * 打开方式：StartApp-->管家-->物业报修-->我要报修
  */
 @SuppressLint("ValidFragment")
 public class RepairFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
@@ -96,6 +98,11 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         this.isPrivate = isPrivate;
     }
 
+    /**
+     * RepairFragment的创建入口
+     * @param isPrivate 用于区分是私人保修还是公共报修
+     * @return
+     */
     public static RepairFragment newInstance(boolean isPrivate) {
         ALog.e("RepairFragment");
         return new RepairFragment(isPrivate);
@@ -171,6 +178,9 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         unbinder.unbind();
     }
 
+    /**
+     * 选择系统的相册
+     */
     private void selectPhoto() {
         BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
         config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
@@ -187,26 +197,26 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     @OnClick({R.id.bt_submit_fragment_repair, R.id.tv_location_fragment_repair, R.id.rl_house_name, R.id.tl_repair_type})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.rl_house_name:
+            case R.id.rl_house_name://选择房屋名称
                 if (isPrivate) {
                     showLoadingDialog();
-                    ((RepairPresenter) mPresenter).requestMyhouse(params);
+                    ((RepairPresenter) mPresenter).requestMyhouse(params);//请求房屋名称
                 }
                 break;
-            case R.id.tl_repair_type:
+            case R.id.tl_repair_type://选择报修类型
                 showLoadingDialog();
                 if (isPrivate) {
                     params.type = 1;
                 } else {
                     params.type = 2;
                 }
-                ((RepairPresenter) mPresenter).requestRepairTypes(params);
+                ((RepairPresenter) mPresenter).requestRepairTypes(params);//请求报修类型
 
                 break;
-            case R.id.tv_location_fragment_repair:
+            case R.id.tv_location_fragment_repair://选择社区
                 _mActivity.startActivity(new Intent(_mActivity, PickerActivity.class));
                 break;
-            case R.id.bt_submit_fragment_repair:
+            case R.id.bt_submit_fragment_repair://点击提交
                 params.name = etName.getText().toString().trim();
                 params.des = etContent.getText().toString().trim();
                 params.contact = etPhone.getText().toString().trim();
@@ -232,7 +242,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     private void submit(Params params) {
         showLoadingDialog();
         params.cmnt_c = UserHelper.communityCode;
-        mPresenter.requestSubmit(params);
+        mPresenter.requestSubmit(params);//请求提交
     }
 
     @Override
@@ -262,6 +272,10 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求房屋列表
+     * @param iconBeans
+     */
     public void responseMyHouse(List<IconBean> iconBeans) {
         dismissLoadingDialog();
         String[] houseTitles = new String[iconBeans.size()];
@@ -280,6 +294,10 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
                 .show();
     }
 
+    /**
+     * 响应请求报修类型
+     * @param datas
+     */
     public void responseRepairTypes(List<RepairTypesBean.DataBean.TypesBean> datas) {
         dismissLoadingDialog();
         String[] arr = new String[datas.size()];
@@ -295,6 +313,10 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         }).setTitle("请选择").setPositiveButton("取消", null).show();
     }
 
+    /**
+     * 响应请求提交成功
+     * @param bean
+     */
     @Override
     public void responseSuccess(BaseBean bean) {
         dismissLoadingDialog();

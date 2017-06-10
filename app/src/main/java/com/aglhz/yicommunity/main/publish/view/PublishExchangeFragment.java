@@ -49,6 +49,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/11 0011 21:13.
  * Email: liujia95me@126.com
+ * [闲置交换发布]的View层。
+ * 打开方式：StartApp-->社区-->闲置交换-->发布
  */
 
 public class PublishExchangeFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
@@ -140,6 +142,9 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
 
     }
 
+    /**
+     * 跳转选择相片
+     */
     private void selectPhoto() {
         BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
         config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
@@ -226,6 +231,6 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         params.content = content;
         params.price = money;
         showLoadingDialog();
-        mPresenter.requestSubmit(params);
+        mPresenter.requestSubmit(params);//请求提交闲置交换
     }
 }

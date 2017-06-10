@@ -44,10 +44,10 @@ import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
-import static com.aglhz.yicommunity.R.layout.recyclerview;
-
 /**
  * Created by Administrator on 2017/4/19 9:15.
+ * [社区]首页的View层。
+ * 打开方式：Start App-->社区
  */
 public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements HomeContract.View {
 

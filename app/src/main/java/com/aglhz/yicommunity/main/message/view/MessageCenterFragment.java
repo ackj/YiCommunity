@@ -43,6 +43,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Created by leguang on 2017/5/7 0007.
  * Email：langmanleguang@qq.com
+ * [消息中心]的View层
+ * 打开方式：StartApp-->我的-->消息中心
  */
 
 public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Presenter> implements MessageCenterContract.View {
@@ -113,7 +115,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-            mPresenter.start(params);
+            mPresenter.start(params);//请求消息中心数据
         }, recyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new Decoration(_mActivity, Decoration.VERTICAL_LIST));
@@ -133,6 +135,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                 clickPosition = position;
                 params.fid = bean.getFid();
                 if (!bean.isRead()) {
+                    //请求消息已读
                     mPresenter.requestMessageRead(params);
                 }
                 ALog.e(TAG, "type:" + bean.getOpType());
@@ -209,6 +212,10 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         }
     }
 
+    /**
+     * 响应请求消息已读
+     * @param bean
+     */
     @Override
     public void responseReadSuccess(BaseBean bean) {
         adapter.getData().get(clickPosition).setRead(true);

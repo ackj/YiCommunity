@@ -47,6 +47,8 @@ import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/4/19 16:09.
+ * [我要投诉]的View层
+ * 打开方式-->StartApp-->管家-->管理投诉
  */
 public class ComplainFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = ComplainFragment.class.getSimpleName();
@@ -147,6 +149,10 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求投诉成功
+     * @param baseBean
+     */
     @Override
     public void responseSuccess(BaseBean baseBean) {
         dismissLoadingDialog();

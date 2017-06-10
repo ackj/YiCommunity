@@ -40,6 +40,8 @@ import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/4/19 9:40.
+ * [业主车库]的View层
+ * 打开方式：StartApp-->管家-->办理车卡-->业主车卡
  */
 public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContract.Presenter> implements PublishOwnerCardContract.View {
 
@@ -69,6 +71,11 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContr
     private CarCardListBean.DataBean.CardListBean bean;
     private boolean isUpdate;
 
+    /**
+     * PublishOwnerCardFragment的创建入口
+     * @param bean [我的车卡]中点击业主车卡跳转的bean，用于显示数据
+     * @return
+     */
     public static PublishOwnerCardFragment newInstance(CarCardListBean.DataBean.CardListBean bean) {
         PublishOwnerCardFragment fragment = new PublishOwnerCardFragment();
         Bundle bundle = new Bundle();
@@ -106,6 +113,7 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContr
     }
 
     private void initData() {
+        //如果为空则视为业主车卡的办理，否则视为修改车卡信息
         if (bean != null) {
             tvCarCity.setText(bean.getCarNo().substring(0, 1));
             etInputCarNum.setText(bean.getCarNo().substring(1));
@@ -177,12 +185,18 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContr
             return;
         }
         if (isUpdate) {
-            mPresenter.requestModifyOwnerCard(params);
+            mPresenter.requestModifyOwnerCard(params);//请求修改业主车卡信息
         } else {
-            mPresenter.requestSubmitOwnerCard(params);
+            mPresenter.requestSubmitOwnerCard(params);//请求提交业主车卡办理
         }
     }
 
+    /**
+     * 车牌归属地的数据返回结果
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
@@ -191,6 +205,10 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContr
         }
     }
 
+    /**
+     * 选择停车场的后的事件响应
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventPark event) {
         tvParkAddress.setText(event.bean.getName());
@@ -208,6 +226,10 @@ public class PublishOwnerCardFragment extends BaseFragment<PublishOwnerCardContr
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求提交成功的回调
+     * @param bean
+     */
     @Override
     public void responseSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), bean.getOther().getMessage());

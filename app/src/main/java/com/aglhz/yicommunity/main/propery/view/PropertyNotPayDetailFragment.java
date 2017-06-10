@@ -34,8 +34,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Created by leguang on 2017/4/29 0029.
  * Email：langmanleguang@qq.com
+ * 
  */
-
 public class PropertyNotPayDetailFragment extends BaseFragment<PropertyPayContract.Presenter> implements PropertyPayContract.View {
     public static final String TAG = PropertyNotPayDetailFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)

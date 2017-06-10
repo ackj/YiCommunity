@@ -10,6 +10,7 @@ import com.aglhz.yicommunity.main.publish.view.CommentFragment;
 /**
  * Author: LiuJia on 2017/5/16 0016 17:55.
  * Email: liujia95me@126.com
+ * 评论的父容器
  */
 
 public class CommentActivity extends BaseActivity {

@@ -23,6 +23,9 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/23 0023 11:23.
  * Email: liujia95me@126.com
+ * [车牌地区]的View层
+ * 供用户选择车牌的归属地
+ * 打开方式：StartApp-->管家-->办理车卡-->月卡办理-->点击[粤]
  */
 
 public class CarCityFragment extends BaseFragment {
@@ -64,6 +67,7 @@ public class CarCityFragment extends BaseFragment {
     }
 
     private void initData() {
+        //从strings读取车牌归属地数据的json。
         String carCityJson = _mActivity.getString(R.string.car_city_json);
         Gson gson = new Gson();
         CarCityListBean cityListBean = gson.fromJson(carCityJson, CarCityListBean.class);

@@ -11,6 +11,7 @@ import com.aglhz.yicommunity.main.picker.view.ParkPickerFragment;
 
 /**
  * Created by Administrator on 2017/4/29 0029.
+ * 选择器的父容器
  */
 public class PickerActivity extends BaseActivity {
 

@@ -22,6 +22,7 @@ public interface FeedbackContract {
     }
 
     interface Model extends BaseContract.Model {
+        //请求提交反馈
         Observable<BaseBean> requestSubmitFeedback(Params params);
     }
 }

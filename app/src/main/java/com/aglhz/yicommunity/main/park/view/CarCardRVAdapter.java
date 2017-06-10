@@ -74,7 +74,7 @@ public class CarCardRVAdapter extends BaseRecyclerViewAdapter<CarCardListBean.Da
                         span.setSpan(new AbsoluteSizeSpan(DensityUtils.sp2px(BaseApplication.mContext, 30)), 2, surplusDays.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         tvSurplusDays.setText(span);
                     }
-                    tvTermOfValidity.setText(String.format(getStringRes(R.string.term_of_validity), item.getStartTime(), item.getEndTime()));
+                    tvTermOfValidity.setText(String.format(getStringRes(R.string.term_of_validity), item.getEndTime()));
                 } else {
                     //-------------- 立即缴费 -------------
                     tvSurplusDays.setText("审核已通过，请缴费");

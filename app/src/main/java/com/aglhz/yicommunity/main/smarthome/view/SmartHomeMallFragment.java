@@ -33,6 +33,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/22 0022 08:58.
  * Email: liujia95me@126.com
+ * [智能家居商城]的View层
+ * 打开方式：StartApp-->管家-->智能家居商城
  */
 
 public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Presenter> implements SmartHomeMallContract.View {
@@ -51,6 +53,11 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
     private SmartHomeMenuRVAdapter menuAdapter;
     private SmartHomeGoodsRVAdapter goodsAdapter;
 
+    /**
+     * SmartHomeMallFragment 的创建入口
+     * @param id 一级菜单项的id，用于获取二级菜单的数据
+     * @return
+     */
     public static SmartHomeMallFragment newInstance(String id) {
         SmartHomeMallFragment fragment = new SmartHomeMallFragment();
         Bundle bundle = new Bundle();
@@ -113,7 +120,7 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
             SubCategoryBean.DataBean bean = (SubCategoryBean.DataBean) adapter.getData().get(position);
             menuAdapter.setSelectItem(bean);
             params.secondCategoryId = bean.getId();
-            mPresenter.requestGoodsList(params);
+            mPresenter.requestGoodsList(params);//点击一个类别后请求商品列表
         });
 
         goodsAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -121,10 +128,14 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
             Intent intent = new Intent(_mActivity, WebActivity.class);
             intent.putExtra(Constants.KEY_TITLE, bean.getName());
             intent.putExtra(Constants.KEY_LINK, bean.getLink());
-            _mActivity.startActivity(intent);
+            _mActivity.startActivity(intent);//点击一个商品跳WEB
         });
     }
 
+    /**
+     * 响应请求商品类型（左侧列表）
+     * @param datas
+     */
     @Override
     public void responseSubCategoryList(List<SubCategoryBean.DataBean> datas) {
         menuAdapter.setNewData(datas);
@@ -136,6 +147,10 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
         }
     }
 
+    /**
+     * 响应请求商品列表（右侧列表）
+     * @param datas
+     */
     @Override
     public void responseGoodsList(List<GoodsBean.DataBean> datas) {
         goodsAdapter.setNewData(datas);

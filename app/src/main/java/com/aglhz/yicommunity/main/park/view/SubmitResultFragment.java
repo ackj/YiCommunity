@@ -20,6 +20,8 @@ import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/4/19 9:43.
+ * [提交成功]的View层。
+ * 打开方式：StartApp-->管家-->我的车卡-->点击审核中或审核被拒的item
  */
 public class SubmitResultFragment extends BaseFragment {
 
@@ -38,6 +40,12 @@ public class SubmitResultFragment extends BaseFragment {
     private String cardType;
     private boolean isPass;
 
+    /**
+     * SubmitResultFragment的创建入口。
+     * @param cardType 车卡类型
+     * @param isPass 是否通过
+     * @return
+     */
     public static SubmitResultFragment newInstance(String cardType, boolean isPass) {
         SubmitResultFragment fragment = new SubmitResultFragment();
         Bundle bundle = new Bundle();

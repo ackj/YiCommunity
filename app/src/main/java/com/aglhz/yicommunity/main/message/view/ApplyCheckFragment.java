@@ -27,6 +27,7 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/19 0019 15:07.
  * Email: liujia95me@126.com
+ * 申请审核的View层
  */
 
 public class ApplyCheckFragment extends BaseFragment<ApplyCheckContract.Presenter> implements ApplyCheckContract.View {
@@ -44,6 +45,11 @@ public class ApplyCheckFragment extends BaseFragment<ApplyCheckContract.Presente
     private Params params = Params.getInstance();
     private MessageCenterBean.DataBean.MemNewsBean bean;
 
+    /**
+     * ApplyCheckFragment的创建入口
+     * @param bean 消息中心的Bean
+     * @return
+     */
     public static ApplyCheckFragment newInstance(MessageCenterBean.DataBean.MemNewsBean bean) {
         ApplyCheckFragment checkFragment = new ApplyCheckFragment();
         Bundle bundle = new Bundle();
@@ -105,11 +111,11 @@ public class ApplyCheckFragment extends BaseFragment<ApplyCheckContract.Presente
         switch (view.getId()) {
             case R.id.bt_pass_check_fragment:
                 params.status = 1;
-                mPresenter.requestApplyCheck(params);
+                mPresenter.requestApplyCheck(params);//请求同意申请
                 break;
             case R.id.bt_refuse_check_fragment:
                 params.status = 2;
-                mPresenter.requestApplyCheck(params);
+                mPresenter.requestApplyCheck(params);//请求拒绝申请
                 break;
         }
     }
@@ -124,6 +130,10 @@ public class ApplyCheckFragment extends BaseFragment<ApplyCheckContract.Presente
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求申请通过
+     * @param bean
+     */
     @Override
     public void responseApplySuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), "申请已通过");

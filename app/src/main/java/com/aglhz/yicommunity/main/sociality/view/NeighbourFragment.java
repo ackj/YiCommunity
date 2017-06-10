@@ -23,6 +23,7 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/11 0011 14:11.
  * Email: liujia95me@126.com
+ * 闲置交换和左邻右里的父层Fragment
  */
 
 public class NeighbourFragment extends BaseFragment {
@@ -38,6 +39,12 @@ public class NeighbourFragment extends BaseFragment {
     private Unbinder unbinder;
     private int type;
 
+    /**
+     * NeighbourFragment创建入口
+     *
+     * @param type 用于区分内容显示[左邻右里]还是[闲置交换]
+     * @return
+     */
     public static NeighbourFragment newInstance(int type) {
         NeighbourFragment fragment = new NeighbourFragment();
         Bundle bundle = new Bundle();

@@ -10,6 +10,9 @@ import com.aglhz.yicommunity.main.park.view.CarCardFragment;
 import com.aglhz.yicommunity.main.park.view.CarCardTransactFragment;
 import com.aglhz.yicommunity.main.park.view.ParkRecordFragment;
 
+/**
+ * 停车场模块的父容器
+ */
 public class ParkActivity extends BaseActivity {
     private static final String TAG = ParkActivity.class.getSimpleName();
     int intFromTo;

@@ -39,6 +39,7 @@ import static com.aglhz.yicommunity.common.UserHelper.city;
 /**
  * Author: LiuJia on 2017/5/23 0023 14:51.
  * Email: liujia95me@126.com
+ * [选择停车场]的View层
  */
 
 public class ParkPickerFragment extends BaseFragment<ParkPickerContract.Presenter> implements ParkPickerContract.View {
@@ -117,7 +118,7 @@ public class ParkPickerFragment extends BaseFragment<ParkPickerContract.Presente
 
     private void initData() {
         params.city = city;
-        mPresenter.requestParkList(params);
+        mPresenter.requestParkList(params);//请求停车场列表
         etSearchCommunity.setHint("请输入停车场关键字");
         mDatas = new ArrayList<>();
         resultData = new ArrayList<>();
@@ -187,6 +188,10 @@ public class ParkPickerFragment extends BaseFragment<ParkPickerContract.Presente
         LbsManager.getInstance().stopLocation();
     }
 
+    /**
+     * 响应请求停车场列表
+     * @param beans
+     */
     @Override
     public void responsePark(List<ParkSelectBean.DataBean.ParkPlaceListBean> beans) {
         ptrFrameLayout.refreshComplete();

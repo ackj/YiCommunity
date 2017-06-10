@@ -30,6 +30,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/5/24 0024 17:48.
  * Email: liujia95me@126.com
+ * [充值记录]的View层。
+ * 打开方式：StartApp-->管家-->我的车卡-->充值记录
  */
 
 public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.Presenter> implements RechargeRecordContract.View {
@@ -78,7 +80,7 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
     public void onRefresh() {
         params.page = 1;
         params.pageSize = 10;
-        mPresenter.requestMonthCardBillList(params);
+        mPresenter.requestMonthCardBillList(params);//请求月卡的充值记录列表
     }
 
     private void initToolbar() {
@@ -90,13 +92,12 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
 
     private void initData() {
         onRefresh();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new RechargeReocrdRVAdapter();
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-            mPresenter.requestMonthCardBillList(params);
+            mPresenter.requestMonthCardBillList(params);//请求月卡的充值记录列表
         }, recyclerView);
         recyclerView.setAdapter(adapter);
     }
@@ -135,6 +136,10 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求充值记录的列表
+     * @param datas
+     */
     @Override
     public void responseRechargeRecord(List<MonthCardBillListBean.DataBean.MonthCardBillBean> datas) {
         ptrFrameLayout.refreshComplete();

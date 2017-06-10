@@ -18,6 +18,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/31 0031 21:22.
  * Email: liujia95me@126.com
+ * [临停缴费]的View层。
+ * 打开方式：社区-->临时停车-->填写好资料-->生成订单-->支付成功
  */
 
 public class ParkPaySuccessFragment extends BaseFragment {

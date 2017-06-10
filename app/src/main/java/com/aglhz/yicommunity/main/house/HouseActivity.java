@@ -9,6 +9,9 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.main.house.view.AddHouseFragment;
 import com.aglhz.yicommunity.main.house.view.HouseRightsFragment;
 
+/**
+ * [房屋]模块的父容器。
+ */
 public class HouseActivity extends BaseActivity {
     private static final String TAG = HouseActivity.class.getSimpleName();
     private int intFromTo;

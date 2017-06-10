@@ -29,6 +29,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/18 0018 17:10.
  * Email: liujia95me@126.com
+ * [报修详情]的View层。
+ * 打开方式：StartApp-->管家-->物业报修-->点击一个Item
  */
 
 public class RepairDetailFragment extends BaseFragment<RepairDetailContract.Presenter> implements RepairDetailContract.View {
@@ -59,6 +61,11 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailContract.Pres
     private Unbinder unbinder;
     private Params params = Params.getInstance();
 
+    /**
+     * RepairDetailFragment的创建入口
+     * @param fid 物业报修某个item的fid
+     * @return
+     */
     public static RepairDetailFragment newInstance(String fid) {
         RepairDetailFragment detailFragment = new RepairDetailFragment();
         Bundle bundle = new Bundle();
@@ -103,7 +110,7 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailContract.Pres
     }
 
     private void initData() {
-        mPresenter.requestRepairDetail(params);
+        mPresenter.requestRepairDetail(params); //请求报修详情
     }
 
     private void initListener() {
@@ -125,6 +132,10 @@ public class RepairDetailFragment extends BaseFragment<RepairDetailContract.Pres
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求报修详情
+     * @param repairDetailBean 报修详情的bean
+     */
     @Override
     public void responseRepairDetail(RepairDetailBean repairDetailBean) {
         RepairDetailBean.DataBean bean = repairDetailBean.getData();

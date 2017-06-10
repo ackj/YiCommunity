@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.publish.view;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -50,6 +49,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/11 0011 20:36.
  * Email: liujia95me@126.com
+ * [左邻右里发布]的View层。
+ * 打开方式：StartApp-->邻里-->发布
  */
 
 public class PublishNeighbourFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
@@ -77,6 +78,11 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     };
     private int which;
 
+    /**
+     * PublishNeighbourFragment的创建入口
+     * @param which 区分选择发布的是视频还是图片
+     * @return
+     */
     public static PublishNeighbourFragment newInstance(int which) {
         PublishNeighbourFragment fragment = new PublishNeighbourFragment();
         Bundle bundle = new Bundle();
@@ -141,13 +147,18 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
         });
     }
 
+    /**
+     * 选择视频或者照片
+     */
     private void selectPhoto() {
         if (which == 0) {
+            //跳转选择视频
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
             config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
                     .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
             Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
         } else {
+            //跳转选择照片
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.VIDEO).withVideoDurationRes(R.drawable.ic_boxing_play);
             Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 101);
         }
@@ -204,6 +215,10 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求提交成功
+     * @param bean
+     */
     @Override
     public void responseSuccess(BaseBean bean) {
         dismissLoadingDialog();
@@ -240,6 +255,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
         params.cmnt_c = UserHelper.communityCode;
         params.content = content;
         showLoadingDialog();
-        mPresenter.requestSubmit(params);
+        mPresenter.requestSubmit(params);//请求提交左邻右里
     }
 }

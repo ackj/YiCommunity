@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
@@ -20,9 +19,9 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.door.contract.OpenDoorRecordContract;
 import com.aglhz.yicommunity.main.door.presenter.OpenDoorRecordPresenter;
-import com.aglhz.yicommunity.event.EventCommunity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,6 +37,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/4/21 10:31.
  * Email: liujia95me@126.com
+ * [开门记录]的View层
+ * 打开方式：StartApp-->管家-->智慧门禁[开门记录]
  */
 public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.Presenter> implements OpenDoorRecordContract.View {
     private static final String TAG = OpenDoorRecordFragment.class.getSimpleName();
@@ -95,7 +96,7 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         mAdapter.setEnableLoadMore(true);
         mAdapter.setOnLoadMoreListener(() -> {
             params.page++;
-            mPresenter.requestRecord(params);
+            mPresenter.requestRecord(params);//请求开门记录列表
         }, recyclerView);
         recyclerView.setAdapter(mAdapter);
     }
@@ -116,9 +117,13 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         params.page = 1;
         params.pageSize = Constants.PAGE_SIZE;
         params.cmnt_c = UserHelper.communityCode;
-        mPresenter.requestRecord(params);
+        mPresenter.requestRecord(params);//请求开门记录列表
     }
 
+    /**
+     * 请求响应开门记录列表。
+     * @param datas
+     */
     @Override
     public void responseRecord(List<OpenDoorRecordBean.DataBean> datas) {
         ptrFrameLayout.refreshComplete();
@@ -166,6 +171,10 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * 选择完社区后自动刷新
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         ptrFrameLayout.autoRefresh();

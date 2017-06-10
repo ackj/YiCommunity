@@ -38,6 +38,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/4/21 10:31.
  * Email: liujia95me@126.com
+ * [设置一键开门[的View层。
+ * 打开方式：Start App-->管家-->智能门禁[设置开门]
  */
 public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Presenter> implements QuickOpenDoorContract.View {
     private static final String TAG = QuickOpenDoorFragment.class.getSimpleName();
@@ -89,7 +91,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         params.page = 1;
         params.pageSize = Constants.PAGE_SIZE;
         params.cmnt_c = UserHelper.communityCode;
-        mPresenter.requestDoors(params);
+        mPresenter.requestDoors(params);//请求门禁列表
     }
 
     private void initToolbar() {
@@ -102,7 +104,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             Params params = Params.getInstance();
             params.directory = dir;
             params.deviceName = name;
-            mPresenter.requestQuickOpenDoor(params);
+            mPresenter.requestQuickOpenDoor(params);//请求设置一键开门
         });
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
@@ -115,7 +117,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         mAdapter.setOnLoadMoreListener(() -> {
             ALog.e("加载更多………………………………");
             params.page++;
-            mPresenter.requestDoors(params);
+            mPresenter.requestDoors(params);//请求门禁列表
         }, recyclerView);
 
         recyclerView.setAdapter(mAdapter);
@@ -131,6 +133,10 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         });
     }
 
+    /**
+     * 响应请求门禁列表
+     * @param datas
+     */
     @Override
     public void responseDoors(DoorListBean datas) {
         ptrFrameLayout.refreshComplete();
@@ -157,6 +163,10 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         }
     }
 
+    /**
+     * 响应请求设置一键开门
+     * @param mBaseBean
+     */
     @Override
     public void responseQuickOpenDoor(BaseBean mBaseBean) {
         DialogHelper.successSnackbar(getView(), "设置成功！");
@@ -195,6 +205,10 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * 选择完社区后刷新门禁列表
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         ptrFrameLayout.autoRefresh();
