@@ -123,7 +123,6 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
         }
     }
 
-
     public class GlideImageLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object advsBean, ImageView imageView) {

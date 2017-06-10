@@ -10,6 +10,9 @@ import com.aglhz.yicommunity.main.door.view.OpenDoorRecordFragment;
 import com.aglhz.yicommunity.main.door.view.PasswordOpenDoorFragment;
 import com.aglhz.yicommunity.main.door.view.QuickOpenDoorFragment;
 
+/**
+ * [智慧门禁]的父容器
+ */
 public class DoorActivity extends BaseActivity {
     private static final String TAG = DoorActivity.class.getSimpleName();
     int intFromTo;

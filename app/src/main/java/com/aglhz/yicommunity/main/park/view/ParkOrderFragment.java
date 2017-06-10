@@ -26,6 +26,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/31 0031 17:00.
  * Email: liujia95me@126.com
+ * [停车订单]的View层。
+ * 打开方式：StartApp-->社区-->临时停车-->填好车牌号+选择停车场后生成
  */
 
 public class ParkOrderFragment extends BaseFragment<ParkOrderContract.Presenter> implements ParkOrderContract.View {
@@ -57,6 +59,13 @@ public class ParkOrderFragment extends BaseFragment<ParkOrderContract.Presenter>
 
     private Params params = Params.getInstance();
 
+    /**
+     * ParkOrderFragment创建的入口
+     *
+     * @param parkFid 停车场的fid
+     * @param carNo   车牌号
+     * @return
+     */
     public static ParkOrderFragment newInstance(String parkFid, String carNo) {
         ParkOrderFragment fragment = new ParkOrderFragment();
         Bundle bundle = new Bundle();
@@ -104,7 +113,7 @@ public class ParkOrderFragment extends BaseFragment<ParkOrderContract.Presenter>
     private void initData() {
         params.parkPlaceFid = parkFid;
         params.carNo = carNo;
-        mPresenter.requestParkOrder(params);
+        mPresenter.requestParkOrder(params);//请求停车订单
     }
 
     @Override
@@ -123,6 +132,10 @@ public class ParkOrderFragment extends BaseFragment<ParkOrderContract.Presenter>
         pop();
     }
 
+    /**
+     * 响应请求停车订单
+     * @param bean
+     */
     @Override
     public void responseParkOrder(ParkOrderBean.DataBean bean) {
         tvBillCode.setText(bean.getBillCode());

@@ -42,6 +42,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/4/20 9:26.
  * Email: liujia95me@126.com
+ * [房屋成员]的View层。
+ *
  */
 public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presenter> implements HouseRightsContract.View {
     private static final String TAG = HouseRightsFragment.class.getSimpleName();
@@ -172,12 +174,11 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         footerView.setOnClickListener(v -> {
             ALog.e("prePosition::" + memberPosition);
             params.mfid = memberAdapter.getData().get(memberPosition).getMember().getFid();
-            mPresenter.requestDelete(params);
+            mPresenter.requestDelete(params);//请求删除成员
             showLoadingDialog();
         });
 
         permissionAdapter.setOnItemClickListener((adapter, view, position) -> {
-
             permissionPosition = position;
             SwitchButton switchButton = (SwitchButton) view.findViewById(R.id.switch_button);
 
@@ -188,7 +189,6 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
             ALog.e("switchButton.isChecked()::" + switchButton.isChecked());
 
             params.status = switchButton.isChecked() ? 0 : 1;
-
             if (memberAdapter.getData().size() == 1) {
                 params.url = ApiService.UPDATE_RIGHTS_MYSELF;
             } else {
@@ -199,12 +199,16 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
                 }
             }
 
-            mPresenter.requestUpdateRights(params);
+            mPresenter.requestUpdateRights(params);//请求修改成员信息
             showLoadingDialog();
 
         });
     }
 
+    /**
+     * 响应请求成员列表
+     * @param mHouseRights
+     */
     @Override
     public void responseRights(HouseRightsBean mHouseRights) {
         ptrFrameLayout.refreshComplete();
@@ -213,6 +217,10 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         permissionAdapter.setNewData(mHouseRights.getData().get(memberPosition).getAuthority());
     }
 
+    /**
+     * 响应请求更改成员信息。
+     * @param mBaseBean
+     */
     @Override
     public void responseUpdateRights(BaseBean mBaseBean) {
         dismissLoadingDialog();
@@ -221,6 +229,10 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         DialogHelper.successSnackbar(getView(), mBaseBean.getOther().getMessage());
     }
 
+    /**
+     * 响应请求删除成员。
+     * @param mBaseBean
+     */
     @Override
     public void responseDelete(BaseBean mBaseBean) {
         dismissLoadingDialog();

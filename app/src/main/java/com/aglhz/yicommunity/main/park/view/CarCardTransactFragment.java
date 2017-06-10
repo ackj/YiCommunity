@@ -18,6 +18,8 @@ import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/4/18 17:38.
+ * [车卡办理]的View层。
+ * 打开方式：StartApp-->管家-->办理车卡
  */
 public class CarCardTransactFragment extends BaseFragment {
     private static final String TAG = CarCardTransactFragment.class.getSimpleName();
@@ -61,10 +63,10 @@ public class CarCardTransactFragment extends BaseFragment {
     @OnClick({R.id.ll_month_car_pay, R.id.ll_owner_garage})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ll_month_car_pay:
+            case R.id.ll_month_car_pay://月卡缴费
                 start(PublishMonthCardFragment.newInstance(0, null));
                 break;
-            case R.id.ll_owner_garage:
+            case R.id.ll_owner_garage://业主车库
                 start(PublishOwnerCardFragment.newInstance(null));
                 break;
         }

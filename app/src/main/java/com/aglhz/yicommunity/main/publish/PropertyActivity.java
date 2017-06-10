@@ -9,6 +9,9 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.main.publish.view.ComplainFragment;
 import com.aglhz.yicommunity.main.propery.view.RepairRecordFragment;
 
+/**
+ * 物业模块的父容器
+ */
 public class PropertyActivity extends BaseActivity {
     private static final String TAG = PropertyActivity.class.getSimpleName();
     int intFromTo;

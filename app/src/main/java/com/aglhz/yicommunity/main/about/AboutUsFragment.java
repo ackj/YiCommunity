@@ -30,6 +30,7 @@ import butterknife.OnClick;
  *
  * [关于我们]的View层。
  * 打开方式：Start App-->我的-->关于我们
+ *
  */
 public class AboutUsFragment extends BaseFragment {
     private static final String TAG = AboutUsFragment.class.getSimpleName();

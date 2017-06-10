@@ -29,6 +29,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/5/18 0018 17:36.
  * Email: liujia95me@126.com
+ * [物业投诉回复]的View层。
  */
 
 public class ComplainReplyFragment extends BaseFragment<ComplainReplyContract.Presenter> implements ComplainReplyContract.View {
@@ -45,6 +46,11 @@ public class ComplainReplyFragment extends BaseFragment<ComplainReplyContract.Pr
     private Unbinder unbinder;
     private ComlpainReplyRVAdapter adapter;
 
+    /**
+     * ComplainReplyFragment 的创建入口。
+     * @param complaintFid 物业投诉的fid
+     * @return
+     */
     public static ComplainReplyFragment newInstance(String complaintFid) {
         ComplainReplyFragment fragment = new ComplainReplyFragment();
         Bundle bundle = new Bundle();
@@ -109,6 +115,10 @@ public class ComplainReplyFragment extends BaseFragment<ComplainReplyContract.Pr
         unbinder.unbind();
     }
 
+    /**
+     * 响应请求投诉回复列表
+     * @param response
+     */
     @Override
     public void start(Object response) {
         ptrFrameLayout.refreshComplete();

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 
+/**
+ * [关于我们]的父容器。
+ */
 public class AboutActivity extends BaseActivity {
     private static final String TAG = AboutActivity.class.getSimpleName();
 

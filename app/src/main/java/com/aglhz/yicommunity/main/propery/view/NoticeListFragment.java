@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
@@ -42,6 +41,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/5/9 0009 22:33.
  * Email: liujia95me@126.com
+ * [物业公告]的View层。
+ * 打开方式：StartApp-->社区-->物业公告
  */
 
 public class NoticeListFragment extends BaseFragment<NoticeListContract.Presenter> implements NoticeListContract.View {
@@ -105,7 +106,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-            mPresenter.requestNotices(params);
+            mPresenter.requestNotices(params);//请求物业公告列表
 
         }, recyclerView);
 
@@ -135,7 +136,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         params.page = 1;
         params.pageSize = Constants.PAGE_SIZE;
         params.cmnt_c = UserHelper.communityCode;
-        mPresenter.requestNotices(params);
+        mPresenter.requestNotices(params);//请求物业公告列表
     }
 
     private void go2Web(String title, String link) {
@@ -170,6 +171,10 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求公告列表
+     * @param datas
+     */
     @Override
     public void responseNotices(List<NoticeBean.DataBean.NoticeListBean> datas) {
         ptrFrameLayout.refreshComplete();

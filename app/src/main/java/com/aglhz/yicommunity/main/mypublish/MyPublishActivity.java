@@ -6,6 +6,9 @@ import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.main.mypublish.view.MyPublishFragment;
 
+/**
+ * 我的发布的父容器
+ */
 public class MyPublishActivity extends BaseActivity {
     private static final String TAG = MyPublishActivity.class.getSimpleName();
 

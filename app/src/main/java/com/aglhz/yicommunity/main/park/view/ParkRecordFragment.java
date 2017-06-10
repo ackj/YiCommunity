@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DateUtils;
 import com.aglhz.abase.widget.statemanager.StateManager;
@@ -33,10 +32,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.aglhz.yicommunity.R.id.ptrFrameLayout;
-
 /**
  * Created by Administrator on 2017/4/19 9:35.
+ * [停车记录]的View层。
+ * 打开方式：StartApp-->管家-->智慧停车[停车记录]
  */
 public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presenter> implements ParkRecordContract.View {
     private static final String TAG = ParkRecordFragment.class.getSimpleName();
@@ -99,7 +98,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-            mPresenter.requestParkReocrd(params);
+            mPresenter.requestParkReocrd(params);//请求停车记录
         }, recyclerView);
         recyclerView.setAdapter(adapter);
     }
@@ -133,6 +132,10 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求停车记录
+     * @param datas
+     */
     @Override
     public void responseParkRecord(List<ParkRecordListBean.PackRecordBean> datas) {
         dismissLoadingDialog();
@@ -172,10 +175,14 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
         }
     }
 
+    /**
+     * 弹出Dialog供用户选择时间筛选停车记录
+     * @param tv
+     */
     private void setTime(TextView tv) {
         TimePickerView pvTime = new TimePickerView.Builder(_mActivity, (date, v) -> {
             tv.setText(getTime(date));
-            requestSearch();
+            requestSearch();//每次选择完后时间就进行一次搜索请求
         })
                 .setType(TimePickerView.Type.YEAR_MONTH_DAY)
                 .build();
@@ -185,6 +192,9 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
         pvTime.show();
     }
 
+    /**
+     * 请求搜索停车记录
+     */
     private void requestSearch() {
         params.searchStartTime = tvStartTime.getText().toString().trim();
         params.searchEndTime = tvEndTime.getText().toString().trim();
@@ -193,7 +203,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
             adapter.getData().clear();
             adapter.notifyDataSetChanged();
         }
-        mPresenter.requestParkReocrd(params);
+        mPresenter.requestParkReocrd(params);//请求停车记录
         showLoadingDialog();
     }
 

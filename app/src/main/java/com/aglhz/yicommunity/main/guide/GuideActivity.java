@@ -16,8 +16,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/6/8 0008 09:14.
  * Email: liujia95me@126.com
+ * 引导页
  */
-
 public class GuideActivity extends BaseActivity {
 
     @BindView(R.id.image_guide_1)
@@ -25,12 +25,6 @@ public class GuideActivity extends BaseActivity {
     @BindView(R.id.image_guide_2)
     ImageView ivGuide2;
 
-    //    public static final int GUIDE_ADD_HOUSE = R.drawable.bg_guide_01;
-//    public static final int GUIDE_SET_OPEN_DOOR = R.drawable.bg_guide_02_1242px_2208px;
-//    public static final int GUIDE_OPEN_DOOR = R.drawable.bg_guide_03_1242px_2208px;
-//    public static final int GUIDE_PARK_PAY = R.drawable.bg_guide_04_1242px_2208px;
-//    public static final int GUIDE_MONTH_CAR_PAY = R.drawable.bg_guide_05_1242px_2208px;
-//    public static final int GUIDE_CAR_CARD = R.drawable.bg_guide_06_1242px_2208px;
     private Unbinder unbinder;
     private int[] guides;
     private int currentPosition;
@@ -43,6 +37,11 @@ public class GuideActivity extends BaseActivity {
         initData();
     }
 
+    @Override
+    public boolean swipeBackPriority() {
+        return false;
+    }
+
     private void initData() {
         Intent intent = getIntent();
         guides = intent.getIntArrayExtra("guide");
@@ -50,11 +49,14 @@ public class GuideActivity extends BaseActivity {
             Glide.with(this).load(guides[i])
                     .preload();
         }
-        setGuideFromType();
+        loadGuides();
     }
 
-    private void setGuideFromType() {
-
+    /**
+     * 加载指引页
+     * 指引页是以两层ImageView实现的，目的是为了让两张以上引导页切换时自然过渡
+     */
+    private void loadGuides() {
         if (currentPosition < guides.length) {
             Glide.with(this)
                     .load(guides[currentPosition])
@@ -74,7 +76,7 @@ public class GuideActivity extends BaseActivity {
 
     @OnClick(R.id.image_guide_1)
     public void onViewClicked() {
-        setGuideFromType();
+        loadGuides();
     }
 
     @Override

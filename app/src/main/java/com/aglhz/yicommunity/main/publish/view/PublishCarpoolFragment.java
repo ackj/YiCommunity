@@ -80,8 +80,8 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private Params params = Params.getInstance();
-    private int REQUEST_START_POINT_CODE = 100;
-    private int REQUEST_END_POINT_CODE = 101;
+    private int REQUEST_START_POINT_CODE = 100;//选择起始时间的rqeeustCode
+    private int REQUEST_END_POINT_CODE = 101;//选择结束时间的rqeeustCode
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
@@ -191,6 +191,10 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求发布拼车服务成功
+     * @param bean
+     */
     @Override
     public void responseSuccess(BaseBean bean) {
         dismissLoadingDialog();
@@ -295,6 +299,6 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         params.positionAddress = UserHelper.positionAddress;
         params.positionType = 2;
         showLoadingDialog();
-        mPresenter.requestSubmit(params);
+        mPresenter.requestSubmit(params);//请求提交拼车服务
     }
 }

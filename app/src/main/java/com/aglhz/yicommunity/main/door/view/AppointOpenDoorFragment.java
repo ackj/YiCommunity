@@ -36,6 +36,9 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/4/21 9:14.
  * Email: liujia95me@126.com
+ * <p>
+ * [指定开门]的View层。
+ * 打开方式：AppStart-->管家-->智慧门禁[指定开门]
  */
 public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContract.Presenter> implements AppointOpenDoorContract.View {
     private static final String TAG = AppointOpenDoorFragment.class.getSimpleName();
@@ -77,6 +80,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
+        initListener();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
@@ -99,21 +103,29 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new AppointOpenDoorRVAdapter();
         adapter.setEnableLoadMore(true);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    private void initListener() {
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
             ALog.e("加载更多………………………………");
-            mPresenter.requestDoors(params);
+            mPresenter.requestDoors(params);//请求获取开门列表
         }, recyclerView);
-
-        recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             ALog.e("111111111");
             Params params = Params.getInstance();
             params.dir = AppointOpenDoorFragment.this.adapter.getData().get(position).getDir();
-            mPresenter.requestAppointOpenDoor(params);
+            mPresenter.requestAppointOpenDoor(params);//请求一键开门
         });
     }
 
+    /**
+     * 响应请求
+     *
+     * @param datas
+     */
     @Override
     public void responseDoors(DoorListBean datas) {
         ptrFrameLayout.refreshComplete();
@@ -121,7 +133,6 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
             adapter.loadMoreEnd();
             return;
         }
-
         if (params.page == 1) {
             adapter.setNewData(datas.getData());
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
@@ -132,6 +143,11 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         }
     }
 
+    /**
+     * 响应请求开门的结果
+     *
+     * @param mBaseBean
+     */
     @Override
     public void responseAppointOpenDoor(BaseBean mBaseBean) {
         DialogHelper.successSnackbar(getView(), "开门成功！");
@@ -161,6 +177,11 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * 选择社区后要刷新房门列表
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         ptrFrameLayout.autoRefresh();

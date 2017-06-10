@@ -62,6 +62,8 @@ import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TY
 /**
  * Author: LiuJia on 2017/5/11 0011 15:52.
  * Email: liujia95me@126.com
+ * [评论]的View层
+ *
  */
 
 public class CommentFragment extends BaseFragment<CommentContract.Presenter> implements CommentContract.View {
@@ -152,7 +154,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         commentListParams.fid = fid;
         commentListParams.page = 1;
         commentListParams.pageSize = Constants.PAGE_SIZE;
-        requestComments();
+        requestComments();//请求评论列表
     }
 
     private KeyboardChangeListener mKeyboardChangeListener;
@@ -235,25 +237,28 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             commentListParams.page++;
-            requestComments();
+            requestComments();//请求评论列表
         }, recyclerView);
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * 请求评论列表
+     */
     private void requestComments() {
         switch (type) {
             case TYPE_EXCHANGE:
             case TYPE_MY_EXCHANGE:
-                mPresenter.requestExchangeCommentList(commentListParams);
+                mPresenter.requestExchangeCommentList(commentListParams);//请求闲置交换的评论列表
                 break;
             case TYPE_CARPOOL_OWNER:
             case TYPE_CARPOOL_PASSENGER:
             case TYPE_MY_CARPOOL:
-                mPresenter.requestCarpoolCommentList(commentListParams);
+                mPresenter.requestCarpoolCommentList(commentListParams);//请求拼车服务的评论列表
                 break;
             case TYPE_NEIGHBOUR:
             case TYPE_MY_NEIGHBOUR:
-                mPresenter.requestNeighbourCommentList(commentListParams);
+                mPresenter.requestNeighbourCommentList(commentListParams);//请求左邻右里的评论列表
                 break;
         }
     }
@@ -290,6 +295,10 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
+    /**
+     * 响应请求评论列表
+     * @param datas
+     */
     @Override
     public void responseCommentList(List<CommentBean> datas) {
         ptrFrameLayout.refreshComplete();
@@ -312,6 +321,10 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         }
     }
 
+    /**
+     * 响应请求发送评论成功
+     * @param bean
+     */
     @Override
     public void responseCommentSuccess(BaseBean bean) {
         etInputFragmentComment.setText("");
@@ -323,6 +336,9 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         sendComment();
     }
 
+    /**
+     * 发送评论
+     */
     private void sendComment() {
         String comment = etInputFragmentComment.getText().toString().trim();
         if (TextUtils.isEmpty(comment)) {
@@ -334,16 +350,16 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         switch (type) {
             case TYPE_EXCHANGE:
             case TYPE_MY_EXCHANGE:
-                mPresenter.requestSubmitExchangeComment(commentPostParams);
+                mPresenter.requestSubmitExchangeComment(commentPostParams);//请求提交闲置交换评论
                 break;
             case TYPE_CARPOOL_OWNER:
             case TYPE_CARPOOL_PASSENGER:
             case TYPE_MY_CARPOOL:
-                mPresenter.requestSubmitCarpoolComment(commentPostParams);
+                mPresenter.requestSubmitCarpoolComment(commentPostParams);//请求提交拼车服务评论
                 break;
             case TYPE_NEIGHBOUR:
             case TYPE_MY_NEIGHBOUR:
-                mPresenter.requestSubmitNeighbourComment(commentPostParams);
+                mPresenter.requestSubmitNeighbourComment(commentPostParams);//请求提交左邻右里评论
                 break;
         }
     }

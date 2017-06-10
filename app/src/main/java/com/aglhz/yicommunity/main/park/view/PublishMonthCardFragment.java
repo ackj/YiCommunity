@@ -46,6 +46,8 @@ import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/4/19 9:28.
+ * [月卡缴费]的View层。
+ * 打开方式：StartApp-->管家-->办理车卡-->月卡缴费
  */
 public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContract.Presenter> implements PublishMonthCardContract.View {
 
@@ -89,13 +91,19 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     private Unbinder unbinder;
     private Params params = Params.getInstance();
 
-    public static final int TYPE_FIRST_PAY = 1;
-    public static final int TYPE_RECHARGE = 2;
+    public static final int TYPE_FIRST_PAY = 1;//首次缴费
+    public static final int TYPE_RECHARGE = 2;//续费
 
     private int type;
     private String fid;
     private CardRechargeBean.DataBean cardRechargeBean;
 
+    /**
+     * PublishMonthCardFragment创建的入口
+     * @param type 页面显示的类型（1.首次缴费,2.续费,other.申请月卡）
+     * @param fid 只针对type值为1或2的月卡的fid
+     * @return
+     */
     public static PublishMonthCardFragment newInstance(int type, String fid) {
         PublishMonthCardFragment fragment = new PublishMonthCardFragment();
         Bundle bundle = new Bundle();
@@ -145,12 +153,12 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     private void initData() {
         if (type == TYPE_FIRST_PAY) {
             params.fid = fid;
-            mPresenter.requestCardPay(params);
+            mPresenter.requestCardPay(params);//请求月卡的信息
             tvHintMessage.setVisibility(View.VISIBLE);
             btSubmit.setText("立即缴费");
         } else if (type == TYPE_RECHARGE) {
             params.fid = fid;
-            mPresenter.requestCardRecharge(params);
+            mPresenter.requestCardRecharge(params);//请求月卡的信息
             btSubmit.setText("立即续费");
             GuideHelper.showCardPaydGuide(_mActivity);
         }
@@ -174,10 +182,10 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
                 switch (type) {
                     case TYPE_FIRST_PAY:
                     case TYPE_RECHARGE:
-                        pay();
+                        pay();//跳支付
                         break;
                     default:
-                        submit();
+                        submit();//提交申请月卡
                         break;
                 }
                 break;
@@ -192,7 +200,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
                         showRuleDialog(cardRechargeBean.getMonthCardRuleList());
                     }
                 } else {
-                    mPresenter.requestMonthCardRule(params);
+                    mPresenter.requestMonthCardRule(params);//请求预交费月数
                 }
                 break;
         }
@@ -211,6 +219,9 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
         tvParkAddress.setText(event.bean.getName());
     }
 
+    /**
+     * 月卡申请提交
+     */
     private void submit() {
         //车牌号
         String carNum = etInputCarNum.getText().toString().trim();
@@ -241,9 +252,15 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
             DialogHelper.warningSnackbar(getView(), "请输入联系方式");
             return;
         }
-        mPresenter.requestSubmitMonthCard(params);
+        mPresenter.requestSubmitMonthCard(params);//请求月卡提交申请
     }
 
+    /**
+     * 车牌归属地的数据返回结果
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
@@ -262,12 +279,20 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求申请月卡成功
+     * @param bean
+     */
     @Override
     public void responseSubmitSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), bean.getOther().getMessage());
         pop();
     }
 
+    /**
+     * 响应请求预缴月数列表
+     * @param datas
+     */
     @Override
     public void responseRuleList(List<MonthCardRuleBean> datas) {
         showRuleDialog(datas);
@@ -286,6 +311,10 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
         builder.show();
     }
 
+    /**
+     * 响应请求月卡的信息
+     * @param bean
+     */
     @Override
     public void responseCardPay(CarCardBean.DataBean bean) {
         String carNo = bean.getCarNo();

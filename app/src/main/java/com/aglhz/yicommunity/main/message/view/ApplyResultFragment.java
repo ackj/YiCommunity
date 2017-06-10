@@ -21,6 +21,7 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/19 0019 17:54.
  * Email: liujia95me@126.com
+ * 申请结果的View层。
  */
 
 public class ApplyResultFragment extends BaseFragment {
@@ -41,6 +42,12 @@ public class ApplyResultFragment extends BaseFragment {
     private String des;
     private String title;
 
+    /**
+     * ApplyResultFragment的创建入口
+     * @param title toolbar的标题
+     * @param des 结果的描述信息
+     * @return
+     */
     public static ApplyResultFragment newInstance(String title, String des) {
         ApplyResultFragment fragment = new ApplyResultFragment();
         Bundle bundle = new Bundle();

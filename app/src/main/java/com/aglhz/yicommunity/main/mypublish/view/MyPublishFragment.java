@@ -19,6 +19,8 @@ import butterknife.ButterKnife;
 /**
  * Author: LiuJia on 2017/4/21 18:56.
  * Email: liujia95me@126.com
+ * [我的发布]的View层。
+ * 打开方式：StartApp-->我的-->我的发布
  */
 public class MyPublishFragment extends BaseFragment {
     private static final String TAG = MyPublishFragment.class.getSimpleName();

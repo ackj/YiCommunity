@@ -10,14 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateLayout;
-import com.aglhz.abase.widget.statemanager.StateListener;
 import com.aglhz.abase.widget.statemanager.StateManager;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
 import com.aglhz.yicommunity.bean.SocialityListBean;
@@ -47,6 +44,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/5/11 0011 14:06.
  * Email: liujia95me@126.com
+ * 所有与社交相关（拼车服务，左邻右里，闲置交换）的真正内容的View层
  */
 
 public class SocialityListFragment extends BaseFragment<SocialityContract.Presenter> implements SocialityContract.View {
@@ -57,22 +55,28 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     PtrFrameLayout ptrFrameLayout;
     @BindView(R.id.stateLayout)
     StateLayout stateLayout;
-    public static final int TYPE_EXCHANGE = 100;
-    public static final int TYPE_CARPOOL_OWNER = 101;
-    public static final int TYPE_CARPOOL_PASSENGER = 106;
-    public static final int TYPE_NEIGHBOUR = 102;
-    public static final int TYPE_MY_EXCHANGE = 103;
-    public static final int TYPE_MY_CARPOOL = 104;
-    public static final int TYPE_MY_NEIGHBOUR = 105;
+    public static final int TYPE_EXCHANGE = 100;//闲置交换
+    public static final int TYPE_CARPOOL_OWNER = 101;//拼车服务（找车主）
+    public static final int TYPE_CARPOOL_PASSENGER = 106;//拼车服务（找乘客）
+    public static final int TYPE_NEIGHBOUR = 102;//左邻右里
+    public static final int TYPE_MY_EXCHANGE = 103;//我发布的闲置交换
+    public static final int TYPE_MY_CARPOOL = 104;//我发布的拼车服务
+    public static final int TYPE_MY_NEIGHBOUR = 105;//我发布的左邻右里
 
     private LinearLayoutManager mLinearLayoutManager;
     private Unbinder unbinder;
     private SocialityListRVAdapter adapter;
-    private int type;
-    private int removePosition;
+    private int type;//显示类型
+    private int removePosition;//记录要删除的item的位置
     private Params params = Params.getInstance();
     private StateManager mStateManager;
 
+    /**
+     * SocialityListFragment的创建入口
+     *
+     * @param type 根据类型显示不同的数据
+     * @return
+     */
     public static SocialityListFragment newInstance(int type) {
         SocialityListFragment fragment = new SocialityListFragment();
         Bundle bundle = new Bundle();
@@ -241,13 +245,13 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         params.fid = fid;
         switch (type) {
             case TYPE_MY_CARPOOL:
-                mPresenter.requestRemoveMyCarpool(params);
+                mPresenter.requestRemoveMyCarpool(params); //请求删除我发布的拼车服务信息
                 break;
             case TYPE_MY_EXCHANGE:
-                mPresenter.requestRemoveMyExchange(params);
+                mPresenter.requestRemoveMyExchange(params);//请求删除我发布的闲置交换信息
                 break;
             case TYPE_MY_NEIGHBOUR:
-                mPresenter.requestRemoveMyNeighbour(params);
+                mPresenter.requestRemoveMyNeighbour(params);//请求删除我发布的左邻右里信息
                 break;
         }
     }
@@ -262,20 +266,20 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     public void requestNet() {
         if (type == TYPE_EXCHANGE) {
-            mPresenter.requestExchangeList(params);
+            mPresenter.requestExchangeList(params);//请求闲置交换数据
         } else if (type == TYPE_NEIGHBOUR) {
-            mPresenter.requestNeighbourList(params);
+            mPresenter.requestNeighbourList(params);//请求左邻右里
         } else if (type == TYPE_CARPOOL_OWNER || type == TYPE_CARPOOL_PASSENGER) {
             params.currentPositionLat = UserHelper.latitude;
             params.currentPositionLng = UserHelper.longitude;
             params.carpoolType = type == TYPE_CARPOOL_OWNER ? 1 : 2;
-            mPresenter.requestCarpoolList(params);
+            mPresenter.requestCarpoolList(params);//请求拼车服务
         } else if (type == TYPE_MY_CARPOOL) {
-            mPresenter.requestMyCarpoolList(params);
+            mPresenter.requestMyCarpoolList(params);//请求我发布的拼车服务
         } else if (type == TYPE_MY_EXCHANGE) {
-            mPresenter.requestMyExchangeList(params);
+            mPresenter.requestMyExchangeList(params);//请求我发布的闲置交换
         } else if (type == TYPE_MY_NEIGHBOUR) {
-            mPresenter.requestMyNeihbourList(params);
+            mPresenter.requestMyNeihbourList(params);//请求我发布的左邻右里
         }
     }
 
@@ -306,6 +310,10 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * 响应请求数据成功
+     * @param datas
+     */
     @Override
     public void responseSuccess(List<SocialityListBean.DataBean.MomentsListBean> datas) {
         ptrFrameLayout.refreshComplete();
@@ -328,6 +336,10 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         }
     }
 
+    /**
+     * 响应请求删除成功
+     * @param bean
+     */
     @Override
     public void removeSuccess(BaseBean bean) {
         DialogHelper.successSnackbar(getView(), "删除成功");

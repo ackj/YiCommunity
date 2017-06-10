@@ -31,6 +31,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/31 0031 16:30.
  * Email: liujia95me@126.com
+ * [临停缴费]的View层
+ * 打开方式：StartApp-->社区-->临停缴费
  */
 
 public class TemporaryParkPayFragment extends BaseFragment {
@@ -71,7 +73,7 @@ public class TemporaryParkPayFragment extends BaseFragment {
         toolbarTitle.setText("临停缴费");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
-
+        //显示引导页
         GuideHelper.showTempporaryCardPayGuide(_mActivity);
     }
 

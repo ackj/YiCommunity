@@ -34,6 +34,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by Administrator on 2017/4/19 9:39.
+ * [我的车卡]的View层。
+ * 打开方式：StartApp-->管家-->智慧管家[我的车卡]
  */
 public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> implements CarCardContract.View {
     private static final String TAG = CarCardFragment.class.getSimpleName();
@@ -93,7 +95,7 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
     public void onRefresh() {
         params.page = 1;
         params.pageSize = Constants.PAGE_SIZE;
-        mPresenter.requestCarCardList(params);
+        mPresenter.requestCarCardList(params);//请求车卡列表
     }
 
     private void initData() {
@@ -102,7 +104,7 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-            mPresenter.requestCarCardList(params);
+            mPresenter.requestCarCardList(params);//请求车卡列表
         }, recyclerView);
         recyclerView.setAdapter(adapter);
     }
@@ -140,7 +142,7 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
                     builder.setPositiveButton("确认", (dialog, which) -> {
                         removePosition = position;
                         params.fid = bean.getFid();
-                        mPresenter.requestDeleteCarCard(params);
+                        mPresenter.requestDeleteCarCard(params);//请求删除车卡
                     });
                     builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
                     builder.create().show();
@@ -169,7 +171,7 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
                     pop();
                     break;
                 case 200:
-                    mPresenter.requestCarCardList(params);
+                    mPresenter.requestCarCardList(params);//请求车卡列表
                     break;
             }
         }
@@ -199,6 +201,10 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求车卡列表
+     * @param datas
+     */
     @Override
     public void responseCarCardList(List<CarCardListBean.DataBean.CardListBean> datas) {
         ptrFrameLayout.refreshComplete();
@@ -226,6 +232,10 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
         }
     }
 
+    /**
+     * 响应请求删除车卡（只有在车卡到期才能删除）
+     * @param baseBean
+     */
     @Override
     public void responseDeleteSuccess(BaseBean baseBean) {
         adapter.remove(removePosition);

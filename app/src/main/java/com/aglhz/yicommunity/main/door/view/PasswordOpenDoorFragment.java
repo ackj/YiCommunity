@@ -31,6 +31,8 @@ import butterknife.OnClick;
 /**
  * Author: LiuJia on 2017/4/21 9:54.
  * Email: liujia95me@126.com
+ * [密码开门]的View层
+ * 打开方式：Start App-->管家-->智慧门禁[密码开门]
  */
 public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContract.Presenter> implements PasswordOpenDoorContract.View {
     private static final String TAG = PasswordOpenDoorFragment.class.getSimpleName();
@@ -76,6 +78,10 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
+    /**
+     * 响应请求密码
+     * @param mPasswordBean
+     */
     @Override
     public void responsePassword(PasswordBean mPasswordBean) {
         dismissLoadingDialog();
@@ -98,6 +104,9 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
         }
     }
 
+    /**
+     * 密码分享
+     */
     private void sharePassword() {
         new AlertDialog.Builder(_mActivity)
                 .setTitle("选择分享类型")
@@ -105,7 +114,6 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
                     switch (which) {
                         case 0: //微信
                             break;
-
                         case 1: //短信
                             sendSMS();
                             break;
@@ -113,6 +121,9 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
                 }).show();
     }
 
+    /**
+     * 短信分享
+     */
     private void sendSMS() {
         Uri smsToUri = Uri.parse("smsto:");
         Intent sendIntent = new Intent(Intent.ACTION_VIEW, smsToUri);

@@ -32,7 +32,7 @@ import butterknife.Unbinder;
  * Email: liujia95me@126.com
  *
  * [意见反馈] 的View层。
- *
+ * 打开方式：Start App-->我的-->关于我们-->意见反馈
  */
 public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> implements FeedbackContract.View, TextWatcher {
     private static final String TAG = FeedbackFragment.class.getSimpleName();
@@ -105,7 +105,7 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
             return;
         }
         params.des = etDescribe.getText().toString().trim();
-        mPresenter.start(params);
+        mPresenter.start(params);//请求提交反馈
         showLoadingDialog();
     }
 

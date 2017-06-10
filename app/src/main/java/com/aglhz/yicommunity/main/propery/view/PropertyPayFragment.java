@@ -30,6 +30,8 @@ import butterknife.Unbinder;
 /**
  * Author: LiuJia on 2017/5/7 0007 20:16.
  * Email: liujia95me@126.com
+ * [物业账单]的View层
+ *
  */
 
 public class PropertyPayFragment extends BaseFragment {

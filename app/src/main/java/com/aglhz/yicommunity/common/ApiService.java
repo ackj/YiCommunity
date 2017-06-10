@@ -62,10 +62,12 @@ public interface ApiService {
 
     //基础路径
     String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+//    String BASE_PROPERTY = "http://192.168.250.115:8080/property_code";//大叔调试的IP
 
     String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
-//    String BASE_PROPERTYCFG_M = "http://192.168.250.108:8080/propertyCFG-m";  //调试之用
+    //    String BASE_PROPERTYCFG_M = "http://192.168.250.108:8080/propertyCFG-m";  //调试之用
+    String BASE_TEST_PROPERTY_CODE = "http://192.168.250.115:8080/property_code";//大叔调试的IP
 
     //********************以下为Web*******************************
     String PRODUCT_INTRODUCTION = "http://www.aglhz.com/sub_property_ysq/m/html/introduction.html";
@@ -214,7 +216,6 @@ public interface ApiService {
     //****************以下获取小区，楼栋，单元，楼层，房间等**********************************
 
     //请求小区列表
-
     String requestCommunitys = BASE_PROPERTYCFG_M + "/client/communityList.do";
 
     //    @POST("/propertyCFG-m/client/communityList.do")
@@ -318,10 +319,9 @@ public interface ApiService {
     @POST
     Observable<BaseBean> postRepair(@Url String url, @Body MultipartBody file);
 
-
+    //提交管理投诉
     String requestComplain = BASE_PROPERTY + "/property/complaint/from-client/complaint-create";
 
-    //提交管理投诉
     @POST
     Observable<BaseBean> postComplain(@Url String url, @Body MultipartBody file);
 
@@ -672,6 +672,8 @@ public interface ApiService {
 
     //月卡办理
     String requestSubmitMonthCard = BASE_PROPERTY + "/park/card/from-client/month-card-create";
+//    String requestSubmitMonthCard = BASE_TEST_PROPERTY_CODE + "/park/card/from-client/month-card-create";
+
 
     @POST
     Observable<BaseBean> requestSubmitMonthCard(@Url String url, @Body MultipartBody body);
@@ -691,6 +693,7 @@ public interface ApiService {
 
     //我的车卡列表
     String requestCarCardList = BASE_PROPERTY + "/park/card/to-client/card-list";
+//    String requestCarCardList = BASE_TEST_PROPERTY_CODE + "/park/card/to-client/card-list";
 
     @POST
     Observable<CarCardListBean> requestCarCardList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
@@ -763,7 +766,7 @@ public interface ApiService {
     Observable<BaseBean> requestSearchParkSpace(@Url String url, @Query("parkPlaceFid") String fid);
 
     //todo:（临时测试用的接口）车卡管理里列出某会员的月卡充值记录列表
-    String requestRechargeRecord = "http://192.168.250.108:8080/property_code/park/card/to-client/month-card-recharge-record-list";
+    String requestRechargeRecord = BASE_PROPERTY + "/park/card/to-client/month-card-recharge-record-list";
 //    String requestRechargeRecord = BASE_PROPERTY+"/park/card/to-client/month-card-recharge-record-list";
 
     @POST

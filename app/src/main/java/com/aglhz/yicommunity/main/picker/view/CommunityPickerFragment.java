@@ -38,6 +38,9 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by Administrator on 2017/4/29 0029.
+ * [小区名称]的View层。
+ * 供用户选择当前所处的社区
+ * 打开方式：StartApp-->社区-->切换
  */
 public class CommunityPickerFragment extends BaseFragment<CommunityPickerContract.Presenter> implements CommunityPickerContract.View {
     private static final String TAG = CommunityPickerFragment.class.getSimpleName();
@@ -150,7 +153,7 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
     @Override
     public void onRefresh() {
         params.city = UserHelper.city;
-        mPresenter.requestCommunitys(params);
+        mPresenter.requestCommunitys(params);//请求社区列表
     }
 
     @Override
@@ -175,6 +178,10 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
+    /**
+     * 响应请求社区列表
+     * @param beans
+     */
     @Override
     public void responseCommunitys(List<CommunitySelectBean.DataBean.CommunitiesBean> beans) {
         ptrFrameLayout.refreshComplete();

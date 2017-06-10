@@ -29,6 +29,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author: LiuJia on 2017/5/22 0022 10:21.
  * Email: liujia95me@126.com
+ * [商品分类]的View层
+ * 打开方式：StartApp-->管家-->智能家居[智能设备商城]
  */
 
 public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryContract.Presenter> implements GoodsCategoryContract.View {
@@ -80,7 +82,7 @@ public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryContract.Pr
     }
 
     private void initData() {
-        mPresenter.requestFirstLevel(params);
+        mPresenter.requestFirstLevel(params);//请求一级菜单
 
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 2));
         adapter = new GoodsCategoryRVAdapter();
@@ -94,6 +96,11 @@ public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryContract.Pr
         });
     }
 
+    /**
+     * 响应请求一级菜单
+     * 目前做法是只要获取最后一个条目进行跳转到二级菜单即可
+     * @param datas
+     */
     @Override
     public void responseFirstLevel(List<FirstLevelBean.DataBean> datas) {
         startForResult(SmartHomeMallFragment.newInstance(datas.get(datas.size() - 1).getId()), 100);
