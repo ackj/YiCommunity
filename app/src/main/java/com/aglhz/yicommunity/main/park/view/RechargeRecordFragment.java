@@ -73,7 +73,6 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
         initToolbar();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initData();
-        initListener();
     }
 
     @Override
@@ -102,8 +101,6 @@ public class RechargeRecordFragment extends BaseFragment<RechargeRecordContract.
         recyclerView.setAdapter(adapter);
     }
 
-    private void initListener() {
-    }
 
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {

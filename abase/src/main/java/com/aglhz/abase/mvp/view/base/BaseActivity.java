@@ -10,7 +10,6 @@ import com.aglhz.abase.common.ActivityManager;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.network.http.LoginInterceptor;
-import com.aglhz.abase.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
