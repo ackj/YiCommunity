@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Author: LiuJia on 2017/5/10 0010 14:40.
@@ -29,11 +30,9 @@ import uk.co.senab.photoview.PhotoView;
  */
 
 public class PreviewActivity extends BaseActivity {
-
     private static final String TAG = PreviewActivity.class.getSimpleName();
     @BindView(R.id.viewpager_activity_preview)
-    ViewPager viewpager;
-
+    ViewPager mViewPager;
     private Unbinder unbinder;
     private ArrayList<String> picsList;
 
@@ -55,8 +54,8 @@ public class PreviewActivity extends BaseActivity {
             ALog.e(TAG, picsList.get(i));
         }
 
-        viewpager.setAdapter(new PreviewAdapter());
-        viewpager.setCurrentItem(position);
+        mViewPager.setAdapter(new PreviewAdapter());
+        mViewPager.setCurrentItem(position);
     }
 
     private void initListener() {
@@ -66,6 +65,9 @@ public class PreviewActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        if (mViewPager != null) {
+            mViewPager.setAdapter(null);
+        }
     }
 
     class PreviewAdapter extends PagerAdapter {
@@ -83,29 +85,25 @@ public class PreviewActivity extends BaseActivity {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-//            GestureImageView iv = (GestureImageView) LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_preview, null, false);
-            PhotoView iv = (PhotoView) LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_preview, null, false);
-//            iv.getController().enableScrollInViewPager(viewpager);
-//            iv.getController().getSettings()
-//                    .setMaxZoom(2f)
-//                    .setDoubleTapZoom(-1f) // Falls back to max zoom level
-//                    .setPanEnabled(true)
-//                    .setZoomEnabled(true)
-//                    .setDoubleTapEnabled(true)
-//                    .setRotationEnabled(false)
-//                    .setRestrictRotation(false)
-//                    .setOverscrollDistance(0f, 0f)
-//                    .setOverzoomFactor(2f)
-//                    .setFillViewport(false)
-//                    .setFitMethod(Settings.Fit.INSIDE)
-//                    .setGravity(Gravity.CENTER);
+            PhotoView mPhotoView = (PhotoView) LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_preview, null, false);
+            mPhotoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                @Override
+                public void onPhotoTap(View view, float x, float y) {
+                }
+
+                @Override
+                public void onOutsidePhotoTap() {//点击照片边缘触发对出效果
+                    onBackPressed();
+                }
+            });
+
             Glide.with(BaseApplication.mContext)
                     .load(picsList.get(position))
                     .error(R.drawable.ic_default_img_120px)
                     .placeholder(R.drawable.ic_default_img_120px)
-                    .into(iv);
-            container.addView(iv);
-            return iv;
+                    .into(mPhotoView);
+            container.addView(mPhotoView);
+            return mPhotoView;
 
         }
 
@@ -114,5 +112,4 @@ public class PreviewActivity extends BaseActivity {
             container.removeView((View) object);
         }
     }
-
 }
