@@ -25,6 +25,7 @@ import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.propery.contract.NoticeListContract;
 import com.aglhz.yicommunity.main.propery.presenter.NoticeListPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -103,6 +104,10 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         ArrayList<NoticeBean.DataBean.NoticeListBean> data = new ArrayList<>();
         adapter = new NoticeListRVAdapter(data);
+        //设置Item动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.isFirstOnly(true);
+        //设置允许加载更多
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;

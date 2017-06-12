@@ -23,6 +23,7 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.main.door.contract.AppointOpenDoorContract;
 import com.aglhz.yicommunity.main.door.presenter.AppointOpenDoorPresenter;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -104,17 +105,18 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         adapter = new AppointOpenDoorRVAdapter();
         adapter.setEnableLoadMore(true);
         recyclerView.setAdapter(adapter);
-
+        //设置Item动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.isFirstOnly(true);
     }
 
     private void initListener() {
+        //设置允许加载更多
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-            ALog.e("加载更多………………………………");
             mPresenter.requestDoors(params);//请求获取开门列表
         }, recyclerView);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
-            ALog.e("111111111");
             Params params = Params.getInstance();
             params.dir = AppointOpenDoorFragment.this.adapter.getData().get(position).getDir();
             mPresenter.requestAppointOpenDoor(params);//请求一键开门

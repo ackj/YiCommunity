@@ -24,6 +24,7 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.mine.presenter.MyHousesPresenter;
 import com.aglhz.yicommunity.main.mine.contract.MyHousesContract;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -101,6 +102,10 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
 
     private void initData() {
         adapter = new MyHousesRVAdapter();
+        //设置Item动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.isFirstOnly(true);
+        //设置允许加载更多
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;

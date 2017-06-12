@@ -23,6 +23,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.park.contract.CarCardContract;
 import com.aglhz.yicommunity.main.park.presenter.CarCardPresenter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
 
@@ -101,11 +102,17 @@ public class CarCardFragment extends BaseFragment<CarCardContract.Presenter> imp
     private void initData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new CarCardRVAdapter();
+
+        //设置Item动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.isFirstOnly(true);
+
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
             mPresenter.requestCarCardList(params);//请求车卡列表
         }, recyclerView);
+
         recyclerView.setAdapter(adapter);
     }
 

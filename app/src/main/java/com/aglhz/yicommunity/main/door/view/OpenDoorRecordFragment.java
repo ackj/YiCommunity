@@ -22,6 +22,7 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.door.contract.OpenDoorRecordContract;
 import com.aglhz.yicommunity.main.door.presenter.OpenDoorRecordPresenter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -50,7 +51,7 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-    private OpenDoorRecordRVAdapter mAdapter;
+    private OpenDoorRecordRVAdapter adapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
     private StateManager mStateManager;
@@ -92,13 +93,17 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
 
     private void initData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        mAdapter = new OpenDoorRecordRVAdapter();
-        mAdapter.setEnableLoadMore(true);
-        mAdapter.setOnLoadMoreListener(() -> {
+        adapter = new OpenDoorRecordRVAdapter();
+        adapter.setEnableLoadMore(true);
+        //设置Item动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.isFirstOnly(true);
+        //设置允许加载更多
+        adapter.setOnLoadMoreListener(() -> {
             params.page++;
             mPresenter.requestRecord(params);//请求开门记录列表
         }, recyclerView);
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(adapter);
     }
 
     private void initStateManager() {
@@ -131,18 +136,18 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
             if (params.page == 1) {
                 mStateManager.showEmpty();
             }
-            mAdapter.loadMoreEnd();
+            adapter.loadMoreEnd();
             return;
         }
 
         if (params.page == 1) {
             mStateManager.showContent();
-            mAdapter.setNewData(datas);
-            mAdapter.disableLoadMoreIfNotFullPage(recyclerView);
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
-            mAdapter.addData(datas);
-            mAdapter.setEnableLoadMore(true);
-            mAdapter.loadMoreComplete();
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
         }
     }
 
@@ -159,7 +164,7 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
             //为后面的pageState做准备
             mStateManager.showError();
         } else if (params.page > 1) {
-            mAdapter.loadMoreFail();
+            adapter.loadMoreFail();
             params.page--;
         }
     }
