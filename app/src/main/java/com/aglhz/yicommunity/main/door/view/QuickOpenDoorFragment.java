@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -23,6 +22,7 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.main.door.contract.QuickOpenDoorContract;
 import com.aglhz.yicommunity.main.door.presenter.QuickOpenDoorPresenter;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,7 +53,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     PtrFrameLayout ptrFrameLayout;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    private QuickOpenDoorRVAdapter mAdapter;
+    private QuickOpenDoorRVAdapter adapter;
     private int prePosition;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
@@ -99,8 +99,8 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         toolbarTitle.setText("设置一键开门");
         toolbarMenu.setText("保存");
         toolbarMenu.setOnClickListener(v -> {
-            String dir = mAdapter.getData().get(prePosition).getDir();
-            String name = mAdapter.getData().get(prePosition).getName();
+            String dir = adapter.getData().get(prePosition).getDir();
+            String name = adapter.getData().get(prePosition).getName();
             Params params = Params.getInstance();
             params.directory = dir;
             params.deviceName = name;
@@ -112,23 +112,26 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
 
     private void initData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        mAdapter = new QuickOpenDoorRVAdapter();
-        mAdapter.setEnableLoadMore(true);
-        mAdapter.setOnLoadMoreListener(() -> {
-            ALog.e("加载更多………………………………");
+        adapter = new QuickOpenDoorRVAdapter();
+        //设置Item动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.isFirstOnly(true);
+        //设置允许加载更多
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(() -> {
             params.page++;
             mPresenter.requestDoors(params);//请求门禁列表
         }, recyclerView);
 
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(adapter);
     }
 
     private void initListener() {
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            QuickOpenDoorFragment.this.mAdapter.getData().get(prePosition).setQuickopen(false);
-            QuickOpenDoorFragment.this.mAdapter.getData().get(position).setQuickopen(true);
-            mAdapter.notifyItemChanged(prePosition);
-            mAdapter.notifyItemChanged(position);
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            QuickOpenDoorFragment.this.adapter.getData().get(prePosition).setQuickopen(false);
+            QuickOpenDoorFragment.this.adapter.getData().get(position).setQuickopen(true);
+            this.adapter.notifyItemChanged(prePosition);
+            this.adapter.notifyItemChanged(position);
             prePosition = position;
         });
     }
@@ -142,17 +145,17 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         ptrFrameLayout.refreshComplete();
 
         if (datas == null || datas.getData().isEmpty()) {
-            mAdapter.loadMoreEnd();
+            adapter.loadMoreEnd();
             return;
         }
 
         if (params.page == 1) {
-            mAdapter.setNewData(datas.getData());
-            mAdapter.disableLoadMoreIfNotFullPage(recyclerView);
+            adapter.setNewData(datas.getData());
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
-            mAdapter.addData(datas.getData());
-            mAdapter.setEnableLoadMore(true);
-            mAdapter.loadMoreComplete();
+            adapter.addData(datas.getData());
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
         }
 
         List<DoorListBean.DataBean> list = datas.getData();
@@ -170,13 +173,13 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     @Override
     public void responseQuickOpenDoor(BaseBean mBaseBean) {
         DialogHelper.successSnackbar(getView(), "设置成功！");
-        UserHelper.setDir(mAdapter.getData().get(prePosition).getDir());
+        UserHelper.setDir(adapter.getData().get(prePosition).getDir());
     }
 
     @Override
     public void onDestroy() {
-        if (mAdapter != null) {
-            mAdapter = null;
+        if (adapter != null) {
+            adapter = null;
         }
         super.onDestroy();
     }
@@ -192,7 +195,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         if (params.page == 1) {
             //为后面的pageState做准备
         } else if (params.page > 1) {
-            mAdapter.loadMoreFail();
+            adapter.loadMoreFail();
             params.page--;
         }
         DialogHelper.warningSnackbar(getView(), errorMessage);

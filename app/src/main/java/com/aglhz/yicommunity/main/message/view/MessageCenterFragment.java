@@ -28,6 +28,7 @@ import com.aglhz.yicommunity.main.message.contract.MessageCenterContract;
 import com.aglhz.yicommunity.main.message.presenter.MessageCenterPresenter;
 import com.aglhz.yicommunity.main.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -111,7 +112,10 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         layoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageCenterRVAdapter();
-
+        //设置Item动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.isFirstOnly(true);
+        //设置允许加载更多
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
@@ -214,6 +218,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     /**
      * 响应请求消息已读
+     *
      * @param bean
      */
     @Override

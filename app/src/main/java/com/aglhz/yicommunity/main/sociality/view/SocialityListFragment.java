@@ -28,6 +28,7 @@ import com.aglhz.yicommunity.main.publish.CommentActivity;
 import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
 import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -113,27 +114,6 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         initListener();
         initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
-
-        /**
-         * 以下为模板代码，随时可以删除。
-         */
-//        mStateManager = StateManager.builder(_mActivity)
-//                .setContent(recyclerView)
-//                .setEmptyView(R.layout.state_empty)
-//                .setLoadingView(R.layout.state_loading)
-//                .setErrorView(R.layout.state_error)
-//                .setNetErrorView(R.layout.state_net_error)
-//                .setErrorOnClickListener(v -> ALog.e("刷新"))
-//                .setEmptyOnClickListener(v -> ALog.e("刷新"))
-//                .setEmptyImage(R.drawable.ic_call_hangup)
-//                .setEmptyText("空空如也")
-//                .setErrorImage(R.drawable.ic_add_house_red_140px)
-//                .setErrorText("错误")
-//                .setNetErrorImage(R.drawable.ic_minehome_84px)
-//                .setNetErrorText("网络错误")
-//                .build(stateLayout);
-//
-//        mStateManager.showNetError();
     }
 
     private void initStateManager() {
@@ -190,6 +170,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         mLinearLayoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         adapter = new SocialityListRVAdapter();
+
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;

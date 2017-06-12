@@ -24,6 +24,7 @@ import com.aglhz.yicommunity.main.message.view.RepairDetailFragment;
 import com.aglhz.yicommunity.main.propery.contract.RepairApplyContract;
 import com.aglhz.yicommunity.main.propery.presenter.RepairApplyPresenter;
 import com.aglhz.yicommunity.main.publish.view.RepairFragment;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -107,6 +108,10 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
     public void initData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         adapter = new RepairRecordRVAdapter();
+        //设置Item动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.isFirstOnly(true);
+        //设置允许加载更多
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
