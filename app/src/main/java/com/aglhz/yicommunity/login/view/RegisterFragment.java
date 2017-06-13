@@ -56,6 +56,7 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private Thread getVerifyThread;
 
     public static RegisterFragment newInstance() {
         return new RegisterFragment();
@@ -66,8 +67,6 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
     protected RegisterPresenter createPresenter() {
         return new RegisterPresenter(this);
     }
-
-    private Thread getVerifyThread;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
