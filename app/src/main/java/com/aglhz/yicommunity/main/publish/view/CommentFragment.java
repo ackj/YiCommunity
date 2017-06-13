@@ -63,7 +63,6 @@ import static com.aglhz.yicommunity.main.sociality.view.SocialityListFragment.TY
  * Author: LiuJia on 2017/5/11 0011 15:52.
  * Email: liujia95me@126.com
  * [评论]的View层
- *
  */
 
 public class CommentFragment extends BaseFragment<CommentContract.Presenter> implements CommentContract.View {
@@ -90,7 +89,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     private int type;
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
     String[] arr = {"回复", "复制"};
-    private String replyName;
+    private String replyName = "";
     private StateManager mStateManager;
 
     public static CommentFragment newInstance(String fid, int type) {
@@ -297,6 +296,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
 
     /**
      * 响应请求评论列表
+     *
      * @param datas
      */
     @Override
@@ -323,6 +323,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
 
     /**
      * 响应请求发送评论成功
+     *
      * @param bean
      */
     @Override
