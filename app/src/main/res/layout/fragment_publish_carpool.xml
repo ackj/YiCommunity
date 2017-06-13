@@ -58,11 +58,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_width="80dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="路线" />
+                    android:text="路线"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_select_start_point"
@@ -104,11 +104,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_width="80dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="出发时间" />
+                    android:text="出发时间"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_select_go_time"
@@ -132,11 +132,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_width="80dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="拼车类型" />
+                    android:text="拼车类型"
+                    android:textSize="15sp" />
 
                 <RadioGroup
                     android:id="@+id/rg_carpool_type"
@@ -177,11 +177,11 @@
                 android:background="@color/base_grey" />
 
             <TextView
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="留言" />
+                android:text="留言"
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/et_input_content"
@@ -203,8 +203,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="16sp"
-                android:text="图片" />
+                android:text="图片"
+                android:textSize="16sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -224,6 +224,33 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <CheckBox
+                    android:checked="true"
+                    android:id="@+id/cb_agreement"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:button="@drawable/selector_bt_radio"
+                    android:text="同意"
+                    android:textColor="@color/base_black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="《亿社区拼车用户协议》"
+                    android:textColor="@color/material_blue_400"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
@@ -29,6 +32,7 @@ import com.aglhz.yicommunity.main.picker.PickerActivity;
 import com.aglhz.yicommunity.main.picker.view.CityPickerFragment;
 import com.aglhz.yicommunity.main.publish.contract.PublishContract;
 import com.aglhz.yicommunity.main.publish.presenter.PublishCarpoolPresenter;
+import com.aglhz.yicommunity.web.WebActivity;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bilibili.boxing.Boxing;
 import com.bilibili.boxing.model.config.BoxingConfig;
@@ -76,6 +80,8 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     TextView tvCommunityAddress;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
+    @BindView(R.id.cb_agreement)
+    CheckBox cbAgreement;
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
@@ -193,6 +199,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
 
     /**
      * 响应请求发布拼车服务成功
+     *
      * @param bean
      */
     @Override
@@ -203,7 +210,15 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         pop();
     }
 
-    @OnClick({R.id.btn_submit, R.id.ll_location, R.id.tv_select_start_point, R.id.tv_select_end_point, R.id.tv_select_go_time, R.id.rb_carpool_has_car, R.id.rb_carpool_hasnot_car})
+    @OnClick({R.id.btn_submit,
+            R.id.ll_location,
+            R.id.tv_select_start_point,
+            R.id.tv_select_end_point,
+            R.id.tv_select_go_time,
+            R.id.rb_carpool_has_car,
+            R.id.rb_carpool_hasnot_car,
+            R.id.cb_agreement,
+            R.id.tv_agreement})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_submit:
@@ -228,6 +243,13 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
             case R.id.rb_carpool_hasnot_car:
                 params.carpoolType = 1;
                 break;
+            case R.id.tv_agreement:
+                Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
+                introductionIntent.putExtra(Constants.KEY_TITLE, "亿社区拼车用户协议");
+                introductionIntent.putExtra(Constants.KEY_LINK, ApiService.AGREEMENT_CARPOOL);
+                startActivity(introductionIntent);
+                break;
+
         }
     }
 
@@ -291,6 +313,14 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         params.content = etInputContent.getText().toString().trim();
         if (TextUtils.isEmpty(params.content)) {
             DialogHelper.errorSnackbar(getView(), "请输入留言!");
+            return;
+        }
+        if (!cbAgreement.isChecked()) {
+            new AlertDialog.Builder(_mActivity).setTitle("提示")
+                    .setMessage("是否同意我们的协议？")
+                    .setPositiveButton("同意", (dialog, which) -> cbAgreement.setChecked(true))
+                    .setNegativeButton("取消", (dialog, which) -> dialog.dismiss())
+                    .show();
             return;
         }
         params.cmnt_c = UserHelper.communityCode;

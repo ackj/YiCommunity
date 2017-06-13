@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,14 +22,17 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
+import com.aglhz.yicommunity.main.picker.PickerActivity;
 import com.aglhz.yicommunity.main.publish.contract.PublishContract;
 import com.aglhz.yicommunity.main.publish.presenter.PublishExchangePresenter;
-import com.aglhz.yicommunity.main.picker.PickerActivity;
+import com.aglhz.yicommunity.web.WebActivity;
 import com.bilibili.boxing.Boxing;
 import com.bilibili.boxing.model.config.BoxingConfig;
 import com.bilibili.boxing.model.entity.BaseMedia;
@@ -69,6 +74,8 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
     EditText etInputContent;
     @BindView(R.id.tv_community_address)
     TextView tvCommunityAddress;
+    @BindView(R.id.cb_agreement)
+    CheckBox cbAgreement;
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
@@ -197,7 +204,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         pop();
     }
 
-    @OnClick({R.id.ll_location, R.id.btn_submit})
+    @OnClick({R.id.ll_location, R.id.btn_submit,R.id.tv_agreement})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_location:
@@ -214,7 +221,21 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
                     DialogHelper.errorSnackbar(getView(), "请输入内容");
                     return;
                 }
+                if (!cbAgreement.isChecked()) {
+                    new AlertDialog.Builder(_mActivity).setTitle("提示")
+                            .setMessage("是否同意我们的协议？")
+                            .setPositiveButton("同意", (dialog, which) -> cbAgreement.setChecked(true))
+                            .setNegativeButton("取消", (dialog, which) -> dialog.dismiss())
+                            .show();
+                    return;
+                }
                 submit(money, content);
+                break;
+            case R.id.tv_agreement:
+                Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
+                introductionIntent.putExtra(Constants.KEY_TITLE, "亿社区闲置交换用户协议");
+                introductionIntent.putExtra(Constants.KEY_LINK, ApiService.AGREEMENT_EXCHANGE);
+                startActivity(introductionIntent);
                 break;
         }
     }

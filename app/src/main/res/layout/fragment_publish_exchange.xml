@@ -20,9 +20,9 @@
                 android:id="@+id/ll_location"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:focusable="true"
-                android:clickable="true"
                 android:background="@color/base_grey"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -77,8 +77,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textSize="16sp"
-                android:text="图片" />
+                android:text="图片"
+                android:textSize="16sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -113,8 +113,8 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="请填写价格"
-                    android:lines="1"
                     android:inputType="number"
+                    android:lines="1"
                     android:paddingLeft="20dp"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -123,7 +123,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/base_grey" />
-
 
             <Button
                 android:id="@+id/btn_submit"
@@ -135,6 +134,34 @@
                 android:text="发布"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <CheckBox
+                    android:checked="true"
+                    android:id="@+id/cb_agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/selector_bt_radio"
+                    android:text="同意"
+                    android:textColor="@color/base_black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="《亿社区闲置交换用户协议》"
+                    android:textColor="@color/material_blue_400"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

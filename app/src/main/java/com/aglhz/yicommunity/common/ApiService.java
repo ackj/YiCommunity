@@ -97,6 +97,11 @@ public interface ApiService {
     //物业详情
     String requestNoticeDetail = "http://www.aglhz.com/sub_property_ysq/m/html/noticeDetail.html?fid=";
 
+    //闲置交换用户协议
+    String AGREEMENT_EXCHANGE ="http://www.aglhz.com/sub_property_ysq/m/html/xianzhijiaohuanUserAgreement.html";
+    //拼车服务用户协议
+    String AGREEMENT_CARPOOL ="http://www.aglhz.com/sub_property_ysq/m/html/pincheUserAgreement.html";
+
     //********************以上为Web*******************************
 
 
