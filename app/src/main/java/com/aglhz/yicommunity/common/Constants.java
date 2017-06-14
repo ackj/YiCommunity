@@ -91,5 +91,9 @@ public class Constants {
     //临停缴费
     public static final String SP_KEY_GUIDE_TEMPPORARY_PARK_PAY = "sp_key_guide_tempporary_park_pay";
 
+    //********************以下权限名称***********************
+    public static final String PERMISSION_REMOTEWATCH = "RemoteWatch";
+
+    //********************以上权限名称***********************
 
 }

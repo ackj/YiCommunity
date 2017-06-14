@@ -14,6 +14,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.abase.utils.ToastUtils;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -54,7 +55,6 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ALog.e("1111111111::");
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
@@ -181,8 +181,20 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void openDoor() {
-        rxManager = new RxManager();
-        rxManager.add(HttpHelper.getService(ApiService.class).requestOpenDoor(ApiService.requestOpenDoor, UserHelper.token, UserHelper.dir)
+        if (rxManager == null) {
+            rxManager = new RxManager();
+        }
+
+        String dir = SipCoreManager.getLc().getCurrentCall().getRemoteAddress().getUserName();
+
+        if (dir.contains("D")) {
+            dir = dir.substring(1);
+        }
+
+//        ToastUtils.showToast(BaseApplication.mContext, dir);
+
+        rxManager.add(HttpHelper.getService(ApiService.class)
+                .requestOpenDoor(ApiService.requestOpenDoor, UserHelper.token, dir)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
@@ -193,12 +205,13 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
                         ToastUtils.showToast(CallActivity.this, baseBean.getOther().getMessage());
                     }
                 }, throwable -> {
-                    ToastUtils.showToast(CallActivity.this, "网络异常！");
-
+                    ToastUtils.showToast(CallActivity.this, throwable.getMessage());
                 })
         );
 
+        ALog.e("getUserName()-->" + SipCoreManager.getLc().getCurrentCall().getRemoteAddress().getUserName());
 
+//        SipCoreManager.getLc().sendDtmf('#');//不推荐使用这个API，因为后续会改，同时没有开门记录。
     }
 
     @Override

@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:descendantFocusability="blocksDescendants"
-            android:layoutAnimation="@anim/layout_animation_dock_left_enter" />
+            android:layoutAnimation="@anim/layout_dock_left_enter" />
     </com.aglhz.abase.widget.statemanager.StateLayout>
 
 </in.srain.cube.views.ptr.PtrFrameLayout>
