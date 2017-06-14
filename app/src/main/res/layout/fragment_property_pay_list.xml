@@ -28,7 +28,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layoutAnimation="@anim/layout_dock_left_enter" />
         </com.aglhz.abase.widget.statemanager.StateLayout>
 
     </in.srain.cube.views.ptr.PtrFrameLayout>
@@ -39,6 +40,7 @@
         android:layout_height="45dp"
         android:background="@color/base_grey"
         android:gravity="center"
+        android:layoutAnimation="@anim/layout_dock_left_enter"
         android:orientation="horizontal">
 
         <TextView

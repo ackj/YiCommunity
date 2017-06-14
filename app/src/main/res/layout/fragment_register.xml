@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutAnimation="@anim/layout_animation_dock_left_enter"
+        android:layoutAnimation="@anim/layout_dock_left_enter"
         android:minHeight="?attr/actionBarSize"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:titleTextAppearance="@style/ToolbarTitle">
@@ -32,7 +32,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layoutAnimation="@anim/layout_animation_slide_in_bottom"
+        android:layoutAnimation="@anim/layout_slide_in_bottom"
         android:orientation="vertical">
 
         <EditText
