@@ -81,7 +81,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 viewpager.setPageTransformer(true, new ZoomOutPageTransformer());
                 viewpager.setPageMargin(DensityUtils.dp2px(BaseApplication.mContext, 5));
                 viewpager.setAdapter(adapter);
-                viewpager.setCurrentItem(1);
+                viewpager.setCurrentItem(100);
                 adapter.setOnItemClickListener(position -> {
                     switch (position) {
                         case 0:

@@ -77,9 +77,12 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
         }
     };
     private int which;
+    private ArrayList<BaseMedia> medias = new ArrayList<>();
+    private ArrayList<BaseMedia> selectedMedias;
 
     /**
      * PublishNeighbourFragment的创建入口
+     *
      * @param which 区分选择发布的是视频还是图片
      * @return
      */
@@ -141,9 +144,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
 
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
-            if (position == adapter.getData().size() - 1) {
-                selectPhoto();
-            }
+            selectPhoto();
         });
     }
 
@@ -152,13 +153,13 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
      */
     private void selectPhoto() {
         if (which == 0) {
-            //跳转选择视频
+            //跳转选择照片
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
             config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
                     .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
-            Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
+            Boxing.of(config).withIntent(_mActivity, BoxingActivity.class, selectedMedias).start(this, 100);
         } else {
-            //跳转选择照片
+            //跳转选择视频
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.VIDEO).withVideoDurationRes(R.drawable.ic_boxing_play);
             Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 101);
         }
@@ -170,7 +171,9 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (resultCode == RESULT_OK) {
             if (requestCode == 100) {
-                ArrayList<BaseMedia> medias = Boxing.getResult(data);
+                medias = new ArrayList<>(Boxing.getResult(data));
+                selectedMedias = Boxing.getResult(data);
+                params.files.clear();
                 for (int i = 0; i < medias.size(); i++) {
                     params.files.add(new File(medias.get(i).getPath()));
                 }
@@ -180,7 +183,8 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
                 medias.add(addMedia);
                 adapter.setNewData(medias);
             } else if (requestCode == 101) {
-                ArrayList<BaseMedia> medias = Boxing.getResult(data);
+                medias = new ArrayList<>(Boxing.getResult(data));
+                params.files.clear();
                 if (medias.size() > 0) {
                     File file = new File(medias.get(0).getPath());
                     if (file.length() >= 1024 * 1024 * 10) {
@@ -217,6 +221,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
 
     /**
      * 响应请求提交成功
+     *
      * @param bean
      */
     @Override

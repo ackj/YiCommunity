@@ -93,6 +93,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
             return TYPE.IMAGE;
         }
     };
+    private ArrayList<BaseMedia> selectedMedia;
 
     private RepairFragment(boolean isPrivate) {
         this.isPrivate = isPrivate;
@@ -100,6 +101,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     /**
      * RepairFragment的创建入口
+     *
      * @param isPrivate 用于区分是私人保修还是公共报修
      * @return
      */
@@ -133,9 +135,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
-            if (position == adapter.getData().size() - 1) {
-                selectPhoto();
-            }
+            selectPhoto();
         });
     }
 
@@ -185,7 +185,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
         config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
                 .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
-        Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
+        Boxing.of(config).withIntent(_mActivity, BoxingActivity.class, selectedMedia).start(this, 100);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -250,7 +250,9 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         super.onActivityResult(requestCode, resultCode, data);
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (resultCode == RESULT_OK && requestCode == 100) {
-            ArrayList<BaseMedia> medias = Boxing.getResult(data);
+            ArrayList<BaseMedia> medias = new ArrayList<>(Boxing.getResult(data));
+            selectedMedia = Boxing.getResult(data);
+            params.files.clear();
             for (int i = 0; i < medias.size(); i++) {
                 params.files.add(new File(medias.get(i).getPath()));
             }
@@ -274,6 +276,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     /**
      * 响应请求房屋列表
+     *
      * @param iconBeans
      */
     public void responseMyHouse(List<IconBean> iconBeans) {
@@ -296,6 +299,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     /**
      * 响应请求报修类型
+     *
      * @param datas
      */
     public void responseRepairTypes(List<RepairTypesBean.DataBean.TypesBean> datas) {
@@ -315,6 +319,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     /**
      * 响应请求提交成功
+     *
      * @param bean
      */
     @Override

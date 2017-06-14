@@ -27,22 +27,22 @@ public class ServiceVPAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
+    public Object instantiateItem(ViewGroup container, int position) {
+        int finalPosition = position % 3;
+
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_vp_service_item, container, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnItemClickListener != null)
-                    mOnItemClickListener.onItemClick(position);
-            }
+        view.setOnClickListener(v -> {
+            if (mOnItemClickListener != null)
+                mOnItemClickListener.onItemClick(finalPosition);
         });
         TextView tvTitle = (TextView) view.findViewById(R.id.tv_title_item_vp_door2door_service);
         TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc_item_vp_door2door_service);
         LinearLayout llVpDoor2door = (LinearLayout) view.findViewById(R.id.ll_item_vp_door2door_service);
 
-        tvTitle.setText(mDatas.get(position).title);
-        tvDesc.setText(mDatas.get(position).desc);
-        llVpDoor2door.setBackgroundResource(mDatas.get(position).imgRes);
+
+        tvTitle.setText(mDatas.get(finalPosition).title);
+        tvDesc.setText(mDatas.get(finalPosition).desc);
+        llVpDoor2door.setBackgroundResource(mDatas.get(finalPosition).imgRes);
         container.addView(view);
         return view;
     }
@@ -64,7 +64,8 @@ public class ServiceVPAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mDatas.size();
+//        return mDatas.size();
+        return Integer.MAX_VALUE;
     }
 
     @Override

@@ -517,7 +517,8 @@ public interface ApiService {
     @POST
     Flowable<NoticeBean> requestHomeNotices(@Url String url,
                                             @Query("token") String token,
-                                            @Query("cmnt_c") String cmnt_c);
+                                            @Query("cmnt_c") String cmnt_c,
+                                            @Query("topnum") int topnum);
 
 
     //获取闲置交换的评论

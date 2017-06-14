@@ -77,6 +77,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
             return TYPE.IMAGE;
         }
     };
+    private ArrayList<BaseMedia> selectedMedia;
 
     public static ComplainFragment newInstance() {
         return new ComplainFragment();
@@ -132,9 +133,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
 
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter1, view, position) -> {
-            if (position == adapter1.getData().size() - 1) {
-                selectPhoto();
-            }
+            selectPhoto();
         });
     }
 
@@ -151,6 +150,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
 
     /**
      * 响应请求投诉成功
+     *
      * @param baseBean
      */
     @Override
@@ -202,7 +202,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
         config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
                 .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
-        Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
+        Boxing.of(config).withIntent(_mActivity, BoxingActivity.class, selectedMedia).start(this, 100);
     }
 
     @Override
@@ -210,7 +210,9 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         super.onActivityResult(requestCode, resultCode, data);
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (resultCode == RESULT_OK && requestCode == 100) {
-            ArrayList<BaseMedia> medias = Boxing.getResult(data);
+            ArrayList<BaseMedia> medias = new ArrayList<>(Boxing.getResult(data));
+            selectedMedia = Boxing.getResult(data);
+            params.files.clear();
             for (int i = 0; i < medias.size(); i++) {
                 params.files.add(new File(medias.get(i).getPath()));
             }

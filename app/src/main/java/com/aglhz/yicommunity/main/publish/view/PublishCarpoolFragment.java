@@ -94,6 +94,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
             return TYPE.IMAGE;
         }
     };
+    private ArrayList<BaseMedia> selectedMedia;
 
     public static PublishCarpoolFragment newInstance() {
         return new PublishCarpoolFragment();
@@ -148,9 +149,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
 
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
-            if (position == adapter.getData().size() - 1) {
-                selectPhoto();
-            }
+            selectPhoto();
         });
     }
 
@@ -158,7 +157,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
         config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
                 .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
-        Boxing.of(config).withIntent(_mActivity, BoxingActivity.class).start(this, 100);
+        Boxing.of(config).withIntent(_mActivity, BoxingActivity.class, selectedMedia).start(this, 100);
     }
 
     @Override
@@ -166,7 +165,9 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         super.onActivityResult(requestCode, resultCode, data);
         ALog.d(TAG, "onActivityResult:" + requestCode + " --- :" + resultCode);
         if (resultCode == RESULT_OK && requestCode == 100) {
-            ArrayList<BaseMedia> medias = Boxing.getResult(data);
+            ArrayList<BaseMedia> medias = new ArrayList<>(Boxing.getResult(data));
+            selectedMedia = Boxing.getResult(data);
+            params.files.clear();
             for (int i = 0; i < medias.size(); i++) {
                 params.files.add(new File(medias.get(i).getPath()));
             }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.R;
@@ -278,6 +279,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             notices.add("欢迎来到亿社区！");
         }
         adapter.getData().get(1).setNotice(notices);
+        ALog.e(TAG,"responseHomeNotices:"+notices.size());
         adapter.notifyItemChanged(1);
     }
 

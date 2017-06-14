@@ -41,7 +41,7 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
 
     public Single<List<String>> requestHomeNotices(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .requestHomeNotices(ApiService.requestHomeNotices, params.token, params.cmnt_c)
+                .requestHomeNotices(ApiService.requestHomeNotices, params.token, params.cmnt_c,params.topnum)
                 .map(noticeBean -> noticeBean.getData().getNoticeList())
                 .flatMap(Flowable::fromIterable)
                 .map(noticeListBean -> {
