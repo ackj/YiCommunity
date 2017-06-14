@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -409,7 +410,8 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
                 .setTitle("选择门禁")
                 .setItems(arrayDoors, (dialog, which) -> {
                     params.dir = bean.getData().get(which).getDir();
-                    params.powerCode = "RemoteWatch";
+//                    params.powerCode = "RemoteWatch";
+                    params.powerCode = Constants.PERMISSION_REMOTEWATCH;
                     mPresenter.requestCheckPermission(params);
                     showLoadingDialog();
                 })
