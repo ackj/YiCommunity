@@ -68,9 +68,9 @@ public class BaseApplication extends MultiDexApplication implements Application.
     }
 
     private void tempInit() {
-        Fragmentation.builder()
-                .stackViewMode(Fragmentation.BUBBLE)
-                .install();
+//        Fragmentation.builder()
+//                .stackViewMode(Fragmentation.BUBBLE)
+//                .install();
 //
 //        //初始化内存泄露监听
 //        mRefWatcher = LeakCanary.install(this);
@@ -79,7 +79,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
 //        BlockCanary.install(this, new AppContext()).start();
 
 //        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
-        ALog.init(true, "ysq");
+        ALog.init(false, "ysq");
 
     }
 

@@ -37,7 +37,6 @@ public class PasswordOpenDoorPresenter extends BasePresenter<PasswordOpenDoorCon
 
     @Override
     public void requestPassword(Params params) {
-        params.dir = "6-31-1";
         mRxManager.add(mModel.getPassword(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(passwordBean -> {
