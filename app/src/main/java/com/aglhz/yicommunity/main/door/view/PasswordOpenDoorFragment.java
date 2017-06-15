@@ -44,7 +44,8 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
     TextView tvPassword;
     @BindView(R.id.bt_share)
     Button btShare;
-    private Dialog loadingDialog;
+    private Params params = Params.getInstance();
+
 
     public static PasswordOpenDoorFragment newInstance() {
         return new PasswordOpenDoorFragment();
@@ -70,7 +71,6 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
         initToolbar();
     }
 
-
     private void initToolbar() {
         initStateBar(toolbar);
         toolbarTitle.setText("密码开门");
@@ -80,6 +80,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
 
     /**
      * 响应请求密码
+     *
      * @param mPasswordBean
      */
     @Override
@@ -93,7 +94,6 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_password:
-                Params params = Params.getInstance();
                 params.dir = UserHelper.dir;
                 mPresenter.requestPassword(params);
                 showLoadingDialog();
