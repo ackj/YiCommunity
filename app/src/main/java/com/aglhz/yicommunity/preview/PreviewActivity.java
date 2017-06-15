@@ -96,6 +96,7 @@ public class PreviewActivity extends BaseActivity {
                     onBackPressed();
                 }
             });
+            mPhotoView.setMaximumScale(100f);
 
             Glide.with(BaseApplication.mContext)
                     .load(picsList.get(position))

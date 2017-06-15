@@ -20,6 +20,7 @@ public class MyHousesRVAdapter extends BaseRecyclerViewAdapter<MyHousesBean.Data
     protected void convert(BaseViewHolder helper, MyHousesBean.DataBean.AuthBuildingsBean item) {
         helper.setText(R.id.tv_community_name, item.getC_name())
                 .setText(R.id.tv_house_name, item.getAddress())
+                .setText(R.id.tv_owner, item.getIsOwner() == 1 ? "业主" : "成员")
                 .setText(R.id.tv_people_num, item.getMembers().size() + "");
     }
 }
