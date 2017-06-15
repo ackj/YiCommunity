@@ -50,7 +50,7 @@ public class LogInterceptor implements Interceptor {
                     jsonObject.toString()));
             String code = jsonOther.optString("code");
             if ("123".equals(code)) {
-                EventBus.getDefault().post(new LoginInterceptor());
+                EventBus.getDefault().post(new LogInterceptor());
             }
 
         } catch (JSONException e) {

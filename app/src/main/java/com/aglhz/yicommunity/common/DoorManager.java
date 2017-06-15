@@ -22,6 +22,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.content.Intent.ACTION_MAIN;
+
 /**
  * Author：leguang on 2017/5/5 0009 10:49
  * Email：langmanleguang@qq.com
@@ -63,7 +65,7 @@ public class DoorManager {
 //            return;
 //        }
 
-        BaseApplication.mContext.startService(new Intent(android.content.Intent.ACTION_MAIN)
+        BaseApplication.mContext.startService(new Intent(ACTION_MAIN)
                 .setClass(BaseApplication.mContext, SipService.class));
         ALog.e("1111startService");
 
@@ -72,7 +74,6 @@ public class DoorManager {
             try {
                 while (!SipService.isReady()) {
                     try {
-
                         ALog.e("1111whilewhile");
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -85,11 +86,19 @@ public class DoorManager {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o ->{ SipService.instance()
-                        .setActivityToLaunchOnIncomingReceived(CallActivity.class);
-                ALog.e("11111订阅setActivityToLaunchOnIncomingReceived");
+                .subscribe(o -> {
+                    SipService.instance()
+                            .setActivityToLaunchOnIncomingReceived(CallActivity.class);
+                    ALog.e("11111订阅setActivityToLaunchOnIncomingReceived");
                 });
     }
+
+    public void exit() {
+        // 停止SipService，用户明确的退出
+        BaseApplication.mContext.stopService(new Intent(ACTION_MAIN)
+                .setClass(BaseApplication.mContext, SipService.class));
+    }
+
 
     public DoorManager initWebUserApi(String userName, AccessCallBack accessCallBack) {
 

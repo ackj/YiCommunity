@@ -29,10 +29,6 @@ public class SocialityModel extends BaseModel implements SocialityContract.Model
 
     @Override
     public Observable<SocialityListBean> requestNeighbourList(Params params) {
-        ALog.e(params.token);
-        ALog.e(params.cmnt_c);
-        ALog.e(params.page);
-        ALog.e(params.pageSize);
 
         return HttpHelper.getService(ApiService.class)
                 .requestNeighbourList(ApiService.requestNeighbourList,

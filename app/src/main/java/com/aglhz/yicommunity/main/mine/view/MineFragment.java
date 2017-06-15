@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.network.http.LoginInterceptor;
+import com.aglhz.abase.network.http.LogInterceptor;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
@@ -28,6 +28,7 @@ import com.aglhz.yicommunity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventData;
@@ -43,6 +44,8 @@ import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -195,14 +198,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 startActivity(new Intent(_mActivity, AboutActivity.class));
                 break;
             case R.id.tv_logout:
-                UserHelper.clear();
-                tvName.setText("访客");
-                tvPhoneNumber.setText("");
-                ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
-                ivHeaderBackground.setImageResource(R.drawable.bg_mine_1920px_1080px);
-                tvLogout.setVisibility(View.GONE);
-                mPresenter.requestLogout(Params.getInstance());
-                sv.post(() -> sv.fullScroll(ScrollView.FOCUS_UP));
+                mPresenter.requestLogout(params);//请求服务器注销。
+                onLoginoutEvent(null);
                 break;
         }
     }
@@ -309,13 +306,23 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onLoginoutEvent(LoginInterceptor event) {
-        UserHelper.clear();
+    public void onLoginoutEvent(LogInterceptor event) {
         tvName.setText("访客");
         tvPhoneNumber.setText("");
         ivHeaderBackground.setImageResource(R.drawable.bg_mine_1920px_1080px);
         ivHead.setImageResource(R.drawable.ic_mine_avatar_normal_320px);
         tvLogout.setVisibility(View.GONE);
+        sv.post(() -> sv.fullScroll(ScrollView.FOCUS_UP));//滑动到顶部，提高用户体验，方便用户点击头像登录。
+        DoorManager.getInstance().exit();// 停止SipService，用户明确的退出。
+        PushAgent.getInstance(BaseApplication.mContext)
+                .removeAlias(UserHelper.account, "userType", new UTrack.ICallBack() {
+                    @Override
+                    public void onMessage(boolean b, String s) {
+                        ALog.e("b-->" + b);
+                        ALog.e("s-->" + s);
+                    }
+                });
+        UserHelper.clear();//要放在最后清楚，不然上面用到UserHelper.account也为空了
     }
 
     @Override

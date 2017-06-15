@@ -56,7 +56,7 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
     @Override
     public void requestUMeng(String alias) {
         PushAgent mPushAgent = PushAgent.getInstance(BaseApplication.mContext);
-        mPushAgent.addAlias(alias, "userType", new UTrack.ICallBack() {
+        mPushAgent.addExclusiveAlias(alias, "userType", new UTrack.ICallBack() {
             @Override
             public void onMessage(boolean b, String s) {
                 ALog.e(TAG, "addAlias::" + b + "……" + s);

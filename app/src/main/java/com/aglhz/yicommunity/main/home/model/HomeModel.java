@@ -6,6 +6,7 @@ import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.bean.BannerBean;
 import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
@@ -41,13 +42,10 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
 
     public Single<List<String>> requestHomeNotices(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .requestHomeNotices(ApiService.requestHomeNotices, params.token, params.cmnt_c,params.topnum)
+                .requestHomeNotices(ApiService.requestHomeNotices, params.token, params.cmnt_c, params.topnum)
                 .map(noticeBean -> noticeBean.getData().getNoticeList())
                 .flatMap(Flowable::fromIterable)
-                .map(noticeListBean -> {
-                    ALog.e(TAG, "title::" + noticeListBean.getTitle());
-                    return noticeListBean.getTitle();
-                })
+                .map(NoticeBean.DataBean.NoticeListBean::getTitle)
                 .toList()
                 .subscribeOn(Schedulers.io());
     }
