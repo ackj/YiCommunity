@@ -10,7 +10,7 @@ public class MyHousesBean extends BaseBean {
 
 
     /**
-     * data : {"authBuildings":[{"address":"广东省惠州市惠城区凯宾斯基3栋1单元8层5房","b_code":"KBSJ-agl-00005-003-001-008-05","b_name":"5房","c_code":"KBSJ-agl-00005","c_name":"凯宾斯基","fid":"d325d4d4-8de7-4cce-b0c4-f39c5b8af00f","members":[{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170425090419463319.jpg","isOwner":1,"mname":"rnzbr8008","name":""}],"o_name":"张三"},{"address":"广东省惠州市惠城区凯宾斯基3栋1单元16层6房","b_code":"KBSJ-agl-00005-003-001-016-06","b_name":"6房","c_code":"KBSJ-agl-00005","c_name":"凯宾斯基","fid":"ebd4cb41-0500-4254-a1be-45cee1054930","members":[],"o_name":"刘嘉"},{"address":"广东省惠州市惠城区凯宾斯基3栋1单元1层1房","b_code":"KBSJ-agl-00005-003-001-001-01","b_name":"1房","c_code":"KBSJ-agl-00005","c_name":"凯宾斯基","fid":"0b93e5a9-f3dd-42bc-a69c-cd43e803b9c6","members":[],"o_name":"刘佳1房"}]}
+     * data : {"authBuildings":[{"address":"水北新村1期1栋1单元6层6房","addressPre":"","b_code":"SBXC1Q-glx-00001-001-001-006-06","b_name":"6房","c_code":"SBXC1Q-glx-00001","c_name":"水北新村1期","fid":"b18bc613-52a6-45c8-808d-304b31211a40","isOwner":1,"members":[{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170601170523419288.jpg","isOwner":1,"mname":"刘嘉","name":""},{"fid":"4fc724ec-9c5f-422e-ad5b-20d7d7810cdd","icon":"http://aglhzmall.image.alimmdn.com/member/20170525142643985471.jpg","isOwner":0,"mname":"我看看","name":""}],"o_name":"刘嘉"},{"address":"水北新村1期1栋1单元1层5房","addressPre":"","b_code":"SBXC1Q-glx-00001-001-001-001-05","b_name":"5房","c_code":"SBXC1Q-glx-00001","c_name":"水北新村1期","fid":"31f7dd7e-9fac-443b-81b5-991e28c202be","isOwner":1,"members":[{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170601170523419288.jpg","isOwner":1,"mname":"刘嘉","name":""}],"o_name":"刘嘉"},{"address":"水北新村1期1栋1单元1层4房","addressPre":"","b_code":"SBXC1Q-glx-00001-001-001-001-04","b_name":"4房","c_code":"SBXC1Q-glx-00001","c_name":"水北新村1期","fid":"053bb878-9ef0-4c33-b63c-f5ccb8f684f0","isOwner":1,"members":[{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170601170523419288.jpg","isOwner":1,"mname":"刘嘉","name":""},{"fid":"4fc724ec-9c5f-422e-ad5b-20d7d7810cdd","icon":"http://aglhzmall.image.alimmdn.com/member/20170525142643985471.jpg","isOwner":0,"mname":"我看看","name":""}],"o_name":"刘嘉"},{"address":"凯宾斯基3栋1单元2层8房","addressPre":"","b_code":"KBSJ-agl-00005-003-001-002-08","b_name":"8房","c_code":"KBSJ-agl-00005","c_name":"凯宾斯基","fid":"bc041e7d-1890-483e-b320-8b02a79fc6a2","isOwner":0,"members":[{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170601170523419288.jpg","isOwner":1,"mname":"刘嘉","name":""}],"o_name":"刘佳"},{"address":"凯宾斯基3栋1单元30层8房","addressPre":"","b_code":"KBSJ-agl-00005-003-001-030-08","b_name":"8房","c_code":"KBSJ-agl-00005","c_name":"凯宾斯基","fid":"6207e273-416a-4967-8d18-f9c25b0cea52","isOwner":0,"members":[{"fid":"4fc724ec-9c5f-422e-ad5b-20d7d7810cdd","icon":"http://aglhzmall.image.alimmdn.com/member/20170525142643985471.jpg","isOwner":0,"mname":"我看看","name":""},{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170601170523419288.jpg","isOwner":1,"mname":"刘嘉","name":""}],"o_name":"刘嘉"}]}
      */
 
     private DataBean data;
@@ -36,22 +36,26 @@ public class MyHousesBean extends BaseBean {
 
         public static class AuthBuildingsBean {
             /**
-             * address : 广东省惠州市惠城区凯宾斯基3栋1单元8层5房
-             * b_code : KBSJ-agl-00005-003-001-008-05
-             * b_name : 5房
-             * c_code : KBSJ-agl-00005
-             * c_name : 凯宾斯基
-             * fid : d325d4d4-8de7-4cce-b0c4-f39c5b8af00f
-             * members : [{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170425090419463319.jpg","isOwner":1,"mname":"rnzbr8008","name":""}]
-             * o_name : 张三
+             * address : 水北新村1期1栋1单元6层6房
+             * addressPre :
+             * b_code : SBXC1Q-glx-00001-001-001-006-06
+             * b_name : 6房
+             * c_code : SBXC1Q-glx-00001
+             * c_name : 水北新村1期
+             * fid : b18bc613-52a6-45c8-808d-304b31211a40
+             * isOwner : 1
+             * members : [{"fid":"a40c120a-4107-4af8-ac25-f999ebce5363","icon":"http://aglhzmall.image.alimmdn.com/member/20170601170523419288.jpg","isOwner":1,"mname":"刘嘉","name":""},{"fid":"4fc724ec-9c5f-422e-ad5b-20d7d7810cdd","icon":"http://aglhzmall.image.alimmdn.com/member/20170525142643985471.jpg","isOwner":0,"mname":"我看看","name":""}]
+             * o_name : 刘嘉
              */
 
             private String address;
+            private String addressPre;
             private String b_code;
             private String b_name;
             private String c_code;
             private String c_name;
             private String fid;
+            private int isOwner;
             private String o_name;
             private List<MembersBean> members;
 
@@ -61,6 +65,14 @@ public class MyHousesBean extends BaseBean {
 
             public void setAddress(String address) {
                 this.address = address;
+            }
+
+            public String getAddressPre() {
+                return addressPre;
+            }
+
+            public void setAddressPre(String addressPre) {
+                this.addressPre = addressPre;
             }
 
             public String getB_code() {
@@ -103,6 +115,14 @@ public class MyHousesBean extends BaseBean {
                 this.fid = fid;
             }
 
+            public int getIsOwner() {
+                return isOwner;
+            }
+
+            public void setIsOwner(int isOwner) {
+                this.isOwner = isOwner;
+            }
+
             public String getO_name() {
                 return o_name;
             }
@@ -122,9 +142,9 @@ public class MyHousesBean extends BaseBean {
             public static class MembersBean {
                 /**
                  * fid : a40c120a-4107-4af8-ac25-f999ebce5363
-                 * icon : http://aglhzmall.image.alimmdn.com/member/20170425090419463319.jpg
+                 * icon : http://aglhzmall.image.alimmdn.com/member/20170601170523419288.jpg
                  * isOwner : 1
-                 * mname : rnzbr8008
+                 * mname : 刘嘉
                  * name :
                  */
 
