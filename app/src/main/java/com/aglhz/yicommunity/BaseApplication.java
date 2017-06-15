@@ -129,7 +129,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
 
         ALog.e(TAG, UserHelper.account);
 
-        mPushAgent.addAlias(UserHelper.account, "userType", new UTrack.ICallBack() {
+        mPushAgent.addExclusiveAlias(UserHelper.account, "userType", new UTrack.ICallBack() {
             @Override
             public void onMessage(boolean b, String s) {
                 ALog.e(TAG, "addAlias::" + b + "……" + s);
@@ -184,8 +184,8 @@ public class BaseApplication extends MultiDexApplication implements Application.
             @Override
             public Notification getNotification(Context context, UMessage msg) {
                 //每当有通知送达时，均会回调getNotification方法，因此可以通过监听此方法来判断通知是否送达。
-                ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
-                ALog.e(TAG, msg.custom);//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
+                ALog.e(TAG, msg.getRaw().toString());
+                ALog.e(TAG, msg.custom);
 
                 EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));
 

@@ -5,13 +5,11 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-
 /**
  * Author: LiuJia on 2017/4/21 11:11.
  * Email: liujia95me@126.com
  */
 public class OpenDoorRecordRVAdapter extends BaseRecyclerViewAdapter<OpenDoorRecordBean.DataBean, BaseViewHolder> {
-
 
     public OpenDoorRecordRVAdapter() {
         super(R.layout.item_opendoor_record);

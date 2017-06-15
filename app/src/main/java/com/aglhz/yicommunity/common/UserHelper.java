@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.bean.UserBean;
 import com.google.gson.Gson;
@@ -154,6 +155,9 @@ public class UserHelper {
 
     //更新账号密码
     public static boolean setAccount(String account, String password) {
+        ALog.e("account-->"+account);
+        ALog.e("password-->"+password);
+
         UserHelper.account = account;
         UserHelper.password = password;
         SharedPreferences.Editor editor = getEditor();
