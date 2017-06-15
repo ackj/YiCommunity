@@ -38,6 +38,7 @@ public class DoorManager {
     private WebUserApi mWebUserApi;
 
     private DoorManager() {
+        WebApiConstants.setHttpServer(URL);
     }
 
     //获取单例
@@ -53,11 +54,10 @@ public class DoorManager {
     }
 
 
-    public void init() {
+    public DoorManager init() {
         ALog.e("11111initinit");
 
 
-        WebApiConstants.setHttpServer(URL);
 
         // 检查是否已经初始化SipCoreManager是否初始化。
 //        if (SipCoreManager.isInstanciated()) {
@@ -91,6 +91,7 @@ public class DoorManager {
                             .setActivityToLaunchOnIncomingReceived(CallActivity.class);
                     ALog.e("11111订阅setActivityToLaunchOnIncomingReceived");
                 });
+        return this;
     }
 
     public void exit() {

@@ -108,22 +108,24 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         );
     }
 
-
     private void checkSip() {
-        DoorManager.getInstance().initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
-            @Override
-            public void onPreAccess() {
-                ALog.e("1111onPreAccess");
-                go2Main();
-            }
+        ALog.e("11111UserHelper.sip-->" + UserHelper.sip);
 
-            @Override
-            public void onPostAccess(WebReponse webReponse) {
-                ALog.e("1111onPostAccess");
+        DoorManager.getInstance()
+                .initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
+                    @Override
+                    public void onPreAccess() {
+                        ALog.e("1111onPreAccess");
+                        go2Main();
+                    }
 
-                go2Main();
-            }
-        });
+                    @Override
+                    public void onPostAccess(WebReponse webReponse) {
+                        ALog.e("1111onPostAccess");
+
+                        go2Main();
+                    }
+                });
     }
 
     private void go2Main() {

@@ -66,7 +66,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
     }
 
     private void requestSip() {
-        DoorManager.getInstance().init();
 
         ALog.e("1111requestSip");
         mModel.requestSip(Params.getInstance())
@@ -76,9 +75,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                     if (sipBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         UserHelper.setSip(sipBean.getData().getAccount());
                         ALog.e("11111" + sipBean.getData().getAccount());
-
-
-                        ALog.e("11111" + UserHelper.sip);
 
                         DoorManager.getInstance().initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
                             @Override
@@ -91,6 +87,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                             @Override
                             public void onPostAccess(WebReponse webReponse) {
                                 ALog.e("11111PostPostPostPost");
+                                DoorManager.getInstance().init();
 
                                 getView().start(null);
                             }
