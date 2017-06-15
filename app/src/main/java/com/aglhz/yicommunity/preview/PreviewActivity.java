@@ -2,25 +2,39 @@ package com.aglhz.yicommunity.preview;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -97,9 +111,39 @@ public class PreviewActivity extends BaseActivity {
                 }
             });
             mPhotoView.setMaximumScale(100f);
+            String picPath = picsList.get(position);
+            mPhotoView.setOnLongClickListener(v -> {
+                new AlertDialog.Builder(PreviewActivity.this)
+                        .setItems(new String[]{"保存图片"}, (dialog, which) -> {
+                            //网络访问
+                            dialog.dismiss();
+                            Observable.create(o -> {
+                                Bitmap bitmap = null;
+                                try {
+                                    bitmap = Glide.with(PreviewActivity.this)
+                                            .load(picPath)
+                                            .asBitmap() //必须
+                                            .centerCrop()
+                                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                            .get();
+                                } catch (InterruptedException e) {
+                                    o.onError(e);
+                                } catch (ExecutionException e) {
+                                    o.onError(e);
+                                }
+                                o.onNext(bitmap);
+                            }).subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(o -> {
+                                        savePic2Local((Bitmap) o);
+                                    });
+                        })
+                        .show();
+                return false;
+            });
 
             Glide.with(BaseApplication.mContext)
-                    .load(picsList.get(position))
+                    .load(picPath)
                     .error(R.drawable.ic_default_img_120px)
                     .placeholder(R.drawable.ic_default_img_120px)
                     .into(mPhotoView);
@@ -112,5 +156,48 @@ public class PreviewActivity extends BaseActivity {
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
         }
+    }
+
+    private void savePic2Local(Bitmap bitmap) {
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/亿社区";
+        File localFile = new File(filePath);
+        if (!localFile.exists()) {
+            localFile.mkdir();
+        }
+        File finalImageFile = new File(localFile, System.currentTimeMillis() + ".jpg");
+        if (finalImageFile.exists()) {
+            finalImageFile.delete();
+        }
+        try {
+            finalImageFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(finalImageFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (bitmap == null) {
+            Toast.makeText(this, "图片不存在", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        try {
+            fos.flush();
+            fos.close();
+            Toast.makeText(this, "图片保存在：" + finalImageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //广播通知刷新系统相册
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri uri = Uri.fromFile(finalImageFile);
+        intent.setData(uri);
+        sendBroadcast(intent);
     }
 }
