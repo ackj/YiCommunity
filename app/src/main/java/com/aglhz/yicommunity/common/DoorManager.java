@@ -31,6 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DoorManager {
     private static final String TAG = DoorManager.class.getSimpleName();
+    private static final String URL = "http://member.planidea.cn";
     private static DoorManager mDoorManager;
     private WebUserApi mWebUserApi;
 
@@ -51,21 +52,28 @@ public class DoorManager {
 
 
     public void init() {
-        WebApiConstants.setHttpServer("http://member.planidea.cn");
+        ALog.e("11111initinit");
+
+
+        WebApiConstants.setHttpServer(URL);
 
         // 检查是否已经初始化SipCoreManager是否初始化。
-        if (SipCoreManager.isInstanciated()) {
-            ALog.e("SipCoreManager已经初始化");
-            return;
-        }
+//        if (SipCoreManager.isInstanciated()) {
+//            ALog.e("1111SipCoreManager已经初始化");
+//            return;
+//        }
 
         BaseApplication.mContext.startService(new Intent(android.content.Intent.ACTION_MAIN)
                 .setClass(BaseApplication.mContext, SipService.class));
+        ALog.e("1111startService");
+
 
         Observable.create(o -> {
             try {
                 while (!SipService.isReady()) {
                     try {
+
+                        ALog.e("1111whilewhile");
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -77,8 +85,10 @@ public class DoorManager {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> SipService.instance()
-                        .setActivityToLaunchOnIncomingReceived(CallActivity.class));
+                .subscribe(o ->{ SipService.instance()
+                        .setActivityToLaunchOnIncomingReceived(CallActivity.class);
+                ALog.e("11111订阅setActivityToLaunchOnIncomingReceived");
+                });
     }
 
     public DoorManager initWebUserApi(String userName, AccessCallBack accessCallBack) {
@@ -101,6 +111,8 @@ public class DoorManager {
                 if (webReponse != null && webReponse.getStatusCode() == 200) {
                     // 登陆成功，启动对讲服务
                     UserHelper.setSip(userName);
+
+                    ALog.e("11111200200200200200");
                     // 登陆失败，显示提示信息
 //                    Toast.makeText(BaseApplication.mContext, "对讲服务启动成功", Toast.LENGTH_LONG).show();
                 } else {
@@ -143,8 +155,10 @@ public class DoorManager {
             try {
 
                 SipCorePreferences.instance().setAccountOutboundProxyEnabled(0, true);
-                ALog.e("成功注册代理服务器…………………………………………");
+                ALog.e("11111成功注册代理服务器…………………………………………");
             } catch (Exception e) {
+                ALog.e("11111异常出错了");
+
                 e.printStackTrace();
             }
         }
@@ -159,9 +173,9 @@ public class DoorManager {
 
         try {
             if (!SipCoreManager.getInstance().acceptCallIfIncomingPending()) {
-                ALog.e("77777777:" + to);
+                ALog.e("11111:" + to);
 
-                ALog.e("77777777:" + "sip:D" + to + "@member");
+                ALog.e("11111:" + "sip:D" + to + "@member");
 
 
                 SipCoreManager.getInstance().newOutgoingCall("sip:D" + to + "@member");

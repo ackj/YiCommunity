@@ -54,7 +54,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
         tempInit();
 
         initBoxing();
-
     }
 
     private void initData() {
@@ -79,10 +78,9 @@ public class BaseApplication extends MultiDexApplication implements Application.
 //        BlockCanary.install(this, new AppContext()).start();
 
 //        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
-        ALog.init(false, "ysq");
+        ALog.init(true, "ysq");
 
     }
-
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {

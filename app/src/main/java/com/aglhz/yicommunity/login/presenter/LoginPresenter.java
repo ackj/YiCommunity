@@ -37,10 +37,16 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
 
     @Override
     public void start(Object request) {
+        ALog.e("1111startstart");
+
+
         mRxManager.add(mModel.requestLogin((Params) request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userBean -> {
                     if (userBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+
+                        ALog.e("1111response_code_nomal");
+
 
                         //注册友盟
                         mModel.requestUMeng(((Params) request).user);
@@ -60,22 +66,32 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
     }
 
     private void requestSip() {
+        DoorManager.getInstance().init();
+
+        ALog.e("1111requestSip");
         mModel.requestSip(Params.getInstance())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(sipBean -> {
 
                     if (sipBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         UserHelper.setSip(sipBean.getData().getAccount());
-                        ALog.e("11111" + UserHelper.string());
+                        ALog.e("11111" + sipBean.getData().getAccount());
+
+
+                        ALog.e("11111" + UserHelper.sip);
 
                         DoorManager.getInstance().initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
                             @Override
                             public void onPreAccess() {
+                                ALog.e("11111PrePrePre");
+
                                 getView().start(null);
                             }
 
                             @Override
                             public void onPostAccess(WebReponse webReponse) {
+                                ALog.e("11111PostPostPostPost");
+
                                 getView().start(null);
                             }
                         });

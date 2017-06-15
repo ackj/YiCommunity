@@ -96,6 +96,7 @@
         <activity
             android:name=".launch.LaunchActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -193,7 +194,8 @@
         <activity
             android:name=".main.door.call.CallActivity"
             android:launchMode="singleTop"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -201,7 +203,8 @@
         <activity
             android:name=".main.door.call.CallIncomingActivity"
             android:launchMode="singleTop"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
