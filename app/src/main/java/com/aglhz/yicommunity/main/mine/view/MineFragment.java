@@ -33,9 +33,9 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.login.LoginActivity;
+import com.aglhz.yicommunity.main.MainActivity;
 import com.aglhz.yicommunity.main.about.AboutActivity;
 import com.aglhz.yicommunity.main.door.DoorActivity;
-import com.aglhz.yicommunity.main.door.call.CallActivity;
 import com.aglhz.yicommunity.main.message.view.MessageCenterFragment;
 import com.aglhz.yicommunity.main.mine.contract.MineContract;
 import com.aglhz.yicommunity.main.mine.presenter.MinePresenter;
@@ -51,7 +51,6 @@ import com.umeng.message.UTrack;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.linphone.core.LinphoneCall;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -255,7 +254,12 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(EventData event) {
+        ALog.e("11111onLoginEvent");
         if (event.code == Constants.login) {
+            if (_mActivity instanceof MainActivity) {
+                ALog.e("11111setCallListener");
+                ((MainActivity) _mActivity).setCallListener();
+            }
             updataView();
         } else if (event.code == Constants.refresh_unread_mark) {
             mPresenter.requestUnreadMark(params);
@@ -274,17 +278,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
             tvName.setText(UserHelper.userInfo.getNickName());
             tvPhoneNumber.setText(UserHelper.userInfo.getMobile());
             tvLogout.setVisibility(View.VISIBLE);
-
-            ALog.e("11111updataViewupdataView");
-
-
-            DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
-                if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
-                    // 启动CallOutgoingActivity
-
-                    _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
-                }
-            });
         }
     }
 

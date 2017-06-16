@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -29,8 +28,8 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.login.LoginActivity;
+import com.aglhz.yicommunity.main.MainActivity;
 import com.aglhz.yicommunity.main.door.DoorActivity;
-import com.aglhz.yicommunity.main.door.call.CallActivity;
 import com.aglhz.yicommunity.main.house.HouseActivity;
 import com.aglhz.yicommunity.main.park.ParkActivity;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
@@ -44,7 +43,6 @@ import com.aglhz.yicommunity.web.WebActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.linphone.core.LinphoneCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,12 +192,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     }
 
     private void setListener() {
-        DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
-            if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
-                // 启动CallOutgoingActivity
-                _mActivity.startActivity(new Intent(_mActivity, CallActivity.class));
-            }
-        });
 
         //设置我的房屋卡片的点击事件。
         myHouseAdapter.setOnItemClickListener((adapter, view, position) -> {

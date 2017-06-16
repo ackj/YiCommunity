@@ -1,10 +1,17 @@
 package com.aglhz.yicommunity.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.DoorManager;
+import com.aglhz.yicommunity.main.door.call.CallActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
+
+import org.linphone.core.LinphoneCall;
+import org.linphone.core.LinphoneCore;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -15,6 +22,7 @@ import com.aglhz.yicommunity.main.view.MainFragment;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +31,31 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             loadRootFragment(R.id.fl_main_activity, MainFragment.newInstance());
         }
+         handler=new Handler();
+
+        setCallListener();
     }
 
     @Override
     public boolean swipeBackPriority() {
         return false;
+    }
+
+    public void setCallListener() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                DoorManager.getInstance().setCallListener(new DoorManager.LinphoneCallBack() {
+                    @Override
+                    public void callState(LinphoneCore lc, LinphoneCall call, LinphoneCall.State state, String message) {
+                        if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
+                            startActivity(new Intent(MainActivity.this, CallActivity.class));
+                        }
+                    }
+                });
+            }
+        },3000);
+
+
     }
 }

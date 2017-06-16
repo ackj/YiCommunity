@@ -122,7 +122,10 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
         unbinder.unbind();
     }
 
-    @OnClick({R.id.tv_forget_password, R.id.cb_remember_password, R.id.bt_login, R.id.bt_register})
+    @OnClick({R.id.tv_forget_password,
+            R.id.cb_remember_password,
+            R.id.bt_login,
+            R.id.bt_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_forget_password:

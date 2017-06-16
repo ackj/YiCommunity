@@ -39,22 +39,18 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
     public void start(Object request) {
         ALog.e("1111startstart");
 
-
+        Params params = (Params) request;
         mRxManager.add(mModel.requestLogin((Params) request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userBean -> {
                     if (userBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-
-                        ALog.e("1111response_code_nomal");
-
-
                         //注册友盟
-                        mModel.requestUMeng(((Params) request).user);
+                        mModel.requestUMeng(params.user);
                         //保存用户信息
                         UserHelper.setUserInfo(userBean.getData().getMemberInfo());
 
                         //注册Sip到全视通服务器
-                        requestSip();
+                        requestSip(Params.getInstance());
                         //登录成功后，通知相关页面刷新。
                         EventBus.getDefault().post(new EventCommunity(null));
 
@@ -65,30 +61,23 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
         );
     }
 
-    private void requestSip() {
-
-        ALog.e("1111requestSip");
-        mModel.requestSip(Params.getInstance())
+    private void requestSip(Params params) {
+        mModel.requestSip(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(sipBean -> {
-
                     if (sipBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         UserHelper.setSip(sipBean.getData().getAccount());
-                        ALog.e("11111" + sipBean.getData().getAccount());
-
                         DoorManager.getInstance().initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
-                            @Override
-                            public void onPreAccess() {
-                                ALog.e("11111PrePrePre");
 
+                            @Override
+                            public void onPreAccessToken() {
                                 getView().start(null);
                             }
 
                             @Override
-                            public void onPostAccess(WebReponse webReponse) {
+                            public void onPostAccessToken(WebReponse webReponse) {
                                 ALog.e("11111PostPostPostPost");
-                                DoorManager.getInstance().init();
-
+                                DoorManager.getInstance().startService();
                                 getView().start(null);
                             }
                         });

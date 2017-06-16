@@ -71,7 +71,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
 
 
     private void initDoorManager() {
-        DoorManager.getInstance().init();
+        DoorManager.getInstance().startService();
     }
 
     @AfterPermissionGranted(LOCATION)
@@ -113,14 +113,16 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
 
         DoorManager.getInstance()
                 .initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
+
+
                     @Override
-                    public void onPreAccess() {
+                    public void onPreAccessToken() {
                         ALog.e("1111onPreAccess");
                         go2Main();
                     }
 
                     @Override
-                    public void onPostAccess(WebReponse webReponse) {
+                    public void onPostAccessToken(WebReponse webReponse) {
                         ALog.e("1111onPostAccess");
 
                         go2Main();
