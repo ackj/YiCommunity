@@ -162,12 +162,10 @@ public class DoorManager {
              * 这里总是报空指针，干脆让这个代码运行多次注册，同时捕获异常。
              */
             try {
-
                 SipCorePreferences.instance().setAccountOutboundProxyEnabled(0, true);
                 ALog.e("11111成功注册代理服务器…………………………………………");
             } catch (Exception e) {
                 ALog.e("11111异常出错了");
-
                 e.printStackTrace();
             }
         }
