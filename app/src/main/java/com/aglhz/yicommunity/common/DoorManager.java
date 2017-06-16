@@ -34,7 +34,7 @@ public class DoorManager {
     private static final String URL = "http://member.planidea.cn";
     private static DoorManager mDoorManager;
     private WebUserApi mWebUserApi;
-    private LinphoneCoreListenerBase mListener;
+    private LinphoneCallBack mListener;
 
     private DoorManager() {
         WebApiConstants.setHttpServer(URL);
