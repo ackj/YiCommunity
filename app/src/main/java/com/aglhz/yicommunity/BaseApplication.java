@@ -8,13 +8,12 @@ import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
-import com.aglhz.abase.exception.AppExceptionHandler;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.common.boxing.BoxingGlideLoader;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.common.boxing.BoxingGlideLoader;
 import com.aglhz.yicommunity.event.EventData;
 import com.bilibili.boxing.BoxingMediaLoader;
 import com.bilibili.boxing.loader.IBoxingMediaLoader;
@@ -47,17 +46,18 @@ public class BaseApplication extends MultiDexApplication implements Application.
         super.onCreate();
         mContext = this;
         initData();//数据的初始化要在友盟推送之前，因为要注册别名时，用到用户名。
+        initPush();//初始化友盟推送。
+        initBoxing();//初始化图片选择器。
 
-        initPush();
-//        registerActivityLifecycleCallbacks(this);
+        ALog.init(false, "ysq");
 
         tempInit();
-
-        initBoxing();
     }
 
     private void initData() {
         UserHelper.init();
+        registerActivityLifecycleCallbacks(this);
+//        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
     }
 
     private void initBoxing() {
@@ -67,19 +67,19 @@ public class BaseApplication extends MultiDexApplication implements Application.
     }
 
     private void tempInit() {
-//        Fragmentation.builder()
-//                .stackViewMode(Fragmentation.BUBBLE)
-//                .install();
-//
-//        //初始化内存泄露监听
+        if (BuildConfig.DEBUG) {
+            Fragmentation.builder()
+                    .stackViewMode(Fragmentation.BUBBLE)
+                    .install();
+            ALog.e(TAG, "临时");
+            //初始化内存泄露监听
 //        mRefWatcher = LeakCanary.install(this);
-//
-//        // 初始化卡顿监听
+
+            // 初始化卡顿监听
 //        BlockCanary.install(this, new AppContext()).start();
 
-//        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
-        ALog.init(true, "ysq");
-
+            ALog.init(true, "ysq");
+        }
     }
 
     @Override
