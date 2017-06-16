@@ -33,6 +33,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.login.LoginActivity;
+import com.aglhz.yicommunity.main.MainActivity;
 import com.aglhz.yicommunity.main.about.AboutActivity;
 import com.aglhz.yicommunity.main.door.DoorActivity;
 import com.aglhz.yicommunity.main.message.view.MessageCenterFragment;
@@ -253,7 +254,12 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(EventData event) {
+        ALog.e("11111onLoginEvent");
         if (event.code == Constants.login) {
+            if (_mActivity instanceof MainActivity) {
+                ALog.e("11111setCallListener");
+                ((MainActivity) _mActivity).setCallListener();
+            }
             updataView();
         } else if (event.code == Constants.refresh_unread_mark) {
             mPresenter.requestUnreadMark(params);

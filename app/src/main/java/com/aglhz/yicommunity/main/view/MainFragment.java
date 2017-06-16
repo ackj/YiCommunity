@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.main.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -106,7 +107,11 @@ public class MainFragment extends BaseFragment {
     @Override
     public boolean onBackPressedSupport() {
         if (System.currentTimeMillis() - TOUCH_TIME < WAIT_TIME) {
-            _mActivity.finish();
+            //退到桌面，而不是退出应用，让用户以为退出应用，尽量保活。
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
         } else {
             TOUCH_TIME = System.currentTimeMillis();
             ToastUtils.showToast(BaseApplication.mContext, Constants.PRESS_AGAIN);

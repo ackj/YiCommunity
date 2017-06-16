@@ -48,6 +48,8 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
 
     @Override
     public Observable<SipBean> requestSip(Params params) {
+        ALog.e("11111"+params.token);
+
         return HttpHelper.getService(ApiService.class)
                 .requestSip(ApiService.requestSip, params.token)
                 .subscribeOn(Schedulers.io());

@@ -14,11 +14,9 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.abase.utils.ToastUtils;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.sipphone.sdk.BluetoothManager;
 import com.sipphone.sdk.SipCoreManager;
@@ -55,7 +53,7 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ALog.e("1111111");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         setContentView(R.layout.activity_call);
@@ -80,18 +78,6 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
                                               String authenticationToken) {
             }
         };
-
-        DoorManager.getInstance().setCallListener((lc, call, state, message) -> {
-
-            ALog.e("1111111111::" + state.toString());
-
-            if (state == State.IncomingReceived) {
-                mCall = call;
-            }
-
-
-        });
-
 
         mBottomView = findViewById(R.id.menu);
 
