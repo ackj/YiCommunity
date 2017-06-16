@@ -3,6 +3,7 @@ package com.aglhz.abase.exception;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -11,8 +12,8 @@ import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-
 import com.aglhz.abase.common.ActivityManager;
+import com.aglhz.abase.log.ALog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,7 +27,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 
 /**
  * Author：leguang on 2016/10/9 0009 15:49
@@ -49,15 +49,6 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     //用于格式化日期,作为日志文件名的一部分
     private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.CHINA);
-    private String crashTip = "很抱歉，程序出现异常，即将退出！";
-
-    public String getCrashTip() {
-        return crashTip;
-    }
-
-    public void setCrashTip(String crashTip) {
-        this.crashTip = crashTip;
-    }
 
     /**
      * 保证只有一个CrashHandler实例
@@ -88,7 +79,10 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
      */
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        if (!handleException(ex) && mDefaultHandler != null) {
+
+        ALog.e(TAG, "uncaughtException");
+
+        if (mDefaultHandler != null) {
             //如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
         }
@@ -101,16 +95,16 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
      * @return true:如果处理了该异常信息;否则返回false.
      */
     private boolean handleException(final Throwable throwable) {
+        ALog.e(TAG, "handleException");
         if (throwable == null || mContext == null) {
             return false;
         }
 
-        boolean isSuccess = true;
         try {
             //收集设备参数信息
             collectDeviceInfo(mContext);
             //保存日志文件
-            isSuccess = saveCrashInfo2File(throwable);
+            saveCrashInfo2File(throwable);
             Log.e(TAG, "Save end.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +118,7 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
 //                    public void run() {
 //                        Looper.prepare();
 //                        //弹出Dialog提示用户退出App或重启App
-////                        showDialog();
+//                        showDialog();
 //                        Looper.loop();
 //                    }
 //                }.start();

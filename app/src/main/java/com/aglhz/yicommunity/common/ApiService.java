@@ -20,7 +20,6 @@ import com.aglhz.yicommunity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.bean.MonthCardBillListBean;
 import com.aglhz.yicommunity.bean.MonthCardRuleListBean;
 import com.aglhz.yicommunity.bean.MyHousesBean;
-import com.aglhz.yicommunity.bean.SocialityListBean;
 import com.aglhz.yicommunity.bean.NoticeBean;
 import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.bean.ParkOrderBean;
@@ -34,6 +33,7 @@ import com.aglhz.yicommunity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.bean.RepairTypesBean;
 import com.aglhz.yicommunity.bean.RoomBean;
 import com.aglhz.yicommunity.bean.SipBean;
+import com.aglhz.yicommunity.bean.SocialityListBean;
 import com.aglhz.yicommunity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.bean.UnitBean;
 import com.aglhz.yicommunity.bean.UnreadMessageBean;
@@ -55,14 +55,17 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
- * Created by YandZD on 2017/1/17.
+ * Created by leguang on 2017/4/16 0016.
+ * Email：langmanleguang@qq.com
+ * <p>
+ * 项目接口集合
  */
 
 public interface ApiService {
 
     //基础路径
-//    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-    String BASE_PROPERTY = "http://192.168.250.117:8080/property_code";//大叔调试的IP
+    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+//    String BASE_PROPERTY = "http://192.168.250.117:8080/property_code";//大叔调试的IP
 
     String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";

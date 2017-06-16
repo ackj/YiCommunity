@@ -21,6 +21,7 @@ import com.aglhz.yicommunity.bean.PasswordBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.common.share.WxShare;
 import com.aglhz.yicommunity.main.door.contract.PasswordOpenDoorContract;
 import com.aglhz.yicommunity.main.door.presenter.PasswordOpenDoorPresenter;
 
@@ -113,6 +114,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
                 .setItems(new String[]{"微信", "短信"}, (dialog, which) -> {
                     switch (which) {
                         case 0: //微信
+                            WxShare.sendText(tvPassword.getText().toString().trim());
                             break;
                         case 1: //短信
                             sendSMS();

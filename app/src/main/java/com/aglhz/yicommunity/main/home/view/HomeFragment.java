@@ -51,9 +51,7 @@ import in.srain.cube.views.ptr.PtrHandler;
  * 打开方式：Start App-->社区
  */
 public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements HomeContract.View {
-
     private static final String TAG = HomeFragment.class.getSimpleName();
-
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)

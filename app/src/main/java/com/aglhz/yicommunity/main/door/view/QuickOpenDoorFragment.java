@@ -99,6 +99,9 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         toolbarTitle.setText("设置一键开门");
         toolbarMenu.setText("保存");
         toolbarMenu.setOnClickListener(v -> {
+//            if (adapter == null || adapter.getData().isEmpty()) {
+//                return;
+//            }
             String dir = adapter.getData().get(prePosition).getDir();
             String name = adapter.getData().get(prePosition).getName();
             Params params = Params.getInstance();
@@ -138,6 +141,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
 
     /**
      * 响应请求门禁列表
+     *
      * @param datas
      */
     @Override
@@ -168,6 +172,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
 
     /**
      * 响应请求设置一键开门
+     *
      * @param mBaseBean
      */
     @Override
@@ -210,6 +215,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
 
     /**
      * 选择完社区后刷新门禁列表
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
