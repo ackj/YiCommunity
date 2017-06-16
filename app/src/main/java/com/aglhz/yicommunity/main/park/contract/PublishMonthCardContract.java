@@ -11,6 +11,7 @@ import com.aglhz.yicommunity.common.Params;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * Author: LiuJia on 2017/6/2 0002 09:23.
@@ -27,6 +28,8 @@ public interface PublishMonthCardContract {
         void responseCardRecharge(CardRechargeBean.DataBean bean);
 
         void responseCardPay(CarCardBean.DataBean bean);
+
+        void responseALiPay(String order);
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -37,6 +40,8 @@ public interface PublishMonthCardContract {
         void requestCardPay(Params params);
 
         void requestCardRecharge(Params params);
+
+        void requestCarCardOrder(Params params);
     }
 
     interface Model extends BaseContract.Model {
@@ -47,6 +52,8 @@ public interface PublishMonthCardContract {
         Observable<CarCardBean> requestCardPay(Params params);
 
         Observable<CardRechargeBean> requestCardRecharge(Params params);
-    }
 
+        Observable<ResponseBody> requestCarCardOrder(Params params);
+
+    }
 }

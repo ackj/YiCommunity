@@ -24,8 +24,6 @@ public interface PropertyPayContract {
         void responsePropertyPayDetail(PropertyPayDetailBean bean);
 
         void responseALiPay(String order);
-
-
     }
 
     interface Presenter extends BaseContract.Presenter {

@@ -5,8 +5,12 @@ import android.support.annotation.NonNull;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.payment.WxPayHelper;
 import com.aglhz.yicommunity.main.park.contract.PublishMonthCardContract;
 import com.aglhz.yicommunity.main.park.model.PublishMonthCardModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -91,5 +95,37 @@ public class PublishMonthCardPresenter extends BasePresenter<PublishMonthCardCon
                     }
                 }, this::error)
         );
+    }
+
+    @Override
+    public void requestCarCardOrder(Params params) {
+        mRxManager.add(mModel.requestCarCardOrder(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseBody -> {
+
+                    JSONObject jsonObject;
+                    try {
+                        jsonObject = new JSONObject(responseBody.string());
+                        JSONObject jsonOther = jsonObject.optJSONObject("other");
+
+                        String code = jsonOther.optString("code");
+                        if ("200".equals(code)) {
+                            if (params.payType == 1) {
+                                //支付宝
+
+                                JSONObject jsonData = jsonObject.optJSONObject("data");
+                                getView().responseALiPay(jsonData.optString("body"));
+
+                            } else if (params.payType == 2) {
+                                //微信
+                                WxPayHelper.WxPay(jsonObject.toString());
+                            }
+                        } else {
+                            getView().error(jsonOther.optString("message"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, this::error));
     }
 }

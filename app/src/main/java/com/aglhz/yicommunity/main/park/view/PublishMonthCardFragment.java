@@ -1,11 +1,11 @@
 package com.aglhz.yicommunity.main.park.view;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,7 +27,9 @@ import com.aglhz.yicommunity.bean.MonthCardRuleBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.payment.ALiPayHelper;
 import com.aglhz.yicommunity.event.EventPark;
+import com.aglhz.yicommunity.event.EventPay;
 import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.park.contract.PublishMonthCardContract;
 import com.aglhz.yicommunity.main.park.presenter.PublishMonthCardPresenter;
@@ -44,15 +46,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.aglhz.yicommunity.R.id.ptrFrameLayout;
+
 /**
  * Created by Administrator on 2017/4/19 9:28.
  * [月卡缴费]的View层。
  * 打开方式：StartApp-->管家-->办理车卡-->月卡缴费
  */
 public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContract.Presenter> implements PublishMonthCardContract.View {
-
     private static final String TAG = PublishMonthCardFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -97,11 +99,13 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     private int type;
     private String fid;
     private CardRechargeBean.DataBean cardRechargeBean;
+    private String[] arrPayType = {Constants.ALIPAY, Constants.WXPAY};
 
     /**
      * PublishMonthCardFragment创建的入口
+     *
      * @param type 页面显示的类型（1.首次缴费,2.续费,other.申请月卡）
-     * @param fid 只针对type值为1或2的月卡的fid
+     * @param fid  只针对type值为1或2的月卡的fid
      * @return
      */
     public static PublishMonthCardFragment newInstance(int type, String fid) {
@@ -172,7 +176,9 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
         KeyBoardUtils.hideKeybord(getView(), _mActivity);
     }
 
-    @OnClick({R.id.tv_car_city, R.id.rl_park_address, R.id.bt_submit_fragment_month_card_pay, R.id.rl_month_card_rule})
+    @OnClick({R.id.tv_car_city, R.id.rl_park_address
+            , R.id.bt_submit_fragment_month_card_pay
+            , R.id.rl_month_card_rule})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_car_city:
@@ -207,8 +213,22 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     }
 
     private void pay() {
-        //todo:跳支付宝 or 微信
 
+        new AlertDialog.Builder(_mActivity).setTitle("请选择支付类型")
+                .setItems(arrPayType, (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            params.payType = Constants.TYPE_ALIPAY;
+                            break;
+                        case 1:
+                            params.payType = Constants.TYPE_WXPAY;
+                            break;
+                    }
+                    params.parkCardFid = fid;
+                    mPresenter.requestCarCardOrder(params);
+                })
+                .setNegativeButton("取消", null)
+                .show();
 
     }
 
@@ -257,6 +277,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
 
     /**
      * 车牌归属地的数据返回结果
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -281,6 +302,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
 
     /**
      * 响应请求申请月卡成功
+     *
      * @param bean
      */
     @Override
@@ -291,6 +313,7 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
 
     /**
      * 响应请求预缴月数列表
+     *
      * @param datas
      */
     @Override
@@ -313,10 +336,12 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
 
     /**
      * 响应请求月卡的信息
+     *
      * @param bean
      */
     @Override
     public void responseCardPay(CarCardBean.DataBean bean) {
+        //刷新UI
         String carNo = bean.getCarNo();
         tvCarCity.setText(carNo.substring(0, 1));
         etInputCarNum.setText(carNo.substring(1));
@@ -334,6 +359,16 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
         rlMonthCardRule.setEnabled(false);
         etInputName.setEnabled(false);
         etInputPhone.setEnabled(false);
+
+        //设置参数
+        params.monthCount = bean.getMonthCount();
+        params.monthName = bean.getMonthName();
+
+    }
+
+    @Override
+    public void responseALiPay(String order) {
+        new ALiPayHelper().pay(_mActivity, order);
     }
 
     public void responseCardRecharge(CardRechargeBean.DataBean bean) {
@@ -353,6 +388,10 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
         rlParkAddress.setEnabled(false);
         etInputName.setEnabled(false);
         etInputPhone.setEnabled(false);
+
+        //设置参数
+        params.monthCount = bean.getMonthCount();
+        params.monthName = bean.getMonthName();
     }
 
     private void selectRule(MonthCardRuleBean clickBean) {
@@ -364,5 +403,14 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
         params.monthName = clickBean.getName();
         params.monthCount = clickBean.getMonthCount();
         params.price = String.valueOf(clickBean.getMoney());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventPay event) {
+        if (event.code == 0) {
+            DialogHelper.successSnackbar(getView(), "恭喜！支付成功");
+        } else {
+            DialogHelper.warningSnackbar(getView(), "很遗憾，支付失败,请重试");
+        }
     }
 }

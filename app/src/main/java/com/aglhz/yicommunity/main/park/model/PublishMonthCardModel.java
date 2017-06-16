@@ -13,6 +13,7 @@ import com.aglhz.yicommunity.main.park.contract.PublishMonthCardContract;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 
 /**
  * Author: LiuJia on 2017/5/23 0023 16:12.
@@ -20,6 +21,7 @@ import okhttp3.MultipartBody;
  */
 
 public class PublishMonthCardModel extends BaseModel implements PublishMonthCardContract.Model {
+
     @Override
     public void start(Object request) {
     }
@@ -56,6 +58,18 @@ public class PublishMonthCardModel extends BaseModel implements PublishMonthCard
     public Observable<CardRechargeBean> requestCardRecharge(Params params) {
         return HttpHelper.getService(ApiService.class).requestCardRecharge(ApiService.requestCardRecharge,
                 params.token, params.fid)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<ResponseBody> requestCarCardOrder(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestCarCardOrder(ApiService.requestCarCardOrder,
+                        params.token,
+                        params.parkCardFid,
+                        params.monthName,
+                        params.monthCount,
+                        params.payType)
                 .subscribeOn(Schedulers.io());
     }
 }

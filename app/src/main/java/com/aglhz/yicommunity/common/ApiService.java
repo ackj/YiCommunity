@@ -61,8 +61,8 @@ import retrofit2.http.Url;
 public interface ApiService {
 
     //基础路径
-    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-//    String BASE_PROPERTY = "http://192.168.250.115:8080/property_code";//大叔调试的IP
+//    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+    String BASE_PROPERTY = "http://192.168.250.117:8080/property_code";//大叔调试的IP
 
     String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
@@ -98,9 +98,9 @@ public interface ApiService {
     String requestNoticeDetail = "http://www.aglhz.com/sub_property_ysq/m/html/noticeDetail.html?fid=";
 
     //闲置交换用户协议
-    String AGREEMENT_EXCHANGE ="http://www.aglhz.com/sub_property_ysq/m/html/xianzhijiaohuanUserAgreement.html";
+    String AGREEMENT_EXCHANGE = "http://www.aglhz.com/sub_property_ysq/m/html/xianzhijiaohuanUserAgreement.html";
     //拼车服务用户协议
-    String AGREEMENT_CARPOOL ="http://www.aglhz.com/sub_property_ysq/m/html/pincheUserAgreement.html";
+    String AGREEMENT_CARPOOL = "http://www.aglhz.com/sub_property_ysq/m/html/pincheUserAgreement.html";
 
     //********************以上为Web*******************************
 
@@ -788,4 +788,17 @@ public interface ApiService {
     Observable<ComplainReplyBean> requestComplainReplies(@Url String url,
                                                          @Query("token") String token,
                                                          @Query("complaintFid") String String);
+
+
+    String requestCarCardOrder = BASE_PROPERTY + "/park/card/from-client/month-card-bill-pay";
+
+    @FormUrlEncoded
+    @POST
+    Observable<ResponseBody> requestCarCardOrder(@Url String url,
+                                                 @Field("token") String token,
+                                                 @Field("parkCardFid") String parkCardFid,
+                                                 @Field("monthName") String monthName,//预缴月数名称（例如：一个月、半年、一年等）
+                                                 @Field("monthCount") int monthCount,//预缴月数值（例如：1、6、12等）
+                                                 @Field("payType") int payType);//支付类型（1=支付宝支付、2=微信支付）
+
 }

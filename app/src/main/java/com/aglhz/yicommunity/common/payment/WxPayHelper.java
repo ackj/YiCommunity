@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class WxPayHelper {
-    private static final String TAG = WxPayHelper.class.getSimpleName();
+    public static final String TAG = WxPayHelper.class.getSimpleName();
 
     public static String appId;
 

@@ -58,7 +58,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         ALog.e("resp.errCode=", "===" + resp.getType());
         ALog.e("resp.errCode=", "===" + resp.checkArgs());
 
-
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
 
             EventBus.getDefault().post(new EventPay(resp.errCode));

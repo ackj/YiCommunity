@@ -19,7 +19,7 @@ public class MonthCardRuleBean {
 
     private String endDate;
     private String fid;
-    private int money;
+    private float money;
     private int monthCount;
     private String name;
     private String remark;
@@ -42,11 +42,11 @@ public class MonthCardRuleBean {
         this.fid = fid;
     }
 
-    public int getMoney() {
+    public float getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(float money) {
         this.money = money;
     }
 

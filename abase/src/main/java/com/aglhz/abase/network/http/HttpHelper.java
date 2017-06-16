@@ -26,6 +26,7 @@ public class HttpHelper {
     public static String BASE_URL = "http://www.aglhz.com:8090";
     private static OkHttpClient mOkHttpClient;
     private static Retrofit mRetrofit;
+    private static final int TIMEOUT = 35;
 
     //构造方法私有
     private HttpHelper() {
@@ -61,9 +62,9 @@ public class HttpHelper {
             //设置缓存
 //            builder.cache(cache);
             //设置超时
-            builder.connectTimeout(50, TimeUnit.SECONDS);
-            builder.readTimeout(50, TimeUnit.SECONDS);
-            builder.writeTimeout(50, TimeUnit.SECONDS);
+            builder.connectTimeout(TIMEOUT, TimeUnit.SECONDS);
+            builder.readTimeout(TIMEOUT, TimeUnit.SECONDS);
+            builder.writeTimeout(TIMEOUT, TimeUnit.SECONDS);
             //错误重连
             builder.retryOnConnectionFailure(true);
 
@@ -161,8 +162,6 @@ public class HttpHelper {
                     .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
-
-
         }
     }
 
