@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
+import com.aglhz.abase.exception.AppExceptionHandler;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.common.ApiService;
@@ -48,16 +49,12 @@ public class BaseApplication extends MultiDexApplication implements Application.
         initData();//数据的初始化要在友盟推送之前，因为要注册别名时，用到用户名。
         initPush();//初始化友盟推送。
         initBoxing();//初始化图片选择器。
-
-        ALog.init(false, "ysq");
-
-        tempInit();
+        tempInit();//根据是不是Debug版本来设置。
     }
 
     private void initData() {
         UserHelper.init();
         registerActivityLifecycleCallbacks(this);
-//        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
     }
 
     private void initBoxing() {
@@ -71,7 +68,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
             Fragmentation.builder()
                     .stackViewMode(Fragmentation.BUBBLE)
                     .install();
-            ALog.e(TAG, "临时");
             //初始化内存泄露监听
 //        mRefWatcher = LeakCanary.install(this);
 
@@ -79,6 +75,9 @@ public class BaseApplication extends MultiDexApplication implements Application.
 //        BlockCanary.install(this, new AppContext()).start();
 
             ALog.init(true, "ysq");
+        } else {
+            ALog.init(false, "ysq");
+            Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
         }
     }
 

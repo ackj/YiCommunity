@@ -1,15 +1,12 @@
 package com.aglhz.abase.exception;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.aglhz.abase.common.ActivityManager;
@@ -57,6 +54,20 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
         this.mContext = mContext;
         //获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+
+                while (true) {
+                    try {
+                        Looper.loop();//主线程都异常都被try catch掉了。
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -74,18 +85,19 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 当UncaughtException发生时会转入该函数来处理
      *
-     * @param thread 线程
-     * @param ex     异常
+     * @param thread    线程
+     * @param throwable 异常
      */
     @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
+    public void uncaughtException(Thread thread, Throwable throwable) {
 
-        ALog.e(TAG, "uncaughtException");
+        //由于主线程的异常都被try catch掉了，能被捕获到这里的都是子线程异常。这样保存信息什么的都不需要开启线程。
+        handleException(throwable);
 
-        if (mDefaultHandler != null) {
-            //如果用户没有处理则让系统默认的异常处理器来处理
-            mDefaultHandler.uncaughtException(thread, ex);
-        }
+//        if (mDefaultHandler != null) {
+        //如果用户没有处理则让系统默认的异常处理器来处理
+//            mDefaultHandler.uncaughtException(thread, throwable);
+//        }
     }
 
     /**
@@ -94,10 +106,10 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
      * @param throwable 异常
      * @return true:如果处理了该异常信息;否则返回false.
      */
-    private boolean handleException(final Throwable throwable) {
-        ALog.e(TAG, "handleException");
+    private void handleException(final Throwable throwable) {
+
         if (throwable == null || mContext == null) {
-            return false;
+            return;
         }
 
         try {
@@ -108,47 +120,9 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
             Log.e(TAG, "Save end.");
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         } finally {
-//            if (!isSuccess) {
-//                return false;
-//            } else {
-//                new Thread() {
-//                    @Override
-//                    public void run() {
-//                        Looper.prepare();
-//                        //弹出Dialog提示用户退出App或重启App
-//                        showDialog();
-//                        Looper.loop();
-//                    }
-//                }.start();
-//            }
+//            ActivityManager.getInstance().appExit();
         }
-        return true;
-    }
-
-    private void showDialog() {
-        final Activity currentActivity = ActivityManager.getInstance().currentActivity();
-        new AlertDialog.Builder(currentActivity)
-                .setTitle("异常")
-                .setMessage("当前应用程序发生异常，请您选择退出应用或重启应用！")
-                .setCancelable(false)
-                .setNegativeButton("重启", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        Intent intent = new Intent(mContext, SplashActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        mContext.startActivity(intent);
-//                        ActivityManager.getInstance().appExit();
-                        Log.e(TAG, "重启");
-                    }
-                })
-                .setPositiveButton("退出", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ActivityManager.getInstance().appExit();
-                    }
-                }).show();
     }
 
     /**

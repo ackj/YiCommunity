@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.bean.BaseBean;
@@ -34,6 +35,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+
+import static com.aglhz.yicommunity.common.UserHelper.dir;
 
 /**
  * Author: LiuJia on 2017/4/21 10:31.
@@ -102,6 +105,20 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
 //            if (adapter == null || adapter.getData().isEmpty()) {
 //                return;
 //            }
+            ALog.e("1111111");
+
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ALog.e("1111111");
+                    String s = null;
+                    s.substring(1);
+
+                }
+            }).start();
+
+
             String dir = adapter.getData().get(prePosition).getDir();
             String name = adapter.getData().get(prePosition).getName();
             Params params = Params.getInstance();
