@@ -102,23 +102,9 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         toolbarTitle.setText("设置一键开门");
         toolbarMenu.setText("保存");
         toolbarMenu.setOnClickListener(v -> {
-//            if (adapter == null || adapter.getData().isEmpty()) {
-//                return;
-//            }
-            ALog.e("1111111");
-
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    ALog.e("1111111");
-                    String s = null;
-                    s.substring(1);
-
-                }
-            }).start();
-
-
+            if (adapter == null || adapter.getData().isEmpty()) {
+                return;
+            }
             String dir = adapter.getData().get(prePosition).getDir();
             String name = adapter.getData().get(prePosition).getName();
             Params params = Params.getInstance();
