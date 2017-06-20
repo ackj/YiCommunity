@@ -170,7 +170,6 @@ public class UserHelper {
         initData();
     }
 
-
     public static String getAccount() {
         return getDefaultSp().getString(ACCOUNT, "");
     }
@@ -206,9 +205,6 @@ public class UserHelper {
 
     //更新是否记住密码。
     public static boolean setRemember(boolean isRemember) {
-
-        ALog.e("11111:" + isRemember);
-
         return getDefaultEditor().putBoolean(ISREMEMBER, isRemember).commit();
     }
 
