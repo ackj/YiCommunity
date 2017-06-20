@@ -11,6 +11,7 @@ import android.widget.AbsListView;
 import android.widget.ScrollView;
 
 import com.aglhz.abase.R;
+import com.aglhz.abase.common.AudioPlayer;
 import com.aglhz.abase.common.ScrollingHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
@@ -24,6 +25,8 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
+
+import static com.aglhz.abase.log.ALog.A;
 
 /**
  * Author：leguang on 2016/10/9 0009 15:49
@@ -125,13 +128,14 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
 
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
+                AudioPlayer.getInstance(_mActivity).play(1);
+                ALog.e("______________onRefresh________________");
                 onRefresh();
             }
         });
     }
 
     public void onRefresh() {
-        ALog.e("______________onRefresh________________");
     }
 
     public void showLoadingDialog() {
