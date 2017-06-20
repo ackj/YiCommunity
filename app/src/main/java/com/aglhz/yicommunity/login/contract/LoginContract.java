@@ -2,8 +2,8 @@ package com.aglhz.yicommunity.login.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.SipBean;
-import com.aglhz.yicommunity.bean.UserBean;
+import com.aglhz.yicommunity.entity.bean.SipBean;
+import com.aglhz.yicommunity.entity.bean.UserBean;
 import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;

@@ -2,8 +2,8 @@ package com.aglhz.yicommunity.main.park.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.CarCardListBean;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.CarCardListBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;

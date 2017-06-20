@@ -13,7 +13,7 @@ import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.CarCardListBean;
+import com.aglhz.yicommunity.entity.bean.CarCardListBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 

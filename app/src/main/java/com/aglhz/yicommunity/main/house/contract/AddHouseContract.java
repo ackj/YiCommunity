@@ -2,12 +2,12 @@ package com.aglhz.yicommunity.main.house.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.BuildingBean;
-import com.aglhz.yicommunity.bean.CommunitySelectBean;
-import com.aglhz.yicommunity.bean.FloorBean;
-import com.aglhz.yicommunity.bean.RoomBean;
-import com.aglhz.yicommunity.bean.UnitBean;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.BuildingBean;
+import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.entity.bean.FloorBean;
+import com.aglhz.yicommunity.entity.bean.RoomBean;
+import com.aglhz.yicommunity.entity.bean.UnitBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;

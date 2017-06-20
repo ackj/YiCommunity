@@ -4,7 +4,7 @@ import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.RepairApplyBean;
+import com.aglhz.yicommunity.entity.bean.RepairApplyBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**

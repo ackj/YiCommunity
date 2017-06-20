@@ -6,7 +6,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
-import com.aglhz.yicommunity.bean.ParkSelectBean;
+import com.aglhz.yicommunity.entity.bean.ParkSelectBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;

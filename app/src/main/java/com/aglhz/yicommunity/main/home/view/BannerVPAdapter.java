@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.aglhz.yicommunity.BaseApplication;
-import com.aglhz.yicommunity.bean.BannerBean;
+import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;

@@ -2,10 +2,10 @@ package com.aglhz.yicommunity.main.park.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.CarCardBean;
-import com.aglhz.yicommunity.bean.CardRechargeBean;
-import com.aglhz.yicommunity.bean.MonthCardRuleListBean;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.CarCardBean;
+import com.aglhz.yicommunity.entity.bean.CardRechargeBean;
+import com.aglhz.yicommunity.entity.bean.MonthCardRuleListBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.park.contract.PublishMonthCardContract;

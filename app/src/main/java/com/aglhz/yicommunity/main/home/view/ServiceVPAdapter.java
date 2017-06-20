@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.ServiceBean;
+import com.aglhz.yicommunity.entity.bean.ServiceBean;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -58,7 +58,7 @@
 
     <!--反馈-->
     <string name="feedback">请填写反馈信息</string>
-    <string name="feedback_hint">说明您的报修详细内容和具体位置</string>
+    <string name="feedback_hint">请写下您的宝贵意见</string>
 
     <!--投诉模块-->
     <string name="select_community">请选择小区</string>

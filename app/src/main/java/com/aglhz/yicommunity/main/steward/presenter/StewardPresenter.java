@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.IconBean;
+import com.aglhz.yicommunity.entity.bean.IconBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.steward.contract.StewardContract;

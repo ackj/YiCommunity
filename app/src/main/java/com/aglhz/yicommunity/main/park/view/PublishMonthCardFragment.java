@@ -20,10 +20,10 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.RegexUtils;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.CarCardBean;
-import com.aglhz.yicommunity.bean.CardRechargeBean;
-import com.aglhz.yicommunity.bean.MonthCardRuleBean;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.CarCardBean;
+import com.aglhz.yicommunity.entity.bean.CardRechargeBean;
+import com.aglhz.yicommunity.entity.bean.MonthCardRuleBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
@@ -45,8 +45,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static com.aglhz.yicommunity.R.id.ptrFrameLayout;
 
 /**
  * Created by Administrator on 2017/4/19 9:28.

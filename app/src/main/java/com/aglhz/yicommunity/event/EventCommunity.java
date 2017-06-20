@@ -1,6 +1,6 @@
 package com.aglhz.yicommunity.event;
 
-import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
 
 /**
  * Author: LiuJia on 2017/5/8 0008 14:02.

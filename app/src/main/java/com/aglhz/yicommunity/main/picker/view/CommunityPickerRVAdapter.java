@@ -7,7 +7,7 @@ import android.text.style.ForegroundColorSpan;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;

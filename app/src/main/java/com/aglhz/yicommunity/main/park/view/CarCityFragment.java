@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.CarCityListBean;
+import com.aglhz.yicommunity.entity.bean.CarCityListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.google.gson.Gson;
 

@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.house.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.widget.selector.ISelectAble;
-import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
 
 import java.util.List;
 

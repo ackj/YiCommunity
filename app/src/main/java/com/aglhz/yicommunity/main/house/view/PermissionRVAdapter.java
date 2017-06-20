@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.house.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.HouseRightsBean;
+import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 

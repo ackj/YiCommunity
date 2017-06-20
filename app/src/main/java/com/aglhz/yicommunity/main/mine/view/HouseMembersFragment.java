@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.HouseRightsBean;
-import com.aglhz.yicommunity.bean.MyHousesBean;
+import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
+import com.aglhz.yicommunity.entity.bean.MyHousesBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventCommunity;

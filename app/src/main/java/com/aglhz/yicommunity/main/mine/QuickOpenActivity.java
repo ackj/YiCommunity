@@ -4,16 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
-import com.aglhz.abase.cache.SPCache;
 import com.aglhz.abase.common.RxManager;
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

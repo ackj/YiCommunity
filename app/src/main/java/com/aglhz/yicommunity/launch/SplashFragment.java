@@ -19,8 +19,8 @@ import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.LbsManager;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.common.DoorManager;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.main.MainActivity;
 import com.sipphone.sdk.access.WebReponse;
 

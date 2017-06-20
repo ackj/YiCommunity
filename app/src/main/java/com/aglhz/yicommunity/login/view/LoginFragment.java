@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
@@ -45,8 +46,8 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     EditText etPassword;
     @BindView(R.id.tv_forget_password)
     TextView tvForgetPassword;
-    @BindView(R.id.cb_remember_password)
-    CheckBox cbRememberPassword;
+    @BindView(R.id.cb_remember)
+    CheckBox cbRemember;
     @BindView(R.id.bt_login)
     Button btLogin;
     @BindView(R.id.bt_register)
@@ -57,7 +58,6 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     private Params params = Params.getInstance();
-    private ViewGroup rootView;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -80,17 +80,16 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rootView = (ViewGroup) _mActivity.findViewById(android.R.id.content).getRootView();
         initData();
     }
 
     private void initData() {
-        etUsername.addTextChangedListener(this);
-        etPassword.addTextChangedListener(this);
-        if (!TextUtils.isEmpty(UserHelper.account)) {
-            etUsername.setText(UserHelper.account);
-            etPassword.setText(UserHelper.password);
-            btLogin.setEnabled(true);
+        etUsername.addTextChangedListener(this);//先监听，这样在下面设置账号密码的时候，
+        etPassword.addTextChangedListener(this);//如果账号密码是空或者不为空就能起到作用，省掉了回复按钮可点击的代码。
+        if (UserHelper.isRemember()) {
+            cbRemember.setChecked(UserHelper.isRemember());
+            etUsername.setText(UserHelper.getAccount());
+            etPassword.setText(UserHelper.getPassword());
         }
 
         initStateBar(toolbar);
@@ -102,10 +101,8 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     public void start(Object response) {
         dismissLoadingDialog();
 
-        if (cbRememberPassword.isChecked()) {
-            UserHelper.setAccount(etUsername.getText().toString().trim()
-                    , etPassword.getText().toString().trim());
-        }
+
+        UserHelper.setRemember(cbRemember.isChecked());
         EventBus.getDefault().post(new EventData(Constants.login));
         _mActivity.finish();
     }
@@ -113,7 +110,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     @Override
     public void error(String errorMessage) {
         dismissLoadingDialog();
-        DialogHelper.warningSnackbar(rootView, errorMessage);
+        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override
@@ -123,7 +120,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     }
 
     @OnClick({R.id.tv_forget_password,
-            R.id.cb_remember_password,
+            R.id.cb_remember,
             R.id.bt_login,
             R.id.bt_register})
     public void onViewClicked(View view) {
@@ -131,7 +128,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
             case R.id.tv_forget_password:
                 start(ForgetPasswordFragment.newInstance());
                 break;
-            case R.id.cb_remember_password:
+            case R.id.cb_remember:
                 break;
             case R.id.bt_login:
                 showLoadingDialog();
@@ -152,7 +149,8 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        boolean enabled = TextUtils.isEmpty(etUsername.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString());
+        boolean enabled = TextUtils.isEmpty(etUsername.getText().toString())
+                || TextUtils.isEmpty(etPassword.getText().toString());
         btLogin.setEnabled(!enabled);
     }
 

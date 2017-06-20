@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.home.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.ServiceBean;
+import com.aglhz.yicommunity.entity.bean.ServiceBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;

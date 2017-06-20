@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.message.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.ComplainReplyBean;
+import com.aglhz.yicommunity.entity.bean.ComplainReplyBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**

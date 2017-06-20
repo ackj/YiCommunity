@@ -6,9 +6,8 @@ import android.text.TextUtils;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
-import com.aglhz.yicommunity.bean.UserBean;
+import com.aglhz.yicommunity.entity.bean.UserBean;
 import com.google.gson.Gson;
-
 
 /**
  * Author：leguang on 2016/5/4 0009 15:49
@@ -16,7 +15,7 @@ import com.google.gson.Gson;
  */
 
 public class UserHelper {
-    private static final String USER = "user";
+    private static final String DEFAULT = "";
     private static final String TOKEN = "token";
     private static final String COMMUNITY_NAME = "community_name";
     private static final String COMMUNITY_CODE = "community_code";
@@ -30,24 +29,27 @@ public class UserHelper {
     private static final String ADDRESS = "address";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
-    private static final String POSITION_ADDRESS = "position_address";
+    private static final String LOCATION_ADDRESS = "location_address";
     private static final String SIP = "sip";
+    private static final String ISREMEMBER = "isRemember";
 
+    public static String account = "";//账户、密码、是否记住密码，这三个值是记录在默认SP中的。
+    public static String password = "";//同时账户和密码在各自的SP中也有一份。
+
+    public static String FILE_NAME = "default";
     public static String token = "";
     public static String communityName = "";
+    public static String communityCode = "";
     public static String province = "";
     public static String city = "";
     public static String county = "";
     public static String address = "";
-    public static String communityCode = "";
-    public static String account = "";
-    public static String password = "";
     public static String dir = "";//默认设置的一键开门的设备路径。
     public static String latitude = "";//纬度
     public static String longitude = "";//经度
     public static String sip = "";
     public static String WXAPPID = "";
-    public static String positionAddress = "";//定位的位置地址
+    public static String locationAddress = "";//定位的位置地址
 
     public static UserBean.DataBean.MemberInfoBean userInfo;
 
@@ -66,24 +68,24 @@ public class UserHelper {
     }
 
     public static boolean setLocationAddress(String address) {
-        UserHelper.positionAddress = address;
+        UserHelper.locationAddress = address;
         SharedPreferences.Editor editor = getEditor();
-        editor.putString(POSITION_ADDRESS, address);
+        editor.putString(LOCATION_ADDRESS, address);
         return editor.commit();
     }
 
-    //判断是否登录
+    //判断是否登录。
     public static boolean isLogined() {
         return !TextUtils.isEmpty(token);
     }
 
-    //判断是否有选择小区
+    //判断是否有选择小区。
     public static boolean hasCommunity() {
         return !TextUtils.isEmpty(communityName);
     }
 
-    //退出登录或者token失效清除信息
-    public static boolean clear() {
+    //退出登录或者token失效清除信息。
+    public static void clear() {
         token = "";
         communityName = "";
         communityCode = "";
@@ -99,11 +101,9 @@ public class UserHelper {
         city = "";
         county = "";
         address = "";
-
-        return getEditor().clear().commit();
     }
 
-    //更新Token
+    //更新Token。
     public static boolean setToken(String token) {
         UserHelper.token = token;
         SharedPreferences.Editor editor = getEditor();
@@ -111,7 +111,7 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //更新社区名称和社区代码
+    //更新社区名称和社区代码。
     public static boolean setCommunity(String communityName, String communityCode) {
         UserHelper.communityName = communityName;
         UserHelper.communityCode = communityCode;
@@ -121,18 +121,17 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //更新用户信息
+    //更新用户信息。
     public static boolean setUserInfo(UserBean.DataBean.MemberInfoBean memberInfo) {
         setToken(memberInfo.getToken());
         UserHelper.userInfo = memberInfo;
         SharedPreferences.Editor editor = getEditor();
-        Gson gson = new Gson();
-        String info = gson.toJson(memberInfo);
+        String info = new Gson().toJson(memberInfo);
         editor.putString(USER_INFO, info);
         return editor.commit();
     }
 
-    //更新sip账号
+    //更新sip账号。
     public static boolean setSip(String sip) {
         UserHelper.sip = sip;
         SharedPreferences.Editor editor = getEditor();
@@ -140,7 +139,7 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //获取用户信息
+    //获取用户信息。
     public static UserBean.DataBean.MemberInfoBean getUserInfo() {
         if (userInfo != null) {
             return userInfo;
@@ -153,38 +152,67 @@ public class UserHelper {
         return UserHelper.userInfo;
     }
 
-    //更新账号密码
-    public static boolean setAccount(String account, String password) {
-        ALog.e("account-->"+account);
-        ALog.e("password-->"+password);
+    //更新账号密码，同时更改了SP文件名，作为用户数据的初始化入口。
+    public static void setAccount(String account, String password) {
+        ALog.e("account-->" + account);
+        ALog.e("password-->" + password);
 
-        UserHelper.account = account;
-        UserHelper.password = password;
-        SharedPreferences.Editor editor = getEditor();
-        editor.putString(ACCOUNT, account);
-        editor.putString(PASSWORD, password);
-        return editor.commit();
+        //存到默认SP文件中，用于程序入口处获取默认账户。
+        getDefaultEditor()
+                .putString(ACCOUNT, account)
+                .putString(PASSWORD, password)
+                .commit();
+
+        FILE_NAME = account;//此处更改SP文件名。
+        getEditor()
+                .putString(ACCOUNT, account)
+                .putString(PASSWORD, password);
+        initData();
     }
 
+
+    public static String getAccount() {
+        return getDefaultSp().getString(ACCOUNT, "");
+    }
+
+    public static String getPassword() {
+        return getDefaultSp().getString(PASSWORD, "");
+    }
+
+    //用户数据的初始化入口。
     public static void init() {
-        token = getSp().getString(TOKEN, "");
-        account = getSp().getString(ACCOUNT, "");
-        password = getSp().getString(PASSWORD, "");
-        communityName = getSp().getString(COMMUNITY_NAME, "");
-        communityCode = getSp().getString(COMMUNITY_CODE, "");
-        dir = getSp().getString(DIR, "");
-        city = getSp().getString(CITY, "");
-        latitude = getSp().getString(LATITUDE, "");
-        longitude = getSp().getString(LONGITUDE, "");
-        sip = getSp().getString(SIP, "");
-        province = getSp().getString(PROVINCE, "");
-        city = getSp().getString(CITY, "");
-        county = getSp().getString(COUNTY, "");
-        address = getSp().getString(ADDRESS, "");
+        FILE_NAME = getDefaultSp().getString(ACCOUNT, "");
+        initData();
+    }
+
+    private static void initData() {
+        SharedPreferences sp = getSp();
+        token = sp.getString(TOKEN, "");
+        account = sp.getString(ACCOUNT, "");
+        password = sp.getString(PASSWORD, "");
+        communityName = sp.getString(COMMUNITY_NAME, "");
+        communityCode = sp.getString(COMMUNITY_CODE, "");
+        dir = sp.getString(DIR, "");
+        city = sp.getString(CITY, "");
+        latitude = sp.getString(LATITUDE, "");
+        longitude = sp.getString(LONGITUDE, "");
+        sip = sp.getString(SIP, "");
+        province = sp.getString(PROVINCE, "");
+        city = sp.getString(CITY, "");
+        county = sp.getString(COUNTY, "");
+        address = sp.getString(ADDRESS, "");
         getUserInfo();
     }
 
-    //更新门禁机的路径
+    //更新是否记住密码。
+    public static boolean setRemember(boolean isRemember) {
+
+        ALog.e("11111:" + isRemember);
+
+        return getDefaultEditor().putBoolean(ISREMEMBER, isRemember).commit();
+    }
+
+    //更新门禁机的路径。
     public static boolean setDir(String dir) {
         UserHelper.dir = dir;
         SharedPreferences.Editor editor = getEditor();
@@ -192,7 +220,7 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //更新省份名称
+    //更新省份名称。
     public static boolean setProvince(String province) {
         UserHelper.province = province;
         SharedPreferences.Editor editor = getEditor();
@@ -200,7 +228,7 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //更新城市名称
+    //更新城市名称。
     public static boolean setCity(String city) {
         UserHelper.city = city;
         SharedPreferences.Editor editor = getEditor();
@@ -208,7 +236,7 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //更新区名
+    //更新区名。
     public static boolean setCounty(String county) {
         UserHelper.county = county;
         SharedPreferences.Editor editor = getEditor();
@@ -216,7 +244,7 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //更新完整地址
+    //更新完整地址。
     public static boolean setAddress(String address) {
         UserHelper.address = address;
         SharedPreferences.Editor editor = getEditor();
@@ -224,7 +252,7 @@ public class UserHelper {
         return editor.commit();
     }
 
-    //更新位置信息
+    //更新位置信息。
     public static boolean setPosition(String province, String city, String county, String address) {
         UserHelper.province = province;
         UserHelper.city = city;
@@ -240,19 +268,33 @@ public class UserHelper {
         return editor.commit();
     }
 
+    public static boolean isRemember() {
+        return getDefaultSp().getBoolean(ISREMEMBER, false);
+    }
+
     private static SharedPreferences getSp() {
-        SharedPreferences sp = BaseApplication.mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
-        return sp;
+        return BaseApplication.mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
     }
 
     private static SharedPreferences.Editor getEditor() {
         return getSp().edit();
     }
 
+    private static SharedPreferences getDefaultSp() {
+        return BaseApplication.mContext.getSharedPreferences(DEFAULT, Context.MODE_PRIVATE);
+    }
+
+    private static SharedPreferences.Editor getDefaultEditor() {
+        return getDefaultSp().edit();
+    }
+
     public static String string() {
         return "UserHelper{" +
                 "token=" + token +
                 ", sip='" + sip + '\'' +
+                ", dir='" + communityName + '\'' +
+                ", dir='" + account + '\'' +
+                ", dir='" + address + '\'' +
                 ", dir='" + dir + '\'' +
                 '}';
     }

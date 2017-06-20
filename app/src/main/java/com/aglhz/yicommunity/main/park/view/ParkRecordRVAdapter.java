@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.ParkRecordListBean;
+import com.aglhz.yicommunity.entity.bean.ParkRecordListBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**

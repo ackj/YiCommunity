@@ -11,15 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.DoorListBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.DoorListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.main.door.contract.QuickOpenDoorContract;
 import com.aglhz.yicommunity.main.door.presenter.QuickOpenDoorPresenter;
 import com.aglhz.yicommunity.event.EventCommunity;
@@ -35,8 +34,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-
-import static com.aglhz.yicommunity.common.UserHelper.dir;
 
 /**
  * Author: LiuJia on 2017/4/21 10:31.

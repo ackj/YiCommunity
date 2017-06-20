@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.door.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
+import com.aglhz.yicommunity.entity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
