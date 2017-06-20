@@ -331,7 +331,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     protected void initToolbar(Toolbar toolbar) {
         initStateBar(toolbar);
         toolbarTitle.setText("智能管家");
-
+        toolbarTitle.setOnClickListener(v -> svSteward.fullScroll(ScrollView.FOCUS_UP));
     }
 
     @Override

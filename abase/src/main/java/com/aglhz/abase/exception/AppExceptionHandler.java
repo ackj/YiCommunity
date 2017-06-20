@@ -50,7 +50,7 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 保证只有一个CrashHandler实例
      */
-    private AppExceptionHandler(Context mContext) {
+    private AppExceptionHandler(final Context mContext) {
         this.mContext = mContext;
         //获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -62,8 +62,10 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
                 while (true) {
                     try {
                         Looper.loop();//主线程都异常都被try catch掉了。
-                    } catch (Throwable e) {
-                        e.printStackTrace();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        collectDeviceInfo(mContext);
+                        saveCrashInfo2File(throwable);
                     }
                 }
             }
@@ -187,7 +189,6 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
             String fileName = "crash-" + time + "-" + timestamp + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 String path = Environment.getExternalStorageDirectory().getPath() + "/crash/";
-                Log.e(TAG, "path=" + path);
                 File dir = new File(path);
                 if (!dir.exists()) {
                     dir.mkdirs();

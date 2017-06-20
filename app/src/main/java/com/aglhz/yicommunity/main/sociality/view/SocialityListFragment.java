@@ -292,6 +292,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     /**
      * 响应请求数据成功
+     *
      * @param datas
      */
     @Override
@@ -318,6 +319,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     /**
      * 响应请求删除成功
+     *
      * @param bean
      */
     @Override
@@ -351,5 +353,9 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventPublish event) {
         ptrFrameLayout.autoRefresh();
+    }
+
+    public void go2Top() {
+        recyclerView.scrollToPosition(0);
     }
 }

@@ -96,6 +96,7 @@ public class NoticeListFragment extends BaseFragment<NoticeListContract.Presente
         toolbarTitle.setText("物业公告");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
     }
 
     private void initData() {

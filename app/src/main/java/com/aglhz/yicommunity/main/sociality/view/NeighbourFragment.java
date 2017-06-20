@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
@@ -28,7 +29,6 @@ import butterknife.Unbinder;
 
 public class NeighbourFragment extends BaseFragment {
     private static final String TAG = NeighbourFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -92,6 +92,15 @@ public class NeighbourFragment extends BaseFragment {
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
             toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         }
+        toolbar.setOnClickListener(v -> {
+            if (getChildFragmentManager() != null
+                    && getChildFragmentManager().getFragments() != null
+                    && !getChildFragmentManager().getFragments().isEmpty()
+                    && getChildFragmentManager().getFragments().get(0) instanceof SocialityListFragment) {
+                ((SocialityListFragment) getChildFragmentManager()
+                        .getFragments().get(0)).go2Top();
+            }
+        });
     }
 
     @Override

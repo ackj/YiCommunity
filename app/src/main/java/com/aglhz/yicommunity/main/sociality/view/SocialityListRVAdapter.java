@@ -130,7 +130,6 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
                         .into(jcVideoPlayerStandard.thumbImageView);
             } else {
                 //------------------- 照片 ----------------
-                ALog.e("pics size:" + item.getPics().size());
                 recyclerView.setVisibility(View.VISIBLE);
                 jcVideoPlayerStandard.setVisibility(View.GONE);
                 ImagesGridRVAdapter adapter = new ImagesGridRVAdapter(item.getPics());

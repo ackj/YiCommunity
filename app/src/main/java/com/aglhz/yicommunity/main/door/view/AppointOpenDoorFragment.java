@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
@@ -97,6 +98,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         toolbarTitle.setText("指定开门");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
     }
 
     private void initData() {
