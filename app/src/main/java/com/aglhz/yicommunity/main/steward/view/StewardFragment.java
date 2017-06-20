@@ -51,6 +51,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
+import static com.aglhz.yicommunity.R.id.recyclerView;
+
 /**
  * Author：leguang on 2017/4/13 0009 15:49
  * Email：langmanleguang@qq.com
@@ -431,7 +433,10 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 //    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunity event) {
+    public void go2TopAndRefresh(EventCommunity event) {
+        if (svSteward == null || ptrFrameLayout == null) {
+            return;
+        }
         svSteward.fullScroll(ScrollView.FOCUS_UP);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
     }

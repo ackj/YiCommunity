@@ -351,11 +351,18 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventPublish event) {
+    public void go2TopAndRefresh(EventPublish event) {
+        if (recyclerView == null || ptrFrameLayout == null) {
+            return;
+        }
+        recyclerView.scrollToPosition(0);
         ptrFrameLayout.autoRefresh();
     }
 
     public void go2Top() {
+        if (recyclerView == null) {
+            return;
+        }
         recyclerView.scrollToPosition(0);
     }
 }
