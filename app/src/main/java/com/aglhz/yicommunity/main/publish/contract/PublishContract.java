@@ -1,7 +1,7 @@
 package com.aglhz.yicommunity.main.publish.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;

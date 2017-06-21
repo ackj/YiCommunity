@@ -17,18 +17,17 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.DoorListBean;
-import com.aglhz.yicommunity.bean.IconBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.DoorListBean;
+import com.aglhz.yicommunity.entity.bean.IconBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.login.LoginActivity;
-import com.aglhz.yicommunity.main.MainActivity;
 import com.aglhz.yicommunity.main.door.DoorActivity;
 import com.aglhz.yicommunity.main.house.HouseActivity;
 import com.aglhz.yicommunity.main.park.ParkActivity;
@@ -51,6 +50,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+
+import static com.aglhz.yicommunity.R.id.recyclerView;
 
 /**
  * Author：leguang on 2017/4/13 0009 15:49
@@ -332,7 +333,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     protected void initToolbar(Toolbar toolbar) {
         initStateBar(toolbar);
         toolbarTitle.setText("智能管家");
-
+        toolbarTitle.setOnClickListener(v -> svSteward.fullScroll(ScrollView.FOCUS_UP));
     }
 
     @Override
@@ -432,7 +433,10 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 //    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunity event) {
+    public void go2TopAndRefresh(EventCommunity event) {
+        if (svSteward == null || ptrFrameLayout == null) {
+            return;
+        }
         svSteward.fullScroll(ScrollView.FOCUS_UP);
         ptrFrameLayout.postDelayed(() -> ptrFrameLayout.autoRefresh(), 100);
     }

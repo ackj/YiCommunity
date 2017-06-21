@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
@@ -97,6 +98,25 @@ public class MainFragment extends BaseFragment {
         ahbn.setOnTabSelectedListener((position, wasSelected) -> {
             showHideFragment(mFragments[position], mFragments[prePosition]);
             prePosition = position;
+
+            ALog.e("position:" + position);
+            ALog.e("wasSelected:" + wasSelected);
+
+            if (wasSelected) {
+                switch (position) {
+                    case 0:
+                        ((HomeFragment) mFragments[0]).go2TopAndRefresh();
+                        break;
+                    case 1:
+                        ((StewardFragment) mFragments[1]).go2TopAndRefresh(null);
+                        break;
+                    case 2:
+                        ((NeighbourFragment) mFragments[2]).go2TopAndRefresh();
+                        break;
+                    case 3:
+                        break;
+                }
+            }
             return true;
         });
         ahbn.setCurrentItem(0);

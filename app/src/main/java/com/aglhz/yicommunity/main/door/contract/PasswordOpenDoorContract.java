@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.door.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.PasswordBean;
+import com.aglhz.yicommunity.entity.bean.PasswordBean;
 import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;

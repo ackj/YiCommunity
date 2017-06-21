@@ -2,12 +2,10 @@ package com.aglhz.yicommunity.main.house.view;
 
 import android.widget.ImageView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.HouseRightsBean;
-import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 

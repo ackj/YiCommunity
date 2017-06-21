@@ -26,8 +26,9 @@ public class WxShare {
             return;
         }
 
+        text = "临时密码:" + text;
         WXTextObject textObj = new WXTextObject();
-        textObj.text = "临时密码:" + text;
+        textObj.text = text;
 
         WXMediaMessage msg = new WXMediaMessage();
         msg.mediaObject = textObj;

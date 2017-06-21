@@ -1,7 +1,7 @@
 package com.aglhz.yicommunity.main.picker.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.CommunitySelectBean;
+import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;

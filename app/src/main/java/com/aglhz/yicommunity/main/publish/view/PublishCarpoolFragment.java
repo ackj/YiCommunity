@@ -20,12 +20,12 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.BaseBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
@@ -330,7 +330,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         params.cmnt_c = UserHelper.communityCode;
         params.currentPositionLat = UserHelper.latitude;
         params.currentPositionLng = UserHelper.longitude;
-        params.positionAddress = UserHelper.positionAddress;
+        params.positionAddress = UserHelper.locationAddress;
         params.positionType = 2;
         showLoadingDialog();
         mPresenter.requestSubmit(params);//请求提交拼车服务

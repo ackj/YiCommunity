@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.propery.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.PropertyPayBean;
+import com.aglhz.yicommunity.entity.bean.PropertyPayBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**

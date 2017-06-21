@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.smarthome.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.SubCategoryBean;
+import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**

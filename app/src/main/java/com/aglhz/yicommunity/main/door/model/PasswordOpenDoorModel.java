@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.door.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.bean.PasswordBean;
+import com.aglhz.yicommunity.entity.bean.PasswordBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.door.contract.PasswordOpenDoorContract;

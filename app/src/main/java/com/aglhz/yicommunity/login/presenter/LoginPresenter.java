@@ -47,8 +47,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                         //注册友盟
                         mModel.requestUMeng(params.user);
                         //保存用户信息
+                        UserHelper.setAccount(params.user, params.pwd);//setAccount要先于setUserInfo调用，不然无法切换SP文件。
                         UserHelper.setUserInfo(userBean.getData().getMemberInfo());
-
                         //注册Sip到全视通服务器
                         requestSip(Params.getInstance());
                         //登录成功后，通知相关页面刷新。

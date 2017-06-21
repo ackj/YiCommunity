@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.park.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.MonthCardBillListBean;
+import com.aglhz.yicommunity.entity.bean.MonthCardBillListBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;

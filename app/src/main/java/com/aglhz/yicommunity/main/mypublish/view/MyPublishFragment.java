@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.main.mypublish.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +59,17 @@ public class MyPublishFragment extends BaseFragment {
         toolbarTitle.setText("我的发布");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setOnClickListener(v -> {
+            if (getChildFragmentManager() != null
+                    && getChildFragmentManager().getFragments() != null
+                    && !getChildFragmentManager().getFragments().isEmpty()
+                    && getChildFragmentManager().getFragments().get(0) instanceof SocialityListFragment) {
+
+                for (Fragment fragment : getChildFragmentManager().getFragments()) {
+                    ((SocialityListFragment) fragment).go2Top();
+                }
+            }
+        });
     }
 
     private void initView() {

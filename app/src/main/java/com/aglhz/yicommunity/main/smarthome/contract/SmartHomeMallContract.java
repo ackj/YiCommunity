@@ -1,8 +1,8 @@
 package com.aglhz.yicommunity.main.smarthome.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.GoodsBean;
-import com.aglhz.yicommunity.bean.SubCategoryBean;
+import com.aglhz.yicommunity.entity.bean.GoodsBean;
+import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;

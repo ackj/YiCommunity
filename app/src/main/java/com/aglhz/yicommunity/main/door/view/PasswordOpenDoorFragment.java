@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.door.view;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -17,10 +16,10 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.PasswordBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.PasswordBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.common.share.WxShare;
 import com.aglhz.yicommunity.main.door.contract.PasswordOpenDoorContract;
 import com.aglhz.yicommunity.main.door.presenter.PasswordOpenDoorPresenter;

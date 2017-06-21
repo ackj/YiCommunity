@@ -21,8 +21,8 @@ import com.aglhz.abase.utils.DateUtils;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.CommentBean;
-import com.aglhz.yicommunity.bean.SocialityListBean;
+import com.aglhz.yicommunity.entity.bean.CommentBean;
+import com.aglhz.yicommunity.entity.bean.SocialityListBean;
 import com.aglhz.yicommunity.preview.PreviewActivity;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -130,7 +130,6 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
                         .into(jcVideoPlayerStandard.thumbImageView);
             } else {
                 //------------------- 照片 ----------------
-                ALog.e("pics size:" + item.getPics().size());
                 recyclerView.setVisibility(View.VISIBLE);
                 jcVideoPlayerStandard.setVisibility(View.GONE);
                 ImagesGridRVAdapter adapter = new ImagesGridRVAdapter(item.getPics());

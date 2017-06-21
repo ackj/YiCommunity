@@ -14,14 +14,14 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.BannerBean;
-import com.aglhz.yicommunity.bean.HomeBean;
-import com.aglhz.yicommunity.bean.ServiceBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BannerBean;
+import com.aglhz.yicommunity.entity.bean.HomeBean;
+import com.aglhz.yicommunity.entity.bean.ServiceBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.ScrollingHelper;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 import com.aglhz.yicommunity.main.home.presenter.HomePresenter;
@@ -277,7 +277,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             notices.add("欢迎来到亿社区！");
         }
         adapter.getData().get(1).setNotice(notices);
-        ALog.e(TAG,"responseHomeNotices:"+notices.size());
+        ALog.e(TAG, "responseHomeNotices:" + notices.size());
         adapter.notifyItemChanged(1);
     }
 
@@ -291,5 +291,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public void responseOpenDoor() {
         dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "开门成功，欢迎回家，我的主人！");
+    }
+
+    public void go2TopAndRefresh() {
+        if (recyclerView == null || ptrFrameLayout == null) {
+            return;
+        }
+        recyclerView.scrollToPosition(0);
+        ptrFrameLayout.autoRefresh();
     }
 }

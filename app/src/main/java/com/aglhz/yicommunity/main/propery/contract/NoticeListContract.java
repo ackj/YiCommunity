@@ -1,7 +1,7 @@
 package com.aglhz.yicommunity.main.propery.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.NoticeBean;
+import com.aglhz.yicommunity.entity.bean.NoticeBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;

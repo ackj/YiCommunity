@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.door.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.DoorListBean;
+import com.aglhz.yicommunity.entity.bean.DoorListBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 

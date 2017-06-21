@@ -2,17 +2,16 @@ package com.aglhz.yicommunity.main.steward.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.ContactBean;
-import com.aglhz.yicommunity.bean.DoorListBean;
-import com.aglhz.yicommunity.bean.IconBean;
-import com.aglhz.yicommunity.bean.MyHousesBean;
-import com.aglhz.yicommunity.bean.SipBean;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.ContactBean;
+import com.aglhz.yicommunity.entity.bean.DoorListBean;
+import com.aglhz.yicommunity.entity.bean.IconBean;
+import com.aglhz.yicommunity.entity.bean.MyHousesBean;
+import com.aglhz.yicommunity.entity.bean.SipBean;
 import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

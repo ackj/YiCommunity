@@ -16,19 +16,18 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateLayout;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.BaseBean;
-import com.aglhz.yicommunity.bean.SocialityListBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.SocialityListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.main.publish.CommentActivity;
 import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
 import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
 import com.bumptech.glide.Glide;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -293,6 +292,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     /**
      * 响应请求数据成功
+     *
      * @param datas
      */
     @Override
@@ -319,6 +319,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     /**
      * 响应请求删除成功
+     *
      * @param bean
      */
     @Override
@@ -350,7 +351,18 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventPublish event) {
+    public void go2TopAndRefresh(EventPublish event) {
+        if (recyclerView == null || ptrFrameLayout == null) {
+            return;
+        }
+        recyclerView.scrollToPosition(0);
         ptrFrameLayout.autoRefresh();
+    }
+
+    public void go2Top() {
+        if (recyclerView == null) {
+            return;
+        }
+        recyclerView.scrollToPosition(0);
     }
 }

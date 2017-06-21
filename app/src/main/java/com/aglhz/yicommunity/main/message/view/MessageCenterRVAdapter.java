@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.MessageCenterBean;
+import com.aglhz.yicommunity.entity.bean.MessageCenterBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**

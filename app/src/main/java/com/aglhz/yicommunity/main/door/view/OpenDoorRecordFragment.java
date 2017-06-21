@@ -14,11 +14,11 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.OpenDoorRecordBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.OpenDoorRecordBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.door.contract.OpenDoorRecordContract;
 import com.aglhz.yicommunity.main.door.presenter.OpenDoorRecordPresenter;
@@ -89,6 +89,7 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         toolbarTitle.setText("开门记录");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
     }
 
     private void initData() {

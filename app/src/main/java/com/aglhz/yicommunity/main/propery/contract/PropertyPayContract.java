@@ -1,10 +1,10 @@
 package com.aglhz.yicommunity.main.propery.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
-import com.aglhz.yicommunity.bean.ALiPayBean;
-import com.aglhz.yicommunity.bean.PropertyPayBean;
-import com.aglhz.yicommunity.bean.PropertyPayDetailBean;
-import com.aglhz.yicommunity.bean.WxPayBean;
+import com.aglhz.yicommunity.entity.bean.ALiPayBean;
+import com.aglhz.yicommunity.entity.bean.PropertyPayBean;
+import com.aglhz.yicommunity.entity.bean.PropertyPayDetailBean;
+import com.aglhz.yicommunity.entity.bean.WxPayBean;
 import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;

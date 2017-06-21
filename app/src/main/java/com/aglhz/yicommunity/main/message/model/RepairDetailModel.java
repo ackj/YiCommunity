@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.message.model;
 
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.bean.RepairDetailBean;
+import com.aglhz.yicommunity.entity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.message.contract.RepairDetailContract;

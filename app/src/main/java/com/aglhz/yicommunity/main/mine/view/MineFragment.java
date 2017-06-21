@@ -24,13 +24,13 @@ import com.aglhz.abase.network.http.LogInterceptor;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.UnreadMessageBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.MainActivity;
@@ -328,7 +328,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                         ALog.e("s-->" + s);
                     }
                 });
-        UserHelper.clear();//要放在最后清楚，不然上面用到UserHelper.account也为空了
+        UserHelper.clear();//要放在最后清除，不然上面用到UserHelper.account也为空了
     }
 
     @Override

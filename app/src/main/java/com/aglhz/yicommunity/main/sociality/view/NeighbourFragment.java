@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.main.publish.view.PublishExchangeFragment;
 import com.aglhz.yicommunity.main.publish.view.PublishNeighbourFragment;
 
@@ -19,6 +21,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.aglhz.yicommunity.R.id.ptrFrameLayout;
+import static com.aglhz.yicommunity.R.id.recyclerView;
 
 /**
  * Author: LiuJia on 2017/5/11 0011 14:11.
@@ -28,7 +33,6 @@ import butterknife.Unbinder;
 
 public class NeighbourFragment extends BaseFragment {
     private static final String TAG = NeighbourFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -92,6 +96,15 @@ public class NeighbourFragment extends BaseFragment {
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
             toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         }
+        toolbar.setOnClickListener(v -> {
+            if (getChildFragmentManager() != null
+                    && getChildFragmentManager().getFragments() != null
+                    && !getChildFragmentManager().getFragments().isEmpty()
+                    && getChildFragmentManager().getFragments().get(0) instanceof SocialityListFragment) {
+                ((SocialityListFragment) getChildFragmentManager()
+                        .getFragments().get(0)).go2Top();
+            }
+        });
     }
 
     @Override
@@ -118,6 +131,16 @@ public class NeighbourFragment extends BaseFragment {
                         .setPositiveButton("取消", null)
                         .show();
                 break;
+        }
+    }
+
+    public void go2TopAndRefresh() {
+        if (getChildFragmentManager() != null
+                && getChildFragmentManager().getFragments() != null
+                && !getChildFragmentManager().getFragments().isEmpty()
+                && getChildFragmentManager().getFragments().get(0) instanceof SocialityListFragment) {
+            ((SocialityListFragment) getChildFragmentManager()
+                    .getFragments().get(0)).go2TopAndRefresh(null);
         }
     }
 }

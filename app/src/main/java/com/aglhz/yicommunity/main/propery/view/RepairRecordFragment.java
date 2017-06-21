@@ -14,11 +14,11 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.RepairApplyBean;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.message.view.RepairDetailFragment;
 import com.aglhz.yicommunity.main.propery.contract.RepairApplyContract;
@@ -36,8 +36,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-
-import static com.aglhz.yicommunity.R.id.recyclerView;
 
 /**
  * Created by Administrator on 2017/4/19 14:27.
@@ -103,6 +101,7 @@ public class RepairRecordFragment extends BaseFragment<RepairApplyContract.Prese
         toolbar.inflateMenu(R.menu.menu_repair_record);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
     }
 
     public void initData() {

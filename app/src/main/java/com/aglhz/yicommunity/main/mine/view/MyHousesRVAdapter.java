@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.mine.view;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.bean.MyHousesBean;
+import com.aglhz.yicommunity.entity.bean.MyHousesBean;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**
