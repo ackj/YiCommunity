@@ -29,11 +29,11 @@ import com.aglhz.abase.utils.ScreenUtils;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.CommentBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.CommentBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.KeyboardChangeListener;
 import com.aglhz.yicommunity.main.publish.contract.CommentContract;
@@ -125,20 +125,20 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         type = bundle.getInt(Constants.KEY_TYPE);
         initToolbar();
         initData();
-        initStateManager();
+//        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initListener();
     }
 
     private void initStateManager() {
-        mStateManager = StateManager.builder(_mActivity)
-                .setContent(recyclerView)
-                .setEmptyView(R.layout.state_empty)
-                .setEmptyImage(R.drawable.ic_comment_empty_state_gray_200px)
-                .setEmptyText("快来抢沙发哦！")
-                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
-                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
-                .build();
+//        mStateManager = StateManager.builder(_mActivity)
+//                .setContent(recyclerView)
+//                .setEmptyView(R.layout.state_empty)
+//                .setEmptyImage(R.drawable.ic_comment_empty_state_gray_200px)
+//                .setEmptyText("快来抢沙发哦！")
+//                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+//                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+//                .build();
     }
 
     private void initToolbar() {
@@ -202,6 +202,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
                         if (!inputContent.startsWith(replyName)) {
                             etInputFragmentComment.setText(replyName + inputContent);
                         }
+                        etInputFragmentComment.setSelection(etInputFragmentComment.getText().toString().length());
                         break;
                     case 1:
                         ClipboardManager cm = (ClipboardManager) _mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -286,7 +287,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         ptrFrameLayout.refreshComplete();
         if (commentListParams.page == 1) {
             //为后面的pageState做准备
-            mStateManager.showError();
+//            mStateManager.showError();
         } else if (commentListParams.page > 1) {
             adapter.loadMoreFail();
             commentListParams.page--;
@@ -304,14 +305,14 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
             if (commentListParams.page == 1) {
-                mStateManager.showEmpty();
+//                mStateManager.showEmpty();
             }
             adapter.loadMoreEnd();
             return;
         }
 
         if (commentListParams.page == 1) {
-            mStateManager.showContent();
+//            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {

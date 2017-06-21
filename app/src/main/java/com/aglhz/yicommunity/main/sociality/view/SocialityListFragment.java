@@ -16,17 +16,19 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateLayout;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.SocialityListBean;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.SocialityListBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.main.publish.CommentActivity;
 import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
 import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
+import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
@@ -70,6 +72,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     private int removePosition;//记录要删除的item的位置
     private Params params = Params.getInstance();
     private StateManager mStateManager;
+    private int infoType = 1;
 
     /**
      * SocialityListFragment的创建入口
@@ -184,6 +187,17 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             SocialityListBean.DataBean.MomentsListBean bean = (SocialityListBean.DataBean.MomentsListBean) adapter.getData().get(position);
             switch (view.getId()) {
+                case R.id.iv_avatar_item_moments_list:
+                    new android.app.AlertDialog.Builder(_mActivity)
+                            .setItems(new String[]{"举报"}, (dialog, which) -> {
+                                Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
+                                introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
+                                String link = String.format(ApiService.REPORT_URL, UserHelper.token, infoType, bean.getFid());
+                                ALog.e(TAG,"report url:::"+link);
+                                introductionIntent.putExtra(Constants.KEY_LINK, link);
+                                _mActivity.startActivity(introductionIntent);
+                            }).show();
+                    break;
                 case R.id.ll_comment_item_moments_list:
                 case R.id.tv_comment_count_item_moments_list:
                     Intent intent = new Intent(_mActivity, CommentActivity.class);
@@ -247,19 +261,25 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     public void requestNet() {
         if (type == TYPE_EXCHANGE) {
             mPresenter.requestExchangeList(params);//请求闲置交换数据
+            infoType = 2;
         } else if (type == TYPE_NEIGHBOUR) {
             mPresenter.requestNeighbourList(params);//请求左邻右里
+            infoType = 1;
         } else if (type == TYPE_CARPOOL_OWNER || type == TYPE_CARPOOL_PASSENGER) {
             params.currentPositionLat = UserHelper.latitude;
             params.currentPositionLng = UserHelper.longitude;
             params.carpoolType = type == TYPE_CARPOOL_OWNER ? 1 : 2;
             mPresenter.requestCarpoolList(params);//请求拼车服务
+            infoType = 3;
         } else if (type == TYPE_MY_CARPOOL) {
             mPresenter.requestMyCarpoolList(params);//请求我发布的拼车服务
+            infoType = 3;
         } else if (type == TYPE_MY_EXCHANGE) {
             mPresenter.requestMyExchangeList(params);//请求我发布的闲置交换
+            infoType = 2;
         } else if (type == TYPE_MY_NEIGHBOUR) {
             mPresenter.requestMyNeihbourList(params);//请求我发布的左邻右里
+            infoType = 1;
         }
     }
 

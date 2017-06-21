@@ -105,6 +105,8 @@ public interface ApiService {
     //拼车服务用户协议
     String AGREEMENT_CARPOOL = "http://www.aglhz.com/sub_property_ysq/m/html/pincheUserAgreement.html";
 
+    String REPORT_URL = "http://www.aglhz.com/sub_property_ysq/m/html/report.html?token=%1$s&infoType=%2$s&infoFid=%3$s&appType=2";
+
     //********************以上为Web*******************************
 
 

@@ -100,7 +100,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
                     } else if (bean.getData().getStatus() == 0) {
                         checkSip();
                     }
-
                 }, throwable -> {
                     ALog.e(throwable);
                     go2Main();

@@ -90,7 +90,7 @@ public class Params {
     public String powerCode;//设置某项权限
     public String otype;//业务支付类型 pptbill-物业账单缴费、pktmp-临时停车缴费、pkmcd-停车月卡充值缴费
     public String ofids; //多个时用“,”分隔。
-    public int topnum = 10;
+    public int topnum = 5;
 
 
     private Params() {
