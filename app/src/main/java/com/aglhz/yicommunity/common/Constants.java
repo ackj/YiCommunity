@@ -93,7 +93,10 @@ public class Constants {
     public static final String SP_KEY_GUIDE_MY_CARD = "sp_key_guide_my_card";
     //临停缴费
     public static final String SP_KEY_GUIDE_TEMPPORARY_PARK_PAY = "sp_key_guide_tempporary_park_pay";
-
+    //拼车服务协议
+    public static final String SP_KEY_CARPOOL_AGREEMENT = "sp_key_carpool_agreement";
+    //闲置交换协议
+    public static final String SP_KEY_EXCHANGE_AGREEMENT = "sp_key_exchange_agreement";
     //********************以下权限名称***********************
     public static final String PERMISSION_REMOTEWATCH = "RemoteWatch";
 

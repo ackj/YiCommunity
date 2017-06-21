@@ -131,6 +131,9 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     }
 
     private void initData() {
+        //判断之前是否有
+        
+
         //因为params是单例，所以要将上次选择的清除
         params.files = new ArrayList<>();
         tvCommunityAddress.setText(UserHelper.communityName);
