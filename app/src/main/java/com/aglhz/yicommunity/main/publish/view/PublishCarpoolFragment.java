@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -145,11 +146,15 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         datas.add(addMedia);
         adapter = new PublishImageRVAdapter(datas);
         recyclerView.setAdapter(adapter);
+        cbAgreement.setChecked(UserHelper.isCarpoolAgree);
     }
 
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             selectPhoto();
+        });
+        cbAgreement.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            UserHelper.setCarpoolAgree(isChecked);
         });
     }
 
