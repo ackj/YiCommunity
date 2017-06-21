@@ -15,6 +15,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateLayout;
 import com.aglhz.abase.widget.statemanager.StateManager;
+import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -193,7 +194,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
                                 Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
                                 introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
                                 String link = String.format(ApiService.REPORT_URL, UserHelper.token, infoType, bean.getFid());
-                                ALog.e(TAG,"report url:::"+link);
+                                ALog.e(TAG, "report url:::" + link);
                                 introductionIntent.putExtra(Constants.KEY_LINK, link);
                                 _mActivity.startActivity(introductionIntent);
                             }).show();
@@ -226,9 +227,9 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Glide.with(SocialityListFragment.this).resumeRequests();
+                    Glide.with(BaseApplication.mContext).resumeRequests();
                 } else {
-                    Glide.with(SocialityListFragment.this).pauseRequests();
+                    Glide.with(BaseApplication.mContext).pauseRequests();
                 }
             }
         });
@@ -259,6 +260,9 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     }
 
     public void requestNet() {
+        if (mPresenter == null) {//当滑动过快，力度过大的时候，瞬间退出，则会在过一会儿触发加载更多，所以会触发这段，而此时mPresenter已经被置空了。
+            return;
+        }
         if (type == TYPE_EXCHANGE) {
             mPresenter.requestExchangeList(params);//请求闲置交换数据
             infoType = 2;
@@ -358,7 +362,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     @Override
     public void onPause() {
-        Glide.with(this).pauseRequests();
+        Glide.with(BaseApplication.mContext).pauseRequests();
         super.onPause();
         JCVideoPlayer.releaseAllVideos();
     }
