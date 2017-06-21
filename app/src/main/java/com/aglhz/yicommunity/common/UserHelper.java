@@ -32,6 +32,8 @@ public class UserHelper {
     private static final String LOCATION_ADDRESS = "location_address";
     private static final String SIP = "sip";
     private static final String ISREMEMBER = "isRemember";
+    private static final String IS_EXCHANGE_AGREE = "is_exchange_agree";
+    private static final String IS_CARPOOL_AGREE = "is_carpool_agree";
 
 
     public static String account = "";//账户、密码、是否记住密码，这三个值是记录在默认SP中的。
@@ -46,11 +48,13 @@ public class UserHelper {
     public static String county = "";
     public static String address = "";
     public static String dir = "";//默认设置的一键开门的设备路径。
-    public static String latitude = "";//纬度
-    public static String longitude = "";//经度
+    public static String latitude = "";//纬度。
+    public static String longitude = "";//经度。
     public static String sip = "";
     public static String WXAPPID = "";
-    public static String locationAddress = "";//定位的位置地址
+    public static String locationAddress = "";//定位的位置地址。
+    public static boolean isExchangeAgree = false;//闲置交换发布时是否同意过我们的协议。
+    public static boolean isCarpoolAgree = false;//拼车服务发布时是否同意过我们的协议。
 
     public static UserBean.DataBean.MemberInfoBean userInfo;
 
@@ -201,6 +205,8 @@ public class UserHelper {
         city = sp.getString(CITY, "");
         county = sp.getString(COUNTY, "");
         address = sp.getString(ADDRESS, "");
+        isExchangeAgree = sp.getBoolean(IS_EXCHANGE_AGREE, false);
+        isCarpoolAgree = sp.getBoolean(IS_CARPOOL_AGREE, false);
         getUserInfo();
     }
 
@@ -262,6 +268,23 @@ public class UserHelper {
         editor.putString(COUNTY, county);
         editor.putString(ADDRESS, address);
 
+        return editor.commit();
+    }
+
+    //更新是否同意过闲置交换时的发布协议。
+    public static boolean setExchangeAgree(boolean isExchangeAgree) {
+        UserHelper.isExchangeAgree = isExchangeAgree;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putBoolean(IS_EXCHANGE_AGREE, isExchangeAgree);
+        return editor.commit();
+    }
+
+    //更新是否同意过拼车服务时的发布协议。
+    public static boolean setCarpoolAgree(boolean isCarpoolAgree) {
+        ALog.e("isCarpoolAgree-->" + isCarpoolAgree);
+        UserHelper.isCarpoolAgree = isCarpoolAgree;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putBoolean(IS_CARPOOL_AGREE, isCarpoolAgree);
         return editor.commit();
     }
 

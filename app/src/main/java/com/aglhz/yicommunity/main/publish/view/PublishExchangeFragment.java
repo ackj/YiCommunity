@@ -80,7 +80,6 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private Params params = Params.getInstance();
-    private Dialog loadingDialog;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
@@ -139,13 +138,16 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         datas.add(addMedia);
         adapter = new PublishImageRVAdapter(datas);
         recyclerView.setAdapter(adapter);
+        cbAgreement.setChecked(UserHelper.isExchangeAgree);
     }
 
     private void initListener() {
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             selectPhoto();
         });
-
+        cbAgreement.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            UserHelper.setExchangeAgree(isChecked);
+        });
     }
 
     /**
@@ -243,7 +245,6 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
-        ALog.e(TAG, "onEvent:::" + event.bean.getName());
         tvCommunityAddress.setText(event.bean.getName());
         params.cmnt_c = event.bean.getCode();
     }

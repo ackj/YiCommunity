@@ -31,9 +31,7 @@ import butterknife.Unbinder;
  */
 
 public class ApplyCheckFragment extends BaseFragment<ApplyCheckContract.Presenter> implements ApplyCheckContract.View {
-
     private static final String TAG = ApplyCheckFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
