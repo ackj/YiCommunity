@@ -188,7 +188,7 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
             SocialityListBean.DataBean.MomentsListBean bean = (SocialityListBean.DataBean.MomentsListBean) adapter.getData().get(position);
             switch (view.getId()) {
                 case R.id.iv_avatar_item_moments_list:
-                    new android.app.AlertDialog.Builder(_mActivity)
+                    new AlertDialog.Builder(_mActivity)
                             .setItems(new String[]{"举报"}, (dialog, which) -> {
                                 Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
                                 introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");

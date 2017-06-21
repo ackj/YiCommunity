@@ -76,8 +76,8 @@ public class BaseApplication extends MultiDexApplication implements Application.
 
             ALog.init(true, "ysq");
         } else {
-            ALog.init(false, "ysq");
-            Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));
+            ALog.init(false, "ysq");//在release版中禁止打印log。
+            Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));//在release版中处理全局异常。
         }
     }
 
