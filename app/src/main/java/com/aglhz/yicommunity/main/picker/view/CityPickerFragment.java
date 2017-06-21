@@ -45,7 +45,6 @@ public class CityPickerFragment extends BaseFragment implements View.OnClickList
     private EditText searchBox;
     private ImageView clearBtn;
     private ViewGroup emptyView;
-
     private CityListAdapter mCityAdapter;
     private ResultListAdapter mResultAdapter;
     private List<City> mAllCities;

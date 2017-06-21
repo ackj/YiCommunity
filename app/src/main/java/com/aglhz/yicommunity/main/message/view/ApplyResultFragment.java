@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.Params;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,9 +24,7 @@ import butterknife.Unbinder;
  */
 
 public class ApplyResultFragment extends BaseFragment {
-
     private static final String TAG = ApplyResultFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -38,7 +35,6 @@ public class ApplyResultFragment extends BaseFragment {
     TextView tvDesc;
 
     private Unbinder unbinder;
-    private Params params = Params.getInstance();
     private String des;
     private String title;
 

@@ -21,6 +21,7 @@ import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.RegexUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BuildingBean;
 import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.entity.bean.FloorBean;
@@ -29,8 +30,11 @@ import com.aglhz.yicommunity.entity.bean.UnitBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.house.contract.AddHouseContract;
 import com.aglhz.yicommunity.main.house.presenter.AddHousePresenter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -94,6 +98,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * AddHouseFragment的创建入口
+     *
      * @param address 从管家页面点击进来时，传房间的具体详细地址，用于显示在toolbar上的。
      * @return
      */
@@ -136,6 +141,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 初始化Toolbar,包括设置顶部的状态栏，标题，返回图标和事件等。
+     *
      * @param toolbar
      */
     protected void initToolbar(Toolbar toolbar) {
@@ -226,9 +232,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 刷新一下身份选择的空间，如：改变背景和字体颜色等。
-     * @param tvChecked 选中状态控件。
+     *
+     * @param tvChecked   选中状态控件。
      * @param tvUnChecked 未选中状态的控件。
-     * @param b 是否是业主。
+     * @param b           是否是业主。
      */
     private void resetIdentity(TextView tvChecked, TextView tvUnChecked, boolean b) {
         tvChecked.setBackgroundResource(R.drawable.bg_checked_red_340px_180px);
@@ -277,6 +284,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 响应请求社区的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中，同时要置空社区后面的选择项。
+     *
      * @param communities
      */
     @Override
@@ -308,6 +316,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 响应请求楼栋的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中，同时要置空楼栋后面的选择项。
+     *
      * @param buildings
      */
     @Override
@@ -338,6 +347,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 响应请求单元的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中，同时要置空单元后面的选择项。
+     *
      * @param units
      */
     @Override
@@ -366,6 +376,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 响应请求楼层的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中，同时要置空楼层后面的选择项。
+     *
      * @param floors
      */
     @Override
@@ -390,6 +401,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 响应请求房屋的列表的结果，使用AlertDialog展示，当用户选择后设置到参数对象中。
+     *
      * @param rooms
      */
     @Override
@@ -413,14 +425,22 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 响应申请的结果，同时结束掉本页面。
-     * @param message
+     *
+     * @param message 由服务器返回。
      */
     @Override
     public void responseApply(String message) {
         dismissLoadingDialog();
-
+        if (TextUtils.isEmpty(UserHelper.communityName)
+                || TextUtils.isEmpty(UserHelper.communityCode)) {
+            UserHelper.setCommunity(tvCommunity.getText().toString(), params.cmnt_c);
+            UserHelper.setPosition(params.province, params.city, params.county, "");
+            EventBus.getDefault().post(new EventCommunity(null));
+        }
         DialogHelper.successSnackbar(getView(), message);
-        getView().postDelayed(() -> _mActivity.finish(), 1000);
+        if (getView() != null) {
+            getView().postDelayed(() -> _mActivity.finish(), 1000);
+        }
     }
 
     @Override
@@ -430,6 +450,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 
     /**
      * 所有的报错和异常信息都会归结到这个函数中。
+     *
      * @param errorMessage
      */
     @Override

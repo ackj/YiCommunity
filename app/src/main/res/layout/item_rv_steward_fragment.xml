@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical"
     android:paddingTop="20dp">
 
@@ -26,5 +26,5 @@
         android:paddingTop="5dp"
         android:text="智能家居"
         android:textColor="@color/base_black"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 </LinearLayout>
