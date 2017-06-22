@@ -86,14 +86,13 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     private PublishImageRVAdapter adapter;
     private boolean isPrivate;//是否是私人报修
     private Params params = Params.getInstance();
-    private Dialog loadingDialog;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
             return TYPE.IMAGE;
         }
     };
-    private ArrayList<BaseMedia> selectedMedia;
+    private ArrayList<BaseMedia> selectedMedia = new ArrayList<>();
 
     private RepairFragment(boolean isPrivate) {
         this.isPrivate = isPrivate;
@@ -106,7 +105,6 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
      * @return
      */
     public static RepairFragment newInstance(boolean isPrivate) {
-        ALog.e("RepairFragment");
         return new RepairFragment(isPrivate);
     }
 
@@ -328,5 +326,23 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         DialogHelper.successSnackbar(getView(), "提交成功!");
         setFragmentResult(RESULT_OK, null);
         pop();
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        if (!TextUtils.isEmpty(etName.getText().toString())
+                || !TextUtils.isEmpty(etPhone.getText().toString())
+                || !TextUtils.isEmpty(etContent.getText().toString())
+                || !selectedMedia.isEmpty()) {
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("提示")
+                    .setMessage("如果退出，当前填写信息将会丢失，是否退出？")
+                    .setPositiveButton("退出", (dialog, which) -> pop())
+                    .show();
+            return true;
+        } else {
+            pop();
+            return true;
+        }
     }
 }

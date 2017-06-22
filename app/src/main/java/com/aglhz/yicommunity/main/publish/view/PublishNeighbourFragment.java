@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +19,11 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
@@ -78,7 +79,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     };
     private int which;
     private ArrayList<BaseMedia> medias = new ArrayList<>();
-    private ArrayList<BaseMedia> selectedMedias;
+    private ArrayList<BaseMedia> selectedMedia = new ArrayList<>();
 
     /**
      * PublishNeighbourFragment的创建入口
@@ -157,7 +158,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG); // Mode：Mode.SINGLE_IMG, Mode.MULTI_IMG, Mode.VIDEO
             config.needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(3) // 支持gif，相机，设置最大选图数
                     .withMediaPlaceHolderRes(R.drawable.ic_boxing_default_image); // 设置默认图片占位图，默认无
-            Boxing.of(config).withIntent(_mActivity, BoxingActivity.class, selectedMedias).start(this, 100);
+            Boxing.of(config).withIntent(_mActivity, BoxingActivity.class, selectedMedia).start(this, 100);
         } else {
             //跳转选择视频
             BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.VIDEO).withVideoDurationRes(R.drawable.ic_boxing_play);
@@ -172,7 +173,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
         if (resultCode == RESULT_OK) {
             if (requestCode == 100) {
                 medias = new ArrayList<>(Boxing.getResult(data));
-                selectedMedias = Boxing.getResult(data);
+                selectedMedia = Boxing.getResult(data);
                 params.files.clear();
                 for (int i = 0; i < medias.size(); i++) {
                     params.files.add(new File(medias.get(i).getPath()));
@@ -261,5 +262,21 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
         params.content = content;
         showLoadingDialog();
         mPresenter.requestSubmit(params);//请求提交左邻右里
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        if (!TextUtils.isEmpty(etInputContent.getText().toString())
+                || !selectedMedia.isEmpty()) {
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("提示")
+                    .setMessage("如果退出，当前填写信息将会丢失，是否退出？")
+                    .setPositiveButton("退出", (dialog, which) -> pop())
+                    .show();
+            return true;
+        } else {
+            pop();
+            return true;
+        }
     }
 }

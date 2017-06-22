@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.common;
+package com.aglhz.yicommunity.common.push;
 
 /**
  * Author：leguang on 2017/5/5 0009 10:49

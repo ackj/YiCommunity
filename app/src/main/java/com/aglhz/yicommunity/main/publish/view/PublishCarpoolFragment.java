@@ -95,7 +95,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
             return TYPE.IMAGE;
         }
     };
-    private ArrayList<BaseMedia> selectedMedia;
+    private ArrayList<BaseMedia> selectedMedia = new ArrayList<>();
 
     public static PublishCarpoolFragment newInstance() {
         return new PublishCarpoolFragment();
@@ -133,7 +133,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
 
     private void initData() {
         //判断之前是否有
-        
+
 
         //因为params是单例，所以要将上次选择的清除
         params.files = new ArrayList<>();
@@ -339,5 +339,21 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         params.positionType = 2;
         showLoadingDialog();
         mPresenter.requestSubmit(params);//请求提交拼车服务
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        if (!TextUtils.isEmpty(etInputContent.getText().toString())
+                || !selectedMedia.isEmpty()) {
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("提示")
+                    .setMessage("如果退出，当前填写信息将会丢失，是否退出？")
+                    .setPositiveButton("退出", (dialog, which) -> pop())
+                    .show();
+            return true;
+        } else {
+            pop();
+            return true;
+        }
     }
 }

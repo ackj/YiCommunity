@@ -21,15 +21,15 @@ import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.RegexUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BuildingBean;
 import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.entity.bean.FloorBean;
 import com.aglhz.yicommunity.entity.bean.RoomBean;
 import com.aglhz.yicommunity.entity.bean.UnitBean;
-import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.house.contract.AddHouseContract;
 import com.aglhz.yicommunity.main.house.presenter.AddHousePresenter;
@@ -95,6 +95,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     private Params params = Params.getInstance();//参数对象，每一个有网络请求的页面有都。
     private String title;//标题。
     private Unbinder unbinder;
+    private boolean isEdited = false;//用于标记是否选择过、更改过、填写过内容，如果有责提示弹框，避免用户误触到处返回，数据丢失。
 
     /**
      * AddHouseFragment的创建入口
@@ -148,7 +149,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         initStateBar(toolbar);//为了达到透明状态栏效果，给toolbar添加一定的padding值。
         toolbarTitle.setText(title);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.finish());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
     @OnClick({R.id.tv_proprietor_house_fragment,
@@ -163,9 +164,11 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_proprietor_house_fragment:
+                isEdited = false;//标记曾经选择过。
                 resetIdentity(tvProprietor, tvMember, true);//当点击时，刷新背景。
                 break;
             case R.id.tv_member_house_fragment:
+                isEdited = true;//标记曾经选择过。
                 resetIdentity(tvMember, tvProprietor, false);//当点击时，刷新背景。
                 break;
             case R.id.ll_area_add_house_fragment:
@@ -250,6 +253,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         if (addressSelector == null) {
             addressSelector = new BottomDialog(_mActivity);
             addressSelector.setOnAddressSelectedListener((province, city, county, street) -> {
+                isEdited = true;
                 params.province = province.name;
                 params.city = city.name;
                 params.county = county.name;
@@ -300,6 +304,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .setItems(array, (dialog, which) -> {
                     params.cmnt_c = communities.get(which).getCode();
                     tvCommunity.setText(array[which]);
+                    isEdited = true;//标记曾经选择过。
 
                     tvBuilding.setText("");//这一部分操作是为了置控，
                     tvUnit.setText("");    //因为当用户之前选择了小区楼栋单元等信息后，
@@ -333,6 +338,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .setItems(array, (dialog, which) -> {
                     params.bdg_c = buildings.get(which).getCode();
                     tvBuilding.setText(array[which]);
+                    isEdited = true;//标记曾经选择过。
 
                     tvUnit.setText("");
                     tvFloor.setText("");
@@ -364,6 +370,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .setItems(array, (dialog, which) -> {
                     params.bdg_u_c = units.get(which).getCode();
                     tvUnit.setText(array[which]);
+                    isEdited = true;//标记曾经选择过。
 
                     tvFloor.setText("");
                     tvRoom.setText("");
@@ -393,6 +400,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .setItems(array, (dialog, which) -> {
                     params.bdg_f_c = floors.get(which).getCode();
                     tvFloor.setText(array[which]);
+                    isEdited = true;//标记曾经选择过。
+
                     tvRoom.setText("");
                     params.bdg_f_h_c = "";
                 })
@@ -418,6 +427,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 .setItems(array, (dialog, which) -> {
                     params.bdg_f_h_c = rooms.get(which).getCode();
                     tvRoom.setText(array[which]);
+                    isEdited = true;//标记曾经选择过。
                 })
                 .show();
     }
@@ -449,7 +459,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     }
 
     /**
-     * 所有的报错和异常信息都会归结到这个函数中。
+     * 所有的报错和异常信息都会归总到这个函数中。
      *
      * @param errorMessage
      */
@@ -457,6 +467,22 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     public void error(String errorMessage) {
         dismissLoadingDialog();
         DialogHelper.errorSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        if (isEdited || !TextUtils.isEmpty(etName.getText().toString())
+                || !TextUtils.isEmpty(etIdcard.getText().toString())) {
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("提示")
+                    .setMessage("如果退出，当前填写信息将会丢失，是否退出？")
+                    .setPositiveButton("退出", (dialog, which) -> _mActivity.finish())
+                    .show();
+            return true;
+        } else {
+            _mActivity.finish();
+            return true;
+        }
     }
 }
 
