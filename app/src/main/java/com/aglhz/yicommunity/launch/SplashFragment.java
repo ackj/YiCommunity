@@ -113,7 +113,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         DoorManager.getInstance()
                 .initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
 
-
                     @Override
                     public void onPreAccessToken() {
                         ALog.e("1111onPreAccess");
@@ -123,7 +122,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
                     @Override
                     public void onPostAccessToken(WebReponse webReponse) {
                         ALog.e("1111onPostAccess");
-
                         go2Main();
                     }
                 });
