@@ -174,7 +174,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
                 selectedMedia = Boxing.getResult(data);
                 params.files.clear();
                 for (int i = 0; i < medias.size(); i++) {
-                    ALog.e("medias.get(i).getPath()-->" + medias.get(i).getPath());
 
                     params.files.add(new File(medias.get(i).getPath()));
                 }
