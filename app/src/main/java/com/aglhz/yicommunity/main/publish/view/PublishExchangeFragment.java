@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.publish.view;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,12 +20,12 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
@@ -86,7 +85,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
             return TYPE.IMAGE;
         }
     };
-    private ArrayList<BaseMedia> selectedMedia;
+    private ArrayList<BaseMedia> selectedMedia = new ArrayList<>();
 
     public static PublishExchangeFragment newInstance() {
         return new PublishExchangeFragment();
@@ -119,7 +118,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         initStateBar(toolbar);
         toolbarTitle.setText("发布");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
     private void initData() {
@@ -255,5 +254,22 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         params.price = money;
         showLoadingDialog();
         mPresenter.requestSubmit(params);//请求提交闲置交换
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        if (!TextUtils.isEmpty(etInputContent.getText().toString())
+                || !TextUtils.isEmpty(etInputMoney.getText().toString())
+                || !selectedMedia.isEmpty()) {
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("提示")
+                    .setMessage("如果退出，当前填写信息将会丢失，是否退出？")
+                    .setPositiveButton("退出", (dialog, which) -> pop())
+                    .show();
+            return true;
+        } else {
+            pop();
+            return true;
+        }
     }
 }

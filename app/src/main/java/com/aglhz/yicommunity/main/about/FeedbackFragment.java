@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.main.about;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -26,11 +27,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-
 /**
  * Author: LiuJia on 2017/4/21 18:06.
  * Email: liujia95me@126.com
- *
+ * <p>
  * [意见反馈] 的View层。
  * 打开方式：Start App-->我的-->关于我们-->意见反馈
  */
@@ -122,5 +122,20 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        if (!TextUtils.isEmpty(etDescribe.getText().toString())) {
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("提示")
+                    .setMessage("如果退出，当前填写信息将会丢失，是否退出？")
+                    .setPositiveButton("退出", (dialog, which) -> pop())
+                    .show();
+            return true;
+        } else {
+            pop();
+            return true;
+        }
     }
 }

@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.GoodsBean;
-import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.entity.bean.GoodsBean;
+import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.main.smarthome.contract.SmartHomeMallContract;
 import com.aglhz.yicommunity.main.smarthome.presenter.SmartHomeMallPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
@@ -38,6 +38,7 @@ import butterknife.Unbinder;
  */
 
 public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Presenter> implements SmartHomeMallContract.View {
+    public static final String TAG = SmartHomeMallFragment.class.getSimpleName();
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -70,14 +71,13 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     Params params = Params.getInstance();
-    private Dialog loadingDialog;
     BaseMedia addMedia = new BaseMedia() {
         @Override
         public TYPE getType() {
             return TYPE.IMAGE;
         }
     };
-    private ArrayList<BaseMedia> selectedMedia;
+    private ArrayList<BaseMedia> selectedMedia = new ArrayList<>();
 
     public static ComplainFragment newInstance() {
         return new ComplainFragment();
@@ -110,7 +110,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         initStateBar(toolbar);
         toolbarTitle.setText("我要投诉");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
     private void initData() {
@@ -233,5 +233,23 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         tvCommunity.setText(UserHelper.communityName);
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        if (!TextUtils.isEmpty(etName.getText().toString())
+                || !TextUtils.isEmpty(etPhone.getText().toString())
+                || !TextUtils.isEmpty(etContent.getText().toString())
+                || !selectedMedia.isEmpty()) {
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("提示")
+                    .setMessage("如果退出，当前填写信息将会丢失，是否退出？")
+                    .setPositiveButton("退出", (dialog, which) -> _mActivity.finish())
+                    .show();
+            return true;
+        } else {
+            _mActivity.finish();
+            return true;
+        }
     }
 }
