@@ -54,7 +54,6 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     private QuickOpenDoorRVAdapter adapter;
-    private int prePosition;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
 
@@ -102,8 +101,8 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             if (adapter == null || adapter.getData().isEmpty()) {
                 return;
             }
-            String dir = adapter.getData().get(prePosition).getDir();
-            String name = adapter.getData().get(prePosition).getName();
+            String dir = adapter.getSelectedData().getDir();
+            String name = adapter.getSelectedData().getName();
             Params params = Params.getInstance();
             params.directory = dir;
             params.deviceName = name;
@@ -131,12 +130,8 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     }
 
     private void initListener() {
-        adapter.setOnItemClickListener((adapter, view, position) -> {
-            QuickOpenDoorFragment.this.adapter.getData().get(prePosition).setQuickopen(false);
-            QuickOpenDoorFragment.this.adapter.getData().get(position).setQuickopen(true);
-            this.adapter.notifyItemChanged(prePosition);
-            this.adapter.notifyItemChanged(position);
-            prePosition = position;
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            adapter.setSelectedItem(position);
         });
     }
 
@@ -163,12 +158,12 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             adapter.loadMoreComplete();
         }
 
-        List<DoorListBean.DataBean> list = datas.getData();
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).isQuickopen()) {
-                prePosition = i;
-            }
-        }
+//        List<DoorListBean.DataBean> list = datas.getData();
+//        for (int i = 0; i < list.size(); i++) {
+//            if (list.get(i).isQuickopen()) {
+//                prePosition = i;
+//            }
+//        }
     }
 
     /**
@@ -179,7 +174,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     @Override
     public void responseQuickOpenDoor(BaseBean mBaseBean) {
         DialogHelper.successSnackbar(getView(), "设置成功！");
-        UserHelper.setDir(adapter.getData().get(prePosition).getDir());
+        UserHelper.setDir(adapter.getSelectedData().getDir());
     }
 
     @Override

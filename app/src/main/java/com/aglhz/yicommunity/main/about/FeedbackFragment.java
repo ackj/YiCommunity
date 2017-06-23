@@ -75,7 +75,7 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
         initStateBar(toolbar);
         toolbarTitle.setText("意见反馈");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
     @Override

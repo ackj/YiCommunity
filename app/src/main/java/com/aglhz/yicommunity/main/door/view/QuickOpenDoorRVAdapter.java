@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
  */
 
 public class QuickOpenDoorRVAdapter extends BaseRecyclerViewAdapter<DoorListBean.DataBean, BaseViewHolder> {
+    public int prePosition = 0;
 
     public QuickOpenDoorRVAdapter() {
         super(R.layout.item_quick_open_door);
@@ -18,7 +19,23 @@ public class QuickOpenDoorRVAdapter extends BaseRecyclerViewAdapter<DoorListBean
 
     @Override
     protected void convert(BaseViewHolder helper, DoorListBean.DataBean item) {
+        if (item.isQuickopen()) {
+            prePosition = helper.getLayoutPosition();
+        }
+
         helper.setText(R.id.tv_door_name, item.getName())
                 .setChecked(R.id.checkbox, item.isQuickopen());
+    }
+
+    public void setSelectedItem(int position) {
+        mData.get(prePosition).setQuickopen(false);
+        mData.get(position).setQuickopen(true);
+        notifyItemChanged(prePosition);
+        notifyItemChanged(position);
+        prePosition = position;
+    }
+
+    public DoorListBean.DataBean getSelectedData() {
+        return mData.get(prePosition);
     }
 }
