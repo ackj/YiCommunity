@@ -15,7 +15,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
@@ -126,7 +125,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_forget_password:
-                start(ForgetPasswordFragment.newInstance());
+                start(ResetPasswordFragment.newInstance());
                 break;
             case R.id.cb_remember:
                 break;

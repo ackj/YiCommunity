@@ -377,6 +377,11 @@ public interface ApiService {
     @POST
     Observable<BaseBean> requestRegister(@Url String url, @Query("sc") String sc, @Query("account") String account, @Query("code") String code, @Query("Password1") String password1, @Query("Password2") String password2);
 
+    //重置密码
+    String requestResetPassword = BASE_USER + "/client/renewMemberPwd.do";
+    @POST
+    Observable<BaseBean> requestResetPassword(@Url String url, @Query("sc") String sc, @Query("account") String account, @Query("code") String code, @Query("pwd1") String password1, @Query("pwd2") String password2);
+
     //找回密码
     @POST("/memberSYS-m/client/renewMemberPwd.do")
     Observable<BaseBean> forgetPwd();

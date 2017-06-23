@@ -66,6 +66,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     EditText etInputContent;
     @BindView(R.id.tv_community_name)
     TextView tvCommunityName;
+
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private Params params = Params.getInstance();
