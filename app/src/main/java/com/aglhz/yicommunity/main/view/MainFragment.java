@@ -49,7 +49,6 @@ public class MainFragment extends BaseFragment {
         return new MainFragment();
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,9 +97,6 @@ public class MainFragment extends BaseFragment {
         ahbn.setOnTabSelectedListener((position, wasSelected) -> {
             showHideFragment(mFragments[position], mFragments[prePosition]);
             prePosition = position;
-
-            ALog.e("position:" + position);
-            ALog.e("wasSelected:" + wasSelected);
 
             if (wasSelected) {
                 switch (position) {

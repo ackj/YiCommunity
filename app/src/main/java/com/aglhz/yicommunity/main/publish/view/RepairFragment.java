@@ -165,7 +165,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         initStateBar(toolbar);
         toolbarTitle.setText("我要报修");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
     @Override

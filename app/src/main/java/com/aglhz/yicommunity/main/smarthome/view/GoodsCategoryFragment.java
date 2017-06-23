@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.FirstLevelBean;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.main.smarthome.presenter.GoodsCategoryPresenter;
+import com.aglhz.yicommunity.entity.bean.FirstLevelBean;
 import com.aglhz.yicommunity.main.smarthome.contract.GoodsCategoryContract;
+import com.aglhz.yicommunity.main.smarthome.presenter.GoodsCategoryPresenter;
 
 import java.util.List;
 
@@ -34,6 +34,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class GoodsCategoryFragment extends BaseFragment<GoodsCategoryContract.Presenter> implements GoodsCategoryContract.View {
+    public static final String TAG = GoodsCategoryFragment.class.getSimpleName();
+
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)

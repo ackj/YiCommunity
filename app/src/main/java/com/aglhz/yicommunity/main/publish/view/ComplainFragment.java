@@ -110,7 +110,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
         initStateBar(toolbar);
         toolbarTitle.setText("我要投诉");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
     private void initData() {

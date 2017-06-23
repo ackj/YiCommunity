@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.main.publish.view.PublishExchangeFragment;
 import com.aglhz.yicommunity.main.publish.view.PublishNeighbourFragment;
 
@@ -21,9 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static com.aglhz.yicommunity.R.id.ptrFrameLayout;
-import static com.aglhz.yicommunity.R.id.recyclerView;
 
 /**
  * Author: LiuJia on 2017/5/11 0011 14:11.

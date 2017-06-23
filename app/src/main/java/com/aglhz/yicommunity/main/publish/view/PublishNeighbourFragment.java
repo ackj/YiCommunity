@@ -56,7 +56,6 @@ import butterknife.Unbinder;
 
 public class PublishNeighbourFragment extends BaseFragment<PublishContract.Presenter> implements PublishContract.View {
     private final String TAG = PublishNeighbourFragment.class.getSimpleName();
-
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -67,7 +66,6 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     EditText etInputContent;
     @BindView(R.id.tv_community_name)
     TextView tvCommunityName;
-
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
     private Params params = Params.getInstance();
@@ -123,7 +121,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
         initStateBar(toolbar);
         toolbarTitle.setText("发布");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
     private void initData() {
@@ -150,7 +148,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     }
 
     /**
-     * 选择视频或者照片
+     * 选择视频或者照片。
      */
     private void selectPhoto() {
         if (which == 0) {
@@ -176,6 +174,8 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
                 selectedMedia = Boxing.getResult(data);
                 params.files.clear();
                 for (int i = 0; i < medias.size(); i++) {
+                    ALog.e("medias.get(i).getPath()-->" + medias.get(i).getPath());
+
                     params.files.add(new File(medias.get(i).getPath()));
                 }
                 if (params.files.size() > 0) {

@@ -56,7 +56,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
     Unbinder unbinder;
 
     private HomeRVAdapter adapter;

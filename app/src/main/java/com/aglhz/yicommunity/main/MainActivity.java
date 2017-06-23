@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             loadRootFragment(R.id.fl_main_activity, MainFragment.newInstance());
         }
-         handler=new Handler();
+        handler = new Handler();
 
         setCallListener();
     }
@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity {
                     }
                 });
             }
-        },3000);
+        }, 3000);
 
 
     }

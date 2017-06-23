@@ -128,7 +128,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         initStateBar(toolbar);
         toolbarTitle.setText("发布");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
     private void initData() {
