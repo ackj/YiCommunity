@@ -279,7 +279,6 @@ public interface ApiService {
     //请求房间列表
     String requestRooms = BASE_PROPERTYCFG_M + "/client/houseList.do";
 
-
     //    @POST("/propertyCFG-m/client/houseList.do")
     @POST
     Observable<RoomBean> requestRooms(@Url String url, @Query("sc") String sc
@@ -290,14 +289,14 @@ public interface ApiService {
 
 
     //房屋成员认证审核
-    String requestAuthApprove = BASE_PROPERTY + "/client/authApprove";
+        String requestAuthApprove = BASE_PROPERTY + "/client/authApprove";
 
     @FormUrlEncoded
     @POST
     Observable<BaseBean> requestAuthApprove(@Url String url,
                                             @Field("token") String token,
                                             @Field("fid") String fid,
-                                            @Field("authFid") String authFid,
+                                            @Field("authfid") String authFid,
                                             @Field("status") int status);
 
     //业主申请
@@ -410,7 +409,6 @@ public interface ApiService {
     @POST
     Flowable<MyHousesBean> requestMyhouses(@Url String url,
                                            @Query("token") String token);
-
 
     //对自己设置权限
     String UPDATE_RIGHTS_MYSELF = BASE_PROPERTY + "/smartdoor/client/powerset";

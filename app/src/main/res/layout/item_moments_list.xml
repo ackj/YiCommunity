@@ -14,22 +14,19 @@
             android:id="@+id/iv_avatar_item_moments_list"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginRight="5dp"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_marginRight="5dp" />
 
         <TextView
             android:id="@+id/tv_name_item_moments_list"
             style="@style/TvBaseBlack16sp"
-            android:layout_toRightOf="@id/iv_avatar_item_moments_list"
-            android:text="小林子" />
+            android:layout_toRightOf="@id/iv_avatar_item_moments_list" />
 
         <TextView
             android:id="@+id/tv_create_at_item_moments_list"
             style="@style/TvGreyText13sp"
             android:layout_below="@id/tv_name_item_moments_list"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/iv_avatar_item_moments_list"
-            android:text="15小时前" />
+            android:layout_toRightOf="@id/iv_avatar_item_moments_list" />
 
         <TextView
             android:id="@+id/tv_money_item_moments_list"
@@ -37,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:text="800元"
             android:textColor="@color/red_text"
             android:textStyle="bold" />
 
@@ -48,8 +44,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/iv_avatar_item_moments_list"
             android:layout_marginTop="10dp"
-            android:lineSpacingExtra="5dp"
-            android:text="单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车单车" />
+            android:lineSpacingExtra="5dp" />
 
         <FrameLayout
             android:id="@+id/fl_video_pics_layout"
@@ -79,8 +74,7 @@
             android:drawablePadding="5dp"
             android:ellipsize="end"
             android:lines="1"
-            android:paddingTop="10dp"
-            android:text="惠州 海伦堡社区" />
+            android:paddingTop="10dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -94,8 +88,7 @@
                 style="@style/TvGreyText13sp"
                 android:drawableLeft="@drawable/ic_comment_60px"
                 android:drawablePadding="3dp"
-                android:paddingTop="10dp"
-                android:text="3" />
+                android:paddingTop="10dp" />
 
             <TextView
                 android:id="@+id/tv_remove_item_moments_list"
