@@ -19,16 +19,16 @@ public class PropertyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_property);
+        setContentView(R.layout.activity_main);
         //获取上一个Activity传递过来的数据。
         initData();
         if (savedInstanceState == null) {
             switch (intFromTo) {
                 case Constants.PROPERTY_REPAIR:
-                    loadRootFragment(R.id.fl_property_activity, RepairRecordFragment.newInstance());
+                    loadRootFragment(R.id.fl_main_activity, RepairRecordFragment.newInstance());
                     break;
                 case Constants.COMPLAIN:
-                    loadRootFragment(R.id.fl_property_activity, ComplainFragment.newInstance());
+                    loadRootFragment(R.id.fl_main_activity, ComplainFragment.newInstance());
                     break;
             }
         }

@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.main.home.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +12,12 @@ import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.widget.AutoScrollTextView;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
 import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.main.services.ServicesActivity;
 import com.aglhz.yicommunity.main.sociality.view.CarpoolFragment;
 import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.aglhz.yicommunity.main.sociality.view.NeighbourFragment;
@@ -83,17 +86,21 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 viewpager.setAdapter(adapter);
                 viewpager.setCurrentItem(100);
                 adapter.setOnItemClickListener(position -> {
-                    switch (position) {
-                        case 0:
-                            fragment.go2Web("家政服务", ApiService.JIAZHENG);
-                            break;
-                        case 1:
-                            fragment.go2Web("家居维修", ApiService.WEIXIU);
-                            break;
-                        case 2:
-                            fragment.go2Web("送水上门", ApiService.SONGSHUI);
-                            break;
-                    }
+
+                    Intent intent = new Intent(viewpager.getContext(), ServicesActivity.class);
+                    intent.putExtra(Constants.SERVICE_TYPE, position);
+                    viewpager.getContext().startActivity(intent);
+//                    switch (position) {
+//                        case 0:
+//                            fragment.go2Web("家政服务", ApiService.JIAZHENG);
+//                            break;
+//                        case 1:
+//                            fragment.go2Web("家居维修", ApiService.WEIXIU);
+//                            break;
+//                        case 2:
+//                            fragment.go2Web("送水上门", ApiService.SONGSHUI);
+//                            break;
+//                    }
                 });
                 break;
             case HomeBean.TYPE_COMMUNITY_QUALITY_LIFE:

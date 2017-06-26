@@ -81,7 +81,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     TextView tvCommunityAddress;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
-    @BindView(R.id.cb_agreement)
+    @BindView(R.id.cb_agreement_publish_carpool_fragment)
     CheckBox cbAgreement;
 
     private Unbinder unbinder;
@@ -219,19 +219,17 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         pop();
     }
 
-    @OnClick({R.id.btn_submit,
+    @OnClick({R.id.btn_submit_publish_carpool_fragment,
             R.id.ll_location,
             R.id.tv_select_start_point,
             R.id.tv_select_end_point,
             R.id.tv_select_go_time,
             R.id.rb_carpool_has_car,
             R.id.rb_carpool_hasnot_car,
-            R.id.cb_agreement,
-            R.id.tv_agreement})
+            R.id.tv_agreement_publish_carpool_fragment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_submit:
-
+            case R.id.btn_submit_publish_carpool_fragment:
                 submit();
                 break;
             case R.id.ll_location:
@@ -252,7 +250,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
             case R.id.rb_carpool_hasnot_car:
                 params.carpoolType = 1;
                 break;
-            case R.id.tv_agreement:
+            case R.id.tv_agreement_publish_carpool_fragment:
                 Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
                 introductionIntent.putExtra(Constants.KEY_TITLE, "亿社区拼车用户协议");
                 introductionIntent.putExtra(Constants.KEY_LINK, ApiService.AGREEMENT_CARPOOL);

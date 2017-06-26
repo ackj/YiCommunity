@@ -20,20 +20,20 @@ public class ParkActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_park);
+        setContentView(R.layout.activity_main);
 
         //获取上一个Activity传递过来的数据。
         initData();
         if (savedInstanceState == null) {
             switch (intFromTo) {
                 case Constants.MY_CARD:
-                    loadRootFragment(R.id.fl_park_activity, CarCardFragment.newInstance());
+                    loadRootFragment(R.id.fl_main_activity, CarCardFragment.newInstance());
                     break;
                 case Constants.PARKING_RECORD:
-                    loadRootFragment(R.id.fl_park_activity, ParkRecordFragment.newInstance());
+                    loadRootFragment(R.id.fl_main_activity, ParkRecordFragment.newInstance());
                     break;
                 case Constants.CARD_TRANSACT:
-                    loadRootFragment(R.id.fl_park_activity, CarCardTransactFragment.newInstance());
+                    loadRootFragment(R.id.fl_main_activity, CarCardTransactFragment.newInstance());
                     break;
             }
         }

@@ -141,21 +141,25 @@
                 android:gravity="center">
 
                 <CheckBox
-                    android:id="@+id/cb_agreement"
+                    android:id="@+id/cb_agreement_publish_exchange_fragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@drawable/selector_bt_radio"
+                    android:gravity="center"
+                    android:padding="10dp"
                     android:text="同意"
                     android:textColor="@color/base_black"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
                 <TextView
-                    android:id="@+id/tv_agreement"
+                    android:id="@+id/tv_agreement_publish_exchange_fragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:text="《亿社区闲置交换用户协议》"
                     android:textColor="@color/material_blue_400"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <Space

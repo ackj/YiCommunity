@@ -15,6 +15,14 @@ public class Constants {
 
     public static final String PRESS_AGAIN = "再按一次退出";
     public static final int PAGE_SIZE = 20;
+    public static final String TITLE = "title";
+
+
+    //上门服务
+    public static final String SERVICE_TYPE = "service_type";
+    public static final String SERVICE_ID = "service_id";
+
+
 
     //微信
     public static final String WX_APP_ID = "wx160fff7b6ed86ef7";

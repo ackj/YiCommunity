@@ -234,6 +234,12 @@
         <activity
             android:name=".main.guide.GuideActivity"
             android:theme="@style/Transparent" />
+
+        <!--社区服务-->
+        <activity
+            android:name=".main.services.ServicesActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Transparent" />
     </application>
 
 </manifest>

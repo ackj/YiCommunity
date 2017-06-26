@@ -73,7 +73,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
     EditText etInputContent;
     @BindView(R.id.tv_community_address)
     TextView tvCommunityAddress;
-    @BindView(R.id.cb_agreement)
+    @BindView(R.id.cb_agreement_publish_exchange_fragment)
     CheckBox cbAgreement;
 
     private Unbinder unbinder;
@@ -206,7 +206,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         pop();
     }
 
-    @OnClick({R.id.ll_location, R.id.btn_submit, R.id.tv_agreement})
+    @OnClick({R.id.ll_location, R.id.btn_submit, R.id.tv_agreement_publish_exchange_fragment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_location:
@@ -233,7 +233,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
                 }
                 submit(money, content);
                 break;
-            case R.id.tv_agreement:
+            case R.id.tv_agreement_publish_exchange_fragment:
                 Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
                 introductionIntent.putExtra(Constants.KEY_TITLE, "亿社区闲置交换用户协议");
                 introductionIntent.putExtra(Constants.KEY_LINK, ApiService.AGREEMENT_EXCHANGE);
