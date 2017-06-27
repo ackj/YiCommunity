@@ -25,7 +25,8 @@ public class ResetPasswordModel extends BaseModel implements ResetPasswordContra
 
     @Override
     public Observable<BaseBean> requestVerifyCode(Params params) {
-        return HttpHelper.getService(ApiService.class).requestVerifyCode(ApiService.requestVerifyCode, params.sc, params.phoneNo, params.verifyType)
+        return HttpHelper.getService(ApiService.class)
+                .requestVerifyCode(ApiService.requestVerifyCode, params.sc, params.phoneNo, params.verifyType)
                 .subscribeOn(Schedulers.io());
     }
 

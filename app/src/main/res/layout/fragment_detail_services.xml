@@ -6,5 +6,97 @@
 
     <include layout="@layout/toolbar" />
 
+    <ScrollView
+        android:id="@+id/sv_mine_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fadeScrollbars="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/base_grey"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:text="@string/introduction_of_firm" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_photo_item_rv_services"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginEnd="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_title_item_rv_services"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/iv_photo_item_rv_services"
+                    android:text="雅洁清洁公司"
+                    android:textColor="@color/base_black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_address_item_rv_services"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/iv_photo_item_rv_services"
+                    android:layout_toEndOf="@id/iv_photo_item_rv_services"
+                    android:text="服务范畴："
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_describe_item_rv_services"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/tv_address_item_rv_services"
+                    android:layout_toEndOf="@id/iv_photo_item_rv_services"
+                    android:text="商家年龄："
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_cost_item_rv_services"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="5dp"
+                    android:text="@string/certified"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bt_login"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/selector_round_solid"
+        android:gravity="center"
+        android:text="@string/contact_now"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
 
 </LinearLayout>

@@ -27,7 +27,7 @@ public interface RegisterContract {
     interface Model extends BaseContract.Model {
         Observable<BaseBean> register(Params params);
 
-        Observable<BaseBean> getVerifyCode(Params params);
+        Observable<BaseBean> requestVerifyCode(Params params);
     }
 
 }

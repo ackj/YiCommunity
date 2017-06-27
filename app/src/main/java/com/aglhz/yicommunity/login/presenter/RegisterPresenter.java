@@ -51,7 +51,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View,Regis
 
     @Override
     public void requestVerifyCode(Params params) {
-        mRxManager.add(mModel.getVerifyCode(params)
+        mRxManager.add(mModel.requestVerifyCode(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
                     if (baseBean.getOther().getCode() == 200) {

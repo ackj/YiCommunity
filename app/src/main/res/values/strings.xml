@@ -84,4 +84,17 @@
     <string name="select_park_please">请选择停车场</string>
     <string name="select_month_count_please">请选择预缴月数</string>
 
+    <!--社区服务-->
+    <string name="contact_now">马上联系</string>
+    <string name="introduction_of_firm">商家介绍</string>
+    <string name="age_of_firm">商家年龄</string>
+    <string name="scope_of_service">服务范围</string>
+    <string name="address_of_firm">商户地址</string>
+    <string name="office_hours">营业时间</string>
+    <string name="contact_details">联系方式</string>
+    <string name="firm_live">商家实景</string>
+    <string name="business_license">营业执照</string>
+    <string name="introduction_of_commodity">商品介绍</string>
+    <string name="certified">已认证</string>
+
 </resources>

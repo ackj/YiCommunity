@@ -28,8 +28,9 @@ public class RegisterModel extends BaseModel implements RegisterContract.Model {
     }
 
     @Override
-    public Observable<BaseBean> getVerifyCode(Params params) {
-        return HttpHelper.getService(ApiService.class).requestVerifyCode(ApiService.requestVerifyCode, params.sc, params.phoneNo, params.verifyType)
+    public Observable<BaseBean> requestVerifyCode(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestVerifyCode(ApiService.requestVerifyCode, params.sc, params.phoneNo, params.verifyType)
                 .subscribeOn(Schedulers.io());
     }
 }

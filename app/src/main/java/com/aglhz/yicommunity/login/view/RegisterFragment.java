@@ -57,6 +57,7 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     private Thread getVerifyThread;
+    private Unbinder unbinder;
 
     public static RegisterFragment newInstance() {
         return new RegisterFragment();
@@ -82,8 +83,6 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
             }
         }
     };
-
-    private Unbinder unbinder;
 
     @Nullable
     @Override
@@ -147,13 +146,11 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
         String password = etPassword.getText().toString();
         String againPassword = etAgainPassword.getText().toString();
         String verCode = etVerifyCode.getText().toString();
-
         Params params = Params.getInstance();
         params.account = phoneNo;
         params.verifyCode = verCode;
         params.password1 = password;
         params.password2 = againPassword;
-
         mPresenter.requestRegister(params);
     }
 
@@ -165,6 +162,17 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
         params.verifyType = "v_regPhone";
         mPresenter.requestVerifyCode(params);
 
+        getVerifyThread = new Thread(() -> {
+            for (int i = 60; i >= 0; i--) {
+                if (getVerifyThread == null) return;
+                mHandler.sendEmptyMessage(i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         getVerifyThread.start();
     }
 
