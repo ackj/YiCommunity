@@ -97,4 +97,10 @@
     <string name="introduction_of_commodity">商品介绍</string>
     <string name="certified">已认证</string>
 
+    <!--临时密码-->
+    <string name="created_password">本次生成密码</string>
+    <string name="qr_digit">二维码或数字</string>
+    <string name="create_digit_password">生成数字密码</string>
+    <string name="send_to_friend">发送给好友</string>
+
 </resources>

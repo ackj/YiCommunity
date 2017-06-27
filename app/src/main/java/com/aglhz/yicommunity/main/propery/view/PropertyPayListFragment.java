@@ -38,7 +38,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
-
 /**
  * Created by leguang on 2017/4/29 0029.
  * Email：langmanleguang@qq.com
@@ -205,6 +204,7 @@ public class PropertyPayListFragment extends BaseFragment<PropertyPayContract.Pr
         PropertyPayBean.DataBean data = bean.getData();
         if (data.getObpptBills().isEmpty()) {
             mStateManager.showEmpty();
+            btPay.setEnabled(false);
         } else {
             mStateManager.showContent();
             mAdapter.setNewData(data.getObpptBills());
