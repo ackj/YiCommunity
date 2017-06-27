@@ -17,8 +17,6 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.services.contract.ServicesContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesPresenter;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -37,6 +35,8 @@ public class ServicesDetailFragment extends BaseFragment<ServicesContract.Presen
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     Unbinder unbinder;
+    @BindView(R.id.tv_cost_detail_services_fragment)
+    TextView tvCost;
     private Params params = Params.getInstance();
 
     public static ServicesDetailFragment newInstance(String id) {
