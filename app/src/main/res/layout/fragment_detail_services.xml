@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -36,67 +37,224 @@
                 android:paddingTop="10dp">
 
                 <ImageView
-                    android:id="@+id/iv_photo_item_rv_services"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:id="@+id/iv_firm_detail_services_fragment"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_marginEnd="10dp" />
 
                 <TextView
-                    android:id="@+id/tv_title_item_rv_services"
+                    android:id="@+id/tv_name_detail_services_fragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/iv_photo_item_rv_services"
+                    android:layout_toEndOf="@id/iv_firm_detail_services_fragment"
                     android:text="雅洁清洁公司"
                     android:textColor="@color/base_black"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_address_item_rv_services"
+                    android:id="@+id/tv_age_detail_services_fragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/iv_photo_item_rv_services"
-                    android:layout_toEndOf="@id/iv_photo_item_rv_services"
-                    android:text="服务范畴："
-                    android:textSize="14sp" />
+                    android:layout_alignBottom="@id/iv_firm_detail_services_fragment"
+                    android:layout_toEndOf="@id/iv_firm_detail_services_fragment"
+                    android:text="服务范畴：家庭保洁"
+                    android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/tv_describe_item_rv_services"
+                    android:id="@+id/tv_scope_detail_services_fragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@id/tv_address_item_rv_services"
-                    android:layout_toEndOf="@id/iv_photo_item_rv_services"
-                    android:text="商家年龄："
-                    android:textSize="14sp" />
+                    android:layout_above="@id/tv_age_detail_services_fragment"
+                    android:layout_toEndOf="@id/iv_firm_detail_services_fragment"
+                    android:text="商家年龄：5年"
+                    android:textSize="15sp" />
 
 
                 <TextView
-                    android:id="@+id/tv_cost_item_rv_services"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
+                    android:layout_width="55dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:padding="5dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/shape_round_solid_orange"
+                    android:gravity="center"
                     android:text="@string/certified"
                     android:textColor="@color/white"
-                    android:textSize="24sp" />
+                    android:textSize="13sp" />
 
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/base_grey" />
+
+            <TextView
+                android:id="@+id/tv_address_detail_services_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="商户地址："
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_time_detail_services_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="经营时间："
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_contact_detail_services_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="联系方式："
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/base_grey" />
+
+            <LinearLayout
+                android:id="@+id/ll_firm_photo_detail_services_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="10dp"
+                    android:text="商家实景：" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#ff0000" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#ff0000" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#ff0000" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/base_grey" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawableEnd="@drawable/ic_arrow_right_gray_60px"
+                android:paddingBottom="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:text="营业执照" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/base_grey"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:text="@string/introduction_of_commodity" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_commodity_detail_services_fragment"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="#00ff00" />
+
+                <TextView
+                    android:id="@+id/tv_title_detail_services_fragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/iv_commodity_detail_services_fragment"
+                    android:text="家庭保洁2小时"
+                    android:textColor="@color/base_black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_cost_detail_services_fragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/iv_commodity_detail_services_fragment"
+                    android:layout_toEndOf="@id/iv_commodity_detail_services_fragment"
+                    android:lineSpacingMultiplier="0.8"
+                    android:text="77.0"
+                    android:textColor="@color/base_color"
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_subtitle_detail_services_fragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/tv_cost_detail_services_fragment"
+                    android:layout_toEndOf="@id/iv_commodity_detail_services_fragment"
+                    android:text="服务范畴：家庭保洁"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_info_detail_services_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n"
+                android:textSize="14sp" />
 
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/bt_login"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="200dp"
-        android:layout_height="35dp"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:background="@drawable/selector_round_solid"
-        android:gravity="center"
-        android:text="@string/contact_now"
-        android:textColor="@android:color/white"
-        android:textSize="16sp" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/layout_slide_in_bottom">
 
-
+        <Button
+            android:id="@+id/bt_login"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_round_solid"
+            android:gravity="center"
+            android:text="@string/contact_now"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+    </FrameLayout>
 </LinearLayout>
