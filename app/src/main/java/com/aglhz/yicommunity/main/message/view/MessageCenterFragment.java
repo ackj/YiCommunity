@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,13 +16,14 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.mvp.view.base.Decoration;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.main.message.contract.MessageCenterContract;
@@ -38,6 +40,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -60,6 +63,8 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     PtrFrameLayout ptrFrameLayout;
 
     Unbinder unbinder;
+    @BindView(R.id.toolbar_menu)
+    TextView toolbarMenu;
     private Params params = Params.getInstance();
     private LinearLayoutManager layoutManager;
     private MessageCenterRVAdapter adapter;
@@ -131,6 +136,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
+        toolbarMenu.setText("清空");
     }
 
     private void initListener() {
@@ -268,5 +274,19 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     public void onEvent(EventCommunity event) {
         recyclerView.scrollToPosition(0);
         ptrFrameLayout.autoRefresh();
+    }
+
+    @OnClick(R.id.toolbar_menu)
+    public void onViewClicked() {
+        new AlertDialog.Builder(_mActivity)
+                .setTitle("温馨提示")
+                .setPositiveButton("确定", (dialog, which) -> {
+                    ToastUtils.showToast(_mActivity, "确定");
+                })
+                .setMessage("清除所有消息和内容？")
+                .setNegativeButton("取消", (dialog, which) -> {
+                    ToastUtils.showToast(_mActivity, "取消");
+                })
+                .show();
     }
 }
