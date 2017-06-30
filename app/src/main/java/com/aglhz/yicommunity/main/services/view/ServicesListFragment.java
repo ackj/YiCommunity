@@ -17,7 +17,7 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.ServicesListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.services.contract.ServicesContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesPresenter;
@@ -27,7 +27,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,11 +54,13 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     private ServicesRVAdapter adapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
-    private int serviceType;
+    private String servicesFid;
+    private String servicesName;
 
-    public static ServicesListFragment newInstance(int serviceType) {
+    public static ServicesListFragment newInstance(String servicesFid,String servicesName) {
         Bundle args = new Bundle();
-        args.putInt(Constants.SERVICE_TYPE, serviceType);
+        args.putString(Constants.SERVICE_FID, servicesFid);
+        args.putString(Constants.SERVICE_NAME, servicesName);
         ServicesListFragment fragment = new ServicesListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -70,7 +71,8 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            serviceType = args.getInt(Constants.SERVICE_TYPE);
+            servicesFid = args.getString(Constants.SERVICE_FID);
+            servicesName = args.getString(Constants.SERVICE_NAME);
         }
     }
 
@@ -103,12 +105,14 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         params.page = 1;
         params.pageSize = Constants.PAGE_SIZE;
         params.cmnt_c = UserHelper.communityCode;
+        params.fid = servicesFid;
 //        mPresenter.requestDoors(params);
+        mPresenter.requestServiceCommodityList(params);
     }
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText(serviceType + "");
+        toolbarTitle.setText(servicesName);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
@@ -124,12 +128,12 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         adapter.isFirstOnly(true);
 
         //临时数据  后期删掉
-        List<ServicesListBean> listServices = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            listServices.add(new ServicesListBean("保洁2小时", "按时收费，有保障", "惠州市内", "55.0"));
-
-        }
-        adapter.setNewData(listServices);
+//        List<ServicesListBean> listServices = new ArrayList<>();
+//        for (int i = 0; i < 100; i++) {
+//            listServices.add(new ServicesListBean("保洁2小时", "按时收费，有保障", "惠州市内", "55.0"));
+//
+//        }
+//        adapter.setNewData(listServices);
     }
 
     private void initListener() {
@@ -199,5 +203,27 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         ptrFrameLayout.autoRefresh();
+    }
+
+    @Override
+    public void responseServiceCommodityList(List<ServicesCommodityListBean.DataBean.DataListBean> datas) {
+        ptrFrameLayout.refreshComplete();
+        if (datas == null || datas.isEmpty()) {
+            if (params.page == 1) {
+//                mStateManager.showEmpty();
+            }
+            adapter.loadMoreEnd();
+            return;
+        }
+
+        if (params.page == 1) {
+//            mStateManager.showContent();
+            adapter.setNewData(datas);
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
+        } else {
+            adapter.addData(datas);
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 }

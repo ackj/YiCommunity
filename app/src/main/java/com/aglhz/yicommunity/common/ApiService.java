@@ -32,6 +32,9 @@ import com.aglhz.yicommunity.entity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.entity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.entity.bean.RepairTypesBean;
 import com.aglhz.yicommunity.entity.bean.RoomBean;
+import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
+import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
 import com.aglhz.yicommunity.entity.bean.SipBean;
 import com.aglhz.yicommunity.entity.bean.SocialityListBean;
 import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
@@ -50,6 +53,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -289,7 +293,7 @@ public interface ApiService {
 
 
     //房屋成员认证审核
-        String requestAuthApprove = BASE_PROPERTY + "/client/authApprove";
+    String requestAuthApprove = BASE_PROPERTY + "/client/authApprove";
 
     @FormUrlEncoded
     @POST
@@ -378,6 +382,7 @@ public interface ApiService {
 
     //重置密码
     String requestResetPassword = BASE_USER + "/client/renewMemberPwd.do";
+
     @POST
     Observable<BaseBean> requestResetPassword(@Url String url, @Query("sc") String sc, @Query("account") String account, @Query("code") String code, @Query("pwd1") String password1, @Query("pwd2") String password2);
 
@@ -808,5 +813,32 @@ public interface ApiService {
                                                  @Field("monthName") String monthName,//预缴月数名称（例如：一个月、半年、一年等）
                                                  @Field("monthCount") int monthCount,//预缴月数值（例如：1、6、12等）
                                                  @Field("payType") int payType);//支付类型（1=支付宝支付、2=微信支付）
+
+
+    //---------------------------------------------------------------------------
+
+    String BASE_ZHANG = "http://192.168.7.101:8080/sub_property_ysq";
+
+    String requestServiceClassifyList = BASE_ZHANG + "/services/classify/to-client/classify-list";
+
+    @GET
+    Observable<ServicesClassifyListBean> requestServiceClassifyList(@Url String url,
+                                                                    @Query("page") int page,
+                                                                    @Query("pageSize") int pageSize,
+                                                                    @Query("cmnt_c") String cmnt_c);
+
+    String requestServiceCommodityList = BASE_ZHANG + "/services/commodity/to-client/commodity-list";
+
+    @GET
+    Observable<ServicesCommodityListBean> requestServiceCommodityList(@Url String url,
+                                                                      @Query("page") int page,
+                                                                      @Query("pageSize") int pageSize,
+                                                                      @Query("classifyFid") String classifyFid);
+
+    String requestServiceDetail = BASE_ZHANG + "/services/commodity/to-client/commodity-list";
+
+    @GET
+    Observable<ServicesCommodityDetailBean> requestServiceDetail(@Url String url, @Query("fid") String fid);
+
 
 }

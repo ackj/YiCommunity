@@ -17,6 +17,7 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
 import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
 import com.aglhz.yicommunity.main.services.ServicesActivity;
 import com.aglhz.yicommunity.main.sociality.view.CarpoolFragment;
 import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
@@ -78,7 +79,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                         .addOnClickListener(R.id.ll_life_supermarket);
                 break;
             case HomeBean.TYPE_COMMUNITY_SERVICE:
-                ServiceVPAdapter adapter = new ServiceVPAdapter(item.getServices());
+                ServiceVPAdapter adapter = new ServiceVPAdapter(item.getServicesClassifyList());
                 ViewPager viewpager = helper.getView(R.id.viewpager);
                 viewpager.setOffscreenPageLimit(3);
                 viewpager.setPageTransformer(true, new ZoomOutPageTransformer());
@@ -86,10 +87,12 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 viewpager.setAdapter(adapter);
                 viewpager.setCurrentItem(100);
                 adapter.setOnItemClickListener(position -> {
-
                     Intent intent = new Intent(viewpager.getContext(), ServicesActivity.class);
-                    intent.putExtra(Constants.SERVICE_TYPE, position);
+                    ServicesClassifyListBean.DataBean.ClassifyListBean classifyListBean = item.getServicesClassifyList().get(position);
+                    intent.putExtra(Constants.SERVICE_FID, classifyListBean.getFid());
+                    intent.putExtra(Constants.SERVICE_NAME, classifyListBean.getName());
                     viewpager.getContext().startActivity(intent);
+
 //                    switch (position) {
 //                        case 0:
 //                            fragment.go2Web("家政服务", ApiService.JIAZHENG);

@@ -18,10 +18,10 @@ public class ServicesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        int serviceType = getIntent().getIntExtra(Constants.SERVICE_TYPE, 0);
+        String servicesFid = getIntent().getStringExtra(Constants.SERVICE_FID);
+        String servicesName = getIntent().getStringExtra(Constants.SERVICE_NAME);
         if (savedInstanceState == null) {
-
-            loadRootFragment(R.id.fl_main_activity, ServicesListFragment.newInstance(serviceType));
+            loadRootFragment(R.id.fl_main_activity, ServicesListFragment.newInstance(servicesFid,servicesName));
         }
     }
 }

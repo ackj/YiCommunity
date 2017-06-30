@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.main.message.view;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,8 @@ import com.aglhz.yicommunity.main.message.presenter.MessageCenterPresenter;
 import com.aglhz.yicommunity.main.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
+import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,8 +67,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     PtrFrameLayout ptrFrameLayout;
 
     Unbinder unbinder;
-    @BindView(R.id.toolbar_menu)
-    TextView toolbarMenu;
     private Params params = Params.getInstance();
     private LinearLayoutManager layoutManager;
     private MessageCenterRVAdapter adapter;
@@ -97,7 +99,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        View view = inflater.inflate(R.layout.fragment_message_center, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         return attachToSwipeBack(view);
@@ -116,7 +118,13 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     private void initData() {
         layoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new MessageCenterRVAdapter();
+        adapter = new MessageCenterRVAdapter(null);
+        //开启滑动删除
+        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START | ItemTouchHelper.END);
+        adapter.enableSwipeItem();
         //设置Item动画
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         adapter.isFirstOnly(true);
@@ -136,10 +144,32 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
-        toolbarMenu.setText("清空");
     }
 
     private void initListener() {
+        adapter.setOnItemSwipeListener(new OnItemSwipeListener() {
+            @Override
+            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
+                ALog.e(TAG, "OnItemSwipeListener onItemSwipeStart");
+                //禁止上下滑动
+            }
+
+            @Override
+            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
+                ALog.e(TAG, "OnItemSwipeListener clearView");
+            }
+
+            @Override
+            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
+                ALog.e(TAG, "OnItemSwipeListener onItemSwiped");
+            }
+
+            @Override
+            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
+                ALog.e(TAG, "OnItemSwipeListener onItemSwipeMoving");
+            }
+        });
+
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             MessageCenterBean.DataBean.MemNewsBean bean = (MessageCenterBean.DataBean.MemNewsBean) adapter.getData().get(position);
             if (view.getId() == R.id.ll_layout_item_message_center_fragment) {
@@ -276,7 +306,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         ptrFrameLayout.autoRefresh();
     }
 
-    @OnClick(R.id.toolbar_menu)
+    @OnClick(R.id.iv_delete_all)
     public void onViewClicked() {
         new AlertDialog.Builder(_mActivity)
                 .setTitle("温馨提示")

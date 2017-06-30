@@ -3,9 +3,7 @@ package com.aglhz.yicommunity.main.services.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.DoorListBean;
-import com.aglhz.yicommunity.entity.bean.OpenDoorRecordBean;
+import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
 
 import java.util.List;
 
@@ -21,14 +19,16 @@ public interface ServicesContract {
 
     interface View extends BaseContract.View {
 //        void responseServices();
-
+        void responseServiceCommodityList(List<ServicesCommodityListBean.DataBean.DataListBean> datas);
     }
-
     interface Presenter extends BaseContract.Presenter {
+
 //        void requestServices(Params params);
+        void requestServiceCommodityList(Params params);
     }
 
     interface Model extends BaseContract.Model {
 //        Observable<OpenDoorRecordBean> requestServices(Params params);
+        Observable<ServicesCommodityListBean> requestServiceCommodityList(Params params);
     }
 }

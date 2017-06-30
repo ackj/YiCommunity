@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.ServiceBean;
+import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +19,21 @@ import java.util.List;
  */
 public class ServiceVPAdapter extends PagerAdapter {
 
-    private List<ServiceBean> mDatas = new ArrayList<>();
+//    private List<ServiceBean> mDatas = new ArrayList<>();
 
-    public ServiceVPAdapter(List<ServiceBean> datas) {
-        mDatas = datas;
+    private List<ServicesClassifyListBean.DataBean.ClassifyListBean> classifyListBeans = new ArrayList<>();
+
+    public ServiceVPAdapter(List<ServicesClassifyListBean.DataBean.ClassifyListBean> classifyListBeans) {
+        this.classifyListBeans = classifyListBeans;
     }
+
+//    public ServiceVPAdapter(List<ServiceBean> datas) {
+//        mDatas = datas;
+//    }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        int finalPosition = position % 3;
+        int finalPosition = position % classifyListBeans.size();
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_vp_service_item, container, false);
         view.setOnClickListener(v -> {
@@ -40,9 +45,12 @@ public class ServiceVPAdapter extends PagerAdapter {
         LinearLayout llVpDoor2door = (LinearLayout) view.findViewById(R.id.ll_item_vp_door2door_service);
 
 
-        tvTitle.setText(mDatas.get(finalPosition).title);
-        tvDesc.setText(mDatas.get(finalPosition).desc);
-        llVpDoor2door.setBackgroundResource(mDatas.get(finalPosition).imgRes);
+//        tvTitle.setText(mDatas.get(finalPosition).title);
+//        tvDesc.setText(mDatas.get(finalPosition).desc);
+//        llVpDoor2door.setBackgroundResource(mDatas.get(finalPosition).imgRes);
+        ServicesClassifyListBean.DataBean.ClassifyListBean classifyListBean = classifyListBeans.get(finalPosition);
+        tvTitle.setText(classifyListBean.getName());
+        tvDesc.setText(classifyListBean.getDesc());
         container.addView(view);
         return view;
     }
@@ -64,8 +72,11 @@ public class ServiceVPAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-//        return mDatas.size();
-        return Integer.MAX_VALUE;
+        if (classifyListBeans == null || classifyListBeans.size() == 0) {
+            return 0;
+        } else {
+            return Integer.MAX_VALUE;
+        }
     }
 
     @Override

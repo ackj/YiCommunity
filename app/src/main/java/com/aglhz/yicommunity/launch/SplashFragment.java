@@ -46,7 +46,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         return new SplashFragment();
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

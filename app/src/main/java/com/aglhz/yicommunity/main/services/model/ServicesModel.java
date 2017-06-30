@@ -5,9 +5,7 @@ import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.DoorListBean;
-import com.aglhz.yicommunity.main.door.contract.AppointOpenDoorContract;
+import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
 import com.aglhz.yicommunity.main.services.contract.ServicesContract;
 
 import io.reactivex.Observable;
@@ -25,6 +23,15 @@ public class ServicesModel extends BaseModel implements ServicesContract.Model {
 
     @Override
     public void start(Object request) {
+    }
 
+    @Override
+    public Observable<ServicesCommodityListBean> requestServiceCommodityList(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestServiceCommodityList(ApiService.requestServiceCommodityList,
+                        params.page,
+                        params.pageSize,
+                        params.fid)
+                .subscribeOn(Schedulers.io());
     }
 }

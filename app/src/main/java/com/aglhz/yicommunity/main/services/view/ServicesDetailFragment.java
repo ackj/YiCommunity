@@ -14,8 +14,9 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.main.services.contract.ServicesContract;
-import com.aglhz.yicommunity.main.services.presenter.ServicesPresenter;
+import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
+import com.aglhz.yicommunity.main.services.contract.ServicesDetailContract;
+import com.aglhz.yicommunity.main.services.presenter.ServicesDetailPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +29,7 @@ import butterknife.Unbinder;
  * [上门服务列表]的View层。
  * 打开方式：AppStart-->首页-->社区服务列表-->Item。
  */
-public class ServicesDetailFragment extends BaseFragment<ServicesContract.Presenter> implements ServicesContract.View {
+public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.Presenter> implements ServicesDetailContract.View {
     private static final String TAG = ServicesDetailFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -58,8 +59,8 @@ public class ServicesDetailFragment extends BaseFragment<ServicesContract.Presen
 
     @NonNull
     @Override
-    protected ServicesContract.Presenter createPresenter() {
-        return new ServicesPresenter(this);
+    protected ServicesDetailContract.Presenter createPresenter() {
+        return new ServicesDetailPresenter(this);
     }
 
     @Nullable
@@ -102,5 +103,10 @@ public class ServicesDetailFragment extends BaseFragment<ServicesContract.Presen
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void responseServiceDetail(ServicesCommodityDetailBean bean) {
+
     }
 }

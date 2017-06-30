@@ -8,6 +8,7 @@ import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.NoticeBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 
 import java.util.List;
@@ -55,6 +56,16 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
                 .requestOpenDoor(ApiService.requestOpenDoor,
                         params.token,
                         params.dir)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<ServicesClassifyListBean> requestServiceClassifyList(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestServiceClassifyList(ApiService.requestServiceClassifyList,
+                        params.page,
+                        params.pageSize,
+                        Params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 }

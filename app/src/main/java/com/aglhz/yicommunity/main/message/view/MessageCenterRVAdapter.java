@@ -3,19 +3,21 @@ package com.aglhz.yicommunity.main.message.view;
 
 import android.view.View;
 
-import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.MessageCenterBean;
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+
+import java.util.List;
 
 /**
  * Created by leguang on 2017/4/24 0024.
  * Email：langmanleguang@qq.com
  */
 
-public class MessageCenterRVAdapter extends BaseRecyclerViewAdapter<MessageCenterBean.DataBean.MemNewsBean, BaseViewHolder> {
-    public MessageCenterRVAdapter() {
-        super(R.layout.item_message_center_fragment);
+public class MessageCenterRVAdapter extends BaseItemDraggableAdapter<MessageCenterBean.DataBean.MemNewsBean, BaseViewHolder> {
+    public MessageCenterRVAdapter(List data) {
+        super(R.layout.item_message_center_fragment,data);
     }
 
     @Override

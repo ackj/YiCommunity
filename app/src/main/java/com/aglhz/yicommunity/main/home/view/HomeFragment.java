@@ -14,14 +14,16 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
 import com.aglhz.yicommunity.entity.bean.ServiceBean;
-import com.aglhz.yicommunity.common.ApiService;
-import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.ScrollingHelper;
+import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 import com.aglhz.yicommunity.main.home.presenter.HomePresenter;
@@ -114,17 +116,15 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         data.add(functioneBean);
 
         //service
-        ServiceBean serviceBean0 = new ServiceBean("家政服务", "您家里的一切，让我来搞定！", R.drawable.bg_housekeeping_900px_540px);
-        ServiceBean serviceBean1 = new ServiceBean("家居维修", "专业品质服务，大可放心！", R.drawable.bg_homemaintenanc_900px_540px);
-        ServiceBean serviceBean2 = new ServiceBean("送水上门", "社区周边送水上门服务！", R.drawable.bg_watersupply_900px_540px);
-
+//        ServiceBean serviceBean0 = new ServiceBean("家政服务", "您家里的一切，让我来搞定！", R.drawable.bg_housekeeping_900px_540px);
+//        ServiceBean serviceBean1 = new ServiceBean("家居维修", "专业品质服务，大可放心！", R.drawable.bg_homemaintenanc_900px_540px);
+//        ServiceBean serviceBean2 = new ServiceBean("送水上门", "社区周边送水上门服务！", R.drawable.bg_watersupply_900px_540px);
+//
         HomeBean serviceBeans = new HomeBean();
-        List<ServiceBean> serviceBeanList = new ArrayList<>();
-        serviceBeanList.add(serviceBean0);
-        serviceBeanList.add(serviceBean1);
-        serviceBeanList.add(serviceBean2);
-
-        serviceBeans.setServices(serviceBeanList);
+//        List<ServiceBean> serviceBeanList = new ArrayList<>();
+//        serviceBeanList.add(serviceBean0);
+//        serviceBeanList.add(serviceBean1);
+//        serviceBeanList.add(serviceBean2);
         serviceBeans.setItemType(HomeBean.TYPE_COMMUNITY_SERVICE);
         data.add(serviceBeans);
 
@@ -146,7 +146,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         adapter = new HomeRVAdapter(data);
         adapter.setFragment(this);
         recyclerView.setAdapter(adapter);
-
         //add footer
         View footerView = LayoutInflater.from(_mActivity).inflate(R.layout.footer_no_anymore, null, false);
         adapter.addFooterView(footerView);
@@ -194,6 +193,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 mPresenter.requestBanners();
                 mPresenter.requestHomeNotices();
+                mPresenter.requestServiceClassifyList(Params.getInstance());
             }
         });
     }
@@ -292,6 +292,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public void responseOpenDoor() {
         dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), "开门成功，欢迎回家，我的主人！");
+    }
+
+    @Override
+    public void responseServiceClassifyList(List<ServicesClassifyListBean.DataBean.ClassifyListBean> classifys) {
+        ptrFrameLayout.refreshComplete();
+        ALog.e(TAG,"responseServiceClassifyList size:"+classifys.size());
+        adapter.getData().get(3).setServicesClassifyList(classifys);
+        adapter.notifyItemChanged(3);
     }
 
     public void go2TopAndRefresh() {

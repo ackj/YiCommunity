@@ -71,4 +71,17 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestServiceClassifyList(Params params) {
+        mRxManager.add(mModel.requestServiceClassifyList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(classifyListBean -> {
+                    if (classifyListBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseServiceClassifyList(classifyListBean.getData().getClassifyList());
+                    } else {
+                        getView().error(classifyListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }

@@ -26,8 +26,6 @@ import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 
-import static com.aglhz.abase.log.ALog.A;
-
 /**
  * Author：leguang on 2016/10/9 0009 15:49
  * Email：langmanleguang@qq.com
@@ -96,11 +94,10 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
         if (ptrFrameLayout == null || view == null) {
             return;
         }
-
         final MaterialHeader header = new MaterialHeader(getContext());
         int[] colors = getResources().getIntArray(R.array.google_colors);
         header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -20));
         header.setPadding(0, DensityUtils.dp2px(_mActivity, 15F), 0, DensityUtils.dp2px(_mActivity, 10F));
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
