@@ -26,7 +26,7 @@ public class HomeBean implements MultiItemEntity {
     public int textColor;
     public int type;
     public boolean hasMore;
-    public List<ServiceBean> services;
+//    public List<ServiceBean> services;
     public List<ServiceBean> qualityLifes;
     public List<ServicesClassifyListBean.DataBean.ClassifyListBean> servicesClassifyList;
 
@@ -38,13 +38,13 @@ public class HomeBean implements MultiItemEntity {
         this.servicesClassifyList = servicesClassifyList;
     }
 
-    public List<ServiceBean> getServices() {
-        return services;
-    }
+//    public List<ServiceBean> getServices() {
+//        return services;
+//    }
 
-    public void setServices(List<ServiceBean> services) {
-        this.services = services;
-    }
+//    public void setServices(List<ServiceBean> services) {
+//        this.services = services;
+//    }
 
     public List<ServiceBean> getQualityLifes() {
         return qualityLifes;
