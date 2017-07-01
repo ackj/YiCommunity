@@ -61,8 +61,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void initData() {
-//        UserHelper.init();//此处初始化改在application里初始化了。
-
         location();
         initDoorManager();
         checkLogin();
@@ -159,10 +157,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
             ALog.e(TAG, "onPermissionsGranted:" + requestCode + ":" + resultCode);
         }
     }
-
-//    private void initLocate() {
-//        LbsManager.getInstance().startLocation(null);
-//    }
 
     @Override
     public void onStop() {

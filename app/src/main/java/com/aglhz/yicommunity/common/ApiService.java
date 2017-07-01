@@ -67,15 +67,13 @@ import retrofit2.http.Url;
 
 public interface ApiService {
 
-    //基础路径
+    //*************基础路径*******************
 //    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-//    String BASE_PROPERTY = "http://192.168.250.117:8080/property_code";//大叔调试的IP
-    String BASE_PROPERTY = "http://192.168.250.110:8080/sub_property_ysq";//大叔调试的IP
+    String BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//调试
 
     String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
-    //    String BASE_PROPERTYCFG_M = "http://192.168.250.108:8080/propertyCFG-m";  //调试之用
-    String BASE_TEST_PROPERTY_CODE = "http://192.168.250.115:8080/property_code";//大叔调试的IP
+
 
     //********************以下为Web*******************************
     String PRODUCT_INTRODUCTION = "http://www.aglhz.com/sub_property_ysq/m/html/introduction.html";
@@ -167,14 +165,13 @@ public interface ApiService {
 
 
     //消息删除
-    String requestDeleteMessages = BASE_PROPERTY+"/client/delete-member-messages";
+    String requestDeleteMessages = BASE_PROPERTY + "/client/delete-member-messages";
 
     @POST
     Observable<BaseBean> requestDeleteMessages(@Url String url,
-                                               @Query("token")String token,
-                                               @Query("isCleanAll")boolean isCleanAll,
-                                               @Query("messageFids")String messageFids);
-
+                                               @Query("token") String token,
+                                               @Query("isCleanAll") boolean isCleanAll,
+                                               @Query("messageFids") String messageFids);
 
 
     //社区Banner
