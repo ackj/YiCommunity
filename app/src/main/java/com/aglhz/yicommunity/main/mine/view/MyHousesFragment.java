@@ -113,7 +113,7 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
             MyHousesBean.DataBean.AuthBuildingsBean bean = MyHousesFragment.this.adapter.getData().get(position);
-            start(HouseMembersFragment.newInstance(bean.getFid(), bean.getAddress()));
+            start(HouseMembersFragment.newInstance(bean));
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
@@ -177,11 +177,6 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
             adapter.setEnableLoadMore(true);
             adapter.loadMoreComplete();
         }
-    }
-
-    @Override
-    public void responseRights(HouseRightsBean mHouseRights) {
-        //公用Presenter多出来的
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

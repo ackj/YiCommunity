@@ -17,25 +17,14 @@ import io.reactivex.Observable;
 
 public interface MyHousesContract {
     interface View extends BaseContract.View {
-
         void responseHouses(List<MyHousesBean.DataBean.AuthBuildingsBean> beas);
-
-        void responseRights(HouseRightsBean mHouseRights);
     }
 
     interface Presenter extends BaseContract.Presenter {
-
         void requsetMyHouse(Params params);
-
-        void requestRights(Params params);
-
     }
 
     interface Model extends BaseContract.Model {
-
         Flowable<MyHousesBean> requsetMyHouse(Params params);
-
-        Observable<HouseRightsBean> requestRights(Params params);
-
     }
 }

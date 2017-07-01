@@ -89,6 +89,7 @@ public class Constants {
     public static final String KEY_PAY_STATE = "pay_position";
     public static final String KEY_FROM_TO = "from_to";
     public static final String KEY_ADDRESS = "address";
+    public static final String KEY_MEMBER = "member";
 
     //******************** SP key ***********************
     public static final String SP_KEY_USED_CITYS = "sp_key_used_citys";

@@ -32,14 +32,4 @@ public class MyHousesModel extends BaseModel implements MyHousesContract.Model {
                         params.token)
                 .subscribeOn(Schedulers.io());
     }
-
-
-    @Override
-    public Observable<HouseRightsBean> requestRights(Params params) {
-        return HttpHelper.getService(ApiService.class)
-                .requestRights(ApiService.requestRights
-                        , params.token
-                        , params.fid)
-                .subscribeOn(Schedulers.io());
-    }
 }
