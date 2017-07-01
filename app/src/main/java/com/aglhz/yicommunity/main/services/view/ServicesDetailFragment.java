@@ -69,8 +69,8 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     TextView tvTitle;
     @BindView(R.id.tv_subtitle_detail_services_fragment)
     TextView tvSubtitle;
-//    @BindView(R.id.tv_info_detail_services_fragment)
-//    TextView tvInfo;
+    @BindView(R.id.tv_info_detail_services_fragment)
+    TextView tvInfo;
     @BindView(R.id.iv_pic_1)
     ImageView ivPic1;
     @BindView(R.id.iv_pic_2)
@@ -165,9 +165,9 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         tvTime.setText("经营时间：" + bean.getData().getBusinessHours());
         tvContact.setText("联系方式：" + bean.getData().getContactWay());
         tvSubtitle.setText("服务范畴：" + bean.getData().getServiceScopes());
+        tvInfo.setText(bean.getData().getCommodityDesc());
 
         tvCost.setText(bean.getData().getCommodityPrice());
-
         List<ServicesCommodityDetailBean.DataBean.MerchantSceneBean> sceneBeans = bean.getData().getMerchantScene();
         for (int i = 0; i < sceneBeans.size(); i++) {
             String url = sceneBeans.get(i).getUrl();
@@ -194,9 +194,9 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         }
     }
 
-    @OnClick({R.id.bt_call,R.id.tv_business_license})
+    @OnClick({R.id.bt_call, R.id.tv_business_license})
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.bt_call:
                 if (!TextUtils.isEmpty(contactWay)) {
                     //跳系统的拨打电话
