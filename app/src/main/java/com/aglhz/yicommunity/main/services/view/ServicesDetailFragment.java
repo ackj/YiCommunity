@@ -169,9 +169,9 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
 
         tvCost.setText(bean.getData().getCommodityPrice());
 
-        List<ServicesCommodityDetailBean.DataBean.MerchantLicenseBean> licenseBeans = bean.getData().getMerchantLicense();
-        for (int i = 0; i < licenseBeans.size(); i++) {
-            String url = licenseBeans.get(i).getUrl();
+        List<ServicesCommodityDetailBean.DataBean.MerchantSceneBean> sceneBeans = bean.getData().getMerchantScene();
+        for (int i = 0; i < sceneBeans.size(); i++) {
+            String url = sceneBeans.get(i).getUrl();
             switch (i) {
                 case 0:
                     ivPic1.setVisibility(View.VISIBLE);

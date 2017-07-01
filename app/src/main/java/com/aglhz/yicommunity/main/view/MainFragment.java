@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
@@ -116,7 +115,6 @@ public class MainFragment extends BaseFragment {
             return true;
         });
         ahbn.setCurrentItem(0);
-
         GuideHelper.showHomeGuide(_mActivity);
     }
 
