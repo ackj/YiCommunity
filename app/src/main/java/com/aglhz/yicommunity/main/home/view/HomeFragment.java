@@ -107,7 +107,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         //Notice
         HomeBean noticeBean = new HomeBean();
         noticeBean.setItemType(HomeBean.TYPE_COMMUNITY_NOTICE);
-        noticeBean.setNotice(new ArrayList<>());
+        noticeBean.notice = "欢迎来到亿社区！";
         data.add(noticeBean);
 
         //CommunityService
@@ -274,12 +274,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void responseHomeNotices(List<String> notices) {
         ptrFrameLayout.refreshComplete();
-        if (notices.size() == 0) {
-            notices.add("欢迎来到亿社区！");
+        if (notices.size() > 0) {
+            adapter.getData().get(1).notice = notices.get(0);
+            ALog.e(TAG, "responseHomeNotices:" + notices.size());
+            adapter.notifyItemChanged(1);
         }
-        adapter.getData().get(1).setNotice(notices);
-        ALog.e(TAG, "responseHomeNotices:" + notices.size());
-        adapter.notifyItemChanged(1);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -297,7 +296,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void responseServiceClassifyList(List<ServicesClassifyListBean.DataBean.ClassifyListBean> classifys) {
         ptrFrameLayout.refreshComplete();
-        ALog.e(TAG,"responseServiceClassifyList size:"+classifys.size());
+        ALog.e(TAG, "responseServiceClassifyList size:" + classifys.size());
         adapter.getData().get(3).setServicesClassifyList(classifys);
         adapter.notifyItemChanged(3);
     }

@@ -9,19 +9,18 @@ import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.abase.widget.AutoScrollTextView;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
-import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
 import com.aglhz.yicommunity.main.services.ServicesActivity;
 import com.aglhz.yicommunity.main.sociality.view.CarpoolFragment;
-import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.aglhz.yicommunity.main.sociality.view.NeighbourFragment;
+import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -65,12 +64,13 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 }
                 break;
             case HomeBean.TYPE_COMMUNITY_NOTICE:
-                AutoScrollTextView tv = helper.getView(R.id.tv_notice);
-                tv.setTextList(item.getNotice());
-                if (!tv.isStart()) {
-                    tv.startAutoScroll();
-                }
-                helper.addOnClickListener(R.id.ll_item_notice);
+//                AutoScrollTextView tv = helper.getView(R.id.tv_notice);
+//                tv.setTextList(item.getNotice());
+//                if (!tv.isStart()) {
+//                    tv.startAutoScroll();
+//                }
+                helper.setText(R.id.tv_notice,item.notice)
+                        .addOnClickListener(R.id.ll_item_notice);
                 break;
             case HomeBean.TYPE_COMMUNITY_FUNCTION:
                 helper.addOnClickListener(R.id.ll_quick_open_door)

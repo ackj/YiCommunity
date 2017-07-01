@@ -16,12 +16,14 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
 import com.aglhz.yicommunity.main.services.contract.ServicesDetailContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesDetailPresenter;
+import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -133,7 +135,6 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
 
     @Override
     public void start(Object response) {
-
     }
 
     @Override
@@ -151,9 +152,13 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     public void responseServiceDetail(ServicesCommodityDetailBean bean) {
         Glide.with(_mActivity)
                 .load(bean.getData().getMerchantIconUrl())
+                .error(R.drawable.ic_default_img_120px)
+                .placeholder(R.drawable.ic_default_img_120px)
                 .into(ivFirm);
         Glide.with(_mActivity)
                 .load(bean.getData().getCommodityUrl())
+                .error(R.drawable.ic_default_img_120px)
+                .placeholder(R.drawable.ic_default_img_120px)
                 .into(ivCommodity);
 
         contactWay = bean.getData().getContactWay();
@@ -204,8 +209,15 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
                 }
                 break;
             case R.id.tv_business_license:
-                //todo:跳WEB
+                go2Web("营业执照", ApiService.BUSINESS_LICENSE_URL + params.fid);
                 break;
         }
+    }
+
+    public void go2Web(String title, String link) {
+        Intent intent = new Intent(_mActivity, WebActivity.class);
+        intent.putExtra(Constants.KEY_TITLE, title);
+        intent.putExtra(Constants.KEY_LINK, link);
+        _mActivity.startActivity(intent);
     }
 }
