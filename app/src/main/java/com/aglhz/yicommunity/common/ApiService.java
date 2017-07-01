@@ -825,11 +825,11 @@ public interface ApiService {
                                                  @Field("payType") int payType);//支付类型（1=支付宝支付、2=微信支付）
 
 
-    //---------------------------------------------------------------------------
+    //-------------------------------以下为2017.06.30添加的社区服务接口--------------------------------------------
 
-    String BASE_ZHANG = "http://192.168.7.101:8080/sub_property_ysq";
+//    String BASE_ZHANG = "http://192.168.7.101:8080/sub_property_ysq";
 
-    String requestServiceClassifyList = BASE_ZHANG + "/services/classify/to-client/classify-list";
+    String requestServiceClassifyList = BASE_PROPERTY + "/services/classify/to-client/classify-list";
 
     @GET
     Observable<ServicesClassifyListBean> requestServiceClassifyList(@Url String url,
@@ -837,7 +837,7 @@ public interface ApiService {
                                                                     @Query("pageSize") int pageSize,
                                                                     @Query("cmnt_c") String cmnt_c);
 
-    String requestServiceCommodityList = BASE_ZHANG + "/services/commodity/to-client/commodity-list";
+    String requestServiceCommodityList = BASE_PROPERTY + "/services/commodity/to-client/commodity-list";
 
     @GET
     Observable<ServicesCommodityListBean> requestServiceCommodityList(@Url String url,
@@ -845,7 +845,7 @@ public interface ApiService {
                                                                       @Query("pageSize") int pageSize,
                                                                       @Query("classifyFid") String classifyFid);
 
-    String requestServiceDetail = BASE_ZHANG + "/services/commodity/to-client/commodity-details";
+    String requestServiceDetail = BASE_PROPERTY + "/services/commodity/to-client/commodity-details";
 
     @GET
     Observable<ServicesCommodityDetailBean> requestServiceDetail(@Url String url, @Query("fid") String fid);
