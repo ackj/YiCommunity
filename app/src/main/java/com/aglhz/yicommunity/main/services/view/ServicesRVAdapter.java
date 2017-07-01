@@ -9,6 +9,8 @@ import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import static java.lang.System.load;
+
 
 /**
  * Created by leguang on 2017/6/26 0026.
@@ -30,6 +32,8 @@ public class ServicesRVAdapter extends BaseRecyclerViewAdapter<ServicesCommodity
         ImageView ivPhoto = helper.getView(R.id.iv_photo_item_rv_services);
         Glide.with(ivPhoto.getContext())
                 .load(item.getCommodityUrl())
+                .error(R.drawable.ic_default_img_120px)
+                .placeholder(R.drawable.ic_default_img_120px)
                 .into(ivPhoto);
     }
 }
