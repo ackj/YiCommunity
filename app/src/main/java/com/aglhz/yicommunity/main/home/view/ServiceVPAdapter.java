@@ -4,11 +4,12 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +43,15 @@ public class ServiceVPAdapter extends PagerAdapter {
         });
         TextView tvTitle = (TextView) view.findViewById(R.id.tv_title_item_vp_door2door_service);
         TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc_item_vp_door2door_service);
-        LinearLayout llVpDoor2door = (LinearLayout) view.findViewById(R.id.ll_item_vp_door2door_service);
+        ImageView ivImage = (ImageView) view.findViewById(R.id.iv_image_item_vp_door2door_service);
 
 
 //        tvTitle.setText(mDatas.get(finalPosition).title);
 //        tvDesc.setText(mDatas.get(finalPosition).desc);
-//        llVpDoor2door.setBackgroundResource(mDatas.get(finalPosition).imgRes);
+        Glide.with(container.getContext())
+                .load(classifyListBeans.get(finalPosition).getClassifyPhotoUrl())
+                .into(ivImage);
+
         ServicesClassifyListBean.DataBean.ClassifyListBean classifyListBean = classifyListBeans.get(finalPosition);
         tvTitle.setText(classifyListBean.getName());
         tvDesc.setText(classifyListBean.getDesc());

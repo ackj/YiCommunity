@@ -18,15 +18,21 @@ public interface MessageCenterContract {
 
     interface View extends BaseContract.View {
         void responseReadSuccess(BaseBean bean);
+
+        void responseDeleteSuccess(BaseBean bean);
     }
 
     interface Presenter extends BaseContract.Presenter {
         void requestMessageRead(Params params);
+
+        void requestDeleteMessage(Params params);
     }
 
     interface Model extends BaseContract.Model {
         Observable<MessageCenterBean> requestMessages(Params params);
 
         Observable<BaseBean> requestMessageRead(Params params);
+
+        Observable<BaseBean> requsetDeleteMessage(Params params);
     }
 }

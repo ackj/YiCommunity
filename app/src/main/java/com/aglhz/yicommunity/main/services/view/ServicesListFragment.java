@@ -143,8 +143,8 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
 //            mPresenter.requestDoors(params);//请求获取开门列表
         }, recyclerView);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
-
-            start(ServicesDetailFragment.newInstance(""));
+            ServicesCommodityListBean.DataBean.DataListBean listBean = adapter.getData().get(position);
+            start(ServicesDetailFragment.newInstance(listBean.getFid()));
         });
     }
 

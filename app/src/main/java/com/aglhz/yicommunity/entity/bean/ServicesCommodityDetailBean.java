@@ -12,7 +12,7 @@ public class ServicesCommodityDetailBean extends BaseBean{
 
 
     /**
-     * data : {"address":"惠州市惠城区江北佳兆业中心","commodityDesc":"商品描述","commodityMerit":"商品优点.....","commodityPrice":"¥1800:00","commodityServiceFlow":"商品优点......","commodityTitle":"商品标题","commodityUrl":"http://aglhzysq.image.alimmdn.com/services/commodity/20170630174955896442.jpg","coverageArea":"覆盖区域.....","duration":"时长参考.......","merchantIconUrl":"http://aglhzysq.image.alimmdn.com/services/merchant/icon/20170630165102228620.jpg","merchantLicense":[],"merchantScene":[{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630165053565186.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630165055369329.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630165055643851.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630165056011478.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630165057808439.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630165100370108.jpg"}]}
+     * data : {"address":"惠州市惠城区江北佳兆业中心","businessHours":"9:00--22:00","commodityDesc":"商品描述","commodityMerit":"1:商品优点","commodityPrice":"¥1800:00","commodityServiceFlow":"1:服务流程","commodityTitle":"家庭保洁2小时","commodityUrl":"http://aglhzysq.image.alimmdn.com/services/commodity/20170630203144928689.png","contactWay":"13589091567","coverageArea":"1:覆盖区域","duration":"1:时长参考","merchantAge":"4","merchantIconUrl":"http://aglhzysq.image.alimmdn.com/services/merchant/icon/20170630210010028523.png","merchantLicense":[{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630210009659634.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630210009803193.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630210009910869.jpg"}],"merchantName":"惠州保洁有限公司","merchantScene":[{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630210009319928.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630210009423233.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630210009527758.jpg"}],"serviceScopes":"家庭保洁"}
      */
 
     private DataBean data;
@@ -28,30 +28,40 @@ public class ServicesCommodityDetailBean extends BaseBean{
     public static class DataBean {
         /**
          * address : 惠州市惠城区江北佳兆业中心
+         * businessHours : 9:00--22:00
          * commodityDesc : 商品描述
-         * commodityMerit : 商品优点.....
+         * commodityMerit : 1:商品优点
          * commodityPrice : ¥1800:00
-         * commodityServiceFlow : 商品优点......
-         * commodityTitle : 商品标题
-         * commodityUrl : http://aglhzysq.image.alimmdn.com/services/commodity/20170630174955896442.jpg
-         * coverageArea : 覆盖区域.....
-         * duration : 时长参考.......
-         * merchantIconUrl : http://aglhzysq.image.alimmdn.com/services/merchant/icon/20170630165102228620.jpg
-         * merchantLicense : []
-         * merchantScene : [{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630165053565186.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630165055369329.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630165055643851.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630165056011478.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630165057808439.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630165100370108.jpg"}]
+         * commodityServiceFlow : 1:服务流程
+         * commodityTitle : 家庭保洁2小时
+         * commodityUrl : http://aglhzysq.image.alimmdn.com/services/commodity/20170630203144928689.png
+         * contactWay : 13589091567
+         * coverageArea : 1:覆盖区域
+         * duration : 1:时长参考
+         * merchantAge : 4
+         * merchantIconUrl : http://aglhzysq.image.alimmdn.com/services/merchant/icon/20170630210010028523.png
+         * merchantLicense : [{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630210009659634.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630210009803193.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630210009910869.jpg"}]
+         * merchantName : 惠州保洁有限公司
+         * merchantScene : [{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630210009319928.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630210009423233.jpg"},{"url":"http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630210009527758.jpg"}]
+         * serviceScopes : 家庭保洁
          */
 
         private String address;
+        private String businessHours;
         private String commodityDesc;
         private String commodityMerit;
         private String commodityPrice;
         private String commodityServiceFlow;
         private String commodityTitle;
         private String commodityUrl;
+        private String contactWay;
         private String coverageArea;
         private String duration;
+        private String merchantAge;
         private String merchantIconUrl;
-        private List<?> merchantLicense;
+        private String merchantName;
+        private String serviceScopes;
+        private List<MerchantLicenseBean> merchantLicense;
         private List<MerchantSceneBean> merchantScene;
 
         public String getAddress() {
@@ -60,6 +70,14 @@ public class ServicesCommodityDetailBean extends BaseBean{
 
         public void setAddress(String address) {
             this.address = address;
+        }
+
+        public String getBusinessHours() {
+            return businessHours;
+        }
+
+        public void setBusinessHours(String businessHours) {
+            this.businessHours = businessHours;
         }
 
         public String getCommodityDesc() {
@@ -110,6 +128,14 @@ public class ServicesCommodityDetailBean extends BaseBean{
             this.commodityUrl = commodityUrl;
         }
 
+        public String getContactWay() {
+            return contactWay;
+        }
+
+        public void setContactWay(String contactWay) {
+            this.contactWay = contactWay;
+        }
+
         public String getCoverageArea() {
             return coverageArea;
         }
@@ -126,6 +152,14 @@ public class ServicesCommodityDetailBean extends BaseBean{
             this.duration = duration;
         }
 
+        public String getMerchantAge() {
+            return merchantAge;
+        }
+
+        public void setMerchantAge(String merchantAge) {
+            this.merchantAge = merchantAge;
+        }
+
         public String getMerchantIconUrl() {
             return merchantIconUrl;
         }
@@ -134,11 +168,27 @@ public class ServicesCommodityDetailBean extends BaseBean{
             this.merchantIconUrl = merchantIconUrl;
         }
 
-        public List<?> getMerchantLicense() {
+        public String getMerchantName() {
+            return merchantName;
+        }
+
+        public void setMerchantName(String merchantName) {
+            this.merchantName = merchantName;
+        }
+
+        public String getServiceScopes() {
+            return serviceScopes;
+        }
+
+        public void setServiceScopes(String serviceScopes) {
+            this.serviceScopes = serviceScopes;
+        }
+
+        public List<MerchantLicenseBean> getMerchantLicense() {
             return merchantLicense;
         }
 
-        public void setMerchantLicense(List<?> merchantLicense) {
+        public void setMerchantLicense(List<MerchantLicenseBean> merchantLicense) {
             this.merchantLicense = merchantLicense;
         }
 
@@ -150,9 +200,25 @@ public class ServicesCommodityDetailBean extends BaseBean{
             this.merchantScene = merchantScene;
         }
 
+        public static class MerchantLicenseBean {
+            /**
+             * url : http://aglhzysq.image.alimmdn.com/services/merchant/license/20170630210009659634.jpg
+             */
+
+            private String url;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+        }
+
         public static class MerchantSceneBean {
             /**
-             * url : http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630165053565186.jpg
+             * url : http://aglhzysq.image.alimmdn.com/services/merchant/scene/20170630210009319928.jpg
              */
 
             private String url;

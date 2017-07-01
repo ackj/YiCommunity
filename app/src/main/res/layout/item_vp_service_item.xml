@@ -3,23 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardElevation="5dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_item_vp_door2door_service"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_housekeeping_900px_540px"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tv_title_item_vp_door2door_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="6dp"
             android:text="家政服务"
             android:textColor="@color/base_black"
@@ -29,8 +27,19 @@
             android:id="@+id/tv_desc_item_vp_door2door_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title_item_vp_door2door_service"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="4dp"
             android:text="您家里的一切，让我来搞定！" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_image_item_vp_door2door_service"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_desc_item_vp_door2door_service"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_housekeeping_900px_540px" />
+
+    </RelativeLayout>
 </android.support.v7.widget.CardView>

@@ -68,8 +68,9 @@ import retrofit2.http.Url;
 public interface ApiService {
 
     //基础路径
-    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+//    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
 //    String BASE_PROPERTY = "http://192.168.250.117:8080/property_code";//大叔调试的IP
+    String BASE_PROPERTY = "http://192.168.250.110:8080/sub_property_ysq";//大叔调试的IP
 
     String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
@@ -163,6 +164,18 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> requestMessageRead(@Url String url, @Query("token") String token, @Query("fid") String fid);
+
+
+    //消息删除
+    String requestDeleteMessages = BASE_PROPERTY+"/client/delete-member-messages";
+
+    @POST
+    Observable<BaseBean> requestDeleteMessages(@Url String url,
+                                               @Query("token")String token,
+                                               @Query("isCleanAll")boolean isCleanAll,
+                                               @Query("messageFids")String messageFids);
+
+
 
     //社区Banner
     //@POST("/sub_property_ysq/client/info/indexadvs")
@@ -835,7 +848,7 @@ public interface ApiService {
                                                                       @Query("pageSize") int pageSize,
                                                                       @Query("classifyFid") String classifyFid);
 
-    String requestServiceDetail = BASE_ZHANG + "/services/commodity/to-client/commodity-list";
+    String requestServiceDetail = BASE_ZHANG + "/services/commodity/to-client/commodity-details";
 
     @GET
     Observable<ServicesCommodityDetailBean> requestServiceDetail(@Url String url, @Query("fid") String fid);

@@ -1,9 +1,12 @@
 package com.aglhz.yicommunity.main.services.view;
 
 
+import android.widget.ImageView;
+
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 
@@ -23,5 +26,10 @@ public class ServicesRVAdapter extends BaseRecyclerViewAdapter<ServicesCommodity
                 .setText(R.id.tv_describe_item_rv_services, item.getCommodityDesc())
                 .setText(R.id.tv_cost_item_rv_services, item.getCommodityPrice())
                 .setText(R.id.tv_address_item_rv_services, item.getCoverageArea());
+
+        ImageView ivPhoto = helper.getView(R.id.iv_photo_item_rv_services);
+        Glide.with(ivPhoto.getContext())
+                .load(item.getCommodityUrl())
+                .into(ivPhoto);
     }
 }

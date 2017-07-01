@@ -57,4 +57,17 @@ public class MessageCenterPresenter extends BasePresenter<MessageCenterContract.
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestDeleteMessage(Params params) {
+        mRxManager.add(mModel.requsetDeleteMessage(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseDeleteSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }

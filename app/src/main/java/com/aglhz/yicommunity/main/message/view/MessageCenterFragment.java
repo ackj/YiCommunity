@@ -1,7 +1,6 @@
 package com.aglhz.yicommunity.main.message.view;
 
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.mvp.view.base.Decoration;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
@@ -33,8 +30,6 @@ import com.aglhz.yicommunity.main.message.presenter.MessageCenterPresenter;
 import com.aglhz.yicommunity.main.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
-import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,6 +80,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     private static final String COMPLAINT_REPLY = "complaint_reply";// 物业投诉回复
     private int clickPosition;
     private StateManager mStateManager;
+    private int removePosition = -1;
 
     public static MessageCenterFragment newInstance() {
         return new MessageCenterFragment();
@@ -120,11 +116,11 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageCenterRVAdapter(null);
         //开启滑动删除
-        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-        itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START | ItemTouchHelper.END);
-        adapter.enableSwipeItem();
+//        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
+//        itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START | ItemTouchHelper.END);
+//        adapter.enableSwipeItem();
         //设置Item动画
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         adapter.isFirstOnly(true);
@@ -147,28 +143,28 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     }
 
     private void initListener() {
-        adapter.setOnItemSwipeListener(new OnItemSwipeListener() {
-            @Override
-            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
-                ALog.e(TAG, "OnItemSwipeListener onItemSwipeStart");
-                //禁止上下滑动
-            }
-
-            @Override
-            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
-                ALog.e(TAG, "OnItemSwipeListener clearView");
-            }
-
-            @Override
-            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-                ALog.e(TAG, "OnItemSwipeListener onItemSwiped");
-            }
-
-            @Override
-            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
-                ALog.e(TAG, "OnItemSwipeListener onItemSwipeMoving");
-            }
-        });
+//        adapter.setOnItemSwipeListener(new OnItemSwipeListener() {
+//            @Override
+//            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
+//                ALog.e(TAG, "OnItemSwipeListener onItemSwipeStart");
+//                //禁止上下滑动
+//            }
+//
+//            @Override
+//            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
+//                ALog.e(TAG, "OnItemSwipeListener clearView");
+//            }
+//
+//            @Override
+//            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
+//                ALog.e(TAG, "OnItemSwipeListener onItemSwiped");
+//            }
+//
+//            @Override
+//            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
+//                ALog.e(TAG, "OnItemSwipeListener onItemSwipeMoving");
+//            }
+//        });
 
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             MessageCenterBean.DataBean.MemNewsBean bean = (MessageCenterBean.DataBean.MemNewsBean) adapter.getData().get(position);
@@ -221,6 +217,11 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                         start(ComplainReplyFragment.newInstance(bean.getSfid()));
                         break;
                 }
+            } else if (view.getId() == R.id.tv_delete_item_message_center) {
+                params.fid = bean.getFid();
+                params.isCleanAll = false;
+                removePosition = position;
+                mPresenter.requestDeleteMessage(params);
             }
         });
     }
@@ -266,10 +267,21 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     }
 
     @Override
+    public void responseDeleteSuccess(BaseBean bean) {
+        //判断是单个删除还是删除全部
+        if (params.isCleanAll) {
+            adapter.setNewData(null);
+            mStateManager.showEmpty();
+        } else if (removePosition > -1) {
+            adapter.remove(removePosition);
+            removePosition = -1;
+        }
+    }
+
+    @Override
     public void start(Object response) {
         ptrFrameLayout.refreshComplete();
         List<MessageCenterBean.DataBean.MemNewsBean> datas = (List<MessageCenterBean.DataBean.MemNewsBean>) response;
-
         if (datas == null || datas.isEmpty()) {
             if (params.page == 1) {
                 mStateManager.showEmpty();
@@ -308,15 +320,17 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @OnClick(R.id.iv_delete_all)
     public void onViewClicked() {
-        new AlertDialog.Builder(_mActivity)
-                .setTitle("温馨提示")
-                .setPositiveButton("确定", (dialog, which) -> {
-                    ToastUtils.showToast(_mActivity, "确定");
-                })
-                .setMessage("清除所有消息和内容？")
-                .setNegativeButton("取消", (dialog, which) -> {
-                    ToastUtils.showToast(_mActivity, "取消");
-                })
-                .show();
+        if(!adapter.getData().isEmpty()){
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("温馨提示")
+                    .setPositiveButton("确定", (dialog, which) -> {
+                        params.isCleanAll = true;
+                        params.fid = null;
+                        mPresenter.requestDeleteMessage(params);
+                    })
+                    .setMessage("清除所有消息和内容？")
+                    .setNegativeButton("取消", null)
+                    .show();
+        }
     }
 }

@@ -42,4 +42,11 @@ public class MessageCenterModel extends BaseModel implements MessageCenterContra
                 .requestMessageRead(ApiService.requestMessageRead, params.token, params.fid)
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseBean> requsetDeleteMessage(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestDeleteMessages(ApiService.requestDeleteMessages, params.token,params.isCleanAll,params.fid)
+                .subscribeOn(Schedulers.io());
+    }
 }

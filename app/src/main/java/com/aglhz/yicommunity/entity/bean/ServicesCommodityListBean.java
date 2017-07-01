@@ -10,9 +10,11 @@ import java.util.List;
 
 public class ServicesCommodityListBean extends BaseBean{
 
+
     /**
-     * data : {"dataList":[{"commodityDesc":"按时收费   服务有保障","commodityPrice":"¥800:00","commodityTitle":"家庭保健2小时","coverageArea":"全惠州市内各个区域","fid":"0980e896-8894-42eb-9c66-f335f16cafbe","pics":[]}]}
+     * data : {"dataList":[{"commodityDesc":"商品描述","commodityPrice":"¥1800:00","commodityTitle":"家庭保洁2小时","commodityUrl":"http://aglhzysq.image.alimmdn.com/services/commodity/20170630203144928689.png","coverageArea":"1:覆盖区域","fid":"36d7c380-967b-4135-a363-72e403771f25"}]}
      */
+
     private DataBean data;
 
     public DataBean getData() {
@@ -36,20 +38,20 @@ public class ServicesCommodityListBean extends BaseBean{
 
         public static class DataListBean {
             /**
-             * commodityDesc : 按时收费   服务有保障
-             * commodityPrice : ¥800:00
-             * commodityTitle : 家庭保健2小时
-             * coverageArea : 全惠州市内各个区域
-             * fid : 0980e896-8894-42eb-9c66-f335f16cafbe
-             * pics : []
+             * commodityDesc : 商品描述
+             * commodityPrice : ¥1800:00
+             * commodityTitle : 家庭保洁2小时
+             * commodityUrl : http://aglhzysq.image.alimmdn.com/services/commodity/20170630203144928689.png
+             * coverageArea : 1:覆盖区域
+             * fid : 36d7c380-967b-4135-a363-72e403771f25
              */
 
             private String commodityDesc;
             private String commodityPrice;
             private String commodityTitle;
+            private String commodityUrl;
             private String coverageArea;
             private String fid;
-            private List<?> pics;
 
             public String getCommodityDesc() {
                 return commodityDesc;
@@ -75,6 +77,14 @@ public class ServicesCommodityListBean extends BaseBean{
                 this.commodityTitle = commodityTitle;
             }
 
+            public String getCommodityUrl() {
+                return commodityUrl;
+            }
+
+            public void setCommodityUrl(String commodityUrl) {
+                this.commodityUrl = commodityUrl;
+            }
+
             public String getCoverageArea() {
                 return coverageArea;
             }
@@ -89,14 +99,6 @@ public class ServicesCommodityListBean extends BaseBean{
 
             public void setFid(String fid) {
                 this.fid = fid;
-            }
-
-            public List<?> getPics() {
-                return pics;
-            }
-
-            public void setPics(List<?> pics) {
-                this.pics = pics;
             }
         }
     }
