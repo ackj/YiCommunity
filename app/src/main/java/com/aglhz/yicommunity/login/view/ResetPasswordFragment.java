@@ -162,6 +162,17 @@ public class ResetPasswordFragment extends BaseFragment<ResetPasswordContract.Pr
         params.verifyType = "v_rePwd";
         mPresenter.requestVerifyCode(params);
 
+        getVerifyThread = new Thread(() -> {
+            for (int i = 60; i >= 0; i--) {
+                if (getVerifyThread == null) return;
+                mHandler.sendEmptyMessage(i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         getVerifyThread.start();
     }
 

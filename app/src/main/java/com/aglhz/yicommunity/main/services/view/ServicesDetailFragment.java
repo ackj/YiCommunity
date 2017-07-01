@@ -46,7 +46,6 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     Toolbar toolbar;
     @BindView(R.id.tv_cost_detail_services_fragment)
     TextView tvCost;
-
     Unbinder unbinder;
     @BindView(R.id.iv_firm_detail_services_fragment)
     ImageView ivFirm;

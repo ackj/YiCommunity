@@ -142,7 +142,6 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginRight="5dp"
-                    android:background="#ff0000"
                     android:visibility="invisible" />
 
                 <ImageView
@@ -150,7 +149,6 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginRight="5dp"
-                    android:background="#ff0000"
                     android:visibility="invisible" />
 
                 <ImageView
@@ -158,7 +156,6 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginRight="5dp"
-                    android:background="#ff0000"
                     android:visibility="invisible" />
 
             </LinearLayout>
@@ -201,8 +198,7 @@
                     android:id="@+id/iv_commodity_detail_services_fragment"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="#00ff00" />
+                    android:layout_marginEnd="10dp" />
 
                 <TextView
                     android:id="@+id/tv_title_detail_services_fragment"
