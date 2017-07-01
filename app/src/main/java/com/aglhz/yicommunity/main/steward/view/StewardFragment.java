@@ -17,15 +17,15 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.DoorListBean;
-import com.aglhz.yicommunity.entity.bean.IconBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.DoorListBean;
+import com.aglhz.yicommunity.entity.bean.IconBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.door.DoorActivity;
@@ -50,8 +50,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-
-import static com.aglhz.yicommunity.R.id.recyclerView;
 
 /**
  * Author：leguang on 2017/4/13 0009 15:49
@@ -280,6 +278,20 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     //跳转到停车模块。
     private void go2Park(int position) {
+        if (position == 2) {
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("提示")
+                    .setMessage("当前小区未开通此服务!")
+                    .setCancelable(false)
+                    .setNegativeButton("确定", (dialog, which) -> {
+                        go2ParkActivity(position);
+                    }).show();
+        } else {
+            go2ParkActivity(position);
+        }
+    }
+
+    private void go2ParkActivity(int position) {
         Intent intent = new Intent(_mActivity, ParkActivity.class);
         intent.putExtra(Constants.KEY_FROM_TO, position);
         startActivity(intent);
@@ -298,7 +310,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     private void go2AddDevice() {
         startActivity(new Intent(_mActivity, ScanQRCodeActivity.class));
     }
-
 
     private void go2DeviceStore() {
         _mActivity.start(GoodsCategoryFragment.newInstance());

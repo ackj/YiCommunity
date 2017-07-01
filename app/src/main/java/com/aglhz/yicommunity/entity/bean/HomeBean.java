@@ -21,6 +21,7 @@ public class HomeBean implements MultiItemEntity {
     public String title;
     public String desc;
     public List<String> notices;
+    public String notice;
     public String community;
     public int bgRes;
     public int textColor;

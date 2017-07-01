@@ -115,12 +115,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         layoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageCenterRVAdapter(null);
-        //开启滑动删除
-//        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
-//        itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START | ItemTouchHelper.END);
-//        adapter.enableSwipeItem();
         //设置Item动画
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         adapter.isFirstOnly(true);
@@ -143,29 +137,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     }
 
     private void initListener() {
-//        adapter.setOnItemSwipeListener(new OnItemSwipeListener() {
-//            @Override
-//            public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
-//                ALog.e(TAG, "OnItemSwipeListener onItemSwipeStart");
-//                //禁止上下滑动
-//            }
-//
-//            @Override
-//            public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {
-//                ALog.e(TAG, "OnItemSwipeListener clearView");
-//            }
-//
-//            @Override
-//            public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
-//                ALog.e(TAG, "OnItemSwipeListener onItemSwiped");
-//            }
-//
-//            @Override
-//            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
-//                ALog.e(TAG, "OnItemSwipeListener onItemSwipeMoving");
-//            }
-//        });
-
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             MessageCenterBean.DataBean.MemNewsBean bean = (MessageCenterBean.DataBean.MemNewsBean) adapter.getData().get(position);
             if (view.getId() == R.id.ll_layout_item_message_center_fragment) {
@@ -270,8 +241,10 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     public void responseDeleteSuccess(BaseBean bean) {
         //判断是单个删除还是删除全部
         if (params.isCleanAll) {
-            adapter.setNewData(null);
-            mStateManager.showEmpty();
+            ptrFrameLayout.refreshComplete();
+//            adapter.setNewData(null);
+//            mStateManager.showEmpty();
+            EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));
         } else if (removePosition > -1) {
             adapter.remove(removePosition);
             removePosition = -1;

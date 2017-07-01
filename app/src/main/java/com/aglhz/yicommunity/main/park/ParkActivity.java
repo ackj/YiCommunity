@@ -33,6 +33,7 @@ public class ParkActivity extends BaseActivity {
                     loadRootFragment(R.id.fl_main_activity, ParkRecordFragment.newInstance());
                     break;
                 case Constants.CARD_TRANSACT:
+                    //该小区目前
                     loadRootFragment(R.id.fl_main_activity, CarCardTransactFragment.newInstance());
                     break;
             }
