@@ -87,23 +87,26 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 viewpager.setAdapter(adapter);
                 viewpager.setCurrentItem(100);
                 adapter.setOnItemClickListener(position -> {
-                    Intent intent = new Intent(viewpager.getContext(), ServicesActivity.class);
-                    ServicesClassifyListBean.DataBean.ClassifyListBean classifyListBean = item.getServicesClassifyList().get(position);
-                    intent.putExtra(Constants.SERVICE_FID, classifyListBean.getFid());
-                    intent.putExtra(Constants.SERVICE_NAME, classifyListBean.getName());
-                    viewpager.getContext().startActivity(intent);
-
-//                    switch (position) {
-//                        case 0:
-//                            fragment.go2Web("家政服务", ApiService.JIAZHENG);
-//                            break;
-//                        case 1:
-//                            fragment.go2Web("家居维修", ApiService.WEIXIU);
-//                            break;
-//                        case 2:
-//                            fragment.go2Web("送水上门", ApiService.SONGSHUI);
-//                            break;
-//                    }
+                    if (item.getServicesClassifyList() == null || item.getServicesClassifyList().isEmpty()) {
+//                        adapter.getServiceBeans().get(position)
+                        switch (position) {
+                            case 0:
+                                fragment.go2Web("家政服务", ApiService.JIAZHENG);
+                                break;
+                            case 1:
+                                fragment.go2Web("家居维修", ApiService.WEIXIU);
+                                break;
+                            case 2:
+                                fragment.go2Web("送水上门", ApiService.SONGSHUI);
+                                break;
+                        }
+                    } else {
+                        Intent intent = new Intent(viewpager.getContext(), ServicesActivity.class);
+                        ServicesClassifyListBean.DataBean.ClassifyListBean classifyListBean = item.getServicesClassifyList().get(position);
+                        intent.putExtra(Constants.SERVICE_FID, classifyListBean.getFid());
+                        intent.putExtra(Constants.SERVICE_NAME, classifyListBean.getName());
+                        viewpager.getContext().startActivity(intent);
+                    }
                 });
                 break;
             case HomeBean.TYPE_COMMUNITY_QUALITY_LIFE:
