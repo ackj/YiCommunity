@@ -7,7 +7,6 @@ import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;
 
-
 /**
  * Author：leguang on 2017/4/12 0009 14:23
  * Email：langmanleguang@qq.com

@@ -9,14 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.AbsListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.aglhz.abase.common.AudioPlayer;
+import com.aglhz.abase.common.ScrollingHelper;
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.entity.bean.MyHousesBean;
-import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.house.view.MemberRVAdapter;
 import com.aglhz.yicommunity.main.mine.contract.MyHousesContract;
@@ -32,12 +37,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * Author: LiuJia on 2017/4/20 9:26.
  * Email: liujia95me@126.com
  */
-public class HouseMembersFragment extends BaseFragment<MyHousesContract.Presenter> implements MyHousesContract.View {
+public class HouseMembersFragment extends BaseFragment {
     private static final String TAG = HouseMembersFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -47,15 +53,13 @@ public class HouseMembersFragment extends BaseFragment<MyHousesContract.Presente
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-    private MemberRVAdapter mAdapter;
-    private Params params = Params.getInstance();
-    private String title;
+    private MyHouseMemberRVAdapter mAdapter;
     private Unbinder unbinder;
+    private MyHousesBean.DataBean.AuthBuildingsBean bean;
 
-    public static HouseMembersFragment newInstance(String fid, String address) {
+    public static HouseMembersFragment newInstance(MyHousesBean.DataBean.AuthBuildingsBean bean) {
         Bundle args = new Bundle();
-        args.putString(Constants.KEY_FID, fid);
-        args.putString(Constants.KEY_ADDRESS, address);
+        args.putSerializable(Constants.KEY_MEMBER, bean);
         HouseMembersFragment fragment = new HouseMembersFragment();
         fragment.setArguments(args);
         return fragment;
@@ -66,15 +70,8 @@ public class HouseMembersFragment extends BaseFragment<MyHousesContract.Presente
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            params.fid = args.getString(Constants.KEY_FID);
-            title = args.getString(Constants.KEY_ADDRESS);
+            bean = (MyHousesBean.DataBean.AuthBuildingsBean) args.getSerializable(Constants.KEY_MEMBER);
         }
-    }
-
-    @NonNull
-    @Override
-    protected MyHousesContract.Presenter createPresenter() {
-        return new MyHousesPresenter(this);
     }
 
     @Nullable
@@ -82,7 +79,6 @@ public class HouseMembersFragment extends BaseFragment<MyHousesContract.Presente
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -91,59 +87,38 @@ public class HouseMembersFragment extends BaseFragment<MyHousesContract.Presente
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
-        initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText(title);
+        toolbarTitle.setText(bean.getAddress());
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
-    @Override
-    public void onRefresh() {
-        mPresenter.requestRights(params);
-    }
 
     private void initData() {
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return false;
+            }
+
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+            }
+        });
         //成员头像网格表
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 5));
-        mAdapter = new MemberRVAdapter();
+        mAdapter = new MyHouseMemberRVAdapter();
         recyclerView.setAdapter(mAdapter);
+        mAdapter.setNewData(bean.getMembers());
     }
 
-
-    @Override
-    public void responseHouses(List<MyHousesBean.DataBean.AuthBuildingsBean> beas) {
-        //公用Presenter多出来的
-    }
-
-    @Override
-    public void responseRights(HouseRightsBean mHouseRights) {
-        ptrFrameLayout.refreshComplete();
-        mAdapter.setNewData(mHouseRights.getData());
-    }
-
-    @Override
-    public void start(Object response) {
-
-    }
-
-    @Override
-    public void error(String errorMessage) {
-        ptrFrameLayout.refreshComplete();
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunity event) {
-        ptrFrameLayout.autoRefresh();
     }
 }

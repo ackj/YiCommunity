@@ -46,19 +46,4 @@ public class MyHousesPresenter extends BasePresenter<MyHousesContract.View,MyHou
                 }, this::error)
         );
     }
-
-
-    @Override
-    public void requestRights(Params params) {
-        mRxManager.add(mModel.requestRights(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bean -> {
-                    if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-                        getView().responseRights(bean);
-                    } else {
-                        getView().error(bean.getOther().getMessage());
-                    }
-                }, this::error)
-        );
-    }
 }

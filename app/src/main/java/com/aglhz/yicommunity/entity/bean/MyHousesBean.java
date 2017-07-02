@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.entity.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class MyHousesBean extends BaseBean {
             this.authBuildings = authBuildings;
         }
 
-        public static class AuthBuildingsBean {
+        public static class AuthBuildingsBean implements Serializable {
             /**
              * address : 水北新村1期1栋1单元6层6房
              * addressPre :

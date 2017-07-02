@@ -229,7 +229,6 @@
                     android:layout_toEndOf="@id/iv_commodity_detail_services_fragment"
                     android:text="服务范畴：家庭保洁"
                     android:textSize="14sp" />
-
             </RelativeLayout>
 
             <TextView
@@ -239,6 +238,10 @@
                 android:paddingLeft="15dp"
                 android:text="商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n"
                 android:textSize="14sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
         </LinearLayout>
     </ScrollView>
 
