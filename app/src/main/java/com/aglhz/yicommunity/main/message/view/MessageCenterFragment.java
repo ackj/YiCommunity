@@ -25,6 +25,8 @@ import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventData;
+import com.aglhz.yicommunity.event.EventRefreshMessageList;
+import com.aglhz.yicommunity.event.EventUnread;
 import com.aglhz.yicommunity.main.message.contract.MessageCenterContract;
 import com.aglhz.yicommunity.main.message.presenter.MessageCenterPresenter;
 import com.aglhz.yicommunity.main.propery.view.PropertyPayFragment;
@@ -239,13 +241,13 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Override
     public void responseDeleteSuccess(BaseBean bean) {
+        dismissLoadingDialog();
         //判断是单个删除还是删除全部
         if (params.isCleanAll) {
             ptrFrameLayout.autoRefresh();
 //            adapter.setNewData(null);
 //            mStateManager.showEmpty();
-            EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));
-            DialogHelper.successSnackbar(getView(), "清空成功");
+            EventBus.getDefault().post(new EventUnread());
         } else if (removePosition > -1) {
             adapter.remove(removePosition);
             removePosition = -1;
@@ -276,6 +278,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Override
     public void error(String errorMessage) {
+        dismissLoadingDialog();
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
             mStateManager.showError();
@@ -286,18 +289,13 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventCommunity event) {
-        recyclerView.scrollToPosition(0);
-        ptrFrameLayout.autoRefresh();
-    }
-
     @OnClick(R.id.iv_delete_all)
     public void onViewClicked() {
         if (!adapter.getData().isEmpty()) {
             new AlertDialog.Builder(_mActivity)
                     .setTitle("温馨提示")
                     .setPositiveButton("确定", (dialog, which) -> {
+                        showLoadingDialog();
                         params.isCleanAll = true;
                         params.fid = null;
                         mPresenter.requestDeleteMessage(params);
@@ -307,4 +305,18 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                     .show();
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefreshMessageListEvent(EventRefreshMessageList event) {
+        ALog.e("11111111onRefreshMessageListEvent");
+        recyclerView.scrollToPosition(0);
+        ptrFrameLayout.autoRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onCommunityEvent(EventCommunity event) {
+        recyclerView.scrollToPosition(0);
+        ptrFrameLayout.autoRefresh();
+    }
 }
+

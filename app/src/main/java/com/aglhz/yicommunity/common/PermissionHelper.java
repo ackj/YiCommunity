@@ -39,25 +39,28 @@ public class PermissionHelper {
      */
     public void gotoPermission() {
         ALog.e(TAG, "Build.MANUFACTURER:" + Build.MANUFACTURER);
-        switch (Build.MANUFACTURER) {
-            case "Xiaomi":
+        String manufacturer = Build.MANUFACTURER;
+        manufacturer = manufacturer.toUpperCase();
+
+        switch (manufacturer) {
+            case "XIAOMI":
                 gotoMiuiPermission();
                 break;
-            case "Huawei":
+            case "HUAWEI":
                 gotoHuaweiPermission();
                 break;
-            case "Meizu":
+            case "MEIZU":
                 gotoMeizuPermission();
                 break;
             case "OPPO":
                 gotoOppoPermission();
                 break;
-            case "Sony":
+            case "SONY":
                 gotoSonyPermission();
             case "LG":
                 gotoLGPermission();
                 break;
-            case "Letv":
+            case "LETV":
                 gotoLetvPermission();
                 break;
         }

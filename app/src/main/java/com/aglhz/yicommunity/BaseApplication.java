@@ -12,10 +12,10 @@ import com.aglhz.abase.exception.AppExceptionHandler;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.common.ApiService;
-import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.common.boxing.BoxingGlideLoader;
-import com.aglhz.yicommunity.event.EventData;
+import com.aglhz.yicommunity.event.EventRefreshMessageList;
+import com.aglhz.yicommunity.event.EventUnread;
 import com.bilibili.boxing.BoxingMediaLoader;
 import com.bilibili.boxing.loader.IBoxingMediaLoader;
 import com.umeng.message.IUmengRegisterCallback;
@@ -186,7 +186,9 @@ public class BaseApplication extends MultiDexApplication implements Application.
                 ALog.e(TAG, msg.getRaw().toString());
                 ALog.e(TAG, msg.custom);
 
-                EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));
+                ALog.e("111111getNotification");
+                EventBus.getDefault().post(new EventUnread());
+                EventBus.getDefault().post(new EventRefreshMessageList());
 
                 switch (msg.builder_id) {
                     //自定义通知样式编号

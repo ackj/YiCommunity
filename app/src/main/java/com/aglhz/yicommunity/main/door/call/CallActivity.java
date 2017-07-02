@@ -330,5 +330,8 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-
+    @Override
+    public void onBackPressedSupport() {
+        //禁止返回
+    }
 }
