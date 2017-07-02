@@ -8,7 +8,6 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.house.contract.HouseRightsContract;
 import com.aglhz.yicommunity.main.house.model.HouseRightsModel;
 
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
@@ -65,12 +64,12 @@ public class HouseRightsPresenter extends BasePresenter<HouseRightsContract.View
     }
 
     @Override
-    public void requestDelete(Params params) {
-        mRxManager.add(mModel.requestDelete(params)
+    public void requestDeleteMember(Params params) {
+        mRxManager.add(mModel.requestDeleteMember(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bean -> {
                     if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-                        getView().responseDelete(bean);
+                        getView().responseDeleteMember(bean);
                     } else {
                         getView().error(bean.getOther().getMessage());
                     }

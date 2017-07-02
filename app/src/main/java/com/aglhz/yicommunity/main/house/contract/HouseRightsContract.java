@@ -1,9 +1,9 @@
 package com.aglhz.yicommunity.main.house.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
-import com.aglhz.yicommunity.common.Params;
 
 import io.reactivex.Observable;
 
@@ -21,7 +21,7 @@ public interface HouseRightsContract {
 
         void responseUpdateRights(BaseBean mBaseBean);
 
-        void responseDelete(BaseBean mBaseBean);
+        void responseDeleteMember(BaseBean mBaseBean);
 
     }
 
@@ -31,7 +31,7 @@ public interface HouseRightsContract {
 
         void requestUpdateRights(Params params);
 
-        void requestDelete(Params params);
+        void requestDeleteMember(Params params);
 
     }
 
@@ -41,6 +41,6 @@ public interface HouseRightsContract {
 
         Observable<BaseBean> requestUpdateRights(Params params);
 
-        Observable<BaseBean> requestDelete(Params params);
+        Observable<BaseBean> requestDeleteMember(Params params);
     }
 }

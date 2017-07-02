@@ -3,10 +3,10 @@ package com.aglhz.yicommunity.main.house.model;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.main.house.contract.HouseRightsContract;
 
 import io.reactivex.Observable;
@@ -57,12 +57,12 @@ public class HouseRightsModel extends BaseModel implements HouseRightsContract.M
     }
 
     @Override
-    public Observable<BaseBean> requestDelete(Params params) {
+    public Observable<BaseBean> requestDeleteMember(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .requestDelete(ApiService.requestRights
+                .requestDeleteMember(ApiService.requestDeleteMember
                         , params.token
-                        , params.mfid
-                        , params.fid)
+                        , params.fid
+                        , params.mfid)
                 .subscribeOn(Schedulers.io());
     }
 }

@@ -19,12 +19,12 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.house.contract.HouseRightsContract;
 import com.aglhz.yicommunity.main.house.presenter.HouseRightsPresenter;
@@ -43,7 +43,6 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Author: LiuJia on 2017/4/20 9:26.
  * Email: liujia95me@126.com
  * [房屋成员]的View层。
- *
  */
 public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presenter> implements HouseRightsContract.View {
     private static final String TAG = HouseRightsFragment.class.getSimpleName();
@@ -174,7 +173,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         footerView.setOnClickListener(v -> {
             ALog.e("prePosition::" + memberPosition);
             params.mfid = memberAdapter.getData().get(memberPosition).getMember().getFid();
-            mPresenter.requestDelete(params);//请求删除成员
+            mPresenter.requestDeleteMember(params);//请求删除成员
             showLoadingDialog();
         });
 
@@ -207,6 +206,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
 
     /**
      * 响应请求成员列表
+     *
      * @param mHouseRights
      */
     @Override
@@ -219,6 +219,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
 
     /**
      * 响应请求更改成员信息。
+     *
      * @param mBaseBean
      */
     @Override
@@ -231,10 +232,11 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
 
     /**
      * 响应请求删除成员。
+     *
      * @param mBaseBean
      */
     @Override
-    public void responseDelete(BaseBean mBaseBean) {
+    public void responseDeleteMember(BaseBean mBaseBean) {
         dismissLoadingDialog();
         DialogHelper.successSnackbar(getView(), mBaseBean.getOther().getMessage());
         memberAdapter.remove(memberPosition);
@@ -242,6 +244,7 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
         if (memberAdapter.getData().size() == 1) {
             permissionAdapter.removeFooterView(footerView);
         }
+        memberPosition = 0;
     }
 
     @Override

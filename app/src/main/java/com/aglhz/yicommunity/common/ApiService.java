@@ -454,12 +454,6 @@ public interface ApiService {
             , @Query("picode") String picode
             , @Query("status") int status);
 
-    @POST
-    Observable<BaseBean> requestDelete(@Url String url
-            , @Query("token") String token
-            , @Query("mfid") String mfid
-            , @Query("fid") String fid);
-
     String requestCheckPermission = BASE_PROPERTY + "/smartdoor/client/checkAcsPower";
 
     @POST
@@ -467,6 +461,15 @@ public interface ApiService {
             , @Query("token") String token
             , @Query("dir") String dir
             , @Query("powerCode") String powerCode);
+
+
+    String requestDeleteMember = BASE_PROPERTY + "/client/unauthMember";
+
+    @POST
+    Observable<BaseBean> requestDeleteMember(@Url String url
+            , @Query("token") String token
+            , @Query("fid") String fid
+            , @Query("mfid") String mfid);
 
     //***********以上房屋权限系列接口********************************
 
