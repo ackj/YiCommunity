@@ -392,7 +392,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         new AlertDialog.Builder(_mActivity)
                 .setTitle("联系方式")
                 .setItems(arrayPhones, (dialog, which) -> {
-                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + arrayPhones[which].substring(3))));
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + arrayPhones[which].substring(3))));
                 }).show();
     }
 
@@ -429,19 +429,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
                 .getInstance()
                 .callOut(params.dir);
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (data != null) {
-//            if (requestCode == SELECT_COMMUNIT) {
-//
-//                ALog.e("11111111111111");
-//                UserHelper.setCommunity(data.getStringExtra(Constants.COMMUNITY_NAME)
-//                        , data.getStringExtra(Constants.COMMUNITY_CODE));
-//            }
-//        }
-//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void go2TopAndRefresh(EventCommunity event) {

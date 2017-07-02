@@ -18,6 +18,7 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.event.EventPark;
 import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
+import com.aglhz.yicommunity.qrcode.ScanQRCodeActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,7 +37,7 @@ import butterknife.Unbinder;
  */
 
 public class TemporaryParkPayFragment extends BaseFragment {
-
+    private static final String TAG = CarCardTransactFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -97,6 +98,7 @@ public class TemporaryParkPayFragment extends BaseFragment {
                 _mActivity.startActivity(intent);
                 break;
             case R.id.ll_scan_pay:
+                startActivity(new Intent(_mActivity, ScanQRCodeActivity.class));
                 break;
             case R.id.tv_car_city:
                 startForResult(CarCityFragment.newInstance(), 100);

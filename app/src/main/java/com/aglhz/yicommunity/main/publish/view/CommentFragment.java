@@ -35,6 +35,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.CommentBean;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventRefreshSocialityList;
 import com.aglhz.yicommunity.event.KeyboardChangeListener;
 import com.aglhz.yicommunity.main.publish.contract.CommentContract;
 import com.aglhz.yicommunity.main.publish.presenter.CommentPresenter;
@@ -125,20 +126,8 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         type = bundle.getInt(Constants.KEY_TYPE);
         initToolbar();
         initData();
-//        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
         initListener();
-    }
-
-    private void initStateManager() {
-//        mStateManager = StateManager.builder(_mActivity)
-//                .setContent(recyclerView)
-//                .setEmptyView(R.layout.state_empty)
-//                .setEmptyImage(R.drawable.ic_comment_empty_state_gray_200px)
-//                .setEmptyText("快来抢沙发哦！")
-//                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
-//                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
-//                .build();
     }
 
     private void initToolbar() {
@@ -331,6 +320,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     public void responseCommentSuccess(BaseBean bean) {
         etInputFragmentComment.setText("");
         ptrFrameLayout.autoRefresh();
+        EventBus.getDefault().post(new EventRefreshSocialityList());
     }
 
     @OnClick(R.id.tv_send_fragment_comment)

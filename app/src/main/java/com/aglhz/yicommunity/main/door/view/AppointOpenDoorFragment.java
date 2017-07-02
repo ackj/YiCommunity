@@ -13,6 +13,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
@@ -51,10 +52,10 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
     private AppointOpenDoorRVAdapter adapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
+    private StateManager mStateManager;
 
 
     public static AppointOpenDoorFragment newInstance() {
@@ -81,6 +82,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
+        initStateManager();
         initListener();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
@@ -111,6 +113,17 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         adapter.isFirstOnly(true);
     }
 
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_open_record_empty_state_gray_200px)
+                .setEmptyText("暂无开门列表！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
+    }
+
     private void initListener() {
         //设置允许加载更多
         adapter.setOnLoadMoreListener(() -> {
@@ -133,10 +146,14 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     public void responseDoors(DoorListBean datas) {
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.getData().isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
         if (params.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas.getData());
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
@@ -164,13 +181,14 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
         }
-        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     @Override

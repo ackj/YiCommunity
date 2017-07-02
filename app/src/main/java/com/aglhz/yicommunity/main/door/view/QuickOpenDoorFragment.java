@@ -12,23 +12,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.DoorListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.DoorListBean;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.door.contract.QuickOpenDoorContract;
 import com.aglhz.yicommunity.main.door.presenter.QuickOpenDoorPresenter;
-import com.aglhz.yicommunity.event.EventCommunity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +55,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     private QuickOpenDoorRVAdapter adapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
+    private StateManager mStateManager;
 
     public static QuickOpenDoorFragment newInstance() {
         return new QuickOpenDoorFragment();
@@ -81,6 +81,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
+        initStateManager();
         initListener();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
@@ -129,6 +130,17 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         recyclerView.setAdapter(adapter);
     }
 
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_open_record_empty_state_gray_200px)
+                .setEmptyText("暂无开门列表！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
+    }
+
     private void initListener() {
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             adapter.setSelectedItem(position);
@@ -145,11 +157,15 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         ptrFrameLayout.refreshComplete();
 
         if (datas == null || datas.getData().isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
             adapter.loadMoreEnd();
             return;
         }
 
         if (params.page == 1) {
+            mStateManager.showContent();
             adapter.setNewData(datas.getData());
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
@@ -157,13 +173,6 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             adapter.setEnableLoadMore(true);
             adapter.loadMoreComplete();
         }
-
-//        List<DoorListBean.DataBean> list = datas.getData();
-//        for (int i = 0; i < list.size(); i++) {
-//            if (list.get(i).isQuickopen()) {
-//                prePosition = i;
-//            }
-//        }
     }
 
     /**
@@ -193,13 +202,14 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        DialogHelper.warningSnackbar(getView(), errorMessage);
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
         }
-        DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
     @Override

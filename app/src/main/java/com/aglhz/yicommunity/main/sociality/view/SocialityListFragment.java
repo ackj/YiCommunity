@@ -26,6 +26,7 @@ import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.SocialityListBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
+import com.aglhz.yicommunity.event.EventRefreshSocialityList;
 import com.aglhz.yicommunity.main.publish.CommentActivity;
 import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
 import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
@@ -370,6 +371,11 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
             return;
         }
         recyclerView.scrollToPosition(0);
+        ptrFrameLayout.autoRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventRefreshSocialityList event) {
         ptrFrameLayout.autoRefresh();
     }
 
