@@ -241,7 +241,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     public void responseDeleteSuccess(BaseBean bean) {
         //判断是单个删除还是删除全部
         if (params.isCleanAll) {
-            ptrFrameLayout.refreshComplete();
+            ptrFrameLayout.autoRefresh();
 //            adapter.setNewData(null);
 //            mStateManager.showEmpty();
             EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));

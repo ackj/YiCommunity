@@ -24,13 +24,13 @@ import com.aglhz.abase.network.http.LogInterceptor;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.MainActivity;
@@ -179,7 +179,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 }
                 break;
             case R.id.ll_make_shortcut:
-                createShortCut();
                 if (TextUtils.isEmpty(UserHelper.dir)) {
                     new AlertDialog.Builder(_mActivity)
                             .setTitle("提醒")
@@ -187,6 +186,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                             .setPositiveButton("确定", (dialog, which) -> go2SmartDoor(Constants.SET_OPEN_DOOR))
                             .setNegativeButton("取消", null)
                             .show();
+                }else{
+                    createShortCut();
                 }
                 break;
             case R.id.ll_my_publish:
@@ -232,6 +233,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
 
     private void createShortCut() {
         Intent shortcutIntent = new Intent();

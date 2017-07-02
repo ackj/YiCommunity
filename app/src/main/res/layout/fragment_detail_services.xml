@@ -137,7 +137,12 @@
                     android:paddingEnd="10dp"
                     android:text="商家实景：" />
 
-                <ImageView
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_pics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <!--<ImageView
                     android:id="@+id/iv_pic_1"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -156,7 +161,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginRight="5dp"
-                    android:visibility="invisible" />
+                    android:visibility="invisible" />-->
 
             </LinearLayout>
 
