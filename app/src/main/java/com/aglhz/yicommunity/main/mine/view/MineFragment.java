@@ -32,6 +32,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.event.EventData;
+import com.aglhz.yicommunity.event.EventUnread;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.MainActivity;
 import com.aglhz.yicommunity.main.about.AboutActivity;
@@ -262,9 +263,13 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 ((MainActivity) _mActivity).setCallListener();
             }
             updataView();
-        } else if (event.code == Constants.refresh_unread_mark) {
-            mPresenter.requestUnreadMark(params);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadEvent(EventUnread event) {
+        ALog.e("111111111onUnreadEventonUnreadEventonUnreadEvent");
+        mPresenter.requestUnreadMark(params);
     }
 
     private void updataView() {
