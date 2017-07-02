@@ -201,8 +201,15 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 startActivity(new Intent(_mActivity, AboutActivity.class));
                 break;
             case R.id.tv_logout:
-                mPresenter.requestLogout(params);//请求服务器注销。
-                onLoginoutEvent(null);
+                new AlertDialog.Builder(_mActivity)
+                        .setTitle("提示")
+                        .setMessage("确定退出登录？")
+                        .setPositiveButton("确定", (dialog, which) -> {
+                            mPresenter.requestLogout(params);//请求服务器注销。
+                            onLoginoutEvent(null);
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
                 break;
         }
     }

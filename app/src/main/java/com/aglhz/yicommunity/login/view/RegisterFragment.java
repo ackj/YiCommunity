@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
@@ -164,6 +165,15 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
         String againPassword = etAgainPassword.getText().toString();
         String verCode = etVerifyCode.getText().toString();
         Params params = Params.getInstance();
+
+        if (!password.equals(againPassword)) {
+            ToastUtils.showToast(_mActivity, "两次输入密码不一致");
+            return;
+        }
+        if (!(password.length() >= 6 && password.length() <= 12)) {
+            ToastUtils.showToast(_mActivity, "请设置6-12位密码");
+            return;
+        }
         params.account = phoneNo;
         params.verifyCode = verCode;
         params.password1 = password;
@@ -299,7 +309,6 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
             messages = getSmsUnder19(intent);
             if (messages == null) return;
         }
-
         if (messages.length > 0) {
             for (int i = 0; i < messages.length; i++) {
                 SmsMessage sms = messages[i];

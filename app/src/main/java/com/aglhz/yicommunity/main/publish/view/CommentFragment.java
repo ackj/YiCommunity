@@ -337,6 +337,10 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
             DialogHelper.warningSnackbar(getView(), "请输入评论内容！不能为空");
             return;
         }
+        if (containsEmoji(comment)) {
+            DialogHelper.warningSnackbar(getView(), "“抱歉，评论中不能含有表情”");
+            return;
+        }
         commentPostParams.fid = fid;
         commentPostParams.content = comment;
         switch (type) {
@@ -359,5 +363,26 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         ptrFrameLayout.autoRefresh();
+    }
+
+    // 判别是否包含Emoji表情
+    private static boolean containsEmoji(String str) {
+        int len = str.length();
+        for (int i = 0; i < len; i++) {
+            if (isEmojiCharacter(str.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isEmojiCharacter(char codePoint) {
+        return !((codePoint == 0x0) ||
+                (codePoint == 0x9) ||
+                (codePoint == 0xA) ||
+                (codePoint == 0xD) ||
+                ((codePoint >= 0x20) && (codePoint <= 0xD7FF)) ||
+                ((codePoint >= 0xE000) && (codePoint <= 0xFFFD)) ||
+                ((codePoint >= 0x10000) && (codePoint <= 0x10FFFF)));
     }
 }

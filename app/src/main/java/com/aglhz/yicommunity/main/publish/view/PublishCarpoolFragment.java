@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,12 +20,12 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
@@ -83,6 +82,10 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     TextView toolbarMenu;
     @BindView(R.id.cb_agreement_publish_carpool_fragment)
     CheckBox cbAgreement;
+    @BindView(R.id.et_start_point_detail_address)
+    EditText etStartPointDetailAddress;
+    @BindView(R.id.et_end_point_detail_address)
+    EditText etEndPointDetailAddress;
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
@@ -301,12 +304,23 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     }
 
     private void submit() {
+        String startPointDetailAddress = etStartPointDetailAddress.getText().toString().trim();
+        String endPointDetailAddress = etEndPointDetailAddress.getText().toString().trim();
+
         if (TextUtils.isEmpty(params.startPlace)) {
             DialogHelper.errorSnackbar(getView(), "请选择起点城市!");
             return;
         }
+        if (TextUtils.isEmpty(startPointDetailAddress)) {
+            DialogHelper.errorSnackbar(getView(), "请选择起点的详细地址!");
+            return;
+        }
         if (TextUtils.isEmpty(params.endPlace)) {
             DialogHelper.errorSnackbar(getView(), "请选择终点城市!");
+            return;
+        }
+        if (TextUtils.isEmpty(endPointDetailAddress)) {
+            DialogHelper.errorSnackbar(getView(), "请选择终点的详细地址!");
             return;
         }
         if (TextUtils.isEmpty(params.outTime)) {
@@ -330,6 +344,10 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
                     .show();
             return;
         }
+        //将地址合并
+        params.startPlace += startPointDetailAddress;
+        params.endPlace += endPointDetailAddress;
+
         params.cmnt_c = UserHelper.communityCode;
         params.currentPositionLat = UserHelper.latitude;
         params.currentPositionLng = UserHelper.longitude;

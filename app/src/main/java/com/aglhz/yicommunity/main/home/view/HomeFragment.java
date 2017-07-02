@@ -64,6 +64,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     private HomeRVAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private String normalNotice = "欢迎来到亿社区！";
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -107,7 +108,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         //Notice
         HomeBean noticeBean = new HomeBean();
         noticeBean.setItemType(HomeBean.TYPE_COMMUNITY_NOTICE);
-        noticeBean.notice = "欢迎来到亿社区！";
+        noticeBean.notice = normalNotice;
         data.add(noticeBean);
 
         //CommunityService
@@ -277,6 +278,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         if (notices.size() > 0) {
             adapter.getData().get(1).notice = notices.get(0);
             ALog.e(TAG, "responseHomeNotices:" + notices.size());
+            adapter.notifyItemChanged(1);
+        } else {
+            adapter.getData().get(1).notice = normalNotice;
             adapter.notifyItemChanged(1);
         }
     }

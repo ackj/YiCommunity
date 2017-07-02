@@ -29,7 +29,6 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:lines="1"
-        android:text="社区公告：因管道维护，小区于8月23日停水一天，望广大开始"
         android:textColor="@color/base_black"
         android:textSize="15sp" />
 </LinearLayout>

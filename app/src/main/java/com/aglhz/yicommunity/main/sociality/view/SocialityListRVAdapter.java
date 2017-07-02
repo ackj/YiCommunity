@@ -58,7 +58,8 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
         helper.addOnClickListener(R.id.ll_comment_item_moments_list)
                 .addOnClickListener(R.id.tv_remove_item_moments_list)
                 .addOnClickListener(R.id.tv_comment_count_item_moments_list)
-                .addOnClickListener(R.id.iv_avatar_item_moments_list);
+                .addOnClickListener(R.id.iv_avatar_item_moments_list)
+                .addOnLongClickListener(R.id.iv_avatar_item_moments_list);
 
         //-------------- 删除 ---------------
         TextView tvRemove = helper.getView(R.id.tv_remove_item_moments_list);

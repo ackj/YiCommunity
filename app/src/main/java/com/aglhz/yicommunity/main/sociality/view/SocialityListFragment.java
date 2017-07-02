@@ -30,13 +30,16 @@ import com.aglhz.yicommunity.event.EventRefreshSocialityList;
 import com.aglhz.yicommunity.main.publish.CommentActivity;
 import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
 import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
+import com.aglhz.yicommunity.preview.PreviewActivity;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -177,19 +180,39 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     }
 
     private void initListener() {
+        adapter.setOnItemChildLongClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
+            @Override
+            public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
+                SocialityListBean.DataBean.MomentsListBean bean = (SocialityListBean.DataBean.MomentsListBean) adapter.getData().get(position);
+                switch (view.getId()) {
+                    case R.id.iv_avatar_item_moments_list:
+                        new AlertDialog.Builder(_mActivity)
+                                .setItems(new String[]{"举报"}, (dialog, which) -> {
+                                    Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
+                                    introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
+                                    String link = String.format(ApiService.REPORT_URL, UserHelper.token, infoType, bean.getFid());
+                                    ALog.e(TAG, "report url:::" + link);
+                                    introductionIntent.putExtra(Constants.KEY_LINK, link);
+                                    _mActivity.startActivity(introductionIntent);
+                                }).show();
+                        break;
+                }
+                return false;
+            }
+        });
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             SocialityListBean.DataBean.MomentsListBean bean = (SocialityListBean.DataBean.MomentsListBean) adapter.getData().get(position);
             switch (view.getId()) {
                 case R.id.iv_avatar_item_moments_list:
-                    new AlertDialog.Builder(_mActivity)
-                            .setItems(new String[]{"举报"}, (dialog, which) -> {
-                                Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
-                                introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
-                                String link = String.format(ApiService.REPORT_URL, UserHelper.token, infoType, bean.getFid());
-                                ALog.e(TAG, "report url:::" + link);
-                                introductionIntent.putExtra(Constants.KEY_LINK, link);
-                                _mActivity.startActivity(introductionIntent);
-                            }).show();
+                    Intent preIntent = new Intent(_mActivity, PreviewActivity.class);
+                    preIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle bundle = new Bundle();
+                    ArrayList<String> picsUrls = new ArrayList<>();
+                    picsUrls.add(bean.getMember().getAvator());
+                    bundle.putStringArrayList("picsList", picsUrls);
+                    preIntent.putExtra("pics", bundle);
+                    preIntent.putExtra("position", 0);
+                    _mActivity.startActivity(preIntent);
                     break;
                 case R.id.ll_comment_item_moments_list:
                 case R.id.tv_comment_count_item_moments_list:
