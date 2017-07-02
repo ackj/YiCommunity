@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,9 +27,11 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
 import com.aglhz.yicommunity.main.services.contract.ServicesDetailContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesDetailPresenter;
+import com.aglhz.yicommunity.preview.PreviewActivity;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -75,12 +79,8 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     TextView tvSubtitle;
     @BindView(R.id.tv_info_detail_services_fragment)
     TextView tvInfo;
-    @BindView(R.id.iv_pic_1)
-    ImageView ivPic1;
-    @BindView(R.id.iv_pic_2)
-    ImageView ivPic2;
-    @BindView(R.id.iv_pic_3)
-    ImageView ivPic3;
+    @BindView(R.id.rv_pics)
+    RecyclerView rvPics;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
 
@@ -186,29 +186,24 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
 
         tvCost.setText(bean.getData().getCommodityPrice());
         List<ServicesCommodityDetailBean.DataBean.MerchantSceneBean> sceneBeans = bean.getData().getMerchantScene();
-        for (int i = 0; i < sceneBeans.size(); i++) {
-            String url = sceneBeans.get(i).getUrl();
-            switch (i) {
-                case 0:
-                    ivPic1.setVisibility(View.VISIBLE);
-                    Glide.with(_mActivity)
-                            .load(url)
-                            .into(ivPic1);
-                    break;
-                case 1:
-                    ivPic2.setVisibility(View.VISIBLE);
-                    Glide.with(_mActivity)
-                            .load(url)
-                            .into(ivPic2);
-                    break;
-                case 2:
-                    ivPic3.setVisibility(View.VISIBLE);
-                    Glide.with(_mActivity)
-                            .load(url)
-                            .into(ivPic3);
-                    break;
+        rvPics.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.HORIZONTAL, false));
+        ServiceDetailPicsRVAdapter adapter = new ServiceDetailPicsRVAdapter();
+        rvPics.setAdapter(adapter);
+        adapter.setNewData(sceneBeans);
+
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            Intent intent = new Intent(_mActivity, PreviewActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Bundle bundle = new Bundle();
+            ArrayList<String> picsUrls = new ArrayList<>();
+            for (int i = 0; i < sceneBeans.size(); i++) {
+                picsUrls.add(sceneBeans.get(i).getUrl());
             }
-        }
+            bundle.putStringArrayList("picsList", picsUrls);
+            intent.putExtra("pics", bundle);
+            intent.putExtra("position", position);
+            _mActivity.startActivity(intent);
+        });
     }
 
     @OnClick({R.id.bt_call, R.id.tv_business_license})
