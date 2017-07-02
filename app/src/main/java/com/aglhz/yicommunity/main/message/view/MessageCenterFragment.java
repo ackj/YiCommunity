@@ -161,7 +161,15 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                         start(ApplyCheckFragment.newInstance(bean));
                         break;
                     case HOUSE_MEMBER_APPLY://成员申请
-                        start(ApplyCheckFragment.newInstance(bean));
+                        if (bean.isFinished()) {
+                            new AlertDialog.Builder(_mActivity)
+                                    .setTitle("提示")
+                                    .setMessage("该消息已处置过，不能重复操作。")
+                                    .setNegativeButton("知道了", null)
+                                    .show();
+                        } else {
+                            start(ApplyCheckFragment.newInstance(bean));
+                        }
                         break;
                     case HOUSE_RENTER_APPLY://租客申请
                         start(ApplyCheckFragment.newInstance(bean));
@@ -315,6 +323,14 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCommunityEvent(EventCommunity event) {
+        recyclerView.scrollToPosition(0);
+        ptrFrameLayout.autoRefresh();
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        //之所以要这么刷新一下，是因为在处理了后个事件后，列表里的finished刷新后才会改变。这个字段用于标记是否让你再次操作。
         recyclerView.scrollToPosition(0);
         ptrFrameLayout.autoRefresh();
     }
