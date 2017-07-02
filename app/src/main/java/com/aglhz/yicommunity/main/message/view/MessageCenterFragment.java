@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -239,9 +240,10 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Override
     public void responseDeleteSuccess(BaseBean bean) {
+        dismissLoadingDialog();
         //判断是单个删除还是删除全部
         if (params.isCleanAll) {
-            ptrFrameLayout.refreshComplete();
+            ptrFrameLayout.autoRefresh();
 //            adapter.setNewData(null);
 //            mStateManager.showEmpty();
             EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));
@@ -276,6 +278,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Override
     public void error(String errorMessage) {
+        dismissLoadingDialog();
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
             mStateManager.showError();
@@ -298,6 +301,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
             new AlertDialog.Builder(_mActivity)
                     .setTitle("温馨提示")
                     .setPositiveButton("确定", (dialog, which) -> {
+                        showLoadingDialog();
                         params.isCleanAll = true;
                         params.fid = null;
                         mPresenter.requestDeleteMessage(params);
@@ -307,4 +311,12 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                     .show();
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventData event) {
+        if (event.code == Constants.refresh_unread_mark) {
+            ptrFrameLayout.autoRefresh();
+        }
+    }
 }
+
