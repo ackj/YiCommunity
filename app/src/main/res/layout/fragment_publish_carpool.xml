@@ -7,7 +7,6 @@
 
     <include layout="@layout/toolbar" />
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -61,34 +60,65 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="路线"
+                    android:text="起点"
                     android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_select_start_point"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
                     android:gravity="center"
                     android:text="请选择起点"
                     android:textColor="@color/base_black"
                     android:textSize="15sp" />
 
+                <EditText
+                    android:id="@+id/et_start_point_detail_address"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请输入详细地址"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/base_grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="——>"
-                    android:textColor="@color/base_black"
-                    android:textSize="20sp" />
+                    android:layout_marginLeft="10dp"
+                    android:text="终点"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_select_end_point"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
                     android:gravity="center"
                     android:text="请选择终点"
                     android:textColor="@color/base_black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/et_end_point_detail_address"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请输入详细地址"
                     android:textSize="15sp" />
             </LinearLayout>
 

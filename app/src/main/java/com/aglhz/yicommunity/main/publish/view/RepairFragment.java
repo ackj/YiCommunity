@@ -1,7 +1,6 @@
 package com.aglhz.yicommunity.main.publish.view;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,12 +22,12 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.IconBean;
 import com.aglhz.yicommunity.entity.bean.RepairTypesBean;
-import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
 import com.aglhz.yicommunity.main.publish.contract.PublishContract;
@@ -220,6 +219,10 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
                 params.contact = etPhone.getText().toString().trim();
                 params.single = isPrivate;
 
+                if (TextUtils.isEmpty(params.repairType)) {
+                    DialogHelper.errorSnackbar(getView(), "请选择报修类型");
+                    return;
+                }
                 if (TextUtils.isEmpty(params.name)) {
                     DialogHelper.errorSnackbar(getView(), "请输入联系人");
                     return;

@@ -98,7 +98,7 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
 
 
     private void initData() {
-        etSearchCommunity.setHint("请输入城市名或小区名");
+        etSearchCommunity.setHint("请输入关键字进行搜索");
         mDatas = new ArrayList<>();
         resultData = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));

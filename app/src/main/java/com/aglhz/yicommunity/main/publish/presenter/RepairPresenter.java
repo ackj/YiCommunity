@@ -48,11 +48,10 @@ public class RepairPresenter extends BasePresenter<PublishContract.View, Publish
         mRxManager.add(((RepairModel) mModel).requestHouses(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(beanList -> {
-                    if (isViewAttached()) {
+                    if (isViewAttached ()){
                         ((RepairFragment) getView()).responseMyHouse(beanList);
                     }
                 }, this::error));
-
     }
 
     public void requestRepairTypes(Params params) {
