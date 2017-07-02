@@ -245,6 +245,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 //            adapter.setNewData(null);
 //            mStateManager.showEmpty();
             EventBus.getDefault().post(new EventData(Constants.refresh_unread_mark));
+            DialogHelper.successSnackbar(getView(), "清空成功");
         } else if (removePosition > -1) {
             adapter.remove(removePosition);
             removePosition = -1;
@@ -293,7 +294,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @OnClick(R.id.iv_delete_all)
     public void onViewClicked() {
-        if(!adapter.getData().isEmpty()){
+        if (!adapter.getData().isEmpty()) {
             new AlertDialog.Builder(_mActivity)
                     .setTitle("温馨提示")
                     .setPositiveButton("确定", (dialog, which) -> {
