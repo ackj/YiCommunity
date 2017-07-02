@@ -14,12 +14,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
 import com.aglhz.yicommunity.main.services.contract.ServicesDetailContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesDetailPresenter;
@@ -79,6 +81,8 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     ImageView ivPic2;
     @BindView(R.id.iv_pic_3)
     ImageView ivPic3;
+    @BindView(R.id.toolbar_menu)
+    TextView toolbarMenu;
 
     private Params params = Params.getInstance();
     private String contactWay;
@@ -121,12 +125,20 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         initData();
     }
 
-
     private void initToolbar() {
         initStateBar(toolbar);
         toolbarTitle.setText("商品详情");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> pop());
+        toolbarMenu.setText("举报");
+        toolbarMenu.setOnClickListener(v -> {
+            Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
+            introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
+            String link = String.format(ApiService.REPORT_URL, UserHelper.token, 1, params.fid);
+            ALog.e(TAG, "report url:::" + link);
+            introductionIntent.putExtra(Constants.KEY_LINK, link);
+            _mActivity.startActivity(introductionIntent);
+        });
     }
 
     private void initData() {
