@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aglhz.yicommunity.R;
@@ -50,13 +49,13 @@ public class ServiceVPAdapter extends PagerAdapter {
         TextView tvTitle = (TextView) view.findViewById(R.id.tv_title_item_vp_door2door_service);
         TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc_item_vp_door2door_service);
         ImageView ivImage = (ImageView) view.findViewById(R.id.iv_image_item_vp_door2door_service);
-        RelativeLayout rlLayout = (RelativeLayout) view.findViewById(R.id.ll_item_vp_door2door_service);
 
         if (classifyListBeans == null || classifyListBeans.isEmpty()) {
             tvTitle.setText(serviceBeans.get(finalPosition).title);
             tvDesc.setText(serviceBeans.get(finalPosition).desc);
-            rlLayout.setBackgroundResource(serviceBeans.get(finalPosition).imgRes);
-            ivImage.setVisibility(View.GONE);
+            Glide.with(container.getContext())
+                    .load(serviceBeans.get(finalPosition).imgRes)
+                    .into(ivImage);
         } else {
             ivImage.setVisibility(View.VISIBLE);
             Glide.with(container.getContext())

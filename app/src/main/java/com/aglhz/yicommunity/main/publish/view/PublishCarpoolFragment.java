@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -99,6 +100,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         }
     };
     private ArrayList<BaseMedia> selectedMedia = new ArrayList<>();
+    private Date goTime;
 
     public static PublishCarpoolFragment newInstance() {
         return new PublishCarpoolFragment();
@@ -264,9 +266,17 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
     }
 
     private void selectTogoTime() {
-        TimePickerView pvTime = new TimePickerView.Builder(_mActivity, (date, v) -> {
-            params.outTime = getTime(date);
-            tvSelectGoTime.setText(params.outTime);
+        TimePickerView pvTime = new TimePickerView.Builder(_mActivity, new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                if (System.currentTimeMillis() > date.getTime()) {
+                    ToastUtils.showToast(_mActivity, "出发时间不能小于当前时间");
+                    return;
+                }
+                goTime = date;
+                params.outTime = getTime(date);
+                tvSelectGoTime.setText(params.outTime);
+            }
         })
                 .setType(TimePickerView.Type.YEAR_MONTH_DAY_HOUR_MIN)
                 .build();
@@ -325,6 +335,10 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         }
         if (TextUtils.isEmpty(params.outTime)) {
             DialogHelper.errorSnackbar(getView(), "请选择出发时间!");
+            return;
+        }
+        if (System.currentTimeMillis() > goTime.getTime()) {
+            ToastUtils.showToast(_mActivity, "出发时间不能小于当前时间");
             return;
         }
         if (params.carpoolType == 0) {

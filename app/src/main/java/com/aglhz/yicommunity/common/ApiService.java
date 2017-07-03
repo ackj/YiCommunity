@@ -130,7 +130,7 @@ public interface ApiService {
     Observable<CheckTokenBean> requestCheckToken(@Url String url, @Query("token") String token);
 
     //登录
-//    @POST("/memberSYS-m/client/login.do")
+    //@POST("/memberSYS-m/client/login.do")
 
     String requestLogin = BASE_USER + "/client/login.do";
 
