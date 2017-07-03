@@ -15,7 +15,10 @@ import com.aglhz.abase.R;
 
 
 /**
- * Created by zhy on 15/8/27.
+ * Author：leguang on 2017/4/12 0009 15:49
+ * Email：langmanleguang@qq.com
+ *
+ * 用于管理StateLayout。
  */
 public class StateManager {
     private static final String TAG = StateManager.class.getSimpleName();
