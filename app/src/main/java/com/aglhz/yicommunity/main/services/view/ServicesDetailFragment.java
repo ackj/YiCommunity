@@ -88,6 +88,11 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     private Params params = Params.getInstance();
     private String contactWay;
 
+    /**
+     * 该页的入口
+     * @param fid  请求详情接口需要的fid
+     * @return
+     */
     public static ServicesDetailFragment newInstance(String fid) {
         Bundle args = new Bundle();
         args.putString(Constants.SERVICE_FID, fid);
@@ -161,6 +166,10 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         unbinder.unbind();
     }
 
+    /**
+     * 响应请求详情数据
+     * @param bean
+     */
     @Override
     public void responseServiceDetail(ServicesCommodityDetailBean bean) {
         Glide.with(_mActivity)

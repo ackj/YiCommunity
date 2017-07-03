@@ -116,16 +116,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         functioneBean.setItemType(HomeBean.TYPE_COMMUNITY_FUNCTION);
         data.add(functioneBean);
 
-        //service
-//        ServiceBean serviceBean0 = new ServiceBean("家政服务", "您家里的一切，让我来搞定！", R.drawable.bg_housekeeping_900px_540px);
-//        ServiceBean serviceBean1 = new ServiceBean("家居维修", "专业品质服务，大可放心！", R.drawable.bg_homemaintenanc_900px_540px);
-//        ServiceBean serviceBean2 = new ServiceBean("送水上门", "社区周边送水上门服务！", R.drawable.bg_watersupply_900px_540px);
         //
         HomeBean serviceBeans = new HomeBean();
-//        List<ServiceBean> serviceBeanList = new ArrayList<>();
-//        serviceBeanList.add(serviceBean0);
-//        serviceBeanList.add(serviceBean1);
-//        serviceBeanList.add(serviceBean2);
         serviceBeans.setItemType(HomeBean.TYPE_COMMUNITY_SERVICE);
         data.add(serviceBeans);
 

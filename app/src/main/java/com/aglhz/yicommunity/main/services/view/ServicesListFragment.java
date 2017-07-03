@@ -57,6 +57,12 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     private String servicesFid;
     private String servicesName;
 
+    /**
+     * 启动该View的入口
+     * @param servicesFid  要根据此唯一标识来请求接口
+     * @param servicesName 展示标题用
+     * @return
+     */
     public static ServicesListFragment newInstance(String servicesFid,String servicesName) {
         Bundle args = new Bundle();
         args.putString(Constants.SERVICE_FID, servicesFid);
@@ -126,14 +132,6 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         //设置Item动画
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         adapter.isFirstOnly(true);
-
-        //临时数据  后期删掉
-//        List<ServicesListBean> listServices = new ArrayList<>();
-//        for (int i = 0; i < 100; i++) {
-//            listServices.add(new ServicesListBean("保洁2小时", "按时收费，有保障", "惠州市内", "55.0"));
-//
-//        }
-//        adapter.setNewData(listServices);
     }
 
     private void initListener() {
@@ -147,29 +145,6 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
             start(ServicesDetailFragment.newInstance(listBean.getFid()));
         });
     }
-
-//    /**
-//     * 响应请求
-//     *
-//     * @param datas
-//     */
-//    @Override
-//    public void responseDoors(DoorListBean datas) {
-//        ptrFrameLayout.refreshComplete();
-//        if (datas == null || datas.getData().isEmpty()) {
-//            adapter.loadMoreEnd();
-//            return;
-//        }
-//        if (params.page == 1) {
-//            adapter.setNewData(datas.getData());
-//            adapter.disableLoadMoreIfNotFullPage(recyclerView);
-//        } else {
-//            adapter.addData(datas.getData());
-//            adapter.setEnableLoadMore(true);
-//            adapter.loadMoreComplete();
-//        }
-//    }
-
 
     @Override
     public void start(Object response) {
@@ -205,6 +180,11 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         ptrFrameLayout.autoRefresh();
     }
 
+    /**
+     * 响应请求各商家针对某服务类型的列表
+     * todo:还有一些状态页未提供
+     * @param datas
+     */
     @Override
     public void responseServiceCommodityList(List<ServicesCommodityListBean.DataBean.DataListBean> datas) {
         ptrFrameLayout.refreshComplete();
