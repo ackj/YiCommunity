@@ -61,7 +61,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
     Unbinder unbinder;
-
     private HomeRVAdapter adapter;
     private LinearLayoutManager layoutManager;
     private String normalNotice = "欢迎来到亿社区！";

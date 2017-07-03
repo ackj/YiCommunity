@@ -135,7 +135,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         toolbarMenu.setOnClickListener(v -> {
             Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
             introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
-            String link = String.format(ApiService.REPORT_URL, UserHelper.token, 1, params.fid);
+            String link = String.format(ApiService.REPORT_SERVICE_URL, UserHelper.token, params.fid);
             ALog.e(TAG, "report url:::" + link);
             introductionIntent.putExtra(Constants.KEY_LINK, link);
             _mActivity.startActivity(introductionIntent);
