@@ -253,6 +253,7 @@ public class ResetPasswordFragment extends BaseFragment<ResetPasswordContract.Pr
         super.onDestroy();
         if (smsHelper != null) {
             smsHelper.clear();
+            smsHelper = null;
         }
     }
 }

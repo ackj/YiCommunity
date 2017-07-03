@@ -69,12 +69,12 @@ public interface ApiService {
 
     //*************基础路径*******************
     String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-    //    String BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
     String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
     String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
 
     //**********以下调试基础路径**************
 //    String BASE_PROPERTY = "http://192.168.250.107:8080/sub_property_ysq";//物业大叔主机IP
+//    String BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
 
     //**********以上调试基础路径**************
 
@@ -113,6 +113,9 @@ public interface ApiService {
     String AGREEMENT_CARPOOL = "http://www.aglhz.com/sub_property_ysq/m/html/pincheUserAgreement.html";
 
     String REPORT_URL = "http://www.aglhz.com/sub_property_ysq/m/html/report.html?token=%1$s&infoType=%2$s&infoFid=%3$s&appType=2";
+
+    String REPORT_SERVICE_URL = "http://www.aglhz.com/sub_property_ysq/m/html/report.html?token=%1$s&infoFid=%2$s&appType=2";
+
 
     String BUSINESS_LICENSE_URL = "http://www.aglhz.com/sub_property_ysq/wx_public/html/merchantLicense.html?fid=";
 

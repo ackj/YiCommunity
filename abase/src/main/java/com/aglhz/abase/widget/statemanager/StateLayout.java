@@ -19,7 +19,10 @@ import com.aglhz.abase.R;
 import com.aglhz.abase.log.ALog;
 
 /**
- * Created by zhy on 15/8/26.
+ * Author：leguang on 2017/4/12 0009 15:49
+ * Email：langmanleguang@qq.com
+ * <p>
+ * 页面状态布局类。
  */
 public class StateLayout extends FrameLayout {
     private static final String TAG = StateLayout.class.getSimpleName();
@@ -27,7 +30,7 @@ public class StateLayout extends FrameLayout {
     int loadingLayoutId, emptyLayoutId, errorLayoutId, netErrorLayoutId;
 
     public StateLayout(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public StateLayout(Context context, AttributeSet attrs) {

@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 
 public class SmsHelper {
     private static final String TAG = SmsHelper.class.getSimpleName();
-    private static final String SMS_CONTAINS = "验证码";// 短信内容含有“验证码”。
     private static final String SMS_RECEIVED_ACTION = Telephony.Sms.Intents.SMS_RECEIVED_ACTION;// 接收到短信时的action
     private static final String SMS_INBOX_URI = "content://sms/inbox";//API level>=23,可直接使用Telephony.Sms.Inbox.CONTENT_URI
     private static final String SMS_URI = "content://sms";//API level>=23,可直接使用Telephony.Sms.CONTENT_URI
@@ -53,11 +52,8 @@ public class SmsHelper {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            ALog.e("onReceive");
 
             if (intent.getAction().equals(SMS_RECEIVED_ACTION)) {
-                ALog.e("onReceive-->getAction().equals");
-
                 getSmsCodeFromReceiver(intent);
             }
         }
@@ -70,7 +66,6 @@ public class SmsHelper {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            ALog.e("onChange");
             Cursor cursor = mContext.getContentResolver().query(Uri.parse(SMS_INBOX_URI), PROJECTION,
                     Telephony.Sms.READ + "=?", new String[]{"0"}, Telephony.Sms.Inbox.DEFAULT_SORT_ORDER);
             getSmsCodeFromObserver(cursor);
@@ -85,7 +80,6 @@ public class SmsHelper {
      * @param intent
      */
     private void getSmsCodeFromReceiver(Intent intent) {
-        ALog.e("getSmsCodeFromReceiver");
         SmsMessage[] messages = null;
         if (Build.VERSION.SDK_INT >= 19) {
             messages = android.provider.Telephony.Sms.Intents.getMessagesFromIntent(intent);
@@ -136,20 +130,14 @@ public class SmsHelper {
      * @param cursor
      */
     private void getSmsCodeFromObserver(Cursor cursor) {
-        ALog.e("getSmsCodeFromObserver");
         if (cursor == null) {
-            ALog.e("判空为空");
             return;
         }
         while (cursor.moveToNext()) {
-            ALog.e("不为空");
-
 //            String address = cursor.getString(cursor.getColumnIndex(Telephony.Sms.ADDRESS));
             String smsBody = cursor.getString(cursor.getColumnIndex(Telephony.Sms.BODY));
             if (checkSmsBody(smsBody)) {
-                ALog.e("含有验证码");
                 String smsCode = parseSmsBody(smsBody);
-
                 ALog.e("smsCode-->" + smsCode);
                 if (mOnSmsParsedListener != null) {
                     mOnSmsParsedListener.onSmsParsed(smsCode);
@@ -172,7 +160,6 @@ public class SmsHelper {
      * 注册广播接收者，内容观察者
      */
     public void register() {
-        ALog.e("register");
         registerReceiver();
         registerObserver();
     }
@@ -181,7 +168,6 @@ public class SmsHelper {
      * 注销广播接收者，内容观察者
      */
     public void unRegister() {
-        ALog.e("unRegister");
         unRegisterReceiver();
         unRegisterObserver();
     }
@@ -229,9 +215,6 @@ public class SmsHelper {
      * @return
      */
     private String parseSmsBody(String smsBody) {
-        ALog.e("parseSmsBody");
-
-
         String regex = new String("(\\d{" + 6 + "})");// 匹配规则为短信中的连续数字
         String smsCode = "";
 
@@ -249,10 +232,8 @@ public class SmsHelper {
      * @return
      */
     private boolean checkSmsBody(String smsBody) {
-        ALog.e("checkSmsBody");
-        ALog.e("smsBody-->" + smsBody);
-
-        return smsBody.contains(SMS_CONTAINS);
+        String reg = "^.*验证码\\d{6}.*$";
+        return smsBody.matches(reg);
     }
 
     public interface OnSmsParsedListener {
