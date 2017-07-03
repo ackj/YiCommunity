@@ -18,12 +18,11 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.picker.contract.CommunityPickerContract;
 import com.aglhz.yicommunity.main.picker.presenter.CommunityPickerPresenter;
@@ -180,6 +179,7 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
 
     /**
      * 响应请求社区列表
+     *
      * @param beans
      */
     @Override
@@ -187,11 +187,5 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
         ptrFrameLayout.refreshComplete();
         mDatas = beans;
         adapter.setNewData(mDatas);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LbsManager.getInstance().stopLocation();
     }
 }
