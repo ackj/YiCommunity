@@ -33,13 +33,10 @@ import me.yokeyword.fragmentation.SupportFragment;
  */
 public class MainFragment extends BaseFragment {
     private static final String TAG = MainFragment.class.getSimpleName();
-    // 再点一次退出程序时间设置
-    private static final long WAIT_TIME = 2000L;
+    private static final long WAIT_TIME = 2000L;// 再点一次退出程序时间设置
     private long TOUCH_TIME = 0;
-
     @BindView(R.id.ahbn_main_fragment)
     AHBottomNavigation ahbn;
-
     private ArrayList<AHBottomNavigationItem> bottomItems = new ArrayList<>();
     private int prePosition = 0;
     private SupportFragment[] mFragments = new SupportFragment[4];
@@ -52,7 +49,6 @@ public class MainFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
         ButterKnife.bind(this, view);
         return view;
     }
