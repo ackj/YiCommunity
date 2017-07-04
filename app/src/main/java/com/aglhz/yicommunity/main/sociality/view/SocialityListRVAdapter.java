@@ -41,7 +41,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
     private static final String TAG = SocialityListRVAdapter.class.getSimpleName();
 
     public SocialityListRVAdapter() {
-        super(R.layout.item_moments_list);
+        super(R.layout.item_sociality_list);
     }
 
     private int type;

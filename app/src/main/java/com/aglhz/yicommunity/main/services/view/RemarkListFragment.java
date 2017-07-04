@@ -54,7 +54,7 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
     PtrFrameLayout ptrFrameLayout;
     @BindView(R.id.bt_remark_list_fragment)
     Button btRemark;
-    private ServicesRVAdapter adapter;
+    private RemarkRVAdapter adapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
     private String servicesFid;
@@ -130,7 +130,7 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
 
     private void initData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        adapter = new ServicesRVAdapter();
+        adapter = new RemarkRVAdapter();
         adapter.setEnableLoadMore(true);
         recyclerView.setAdapter(adapter);
         //设置Item动画

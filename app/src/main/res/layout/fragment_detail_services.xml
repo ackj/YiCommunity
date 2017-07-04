@@ -22,7 +22,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/base_grey"
                 android:paddingBottom="10dp"
                 android:paddingLeft="15dp"
@@ -191,7 +191,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/base_grey"
                 android:paddingBottom="10dp"
                 android:paddingLeft="15dp"
@@ -253,9 +253,34 @@
                 android:text="商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n商品介绍\n"
                 android:textSize="14sp" />
 
-            <Space
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp" />
+                android:layout_height="wrap_content"
+                android:background="@color/base_grey"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:text="用户点评" />
+
+            <LinearLayout
+                android:id="@+id/ll_remark_detail_services_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00ff00"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_all_remark_services_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:background="@color/base_grey"
+                android:gravity="center"
+                android:text="查看所有评论"
+                android:textColor="@color/default_gray"
+                android:textSize="15sp" />
+
         </LinearLayout>
     </ScrollView>
 

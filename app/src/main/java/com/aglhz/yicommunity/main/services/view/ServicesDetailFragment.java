@@ -223,6 +223,8 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
             intent.putExtra("position", position);
             _mActivity.startActivity(intent);
         });
+
+
     }
 
     @OnClick({R.id.bt_call, R.id.tv_business_license})
