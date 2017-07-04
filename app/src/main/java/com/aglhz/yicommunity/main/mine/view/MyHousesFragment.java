@@ -15,7 +15,6 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.entity.bean.MyHousesBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -113,7 +112,7 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
             MyHousesBean.DataBean.AuthBuildingsBean bean = MyHousesFragment.this.adapter.getData().get(position);
-            start(HouseMembersFragment.newInstance(bean));
+            start(MyHousesMembersFragment.newInstance(bean));
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));

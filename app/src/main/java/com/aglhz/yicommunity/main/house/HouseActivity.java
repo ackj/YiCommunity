@@ -7,7 +7,7 @@ import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.main.house.view.AddHouseFragment;
-import com.aglhz.yicommunity.main.house.view.HouseRightsFragment;
+import com.aglhz.yicommunity.main.house.view.MemberPermissionFragment;
 
 /**
  * [房屋]模块的父容器。
@@ -28,7 +28,7 @@ public class HouseActivity extends BaseActivity {
         if (savedInstanceState == null) {
             switch (intFromTo) {
                 case Constants.HOUSE_RIGHTS:
-                    loadRootFragment(R.id.fl_house_activity, HouseRightsFragment.newInstance(fid, address));
+                    loadRootFragment(R.id.fl_house_activity, MemberPermissionFragment.newInstance(fid, address));
                     ALog.e("Constants.HOUSE_RIGHTS::" + Constants.HOUSE_RIGHTS);
                     break;
                 case Constants.ADD_HOUSE:

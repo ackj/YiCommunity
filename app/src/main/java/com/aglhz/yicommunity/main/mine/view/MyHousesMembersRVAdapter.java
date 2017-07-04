@@ -16,9 +16,9 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  * Author: LiuJia on 2017/4/20 13:53.
  * Email: liujia95me@126.com
  */
-public class MyHouseMemberRVAdapter extends BaseRecyclerViewAdapter<MyHousesBean.DataBean.AuthBuildingsBean.MembersBean, BaseViewHolder> {
+public class MyHousesMembersRVAdapter extends BaseRecyclerViewAdapter<MyHousesBean.DataBean.AuthBuildingsBean.MembersBean, BaseViewHolder> {
 
-    public MyHouseMemberRVAdapter() {
+    public MyHousesMembersRVAdapter() {
         super(R.layout.item_rv_member);
     }
 
