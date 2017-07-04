@@ -100,12 +100,12 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     /**
      * AddHouseFragment的创建入口
      *
-     * @param address 从管家页面点击进来时，传房间的具体详细地址，用于显示在toolbar上的。
+     * @param title 从管家页面点击进来时，传房间的具体详细地址，用于显示在toolbar上的。
      * @return
      */
-    public static AddHouseFragment newInstance(String address) {
+    public static AddHouseFragment newInstance(String title) {
         Bundle args = new Bundle();
-        args.putString(Constants.KEY_ADDRESS, address);
+        args.putString(Constants.KEY_ADDRESS, title);
         AddHouseFragment fragment = new AddHouseFragment();
         fragment.setArguments(args);
         return fragment;

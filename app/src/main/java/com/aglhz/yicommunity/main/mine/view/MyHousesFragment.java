@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.main.mine.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,14 +15,15 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.MyHousesBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.MyHousesBean;
 import com.aglhz.yicommunity.event.EventCommunity;
-import com.aglhz.yicommunity.main.mine.presenter.MyHousesPresenter;
+import com.aglhz.yicommunity.main.house.HouseActivity;
 import com.aglhz.yicommunity.main.mine.contract.MyHousesContract;
+import com.aglhz.yicommunity.main.mine.presenter.MyHousesPresenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -122,11 +124,16 @@ public class MyHousesFragment extends BaseFragment<MyHousesContract.Presenter> i
     private void initStateManager() {
         mStateManager = StateManager.builder(_mActivity)
                 .setContent(recyclerView)
-                .setEmptyView(R.layout.state_empty)
+                .setEmptyView(R.layout.state_empty_myhouses)
                 .setEmptyImage(R.drawable.ic_my_houses_empty_state_gray_200px)
                 .setEmptyText("还没有房屋认证哦，赶紧去申请吧！")
                 .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
-                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> {
+                    Intent intent = new Intent(_mActivity, HouseActivity.class);
+                    intent.putExtra(Constants.KEY_FROM_TO, Constants.ADD_HOUSE);
+                    intent.putExtra(Constants.KEY_ADDRESS, "添加房屋");
+                    startActivity(intent);
+                })
                 .build();
     }
 
