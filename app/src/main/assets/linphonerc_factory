@@ -3,17 +3,18 @@ mtu=1300
 
 [app]
 animations=0
+debug=1
 
 [sip]
 guess_hostname=1
-inc_timeout=15
+inc_timeout=45
 register_only_when_network_is_up=1
 auto_net_state_mon=0
 auto_answer_replacing_calls=1
 media_encryption_mandatory=0
 ping_with_options=0
 root_ca=/data/data/com.freeview.sphone/files/rootca.pem
-incoming_calls_early_media=1
+incoming_calls_early_media=0
 
 [rtp]
 audio_rtp_port=7076

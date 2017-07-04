@@ -53,7 +53,6 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ALog.e("1111111");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         setContentView(R.layout.activity_call);
@@ -70,7 +69,12 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
         mListener = new LinphoneCoreListenerBase() {
             @Override
             public void callState(LinphoneCore lc, LinphoneCall call, State state, String message) {
+                ALog.e(TAG, 111 + state.toString());
 
+                if (state == State.CallEnd || state == State.Error || state == State.CallReleased) {
+                    ALog.e(TAG, "state == State.CallEnd");
+                    finish();
+                }
             }
 
             @Override
@@ -78,6 +82,11 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
                                               String authenticationToken) {
             }
         };
+
+        LinphoneCore lc = SipCoreManager.getLcIfManagerNotDestroyedOrNull();
+        if (lc != null) {    // 添加CALL状态监听器对象到Native层的LinphoneCore管理
+            lc.addListener(mListener);
+        }
 
         mBottomView = findViewById(R.id.menu);
 
@@ -207,6 +216,11 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
 
         if (rxManager != null) {
             rxManager.clear();
+        }
+
+        LinphoneCore lc = SipCoreManager.getLcIfManagerNotDestroyedOrNull();
+        if (lc != null) {
+            lc.removeListener(mListener);
         }
     }
 

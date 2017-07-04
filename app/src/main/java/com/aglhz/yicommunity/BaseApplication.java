@@ -186,7 +186,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
                 ALog.e(TAG, msg.getRaw().toString());
                 ALog.e(TAG, msg.custom);
 
-                ALog.e("111111getNotification");
                 EventBus.getDefault().post(new EventUnread());
                 EventBus.getDefault().post(new EventRefreshMessageList());
 

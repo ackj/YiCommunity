@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DoorManager;
@@ -48,6 +49,7 @@ public class MainActivity extends BaseActivity {
                 DoorManager.getInstance().setCallListener(new DoorManager.LinphoneCallBack() {
                     @Override
                     public void callState(LinphoneCore lc, LinphoneCall call, LinphoneCall.State state, String message) {
+                        ALog.e(TAG, 111 + state.toString());
                         if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
                             startActivity(new Intent(MainActivity.this, CallActivity.class));
                         }
