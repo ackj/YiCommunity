@@ -103,4 +103,9 @@
     <string name="create_digit_password">生成数字密码</string>
     <string name="send_to_friend">发送给好友</string>
 
+    <!--服务点评-->
+    <string name="services_remark_hint">亲，请确保与商家有过交易后如实评价！可填写商家服务态度，商品质量等…</string>
+    <string name="remark">发表评论</string>
+
+
 </resources>

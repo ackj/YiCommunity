@@ -193,8 +193,14 @@ public interface ApiService {
     //反馈
     String requestSubmitFeedback = BASE_PROPERTY + "/client/feedback.do";
 
-    @POST/*("/sub_property_ysq/client/feedback.do")*/
-    Observable<BaseBean> requestSubmitFeedback(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("des") String des, @Query("contact") String contact);
+    //    @POST/*("/sub_property_ysq/client/feedback.do")*/
+    @FormUrlEncoded
+    @POST
+    Observable<BaseBean> requestSubmitFeedback(@Url String url,
+                                               @Field("token") String token,
+                                               @Field("cmnt_c") String cmnt_c,
+                                               @Field("des") String des,
+                                               @Field("contact") String contact);
 
     //更新用户信息
     //@POST("/memberSYS-m/client/updateMemberFieldByToken.do")

@@ -62,7 +62,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-
     Unbinder unbinder;
     private Params params = Params.getInstance();
     private LinearLayoutManager layoutManager;

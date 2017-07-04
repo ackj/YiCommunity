@@ -9,10 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
@@ -32,6 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -39,11 +40,10 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Author: leguang on 2017/4/21 9:14.
  * Email: langmanleguang@qq.com
  * <p>
- * [上门服务列表]的View层。
- * 打开方式：AppStart-->首页-->社区服务，如：送水上门等。
+ * [评论列表]的View层。
  */
-public class ServicesListFragment extends BaseFragment<ServicesContract.Presenter> implements ServicesContract.View {
-    private static final String TAG = ServicesListFragment.class.getSimpleName();
+public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter> implements ServicesContract.View {
+    private static final String TAG = RemarkListFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -52,12 +52,13 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
+    @BindView(R.id.bt_remark_list_fragment)
+    Button btRemark;
     private ServicesRVAdapter adapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
     private String servicesFid;
     private String servicesName;
-    private StateManager mStateManager;
 
     /**
      * 启动该View的入口
@@ -66,11 +67,11 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
      * @param servicesName 展示标题用
      * @return
      */
-    public static ServicesListFragment newInstance(String servicesFid, String servicesName) {
+    public static RemarkListFragment newInstance(String servicesFid, String servicesName) {
         Bundle args = new Bundle();
         args.putString(Constants.SERVICE_FID, servicesFid);
         args.putString(Constants.SERVICE_NAME, servicesName);
-        ServicesListFragment fragment = new ServicesListFragment();
+        RemarkListFragment fragment = new RemarkListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,7 +95,7 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        View view = inflater.inflate(R.layout.fragment_remark_list, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         return view;
@@ -106,7 +107,6 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         initToolbar();
         initData();
         initListener();
-        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
@@ -116,6 +116,7 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         params.pageSize = Constants.PAGE_SIZE;
         params.cmnt_c = UserHelper.communityCode;
         params.fid = servicesFid;
+//        mPresenter.requestDoors(params);
         mPresenter.requestServiceCommodityList(params);
     }
 
@@ -141,23 +142,12 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         //设置允许加载更多
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-            mPresenter.requestServiceCommodityList(params);
+//            mPresenter.requestDoors(params);//请求获取开门列表
         }, recyclerView);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             ServicesCommodityListBean.DataBean.DataListBean listBean = adapter.getData().get(position);
             start(ServicesDetailFragment.newInstance(listBean.getFid()));
         });
-    }
-
-    private void initStateManager() {
-        mStateManager = StateManager.builder(_mActivity)
-                .setContent(recyclerView)
-                .setEmptyView(R.layout.state_empty)
-                .setEmptyImage(R.drawable.ic_message_empty_state_gray_200px)
-                .setEmptyText("暂无服务！")
-                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
-                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
-                .build();
     }
 
     @Override
@@ -168,14 +158,13 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
-        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
         if (params.page == 1) {
             //为后面的pageState做准备
-            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
         }
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     @Override
@@ -206,14 +195,14 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
             if (params.page == 1) {
-                mStateManager.showEmpty();
+//                mStateManager.showEmpty();
             }
             adapter.loadMoreEnd();
             return;
         }
 
         if (params.page == 1) {
-            mStateManager.showContent();
+//            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
@@ -221,5 +210,9 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
             adapter.setEnableLoadMore(true);
             adapter.loadMoreComplete();
         }
+    }
+
+    @OnClick(R.id.bt_remark_list_fragment)
+    public void onViewClicked() {
     }
 }

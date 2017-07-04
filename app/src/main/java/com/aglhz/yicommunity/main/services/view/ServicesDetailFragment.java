@@ -136,14 +136,22 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         toolbarTitle.setText("商品详情");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> pop());
-        toolbarMenu.setText("举报");
-        toolbarMenu.setOnClickListener(v -> {
-            Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
-            introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
-            String link = String.format(ApiService.REPORT_SERVICE_URL, UserHelper.token, params.fid);
-            ALog.e(TAG, "report url:::" + link);
-            introductionIntent.putExtra(Constants.KEY_LINK, link);
-            _mActivity.startActivity(introductionIntent);
+        toolbar.inflateMenu(R.menu.menu_services_detail);
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_remark:
+                    start(ServicesRemarkFragment.newInstance(""));
+                    break;
+                case R.id.action_report:
+                    Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
+                    introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
+                    String link = String.format(ApiService.REPORT_SERVICE_URL, UserHelper.token, params.fid);
+                    ALog.e(TAG, "report url:::" + link);
+                    introductionIntent.putExtra(Constants.KEY_LINK, link);
+                    _mActivity.startActivity(introductionIntent);
+                    break;
+            }
+            return true;
         });
     }
 
