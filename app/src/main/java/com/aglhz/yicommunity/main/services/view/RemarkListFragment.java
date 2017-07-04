@@ -158,13 +158,13 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
         if (params.page == 1) {
             //为后面的pageState做准备
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
         }
-        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     @Override
