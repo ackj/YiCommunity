@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
@@ -49,6 +50,8 @@ public class RemarkListRVAdapter extends BaseRecyclerViewAdapter<RemarkListBean.
                 .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
                 .into(ivPhoto);
 
+        RatingBar rbStar = helper.getView(R.id.rb_star_item_rv_remark);
+        rbStar.setRating(3);
 
         helper.setText(R.id.tv_name_item_rv_remark, item.getMember().getMemberNickName())
                 .setText(R.id.tv_content_item_rv_remark, item.getContent())

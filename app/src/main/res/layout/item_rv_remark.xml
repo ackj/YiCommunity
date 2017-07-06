@@ -25,8 +25,21 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/iv_head_item_rv_remark"
         android:layout_toEndOf="@id/iv_head_item_rv_remark"
+        android:gravity="bottom"
         android:text="打分"
         android:textSize="13sp" />
+
+    <RatingBar
+        android:id="@+id/rb_star_item_rv_remark"
+        style="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_alignBottom="@id/tv_mark_item_rv_remark"
+        android:layout_marginBottom="2dp"
+        android:layout_toEndOf="@id/tv_mark_item_rv_remark"
+        android:gravity="center"
+        android:isIndicator="true"
+        android:stepSize="1" />
 
     <TextView
         android:id="@+id/tv_content_item_rv_remark"
