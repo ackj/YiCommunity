@@ -35,6 +35,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.CommentBean;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventRefreshRemarkList;
 import com.aglhz.yicommunity.event.EventRefreshSocialityList;
 import com.aglhz.yicommunity.event.KeyboardChangeListener;
 import com.aglhz.yicommunity.main.publish.contract.CommentContract;
@@ -329,7 +330,11 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     public void responseCommentSuccess(BaseBean bean) {
         etInputFragmentComment.setText("");
         ptrFrameLayout.autoRefresh();
-        EventBus.getDefault().post(new EventRefreshSocialityList());
+        if (type == Constants.TYPE_REMARK) {//因为邻里、闲置交换、拼车服务、点评都是公用这一个，所以最好判断一下，避免不必要的刷新。
+            EventBus.getDefault().post(new EventRefreshRemarkList());
+        } else {
+            EventBus.getDefault().post(new EventRefreshSocialityList());
+        }
     }
 
     @OnClick(R.id.tv_send_fragment_comment)
@@ -341,7 +346,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
      * 发送评论
      */
     private void sendComment() {
-        String comment = etInputFragmentComment.getText().toString().trim();
+        String comment = etInputFragmentComment.getText().toString();
         if (TextUtils.isEmpty(comment)) {
             DialogHelper.warningSnackbar(getView(), "请输入评论内容！不能为空");
             return;

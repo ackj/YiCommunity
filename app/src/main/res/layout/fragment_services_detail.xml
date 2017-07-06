@@ -8,7 +8,7 @@
     <include layout="@layout/toolbar" />
 
     <ScrollView
-        android:id="@+id/sv_mine_fragment"
+        android:id="@+id/sv_services_detail_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -48,7 +48,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/iv_firm_services_detail_fragment"
                     android:lines="1"
-                    android:text="雅洁清洁公司"
                     android:textColor="@color/base_black"
                     android:textSize="16sp" />
 
@@ -59,7 +58,7 @@
                     android:layout_alignBottom="@id/iv_firm_services_detail_fragment"
                     android:layout_toEndOf="@id/iv_firm_services_detail_fragment"
                     android:lines="2"
-                    android:text="服务范畴：家庭保洁"
+                    android:text="服务范畴："
                     android:textSize="15sp" />
 
                 <TextView
@@ -69,7 +68,7 @@
                     android:layout_above="@id/tv_age_services_detail_fragment"
                     android:layout_toEndOf="@id/iv_firm_services_detail_fragment"
                     android:lines="1"
-                    android:text="商家年龄：5年"
+                    android:text="商家年龄："
                     android:textSize="15sp" />
 
 
@@ -198,7 +197,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/iv_commodity_services_detail_fragment"
                     android:lines="1"
-                    android:text="家庭保洁2小时"
                     android:textColor="@color/base_black"
                     android:textSize="16sp" />
 
@@ -210,7 +208,6 @@
                     android:layout_toEndOf="@id/iv_commodity_services_detail_fragment"
                     android:includeFontPadding="false"
                     android:lines="1"
-                    android:text="77.0"
                     android:textColor="@color/base_color"
                     android:textSize="19sp"
                     android:textStyle="bold" />
@@ -222,7 +219,6 @@
                     android:layout_above="@id/tv_cost_services_detail_fragment"
                     android:layout_toEndOf="@id/iv_commodity_services_detail_fragment"
                     android:lines="2"
-                    android:text="服务范畴：家庭保洁"
                     android:textSize="14sp" />
             </RelativeLayout>
 

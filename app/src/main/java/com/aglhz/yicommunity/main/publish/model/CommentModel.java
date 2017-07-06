@@ -104,8 +104,8 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
         return HttpHelper.getService(ApiService.class)
                 .requestSubmitRemark(ApiService.requestSubmitRemark,
                         params.token,
-                        params.commodityFid,
-                        params.replyContent)
+                        params.fid,
+                        params.content)
                 .subscribeOn(Schedulers.io());
     }
 }

@@ -56,11 +56,11 @@ public class Constants {
     //登录成功
     public static final int login = 11;
 
-    //登录成功
+    //刷新“我的”模块里的消息中心未读红点标记
     public static final int refresh_unread_mark = 22;
 
-    //登出，或者token失效
-    public static final int loginout = 10;
+    //刷新社区服务模块里的点评
+    public static final int refresh_remark = 33;
 
     //**************以上是EventBus系列,值是随便取，只要不相同即可。**********************************************************************
 

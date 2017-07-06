@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
@@ -23,6 +22,7 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.RemarkListBean;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventRefreshRemarkList;
 import com.aglhz.yicommunity.main.publish.CommentActivity;
 import com.aglhz.yicommunity.main.services.contract.RemarkContract;
 import com.aglhz.yicommunity.main.services.presenter.RemarkPresenter;
@@ -40,8 +40,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-
-import static android.R.attr.type;
 
 /**
  * Author: leguang on 2017/4/21 9:14.
@@ -128,7 +126,7 @@ public class RemarkListFragment extends BaseFragment<RemarkContract.Presenter> i
         toolbarTitle.setText(TextUtils.isEmpty(firmName) ? "点评" : firmName);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
-        toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
+        toolbar.setOnClickListener(v -> go2Top());
     }
 
     private void initData() {
@@ -246,11 +244,24 @@ public class RemarkListFragment extends BaseFragment<RemarkContract.Presenter> i
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
-        ALog.e("11111111111onFragmentResultonFragmentResult");
         if (resultCode == RemarkFragment.RESULT_RECORD && data != null) {
             ptrFrameLayout.autoRefresh();
-            ALog.e("11111111111不为空不为空不为空不为空");
-
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void go2TopAndRefresh(EventRefreshRemarkList event) {
+        if (recyclerView == null || ptrFrameLayout == null) {
+            return;
+        }
+        recyclerView.scrollToPosition(0);
+        ptrFrameLayout.autoRefresh();
+    }
+
+    public void go2Top() {
+        if (recyclerView == null) {
+            return;
+        }
+        recyclerView.scrollToPosition(0);
     }
 }

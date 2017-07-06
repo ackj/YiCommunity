@@ -906,7 +906,9 @@ public interface ApiService {
     @POST
     Observable<BaseBean> requestSubmitRemark(@Url String url,
                                              @Field("token") String token,
-                                             @Field("commodityFid") String commodityFid,
+                                             @Field("commentFid") String commodityFid,
                                              @Field("replyContent") String replyContent);
+    //-------------------------------以上为2017.06.30添加的社区服务接口--------------------------------------------
+
 }
 

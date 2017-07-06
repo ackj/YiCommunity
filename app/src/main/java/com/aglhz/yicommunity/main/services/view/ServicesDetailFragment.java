@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
@@ -27,12 +28,17 @@ import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.ServiceDetailBean;
+import com.aglhz.yicommunity.event.EventRefreshRemarkList;
 import com.aglhz.yicommunity.main.publish.CommentActivity;
 import com.aglhz.yicommunity.main.services.contract.ServicesDetailContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesDetailPresenter;
 import com.aglhz.yicommunity.preview.PreviewActivity;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +56,8 @@ import butterknife.Unbinder;
  * 打开方式：AppStart-->首页-->社区服务列表-->Item。
  */
 public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.Presenter> implements ServicesDetailContract.View {
-    private static final String TAG = ServicesDetailFragment.class.getSimpleName();
+    public static final String TAG = ServicesDetailFragment.class.getSimpleName();
+    public static final int SERVICES_DETAIL_REQUESTCODE = 1101;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -92,6 +99,8 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     Button btAll;
     @BindView(R.id.tv_user_remark_services_detail_fragment)
     TextView tvUserRemark;
+    @BindView(R.id.sv_services_detail_fragment)
+    ScrollView sv;
     private Params params = Params.getInstance();
     private String contactWay, firmName;
     private ServiceDetailSceneRVAdapter adapterScene;
@@ -132,6 +141,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_services_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return attachToSwipeBack(view);
     }
 
@@ -147,6 +157,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         toolbarTitle.setText("商品详情");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> pop());
+        toolbar.setOnClickListener(v -> go2Top());
         toolbar.inflateMenu(R.menu.menu_services_detail);
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -196,7 +207,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
                     Intent intent = new Intent(_mActivity, CommentActivity.class);
                     intent.putExtra(Constants.KEY_FID, bean.getFid());
                     intent.putExtra(Constants.KEY_TYPE, Constants.TYPE_REMARK);
-                    _mActivity.startActivity(intent);
+                    _mActivity.startActivityForResult(intent, SERVICES_DETAIL_REQUESTCODE);
                     break;
             }
         });
@@ -216,6 +227,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -309,11 +321,23 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
-        ALog.e("11111111111onFragmentResultonFragmentResult");
         if (resultCode == RemarkFragment.RESULT_RECORD && data != null) {
             mPresenter.requestServiceDetail(params);
-            ALog.e("11111111111不为空不为空不为空不为空");
-
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(EventRefreshRemarkList event) {
+        if (mPresenter == null) {
+            return;
+        }
+        mPresenter.requestServiceDetail(params);
+    }
+
+    public void go2Top() {
+        if (sv == null) {
+            return;
+        }
+        sv.post(() -> sv.fullScroll(ScrollView.FOCUS_UP));//滑动到顶部，提高用户体验，方便用户点击头像登录。
     }
 }
