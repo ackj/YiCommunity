@@ -18,7 +18,7 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesListBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.services.contract.ServicesContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesPresenter;
@@ -144,7 +144,7 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
             mPresenter.requestServiceCommodityList(params);
         }, recyclerView);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
-            ServicesCommodityListBean.DataBean.DataListBean listBean = adapter.getData().get(position);
+            ServicesListBean.DataBean.DataListBean listBean = adapter.getData().get(position);
             start(ServicesDetailFragment.newInstance(listBean.getFid()));
         });
     }
@@ -202,7 +202,7 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
      * @param datas
      */
     @Override
-    public void responseServiceCommodityList(List<ServicesCommodityListBean.DataBean.DataListBean> datas) {
+    public void responseServiceCommodityList(List<ServicesListBean.DataBean.DataListBean> datas) {
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
             if (params.page == 1) {

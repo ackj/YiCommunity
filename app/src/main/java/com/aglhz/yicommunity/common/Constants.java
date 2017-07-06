@@ -20,6 +20,8 @@ public class Constants {
     //上门服务
     public static final String SERVICE_TYPE = "service_type";
     public static final String SERVICE_FID = "service_fid";
+    public static final String COMMODITY_FID = "commodity_fid";
+    public static final String FIRM_NAME = "firm_name";
     public static final String SERVICE_NAME = "service_name";
     public static final String SERVICE_ID = "service_id";
 
@@ -106,4 +108,5 @@ public class Constants {
 
     //********************以上权限名称***********************
 
+    public static final int TYPE_REMARK = 107;//社区服务点评回复
 }

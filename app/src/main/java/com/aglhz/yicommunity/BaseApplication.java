@@ -126,12 +126,12 @@ public class BaseApplication extends MultiDexApplication implements Application.
         //sdk开启通知声音
         mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
 
-        ALog.e(TAG, UserHelper.account);
+        ALog.e(TAG, "UserHelper.account-->" + UserHelper.account);
 
         mPushAgent.addExclusiveAlias(UserHelper.account, "userType", new UTrack.ICallBack() {
             @Override
             public void onMessage(boolean b, String s) {
-                ALog.e(TAG, "addAlias::" + b + "……" + s);
+                ALog.e(TAG, "addAlias-->" + b + "……" + s);
             }
         });
 
@@ -140,6 +140,8 @@ public class BaseApplication extends MultiDexApplication implements Application.
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
             public void onSuccess(String deviceToken) {
+
+                ALog.e(TAG, "deviceToken-->" + deviceToken);
 
                 HttpHelper.getService(ApiService.class)
                         .requestUMeng(ApiService.requestUMeng, UserHelper.token, deviceToken, UserHelper.account, "userType")

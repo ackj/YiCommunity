@@ -5,8 +5,8 @@ import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.entity.bean.ServicesListBean;
-import com.aglhz.yicommunity.main.services.contract.ServicesContract;
+import com.aglhz.yicommunity.entity.bean.RemarkListBean;
+import com.aglhz.yicommunity.main.services.contract.RemarkContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -18,20 +18,20 @@ import io.reactivex.schedulers.Schedulers;
  * 社区服务模块的Model层内容。
  */
 
-public class ServicesModel extends BaseModel implements ServicesContract.Model {
-    private final String TAG = ServicesModel.class.getSimpleName();
+public class RemarkModel extends BaseModel implements RemarkContract.Model {
+    private final String TAG = RemarkModel.class.getSimpleName();
 
     @Override
     public void start(Object request) {
     }
 
     @Override
-    public Observable<ServicesListBean> requestServiceCommodityList(Params params) {
+    public Observable<RemarkListBean> requestRemarkList(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .requestServiceCommodityList(ApiService.requestServiceCommodityList,
+                .requestRemarkList(ApiService.requestRemarkList,
                         params.page,
                         params.pageSize,
-                        params.fid)
+                        params.commodityFid)
                 .subscribeOn(Schedulers.io());
     }
 }

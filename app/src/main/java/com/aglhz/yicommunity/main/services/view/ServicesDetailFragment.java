@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +26,8 @@ import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
+import com.aglhz.yicommunity.entity.bean.ServiceDetailBean;
+import com.aglhz.yicommunity.main.publish.CommentActivity;
 import com.aglhz.yicommunity.main.services.contract.ServicesDetailContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesDetailPresenter;
 import com.aglhz.yicommunity.preview.PreviewActivity;
@@ -53,44 +55,52 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_cost_detail_services_fragment)
+    @BindView(R.id.tv_cost_services_detail_fragment)
     TextView tvCost;
     Unbinder unbinder;
-    @BindView(R.id.iv_firm_detail_services_fragment)
+    @BindView(R.id.iv_firm_services_detail_fragment)
     ImageView ivFirm;
-    @BindView(R.id.tv_name_detail_services_fragment)
+    @BindView(R.id.tv_name_services_detail_fragment)
     TextView tvName;
-    @BindView(R.id.tv_age_detail_services_fragment)
+    @BindView(R.id.tv_age_services_detail_fragment)
     TextView tvAge;
-    @BindView(R.id.tv_scope_detail_services_fragment)
+    @BindView(R.id.tv_scope_services_detail_fragment)
     TextView tvScope;
-    @BindView(R.id.tv_address_detail_services_fragment)
+    @BindView(R.id.tv_address_services_detail_fragment)
     TextView tvAddress;
-    @BindView(R.id.tv_time_detail_services_fragment)
+    @BindView(R.id.tv_time_services_detail_fragment)
     TextView tvTime;
-    @BindView(R.id.tv_contact_detail_services_fragment)
+    @BindView(R.id.tv_contact_services_detail_fragment)
     TextView tvContact;
-    @BindView(R.id.ll_firm_photo_detail_services_fragment)
+    @BindView(R.id.ll_firm_photo_services_detail_fragment)
     LinearLayout llFirmPhoto;
-    @BindView(R.id.iv_commodity_detail_services_fragment)
+    @BindView(R.id.iv_commodity_services_detail_fragment)
     ImageView ivCommodity;
-    @BindView(R.id.tv_title_detail_services_fragment)
+    @BindView(R.id.tv_title_services_detail_fragment)
     TextView tvTitle;
-    @BindView(R.id.tv_subtitle_detail_services_fragment)
+    @BindView(R.id.tv_subtitle_services_detail_fragment)
     TextView tvSubtitle;
-    @BindView(R.id.tv_info_detail_services_fragment)
+    @BindView(R.id.tv_info_services_detail_fragment)
     TextView tvInfo;
-    @BindView(R.id.rv_pics)
-    RecyclerView rvPics;
+    @BindView(R.id.rv_scene_services_detail_fragment)
+    RecyclerView rvScene;
     @BindView(R.id.toolbar_menu)
     TextView toolbarMenu;
-
+    @BindView(R.id.rv_remark_services_detail_fragment)
+    RecyclerView rvRemark;
+    @BindView(R.id.bt_all_remark_services_detail_fragment)
+    Button btAll;
+    @BindView(R.id.tv_user_remark_services_detail_fragment)
+    TextView tvUserRemark;
     private Params params = Params.getInstance();
-    private String contactWay;
+    private String contactWay, firmName;
+    private ServiceDetailSceneRVAdapter adapterScene;
+    private ServicesDetailRemarkRVAdapter adapterRemark;
 
     /**
      * 该页的入口
-     * @param fid  请求详情接口需要的fid
+     *
+     * @param fid 请求详情接口需要的fid
      * @return
      */
     public static ServicesDetailFragment newInstance(String fid) {
@@ -107,6 +117,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         Bundle args = getArguments();
         if (args != null) {
             params.fid = args.getString(Constants.SERVICE_FID);
+            ALog.e("params.fid-->" + params.fid);
         }
     }
 
@@ -119,7 +130,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail_services, container, false);
+        View view = inflater.inflate(R.layout.fragment_services_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
         return attachToSwipeBack(view);
     }
@@ -140,7 +151,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_remark:
-                    start(ServicesRemarkFragment.newInstance(""));
+                    startForResult(RemarkFragment.newInstance(params.fid, firmName), 100);
                     break;
                 case R.id.action_report:
                     Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
@@ -156,6 +167,40 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
 
     private void initData() {
         mPresenter.requestServiceDetail(params);
+        adapterScene = new ServiceDetailSceneRVAdapter();
+        adapterRemark = new ServicesDetailRemarkRVAdapter();
+        //————————————————————用户点评RecyclerView——————————————————
+        rvRemark.setLayoutManager(new LinearLayoutManager(_mActivity) {
+
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        adapterRemark.setOnItemChildClickListener((adapter, view, position) -> {
+            ServiceDetailBean.DataBean.CommorityCommentBean bean = adapterRemark.getData().get(position);
+            switch (view.getId()) {
+                case R.id.iv_head_item_rv_remark:
+                    Intent preIntent = new Intent(_mActivity, PreviewActivity.class);
+                    preIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle bundle = new Bundle();
+                    ArrayList<String> picsUrls = new ArrayList<>();
+                    picsUrls.add(bean.getMember().getAvator());
+                    bundle.putStringArrayList("picsList", picsUrls);
+                    preIntent.putExtra("pics", bundle);
+                    preIntent.putExtra("position", 0);
+                    _mActivity.startActivity(preIntent);
+                    break;
+                case R.id.ll_comment_item_rv_remark:
+                case R.id.tv_comment_count_item_rv_remark:
+                    Intent intent = new Intent(_mActivity, CommentActivity.class);
+                    intent.putExtra(Constants.KEY_FID, bean.getFid());
+                    intent.putExtra(Constants.KEY_TYPE, Constants.TYPE_REMARK);
+                    _mActivity.startActivity(intent);
+                    break;
+            }
+        });
+        rvRemark.setAdapter(adapterRemark);
     }
 
     @Override
@@ -175,10 +220,11 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
 
     /**
      * 响应请求详情数据
+     *
      * @param bean
      */
     @Override
-    public void responseServiceDetail(ServicesCommodityDetailBean bean) {
+    public void responseServiceDetail(ServiceDetailBean bean) {
         Glide.with(_mActivity)
                 .load(bean.getData().getMerchantIconUrl())
                 .error(R.drawable.ic_default_img_120px)
@@ -191,6 +237,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
                 .into(ivCommodity);
 
         contactWay = bean.getData().getContactWay();
+        firmName = bean.getData().getMerchantName();
 
         tvTitle.setText(bean.getData().getCommodityTitle());
         tvScope.setText("商家年龄：" + bean.getData().getMerchantAge() + "年");
@@ -203,13 +250,13 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         tvInfo.setText(bean.getData().getCommodityDesc());
 
         tvCost.setText(bean.getData().getCommodityPrice());
-        List<ServicesCommodityDetailBean.DataBean.MerchantSceneBean> sceneBeans = bean.getData().getMerchantScene();
-        rvPics.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.HORIZONTAL, false));
-        ServiceDetailPicsRVAdapter adapter = new ServiceDetailPicsRVAdapter();
-        rvPics.setAdapter(adapter);
-        adapter.setNewData(sceneBeans);
+        List<ServiceDetailBean.DataBean.MerchantSceneBean> sceneBeans = bean.getData().getMerchantScene();
 
-        adapter.setOnItemClickListener((adapter1, view, position) -> {
+        //——————————————商家实景——————————————————
+        rvScene.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.HORIZONTAL, false));
+        rvScene.setAdapter(adapterScene);
+        adapterScene.setNewData(sceneBeans);
+        adapterScene.setOnItemClickListener((adapter1, view, position) -> {
             Intent intent = new Intent(_mActivity, PreviewActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Bundle bundle = new Bundle();
@@ -223,19 +270,30 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
             _mActivity.startActivity(intent);
         });
 
-
+        //——————————————用户点评——————————————————
+        if (!bean.getData().getCommorityComment().isEmpty()) {
+            tvUserRemark.setVisibility(View.VISIBLE);
+            rvRemark.setVisibility(View.VISIBLE);
+            btAll.setVisibility(View.VISIBLE);
+            tvUserRemark.setText("用户点评（" + bean.getData().getCommorityComment().size() + "）");
+            adapterRemark.setNewData(bean.getData().getCommorityComment());
+            btAll.setOnClickListener(v -> {
+                start(RemarkListFragment.newInstance(params.fid, bean.getData().getMerchantName()));
+            });
+        }
     }
 
-    @OnClick({R.id.bt_call, R.id.tv_business_license})
+    @OnClick({R.id.bt_call_services_detail_fragment
+            , R.id.tv_business_license_services_detail_fragment})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.bt_call:
+            case R.id.bt_call_services_detail_fragment:
                 if (!TextUtils.isEmpty(contactWay)) {
                     //跳系统的拨打电话
                     startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contactWay)));
                 }
                 break;
-            case R.id.tv_business_license:
+            case R.id.tv_business_license_services_detail_fragment:
                 go2Web("营业执照", ApiService.BUSINESS_LICENSE_URL + params.fid);
                 break;
         }
@@ -246,5 +304,16 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         intent.putExtra(Constants.KEY_TITLE, title);
         intent.putExtra(Constants.KEY_LINK, link);
         _mActivity.startActivity(intent);
+    }
+
+    @Override
+    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        ALog.e("11111111111onFragmentResultonFragmentResult");
+        if (resultCode == RemarkFragment.RESULT_RECORD && data != null) {
+            mPresenter.requestServiceDetail(params);
+            ALog.e("11111111111不为空不为空不为空不为空");
+
+        }
     }
 }

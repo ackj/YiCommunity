@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
+import com.aglhz.yicommunity.entity.bean.ServiceDetailBean;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -14,14 +14,14 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * Email: liujia95me@126.com
  */
 
-public class ServiceDetailPicsRVAdapter extends BaseRecyclerViewAdapter<ServicesCommodityDetailBean.DataBean.MerchantSceneBean,BaseViewHolder> {
+public class ServiceDetailSceneRVAdapter extends BaseRecyclerViewAdapter<ServiceDetailBean.DataBean.MerchantSceneBean,BaseViewHolder> {
 
-    public ServiceDetailPicsRVAdapter() {
+    public ServiceDetailSceneRVAdapter() {
         super(R.layout.item_rv_service_detail_pics);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ServicesCommodityDetailBean.DataBean.MerchantSceneBean item) {
+    protected void convert(BaseViewHolder helper, ServiceDetailBean.DataBean.MerchantSceneBean item) {
         ImageView ivPics = helper.getView(R.id.iv_pic);
         Glide.with(BaseApplication.mContext)
                 .load(item.getUrl())

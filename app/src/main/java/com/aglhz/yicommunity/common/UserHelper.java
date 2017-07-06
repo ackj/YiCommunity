@@ -15,6 +15,7 @@ import com.google.gson.Gson;
  */
 
 public class UserHelper {
+    public static final String TAG = UserHelper.class.getSimpleName();
     private static final String DEFAULT = "";
     private static final String TOKEN = "token";
     private static final String COMMUNITY_NAME = "community_name";
@@ -159,8 +160,8 @@ public class UserHelper {
 
     //更新账号密码，同时更改了SP文件名，作为用户数据的初始化入口。
     public static void setAccount(String account, String password) {
-        ALog.e("account-->" + account);
-        ALog.e("password-->" + password);
+        ALog.e(TAG, "account-->" + account);
+        ALog.e(TAG, "password-->" + password);
 
         //存到默认SP文件中，用于程序入口处获取默认账户。
         getDefaultEditor()
@@ -171,7 +172,8 @@ public class UserHelper {
         FILE_NAME = account;//此处更改SP文件名。
         getEditor()
                 .putString(ACCOUNT, account)
-                .putString(PASSWORD, password);
+                .putString(PASSWORD, password)
+                .commit();
         initData();
     }
 
@@ -194,8 +196,16 @@ public class UserHelper {
         token = sp.getString(TOKEN, "");
         account = sp.getString(ACCOUNT, "");
         password = sp.getString(PASSWORD, "");
+
+        ALog.e(TAG, "account-->" + account);
+        ALog.e(TAG, "password-->" + password);
+
         communityName = sp.getString(COMMUNITY_NAME, "");
         communityCode = sp.getString(COMMUNITY_CODE, "");
+
+        ALog.e(TAG, "communityName-->" + communityName);
+        ALog.e(TAG, "communityCode-->" + communityCode);
+
         dir = sp.getString(DIR, "");
         city = sp.getString(CITY, "");
         latitude = sp.getString(LATITUDE, "");

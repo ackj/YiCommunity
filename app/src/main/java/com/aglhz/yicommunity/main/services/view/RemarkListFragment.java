@@ -1,34 +1,39 @@
 package com.aglhz.yicommunity.main.services.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
+import com.aglhz.yicommunity.entity.bean.RemarkListBean;
 import com.aglhz.yicommunity.event.EventCommunity;
-import com.aglhz.yicommunity.main.services.contract.ServicesContract;
-import com.aglhz.yicommunity.main.services.presenter.ServicesPresenter;
+import com.aglhz.yicommunity.main.publish.CommentActivity;
+import com.aglhz.yicommunity.main.services.contract.RemarkContract;
+import com.aglhz.yicommunity.main.services.presenter.RemarkPresenter;
+import com.aglhz.yicommunity.preview.PreviewActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,13 +41,15 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
+import static android.R.attr.type;
+
 /**
  * Author: leguang on 2017/4/21 9:14.
  * Email: langmanleguang@qq.com
  * <p>
  * [评论列表]的View层。
  */
-public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter> implements ServicesContract.View {
+public class RemarkListFragment extends BaseFragment<RemarkContract.Presenter> implements RemarkContract.View {
     private static final String TAG = RemarkListFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -54,23 +61,22 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
     PtrFrameLayout ptrFrameLayout;
     @BindView(R.id.bt_remark_list_fragment)
     Button btRemark;
-    private RemarkRVAdapter adapter;
+    private RemarkListRVAdapter adapter;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
-    private String servicesFid;
-    private String servicesName;
+    private String firmName;
+    private StateManager mStateManager;
 
     /**
      * 启动该View的入口
      *
-     * @param servicesFid  要根据此唯一标识来请求接口
-     * @param servicesName 展示标题用
+     * @param commodityFid 要根据此唯一标识来请求接口
      * @return
      */
-    public static RemarkListFragment newInstance(String servicesFid, String servicesName) {
+    public static RemarkListFragment newInstance(String commodityFid, String firmName) {
         Bundle args = new Bundle();
-        args.putString(Constants.SERVICE_FID, servicesFid);
-        args.putString(Constants.SERVICE_NAME, servicesName);
+        args.putString(Constants.COMMODITY_FID, commodityFid);
+        args.putString(Constants.FIRM_NAME, firmName);
         RemarkListFragment fragment = new RemarkListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -81,15 +87,16 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            servicesFid = args.getString(Constants.SERVICE_FID);
-            servicesName = args.getString(Constants.SERVICE_NAME);
+            params.commodityFid = args.getString(Constants.COMMODITY_FID);
+            firmName = args.getString(Constants.FIRM_NAME);
         }
     }
 
     @NonNull
     @Override
-    protected ServicesContract.Presenter createPresenter() {
-        return new ServicesPresenter(this);
+    protected RemarkContract.Presenter createPresenter() {
+        return new RemarkPresenter(this) {
+        };
     }
 
     @Nullable
@@ -107,22 +114,18 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
         initToolbar();
         initData();
         initListener();
+        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
     @Override
     public void onRefresh() {
-        params.page = 1;
-        params.pageSize = Constants.PAGE_SIZE;
-        params.cmnt_c = UserHelper.communityCode;
-        params.fid = servicesFid;
-//        mPresenter.requestDoors(params);
-        mPresenter.requestServiceCommodityList(params);
+        mPresenter.start(params);
     }
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText(servicesName);
+        toolbarTitle.setText(TextUtils.isEmpty(firmName) ? "点评" : firmName);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         toolbarTitle.setOnClickListener(v -> recyclerView.scrollToPosition(0));
@@ -130,7 +133,7 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
 
     private void initData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        adapter = new RemarkRVAdapter();
+        adapter = new RemarkListRVAdapter();
         adapter.setEnableLoadMore(true);
         recyclerView.setAdapter(adapter);
         //设置Item动画
@@ -142,17 +145,66 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
         //设置允许加载更多
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-//            mPresenter.requestDoors(params);//请求获取开门列表
+            mPresenter.start(params);//请求获取开门列表
         }, recyclerView);
-        adapter.setOnItemClickListener((adapter1, view, position) -> {
-            ServicesCommodityListBean.DataBean.DataListBean listBean = adapter.getData().get(position);
-            start(ServicesDetailFragment.newInstance(listBean.getFid()));
+
+        adapter.setOnItemChildClickListener((adapter1, view, position) -> {
+            RemarkListBean.DataBean.CommentListBean bean = adapter.getData().get(position);
+            switch (view.getId()) {
+                case R.id.iv_head_item_rv_remark:
+                    Intent preIntent = new Intent(_mActivity, PreviewActivity.class);
+                    preIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle bundle = new Bundle();
+                    ArrayList<String> picsUrls = new ArrayList<>();
+                    picsUrls.add(bean.getMember().getAvator());
+                    bundle.putStringArrayList("picsList", picsUrls);
+                    preIntent.putExtra("pics", bundle);
+                    preIntent.putExtra("position", 0);
+                    _mActivity.startActivity(preIntent);
+                    break;
+                case R.id.ll_comment_item_rv_remark:
+                case R.id.tv_comment_count_item_rv_remark:
+                    Intent intent = new Intent(_mActivity, CommentActivity.class);
+                    intent.putExtra(Constants.KEY_FID, bean.getFid());
+                    intent.putExtra(Constants.KEY_TYPE, Constants.TYPE_REMARK);
+                    _mActivity.startActivity(intent);
+                    break;
+            }
         });
+    }
+
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_open_record_empty_state_gray_200px)
+                .setEmptyText("暂无开门列表！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
     }
 
     @Override
     public void start(Object response) {
+        RemarkListBean data = (RemarkListBean) response;
+        ptrFrameLayout.refreshComplete();
+        if (data == null || data.getData().getCommentList().isEmpty()) {
+            if (params.page == 1) {
+                mStateManager.showEmpty();
+            }
+            adapter.loadMoreEnd();
+            return;
+        }
 
+        if (params.page == 1) {
+            mStateManager.showContent();
+            adapter.setNewData(data.getData().getCommentList());
+            adapter.disableLoadMoreIfNotFullPage(recyclerView);
+        } else {
+            adapter.addData(data.getData().getCommentList());
+            adapter.setEnableLoadMore(true);
+            adapter.loadMoreComplete();
+        }
     }
 
     @Override
@@ -161,6 +213,7 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
         DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
@@ -181,38 +234,23 @@ public class RemarkListFragment extends BaseFragment<ServicesContract.Presenter>
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
+        recyclerView.scrollToPosition(0);
         ptrFrameLayout.autoRefresh();
-    }
-
-    /**
-     * 响应请求各商家针对某服务类型的列表
-     * todo:还有一些状态页未提供
-     *
-     * @param datas
-     */
-    @Override
-    public void responseServiceCommodityList(List<ServicesCommodityListBean.DataBean.DataListBean> datas) {
-        ptrFrameLayout.refreshComplete();
-        if (datas == null || datas.isEmpty()) {
-            if (params.page == 1) {
-//                mStateManager.showEmpty();
-            }
-            adapter.loadMoreEnd();
-            return;
-        }
-
-        if (params.page == 1) {
-//            mStateManager.showContent();
-            adapter.setNewData(datas);
-            adapter.disableLoadMoreIfNotFullPage(recyclerView);
-        } else {
-            adapter.addData(datas);
-            adapter.setEnableLoadMore(true);
-            adapter.loadMoreComplete();
-        }
     }
 
     @OnClick(R.id.bt_remark_list_fragment)
     public void onViewClicked() {
+        startForResult(RemarkFragment.newInstance(params.commodityFid, firmName), 100);
+    }
+
+    @Override
+    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        ALog.e("11111111111onFragmentResultonFragmentResult");
+        if (resultCode == RemarkFragment.RESULT_RECORD && data != null) {
+            ptrFrameLayout.autoRefresh();
+            ALog.e("11111111111不为空不为空不为空不为空");
+
+        }
     }
 }

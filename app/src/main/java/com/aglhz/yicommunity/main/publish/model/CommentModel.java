@@ -3,10 +3,10 @@ package com.aglhz.yicommunity.main.publish.model;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.CommentListBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.CommentListBean;
 import com.aglhz.yicommunity.main.publish.contract.CommentContract;
 
 import io.reactivex.Observable;
@@ -46,9 +46,22 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
     public Observable<CommentListBean> requestNeighbourCommentList(Params params) {
         ALog.e("page::" + params.page);
 
-
         return HttpHelper.getService(ApiService.class)
                 .requestNeighbourComments(ApiService.requestNeighbourComments, params.fid, params.page, params.pageSize)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<CommentListBean> requestRemarkReplyList(Params params) {
+        ALog.e("params.commentFid-->" + params.fid);
+        ALog.e("params.page-->" + params.page);
+        ALog.e("params.pageSize-->" + params.pageSize);
+
+        return HttpHelper.getService(ApiService.class)
+                .requestRemarkReplyList(ApiService.requestRemarkReplyList,
+                        params.fid,
+                        params.page,
+                        params.pageSize)
                 .subscribeOn(Schedulers.io());
     }
 
@@ -83,6 +96,16 @@ public class CommentModel extends BaseModel implements CommentContract.Model {
         builder.addFormDataPart("content", params.content);
         return HttpHelper.getService(ApiService.class)
                 .requestSubmitNeighbourComment(ApiService.requestSubmitNeighbourComment, builder.build())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<BaseBean> requestSubmitRemark(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestSubmitRemark(ApiService.requestSubmitRemark,
+                        params.token,
+                        params.commodityFid,
+                        params.replyContent)
                 .subscribeOn(Schedulers.io());
     }
 }

@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.main.services.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,19 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author: leguang on 2017/4/21 9:14.
@@ -29,8 +35,9 @@ import butterknife.Unbinder;
  * [点评]的View层。
  * 打开方式：AppStart-->首页-->社区服务列表-->服务详情-->点评。
  */
-public class ServicesRemarkFragment extends BaseFragment {
-    private static final String TAG = ServicesRemarkFragment.class.getSimpleName();
+public class RemarkFragment extends BaseFragment {
+    public static final String TAG = RemarkFragment.class.getSimpleName();
+    public static final int RESULT_RECORD = 110;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -43,17 +50,19 @@ public class ServicesRemarkFragment extends BaseFragment {
     Button btSubmit;
     private Params params = Params.getInstance();
     private Unbinder unbinder;
+    private String title;
 
     /**
      * 该页的入口
      *
-     * @param fid 请求详情接口需要的fid
+     * @param commodityFid 请求详情接口需要的fid
      * @return
      */
-    public static ServicesRemarkFragment newInstance(String fid) {
+    public static RemarkFragment newInstance(String commodityFid, String firmName) {
         Bundle args = new Bundle();
-        args.putString(Constants.SERVICE_FID, fid);
-        ServicesRemarkFragment fragment = new ServicesRemarkFragment();
+        args.putString(Constants.COMMODITY_FID, commodityFid);
+        args.putString(Constants.FIRM_NAME, firmName);
+        RemarkFragment fragment = new RemarkFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +72,8 @@ public class ServicesRemarkFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            params.fid = args.getString(Constants.SERVICE_FID);
+            params.commodityFid = args.getString(Constants.COMMODITY_FID);
+            title = args.getString(Constants.FIRM_NAME);
         }
     }
 
@@ -84,14 +94,13 @@ public class ServicesRemarkFragment extends BaseFragment {
 
     private void initToolbar() {
         initStateBar(toolbar);
-        toolbarTitle.setText("投诉");
+        toolbarTitle.setText(TextUtils.isEmpty(title) ? "点评" : title);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> pop());
     }
 
     private void initData() {
     }
-
 
     @Override
     public void onDestroyView() {
@@ -101,9 +110,43 @@ public class ServicesRemarkFragment extends BaseFragment {
 
     @OnClick(R.id.bt_submit_remark_services_fragment)
     public void onViewClicked() {
-
         ALog.e("NumStars-->" + rbRemark.getNumStars());
         ALog.e("getRating-->" + rbRemark.getRating());
         ALog.e("getStepSize-->" + rbRemark.getStepSize());
+
+        if (TextUtils.isEmpty(etDescribe.getText().toString())) {
+            DialogHelper.warningSnackbar(getView(), "评论不能为空");
+            return;
+        }
+
+        if (etDescribe.getText().toString().length() < 10) {
+            DialogHelper.warningSnackbar(getView(), "评论字数不能小于10");
+            return;
+        }
+
+        showLoadingDialog();
+        params.startLevel = (int) rbRemark.getRating();
+        params.content = etDescribe.getText().toString();
+        HttpHelper.getService(ApiService.class)
+                .requestRemarkService(ApiService.requestRemarkService,
+                        params.token,
+                        params.commodityFid,
+                        params.startLevel,
+                        params.content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> {
+                    dismissLoadingDialog();
+                    if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        DialogHelper.successSnackbar(getView(), bean.getOther().getMessage());
+                        setFragmentResult(RESULT_RECORD, new Bundle());
+                        pop();
+                    } else {
+                        DialogHelper.errorSnackbar(getView(), bean.getOther().getMessage());
+                    }
+                }, throwable -> {
+                    dismissLoadingDialog();
+                    DialogHelper.errorSnackbar(getView(), "网络异常");
+                });
     }
 }

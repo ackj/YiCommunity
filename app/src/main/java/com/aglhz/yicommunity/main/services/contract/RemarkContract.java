@@ -1,28 +1,27 @@
 package com.aglhz.yicommunity.main.services.contract;
 
+
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.entity.bean.ServiceDetailBean;
+import com.aglhz.yicommunity.entity.bean.RemarkListBean;
 
 import io.reactivex.Observable;
 
 /**
- * Author: LiuJia on 2017/6/30 0030 17:22.
- * Email: liujia95me@126.com
+ * Author：leguang on 2017/4/12 0009 14:23
+ * Email：langmanleguang@qq.com
+ * <p>
+ * 社区服务所对应的各层对象应有的接口。
  */
-
-public interface ServicesDetailContract {
+public interface RemarkContract {
 
     interface View extends BaseContract.View {
-        void responseServiceDetail(ServiceDetailBean bean);
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestServiceDetail(Params params);
     }
 
     interface Model extends BaseContract.Model {
-        Observable<ServiceDetailBean> requestServiceDetail(Params params);
+        Observable<RemarkListBean> requestRemarkList(Params params);
     }
-
 }
