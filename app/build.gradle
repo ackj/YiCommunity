@@ -17,26 +17,31 @@ android {
             storePassword 'aglandroid'
         }
     }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.aglhz.yicommunity"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 207
-        versionName "2.0.7"
+        versionCode 209
+        versionName "2.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'x86'
         }
         multiDexEnabled true
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     buildTypes {
         debug {
+            buildConfigField "boolean", "isDebug", "true"//配置自定义debug版下的字段。
+
             ndk {
                 abiFilters "armeabi", "armeabi-v7a", "x86"
             }
@@ -46,6 +51,8 @@ android {
 //            applicationIdSuffix ".debug"
         }
         release {
+            buildConfigField "boolean", "isDebug", "false"//配置自定义debug版下的字段。
+
             ndk {
                 abiFilters "armeabi", "armeabi-v7a", "x86"
             }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
@@ -49,10 +50,13 @@ public class ServicesDetailRemarkRVAdapter extends BaseRecyclerViewAdapter<Servi
                 .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
                 .into(ivPhoto);
 
+        RatingBar rbStar = helper.getView(R.id.rb_star_item_rv_remark);
+        rbStar.setRating(item.getStartLevel());
+
 
         helper.setText(R.id.tv_name_item_rv_remark, item.getMember().getMemberNickName())
                 .setText(R.id.tv_content_item_rv_remark, item.getContent())
-                .setText(R.id.tv_comment_count_item_rv_remark, item.getCommentReplyList().size() + "")
+                .setText(R.id.tv_comment_count_item_rv_remark, item.getCommentReplyCount() + "")
                 .setText(R.id.tv_time_item_rv_remark, item.getCreateTime().substring(0, 16));
 
         //----------------- 评论 ------------------

@@ -51,7 +51,7 @@ public class RemarkListRVAdapter extends BaseRecyclerViewAdapter<RemarkListBean.
                 .into(ivPhoto);
 
         RatingBar rbStar = helper.getView(R.id.rb_star_item_rv_remark);
-        rbStar.setRating(3);
+        rbStar.setRating(item.getStartLevel());
 
         helper.setText(R.id.tv_name_item_rv_remark, item.getMember().getMemberNickName())
                 .setText(R.id.tv_content_item_rv_remark, item.getContent())

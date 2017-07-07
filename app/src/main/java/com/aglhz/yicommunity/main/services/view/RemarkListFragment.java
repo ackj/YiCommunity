@@ -176,9 +176,9 @@ public class RemarkListFragment extends BaseFragment<RemarkContract.Presenter> i
                 .setContent(recyclerView)
                 .setEmptyView(R.layout.state_empty)
                 .setEmptyImage(R.drawable.ic_open_record_empty_state_gray_200px)
-                .setEmptyText("暂无开门列表！")
+                .setEmptyText("暂无点评！请点击刷新")
                 .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
-                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> onViewClicked())
                 .build();
     }
 

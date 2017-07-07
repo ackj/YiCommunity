@@ -251,6 +251,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         contactWay = bean.getData().getContactWay();
         firmName = bean.getData().getMerchantName();
 
+        tvName.setText(firmName);
         tvTitle.setText(bean.getData().getCommodityTitle());
         tvScope.setText("商家年龄：" + bean.getData().getMerchantAge() + "年");
         tvAge.setText("服务范畴：" + bean.getData().getServiceScopes());
@@ -258,8 +259,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         tvTime.setText("经营时间：" + bean.getData().getBusinessHours());
         tvContact.setText(Html.fromHtml("联系方式：<font color=red>" + contactWay.substring(0, 3) + "****" + contactWay.substring(7, 11) + "</font>"));
 
-        tvSubtitle.setText("服务范畴：" + bean.getData().getServiceScopes());
-        tvInfo.setText(bean.getData().getCommodityDesc());
+        tvSubtitle.setText(bean.getData().getCommodityDesc());
 
         tvCost.setText(bean.getData().getCommodityPrice());
         List<ServiceDetailBean.DataBean.MerchantSceneBean> sceneBeans = bean.getData().getMerchantScene();
@@ -281,6 +281,22 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
             intent.putExtra("position", position);
             _mActivity.startActivity(intent);
         });
+
+        //————————————————服务介绍————————————————————
+        StringBuilder sb = new StringBuilder()
+                .append("【服务优点】\n")
+                .append(bean.getData().getCommodityMerit())
+                .append("\n")
+                .append("【服务流程】\n")
+                .append(bean.getData().getCommodityServiceFlow())
+                .append("\n")
+                .append("【服务时长参考】\n")
+                .append(bean.getData().getDuration())
+                .append("\n")
+                .append("【覆盖区域】\n")
+                .append(bean.getData().getCoverageArea())
+                .append("\n");
+        tvInfo.setText(sb.toString());
 
         //——————————————用户点评——————————————————
         if (!bean.getData().getCommorityComment().isEmpty()) {

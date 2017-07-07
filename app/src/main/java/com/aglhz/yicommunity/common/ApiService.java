@@ -69,15 +69,20 @@ import retrofit2.http.Url;
 public interface ApiService {
 
     //*************基础路径*******************
+    String BASE_PROPERTY = Constants.BASE_PROPERTY;   //物业
+    String BASE_USER = Constants.BASE_USER;           //用户
+    String BASE_PROPERTYCFG_M = Constants.BASE_PROPERTYCFG_M;
+
+    //*************基础路径*******************
 //    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-    String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-    String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+//    String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+//    String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
 
     //**********以下调试基础路径**************
 //    String BASE_PROPERTY = "http://192.168.250.107:8080/sub_property_ysq";//物业大叔主机IP
 //    String BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
 
-    String BASE_PROPERTY = "http://192.168.7.101:8080/sub_property_ysq";   //小张主机物业调试IP
+//    String BASE_PROPERTY = "http://192.168.7.101:8080/sub_property_ysq";   //小张主机物业调试IP
 
     //**********以上调试基础路径**************
 
