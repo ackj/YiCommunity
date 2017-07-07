@@ -103,7 +103,7 @@ public class RemarkListFragment extends BaseFragment<RemarkContract.Presenter> i
         View view = inflater.inflate(R.layout.fragment_remark_list, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
-        return view;
+        return attachToSwipeBack(view);
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aglhz.abase.common.AudioPlayer;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
@@ -93,6 +94,7 @@ public class MainFragment extends BaseFragment {
         ahbn.setOnTabSelectedListener((position, wasSelected) -> {
             showHideFragment(mFragments[position], mFragments[prePosition]);
             prePosition = position;
+            AudioPlayer.getInstance(_mActivity).play(2);
 
             if (wasSelected) {
                 switch (position) {

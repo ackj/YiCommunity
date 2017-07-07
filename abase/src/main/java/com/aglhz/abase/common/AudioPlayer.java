@@ -24,6 +24,7 @@ public class AudioPlayer {
             mSoundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
             // 初始化声音
             mSoundPool.load(context, R.raw.refresh, 1);// 1
+            mSoundPool.load(context, R.raw.click, 1);// 1
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aglhz.abase.common.AudioPlayer;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
@@ -160,29 +161,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return ScrollingHelper.isRecyclerViewToTop(recyclerView);
-                //判断RecyclerView是否在在顶部，在顶部则允许滑动下拉刷新
-//
-//                if (null != recyclerView && null != layoutManager) {
-//                    int position = layoutManager.findFirstVisibleItemPosition();
-//
-//                    ALog.e("position::" + position);
-//                    ALog.e("layoutManager.findViewByPosition(position).getTop()::" + layoutManager.findViewByPosition(position).getTop());
-//
-//
-//                    if (position >= 0) {
-//                        if (layoutManager.findViewByPosition(position).getTop() >= 0 && position == 0) {
-//                            return true;
-//                        }
-//                    }
-//                } else {
-//                    return true;
-//                }
-//                return false;
-
             }
 
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
+                AudioPlayer.getInstance(_mActivity).play(1);
                 mPresenter.requestBanners();
                 mPresenter.requestHomeNotices();
                 mPresenter.requestServiceClassifyList(Params.getInstance());
