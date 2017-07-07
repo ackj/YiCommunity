@@ -8,6 +8,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DoorManager;
+import com.aglhz.yicommunity.common.ShakeHelper;
 import com.aglhz.yicommunity.main.door.call.CallActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
 
@@ -24,6 +25,7 @@ import org.linphone.core.LinphoneCore;
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Handler handler;
+    private ShakeHelper shakeHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,9 @@ public class MainActivity extends BaseActivity {
         handler = new Handler();
 
         setCallListener();
+
+//        shakeHelper = new ShakeHelper(this);
+//        shakeHelper.Start();
     }
 
     @Override
@@ -57,7 +62,11 @@ public class MainActivity extends BaseActivity {
                 });
             }
         }, 3000);
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        shakeHelper.Stop();
     }
 }
