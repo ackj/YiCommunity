@@ -201,7 +201,10 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                             _mActivity.start(TemporaryParkPayFragment.newInstance());
                             break;
                         case R.id.ll_life_supermarket:
-                            go2Web("生活超市", ApiService.SUPERMARKET + UserHelper.token);
+                            go2Web("生活超市", ApiService.SUPERMARKET
+                                    .replace("%1", UserHelper.token)
+                                    .replace("%2", UserHelper.longitude)
+                                    .replace("%3", UserHelper.latitude));
                             break;
                     }
                     break;

@@ -31,9 +31,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Email：langmanleguang@qq.com
  */
 public class WebFragment extends BaseFragment {
-
     private static final String TAG = WebFragment.class.getSimpleName();
-
     @BindView(R.id.wv_web_fragment)
     WebView mWebView;
     @BindView(R.id.ptr_web_fragment)
@@ -42,11 +40,11 @@ public class WebFragment extends BaseFragment {
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     private String title;
     private String link;
 
     public static WebFragment newInstance(String title, String link) {
+        ALog.e(TAG, "link-->" + link);
         Bundle args = new Bundle();
         args.putString(Constants.KEY_TITLE, title);
         args.putString(Constants.KEY_LINK, link);

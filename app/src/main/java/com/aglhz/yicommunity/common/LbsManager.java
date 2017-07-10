@@ -7,11 +7,11 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 
-
 /**
- * 选择 地址 map
+ * Author：leguang on 2017/4/12 0009 15:49
+ * Email：langmanleguang@qq.com
  * <p>
- * Created by YandZD on 2016/8/22.
+ * LBS服务管理类。
  */
 
 public class LbsManager {
@@ -78,7 +78,7 @@ public class LbsManager {
 
                 if (amapLocation != null) {
                     if (amapLocation.getErrorCode() == 0) {
-                        ALog.e(amapLocation.toString());
+                        ALog.e(TAG, amapLocation.toString());
                         UserHelper.setLocationAddress(amapLocation.getAddress());
                         UserHelper.setLatitude(String.valueOf(amapLocation.getLatitude()));
                         UserHelper.setLongitude(String.valueOf(amapLocation.getLongitude()));
