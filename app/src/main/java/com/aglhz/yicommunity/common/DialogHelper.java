@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.view.View;
 
-import com.aglhz.abase.widget.Dialog.LoadingDialog;
+import com.aglhz.abase.widget.dialog.LoadingDialog;
 import com.trycatch.mysnackbar.Prompt;
 import com.trycatch.mysnackbar.TSnackbar;
 

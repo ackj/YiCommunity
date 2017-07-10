@@ -24,7 +24,7 @@ public class ServicesRVAdapter extends BaseRecyclerViewAdapter<ServicesListBean.
     protected void convert(BaseViewHolder helper, ServicesListBean.DataBean.DataListBean item) {
         helper.setText(R.id.tv_title_item_rv_services, item.getCommodityTitle())
                 .setText(R.id.tv_describe_item_rv_services, item.getCommodityDesc())
-                .setText(R.id.tv_cost_item_rv_services, item.getCommodityPrice())
+                .setText(R.id.tv_cost_item_rv_services, "¥" + item.getCommodityPrice())
                 .setText(R.id.tv_address_item_rv_services, item.getCoverageArea());
 
         ImageView ivPhoto = helper.getView(R.id.iv_photo_item_rv_services);

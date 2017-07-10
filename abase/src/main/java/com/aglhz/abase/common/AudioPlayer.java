@@ -34,7 +34,6 @@ public class AudioPlayer {
     public static AudioPlayer getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = new AudioPlayer(context);
-
         }
         return INSTANCE;
     }

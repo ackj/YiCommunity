@@ -67,6 +67,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        shakeHelper.Stop();
+        if (shakeHelper != null) {
+            shakeHelper.Stop();
+        }
     }
 }

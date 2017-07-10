@@ -1,4 +1,4 @@
-package com.aglhz.abase.widget.Dialog;
+package com.aglhz.abase.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
