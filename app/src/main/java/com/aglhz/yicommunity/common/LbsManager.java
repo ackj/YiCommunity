@@ -37,7 +37,6 @@ public class LbsManager {
         return INSTANCE;
     }
 
-
     private void init() {
         //初始化定位
         if (mLocationClient != null) {
