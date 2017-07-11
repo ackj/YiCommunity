@@ -24,6 +24,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.SmsHelper;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.login.contract.RegisterContract;
 import com.aglhz.yicommunity.login.presenter.RegisterPresenter;
@@ -32,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Author: LiuJia on 2017/5/9 0009 19:26.
@@ -61,6 +63,7 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
     private Thread getVerifyThread;
     private Unbinder unbinder;
     private SmsHelper smsHelper;
+    private Params params = Params.getInstance();
 
     public static RegisterFragment newInstance() {
         return new RegisterFragment();
@@ -158,7 +161,6 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
         String password = etPassword.getText().toString();
         String againPassword = etAgainPassword.getText().toString();
         String verCode = etVerifyCode.getText().toString();
-        Params params = Params.getInstance();
 
         if (!password.equals(againPassword)) {
             ToastUtils.showToast(_mActivity, "两次输入密码不一致");
@@ -226,6 +228,10 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
     @Override
     public void registerSuccess(BaseBean baseBean) {
         DialogHelper.successSnackbar(getView(), "注册成功！");
+        Bundle bundle = new Bundle();
+        bundle.putString(UserHelper.ACCOUNT, params.account);
+        bundle.putString(UserHelper.PASSWORD, params.password1);
+        setFragmentResult(SupportFragment.RESULT_OK, bundle);
         pop();
     }
 

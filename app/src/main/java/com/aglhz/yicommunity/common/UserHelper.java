@@ -16,25 +16,25 @@ import com.google.gson.Gson;
 
 public class UserHelper {
     public static final String TAG = UserHelper.class.getSimpleName();
-    private static final String DEFAULT = "";
-    private static final String TOKEN = "token";
-    private static final String COMMUNITY_NAME = "community_name";
-    private static final String COMMUNITY_CODE = "community_code";
-    private static final String ACCOUNT = "account";
-    private static final String PASSWORD = "password";
-    private static final String USER_INFO = "user_info";
-    private static final String DIR = "dir";
-    private static final String PROVINCE = "province";
-    private static final String CITY = "city";
-    private static final String COUNTY = "county";
-    private static final String ADDRESS = "address";
-    private static final String LATITUDE = "latitude";
-    private static final String LONGITUDE = "longitude";
-    private static final String LOCATION_ADDRESS = "location_address";
-    private static final String SIP = "sip";
-    private static final String ISREMEMBER = "isRemember";
-    private static final String IS_EXCHANGE_AGREE = "is_exchange_agree";
-    private static final String IS_CARPOOL_AGREE = "is_carpool_agree";
+    public static final String DEFAULT = "";
+    public static final String TOKEN = "token";
+    public static final String COMMUNITY_NAME = "community_name";
+    public static final String COMMUNITY_CODE = "community_code";
+    public static final String ACCOUNT = "account";
+    public static final String PASSWORD = "password";
+    public static final String USER_INFO = "user_info";
+    public static final String DIR = "dir";
+    public static final String PROVINCE = "province";
+    public static final String CITY = "city";
+    public static final String COUNTY = "county";
+    public static final String ADDRESS = "address";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
+    public static final String LOCATION_ADDRESS = "location_address";
+    public static final String SIP = "sip";
+    public static final String ISREMEMBER = "isRemember";
+    public static final String IS_EXCHANGE_AGREE = "is_exchange_agree";
+    public static final String IS_CARPOOL_AGREE = "is_carpool_agree";
 
 
     public static String account = "";//账户、密码、是否记住密码，这三个值是记录在默认SP中的。

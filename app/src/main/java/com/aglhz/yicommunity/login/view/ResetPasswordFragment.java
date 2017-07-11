@@ -23,6 +23,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.SmsHelper;
+import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.login.contract.ResetPasswordContract;
 import com.aglhz.yicommunity.login.presenter.ResetPasswordPresenter;
@@ -31,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Author: LiuJia on 2017/5/10 0010 01:02.
@@ -58,6 +60,7 @@ public class ResetPasswordFragment extends BaseFragment<ResetPasswordContract.Pr
     private Unbinder unbinder;
     private SmsHelper smsHelper;
     private Thread getVerifyThread;
+    private Params params = Params.getInstance();
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -193,7 +196,6 @@ public class ResetPasswordFragment extends BaseFragment<ResetPasswordContract.Pr
             return;
         }
 
-        Params params = Params.getInstance();
         params.account = phoneNo;
         params.verifyCode = verCode;
         params.password1 = password;
@@ -240,6 +242,10 @@ public class ResetPasswordFragment extends BaseFragment<ResetPasswordContract.Pr
     @Override
     public void reponseResetSuccess(BaseBean baseBean) {
         DialogHelper.successSnackbar(getView(), "重置密码成功！");
+        Bundle bundle = new Bundle();
+        bundle.putString(UserHelper.ACCOUNT, params.account);
+        bundle.putString(UserHelper.PASSWORD, params.password1);
+        setFragmentResult(SupportFragment.RESULT_OK, bundle);
         pop();
     }
 

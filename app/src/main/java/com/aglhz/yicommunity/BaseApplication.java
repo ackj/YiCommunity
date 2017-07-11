@@ -144,7 +144,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
                 ALog.e(TAG, "deviceToken-->" + deviceToken);
 
                 HttpHelper.getService(ApiService.class)
-                        .requestUMeng(ApiService.requestUMeng, UserHelper.token, deviceToken, UserHelper.account, "userType")
+                        .requestUMeng(ApiService.requestUMeng, UserHelper.token, "and_" + deviceToken, UserHelper.account, "userType")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(baseBean -> ALog.e(TAG, baseBean.getOther().getMessage()));

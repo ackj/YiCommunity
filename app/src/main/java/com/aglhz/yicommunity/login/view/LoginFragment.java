@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
@@ -31,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 
 /**
@@ -38,7 +40,8 @@ import butterknife.Unbinder;
  * Email：langmanleguang@qq.com
  */
 public class LoginFragment extends BaseFragment<LoginContract.Presenter> implements LoginContract.View, TextWatcher {
-    private static final String TAG = LoginFragment.class.getSimpleName();
+    public static final String TAG = LoginFragment.class.getSimpleName();
+    public static final int LOGIN_REQUEST = 101;
     @BindView(R.id.et_username)
     EditText etUsername;
     @BindView(R.id.et_password)
@@ -125,7 +128,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_forget_password:
-                start(ResetPasswordFragment.newInstance());
+                startForResult(ResetPasswordFragment.newInstance(), LOGIN_REQUEST);
                 break;
             case R.id.cb_remember:
                 break;
@@ -136,7 +139,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
                 mPresenter.start(params);
                 break;
             case R.id.bt_register:
-                start(RegisterFragment.newInstance());
+                startForResult(RegisterFragment.newInstance(), LOGIN_REQUEST);
                 break;
         }
     }
@@ -156,6 +159,20 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    @Override
+    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        ALog.e("requestCode-->" + requestCode);
+        ALog.e("resultCode-->" + resultCode);
+        ALog.e("data-->" + data.getString(UserHelper.ACCOUNT, ""));
+        ALog.e("data-->" + data.getString(UserHelper.PASSWORD, ""));
+
+        if (requestCode == LOGIN_REQUEST && resultCode == SupportFragment.RESULT_OK) {
+            etUsername.setText(data.getString(UserHelper.ACCOUNT, ""));
+            etPassword.setText(data.getString(UserHelper.PASSWORD, ""));
+        }
     }
 }
 
