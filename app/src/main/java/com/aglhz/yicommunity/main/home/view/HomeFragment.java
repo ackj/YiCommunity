@@ -24,7 +24,7 @@ import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
 import com.aglhz.yicommunity.entity.bean.ServiceBean;
-import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 import com.aglhz.yicommunity.main.home.presenter.HomePresenter;
@@ -65,6 +65,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     private HomeRVAdapter adapter;
     private LinearLayoutManager layoutManager;
     private String normalNotice = "欢迎来到亿社区！";
+    private Params params = Params.getInstance();
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -167,8 +168,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 AudioPlayer.getInstance(_mActivity).play(1);
                 mPresenter.requestBanners();
-                mPresenter.requestHomeNotices();
-                mPresenter.requestServiceClassifyList(Params.getInstance());
+                mPresenter.requestHomeNotices(params);
+                mPresenter.requestServiceTypes(params);
             }
         });
     }
@@ -275,7 +276,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     @Override
-    public void responseServiceClassifyList(List<ServicesClassifyListBean.DataBean.ClassifyListBean> classifys) {
+    public void responseServiceClassifyList(List<ServicesTypesBean.DataBean.ClassifyListBean> classifys) {
         ptrFrameLayout.refreshComplete();
         ALog.e(TAG, "responseServiceClassifyList size:" + classifys.size());
         adapter.getData().get(3).setServicesClassifyList(classifys);

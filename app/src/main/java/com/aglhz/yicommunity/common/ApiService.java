@@ -34,8 +34,8 @@ import com.aglhz.yicommunity.entity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.entity.bean.RepairTypesBean;
 import com.aglhz.yicommunity.entity.bean.RoomBean;
 import com.aglhz.yicommunity.entity.bean.ServiceDetailBean;
-import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
 import com.aglhz.yicommunity.entity.bean.ServicesListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 import com.aglhz.yicommunity.entity.bean.SipBean;
 import com.aglhz.yicommunity.entity.bean.SocialityListBean;
 import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
@@ -856,10 +856,10 @@ public interface ApiService {
     String requestServiceClassifyList = BASE_PROPERTY + "/services/classify/to-client/classify-list";
 
     @GET
-    Observable<ServicesClassifyListBean> requestServiceClassifyList(@Url String url,
-                                                                    @Query("page") int page,
-                                                                    @Query("pageSize") int pageSize,
-                                                                    @Query("cmnt_c") String cmnt_c);
+    Observable<ServicesTypesBean> requestServiceClassifyList(@Url String url,
+                                                             @Query("page") int page,
+                                                             @Query("pageSize") int pageSize,
+                                                             @Query("cmnt_c") String cmnt_c);
 
     String requestServiceCommodityList = BASE_PROPERTY + "/services/commodity/to-client/commodity-list";
 

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.ServiceBean;
-import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class ServiceVPAdapter extends PagerAdapter {
 
     private List<ServiceBean> serviceBeans = new ArrayList<>();
 
-    private List<ServicesClassifyListBean.DataBean.ClassifyListBean> classifyListBeans = new ArrayList<>();
+    private List<ServicesTypesBean.DataBean.ClassifyListBean> classifyListBeans = new ArrayList<>();
 
-    public ServiceVPAdapter(List<ServicesClassifyListBean.DataBean.ClassifyListBean> classifyListBeans) {
+    public ServiceVPAdapter(List<ServicesTypesBean.DataBean.ClassifyListBean> classifyListBeans) {
         this.classifyListBeans = classifyListBeans;
         serviceBeans.add(new ServiceBean("家政服务", "您家里的一切，让我来搞定！", R.drawable.bg_housekeeping_900px_540px));
         serviceBeans.add(new ServiceBean("家居维修", "专业品质服务，大可放心！", R.drawable.bg_homemaintenanc_900px_540px));
@@ -61,7 +61,7 @@ public class ServiceVPAdapter extends PagerAdapter {
             Glide.with(container.getContext())
                     .load(classifyListBeans.get(finalPosition).getClassifyPhotoUrl())
                     .into(ivImage);
-            ServicesClassifyListBean.DataBean.ClassifyListBean classifyListBean = classifyListBeans.get(finalPosition);
+            ServicesTypesBean.DataBean.ClassifyListBean classifyListBean = classifyListBeans.get(finalPosition);
             tvTitle.setText(classifyListBean.getName());
             tvDesc.setText(classifyListBean.getDesc());
         }

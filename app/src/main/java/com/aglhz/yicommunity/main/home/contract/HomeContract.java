@@ -5,7 +5,7 @@ import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 
 import java.util.List;
 
@@ -27,17 +27,17 @@ public interface HomeContract {
 
         void responseOpenDoor();
 
-        void responseServiceClassifyList(List<ServicesClassifyListBean.DataBean.ClassifyListBean> classifys);
+        void responseServiceClassifyList(List<ServicesTypesBean.DataBean.ClassifyListBean> classifys);
     }
 
     interface Presenter extends BaseContract.Presenter {
         void requestBanners();
 
-        void requestHomeNotices();
+        void requestHomeNotices(Params params);
 
         void requestOpenDoor();
 
-        void requestServiceClassifyList(Params params);
+        void requestServiceTypes(Params params);
     }
 
     interface Model extends BaseContract.Model {
@@ -47,7 +47,7 @@ public interface HomeContract {
 
         Observable<BaseBean> requestOpenDoor(Params params);
 
-        Observable<ServicesClassifyListBean> requestServiceClassifyList(Params params);
+        Observable<ServicesTypesBean> requestServiceTypes(Params params);
 
     }
 }
