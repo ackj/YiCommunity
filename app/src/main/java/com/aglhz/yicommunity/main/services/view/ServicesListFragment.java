@@ -12,12 +12,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesListBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.services.contract.ServicesContract;
 import com.aglhz.yicommunity.main.services.presenter.ServicesPresenter;
@@ -56,14 +57,16 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     private Params params = Params.getInstance();
     private String servicesFid;
     private String servicesName;
+    private StateManager mStateManager;
 
     /**
      * 启动该View的入口
+     *
      * @param servicesFid  要根据此唯一标识来请求接口
      * @param servicesName 展示标题用
      * @return
      */
-    public static ServicesListFragment newInstance(String servicesFid,String servicesName) {
+    public static ServicesListFragment newInstance(String servicesFid, String servicesName) {
         Bundle args = new Bundle();
         args.putString(Constants.SERVICE_FID, servicesFid);
         args.putString(Constants.SERVICE_NAME, servicesName);
@@ -103,6 +106,7 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         initToolbar();
         initData();
         initListener();
+        initStateManager();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
@@ -112,7 +116,6 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         params.pageSize = Constants.PAGE_SIZE;
         params.cmnt_c = UserHelper.communityCode;
         params.fid = servicesFid;
-//        mPresenter.requestDoors(params);
         mPresenter.requestServiceCommodityList(params);
     }
 
@@ -138,12 +141,23 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
         //设置允许加载更多
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
-//            mPresenter.requestDoors(params);//请求获取开门列表
+            mPresenter.requestServiceCommodityList(params);
         }, recyclerView);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
-            ServicesCommodityListBean.DataBean.DataListBean listBean = adapter.getData().get(position);
+            ServicesListBean.DataBean.DataListBean listBean = adapter.getData().get(position);
             start(ServicesDetailFragment.newInstance(listBean.getFid()));
         });
+    }
+
+    private void initStateManager() {
+        mStateManager = StateManager.builder(_mActivity)
+                .setContent(recyclerView)
+                .setEmptyView(R.layout.state_empty)
+                .setEmptyImage(R.drawable.ic_message_empty_state_gray_200px)
+                .setEmptyText("暂无服务！")
+                .setErrorOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .setEmptyOnClickListener(v -> ptrFrameLayout.autoRefresh())
+                .build();
     }
 
     @Override
@@ -154,13 +168,14 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
         if (params.page == 1) {
             //为后面的pageState做准备
+            mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
             params.page--;
         }
-        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     @Override
@@ -183,21 +198,22 @@ public class ServicesListFragment extends BaseFragment<ServicesContract.Presente
     /**
      * 响应请求各商家针对某服务类型的列表
      * todo:还有一些状态页未提供
+     *
      * @param datas
      */
     @Override
-    public void responseServiceCommodityList(List<ServicesCommodityListBean.DataBean.DataListBean> datas) {
+    public void responseServiceCommodityList(List<ServicesListBean.DataBean.DataListBean> datas) {
         ptrFrameLayout.refreshComplete();
         if (datas == null || datas.isEmpty()) {
             if (params.page == 1) {
-//                mStateManager.showEmpty();
+                mStateManager.showEmpty();
             }
             adapter.loadMoreEnd();
             return;
         }
 
         if (params.page == 1) {
-//            mStateManager.showContent();
+            mStateManager.showContent();
             adapter.setNewData(datas);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {

@@ -3,6 +3,7 @@ package com.aglhz.yicommunity.main.publish.presenter;
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.publish.contract.CommentContract;
 import com.aglhz.yicommunity.main.publish.model.CommentModel;
@@ -40,7 +41,7 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
         mRxManager.add(mModel.requestExchangeCommentList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(commentListBean -> {
-                    if (commentListBean.getOther().getCode() == 200) {
+                    if (commentListBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseCommentList(commentListBean.getData().getCommentList());
                     } else {
                         getView().error(commentListBean.getOther().getMessage());
@@ -53,7 +54,7 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
         mRxManager.add(mModel.requestCarpoolCommentList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(commentListBean -> {
-                    if (commentListBean.getOther().getCode() == 200) {
+                    if (commentListBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseCommentList(commentListBean.getData().getCommentList());
                     } else {
                         getView().error(commentListBean.getOther().getMessage());
@@ -66,7 +67,20 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
         mRxManager.add(mModel.requestNeighbourCommentList(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(commentListBean -> {
-                    if (commentListBean.getOther().getCode() == 200) {
+                    if (commentListBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseCommentList(commentListBean.getData().getCommentList());
+                    } else {
+                        getView().error(commentListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestRemarkReplyList(Params params) {
+        mRxManager.add(mModel.requestRemarkReplyList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(commentListBean -> {
+                    if (commentListBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseCommentList(commentListBean.getData().getCommentList());
                     } else {
                         getView().error(commentListBean.getOther().getMessage());
@@ -79,7 +93,7 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
         mRxManager.add(mModel.requestSubmitExchangeComment(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseCommentSuccess(baseBean);
                     } else {
                         getView().error(baseBean.getOther().getMessage());
@@ -92,7 +106,7 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
         mRxManager.add(mModel.requestSubmitCarpoolComment(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseCommentSuccess(baseBean);
                     } else {
                         getView().error(baseBean.getOther().getMessage());
@@ -105,7 +119,20 @@ public class CommentPresenter extends BasePresenter<CommentContract.View, Commen
         mRxManager.add(mModel.requestSubmitNeighbourComment(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseCommentSuccess(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestSubmitRemark(Params params) {
+        mRxManager.add(mModel.requestSubmitRemark(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         getView().responseCommentSuccess(baseBean);
                     } else {
                         getView().error(baseBean.getOther().getMessage());

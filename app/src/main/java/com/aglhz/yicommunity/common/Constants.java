@@ -1,6 +1,8 @@
 package com.aglhz.yicommunity.common;
 
 
+import com.aglhz.yicommunity.BuildConfig;
+
 /**
  * Author：leguang on 2016/10/9 0009 15:49
  * Email：langmanleguang@qq.com
@@ -20,6 +22,8 @@ public class Constants {
     //上门服务
     public static final String SERVICE_TYPE = "service_type";
     public static final String SERVICE_FID = "service_fid";
+    public static final String COMMODITY_FID = "commodity_fid";
+    public static final String FIRM_NAME = "firm_name";
     public static final String SERVICE_NAME = "service_name";
     public static final String SERVICE_ID = "service_id";
 
@@ -54,11 +58,11 @@ public class Constants {
     //登录成功
     public static final int login = 11;
 
-    //登录成功
+    //刷新“我的”模块里的消息中心未读红点标记
     public static final int refresh_unread_mark = 22;
 
-    //登出，或者token失效
-    public static final int loginout = 10;
+    //刷新社区服务模块里的点评
+    public static final int refresh_remark = 33;
 
     //**************以上是EventBus系列,值是随便取，只要不相同即可。**********************************************************************
 
@@ -105,5 +109,28 @@ public class Constants {
     public static final String PERMISSION_REMOTEWATCH = "RemoteWatch";
 
     //********************以上权限名称***********************
+
+    public static final int TYPE_REMARK = 107;//社区服务点评回复
+
+    //——————————————区分debug版和非debug版的baseurl——————————————————————
+
+    public static String BASE_PROPERTY = "";
+    public static String BASE_USER = "";
+    public static String BASE_PROPERTYCFG_M = "";
+
+    static {
+        if (BuildConfig.DEBUG) {
+            //调试可以改这里的地址。
+            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+            BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
+//            BASE_PROPERTY = "http://192.168.7.101:8080/sub_property_ysq";   //小张主机物业调试IP
+        } else {
+            //这里的是正式版的基础地址，永远不要动。
+            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+        }
+    }
 
 }

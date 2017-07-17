@@ -18,8 +18,8 @@ import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
-import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.DoorManager;
+import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.main.MainActivity;
 import com.sipphone.sdk.access.WebReponse;
@@ -78,6 +78,14 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
             //有权限就直接进行定位操作
 //            ToastUtils.showToast(BaseApplication.mContext, "正在定位……");
 //            initLocate();最好还是不需要定位，只记录手动选择的城市和小区。定位只是辅助筛选。
+
+            LbsManager.getInstance().startLocation(aMapLocation -> {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        LbsManager.getInstance().stopLocation();
+                    }
+                }
+            });
 
         } else {
             EasyPermissions.requestPermissions(this, "亿社区需要定位权限", LOCATION, perms);

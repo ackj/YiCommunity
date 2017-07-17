@@ -60,9 +60,12 @@ public class Params {
     public String carNo;
     public String monthName;
     public String authFid;
+    public String commentFid;//某条社区评论点评的id。
     public String id;
     public String searchStartTime;
     public String searchEndTime;
+    public String commodityFid;//上门服务商品ID
+    public String replyContent;//上门服务商品ID
     public boolean isProprietor = true;
     public boolean single;
     public boolean timeable;
@@ -74,6 +77,7 @@ public class Params {
     public int page = 1;
     public int monthCount;//月数值：1、6、12
     public int carpoolType;
+    public int startLevel;//点评星级
     public int payType;  //1.支付宝;2.微信
     public int appType;//android 2就好
     public File file;

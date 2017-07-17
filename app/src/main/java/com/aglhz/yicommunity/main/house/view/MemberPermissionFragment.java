@@ -44,8 +44,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Email: liujia95me@126.com
  * [房屋成员]的View层。
  */
-public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presenter> implements HouseRightsContract.View {
-    private static final String TAG = HouseRightsFragment.class.getSimpleName();
+public class MemberPermissionFragment extends BaseFragment<HouseRightsContract.Presenter> implements HouseRightsContract.View {
+    private static final String TAG = MemberPermissionFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -67,11 +67,11 @@ public class HouseRightsFragment extends BaseFragment<HouseRightsContract.Presen
     private String title;
     private Unbinder unbinder;
 
-    public static HouseRightsFragment newInstance(String fid, String address) {
+    public static MemberPermissionFragment newInstance(String fid, String address) {
         Bundle args = new Bundle();
         args.putString(Constants.KEY_FID, fid);
         args.putString(Constants.KEY_ADDRESS, address);
-        HouseRightsFragment fragment = new HouseRightsFragment();
+        MemberPermissionFragment fragment = new MemberPermissionFragment();
         fragment.setArguments(args);
         return fragment;
     }

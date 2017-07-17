@@ -276,7 +276,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadEvent(EventUnread event) {
-        ALog.e("111111111onUnreadEventonUnreadEventonUnreadEvent");
         mPresenter.requestUnreadMark(params);
     }
 

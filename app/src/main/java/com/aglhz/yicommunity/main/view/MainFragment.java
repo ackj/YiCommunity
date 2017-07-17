@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aglhz.abase.common.AudioPlayer;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.BaseApplication;
@@ -63,10 +64,11 @@ public class MainFragment extends BaseFragment {
             mFragments[3] = MineFragment.newInstance();
             loadMultipleRootFragment(R.id.fl_container_main_fragment, 0, mFragments[0], mFragments[1], mFragments[2], mFragments[3]);
         } else {
-            mFragments[0] = findFragment(HomeFragment.class);
-            mFragments[1] = findFragment(StewardFragment.class);
-            mFragments[2] = findFragment(NeighbourFragment.class);
-            mFragments[3] = findFragment(MineFragment.class);
+            mFragments[0] = findChildFragment(HomeFragment.class);
+            mFragments[1] = findChildFragment(StewardFragment.class);
+            mFragments[2] = findChildFragment(NeighbourFragment.class);
+            mFragments[3] = findChildFragment(MineFragment.class);
+            prePosition = savedInstanceState.getInt("prePosition");
         }
         initData();
     }
@@ -92,6 +94,7 @@ public class MainFragment extends BaseFragment {
         ahbn.setOnTabSelectedListener((position, wasSelected) -> {
             showHideFragment(mFragments[position], mFragments[prePosition]);
             prePosition = position;
+            AudioPlayer.getInstance(_mActivity).play(2);
 
             if (wasSelected) {
                 switch (position) {
@@ -110,8 +113,14 @@ public class MainFragment extends BaseFragment {
             }
             return true;
         });
-        ahbn.setCurrentItem(0);
+        ahbn.setCurrentItem(prePosition);
         GuideHelper.showHomeGuide(_mActivity);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("prePosition", prePosition);
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.services.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesListBean;
 
 import java.util.List;
 
@@ -18,17 +18,13 @@ import io.reactivex.Observable;
 public interface ServicesContract {
 
     interface View extends BaseContract.View {
-//        void responseServices();
-        void responseServiceCommodityList(List<ServicesCommodityListBean.DataBean.DataListBean> datas);
+        void responseServiceCommodityList(List<ServicesListBean.DataBean.DataListBean> datas);
     }
     interface Presenter extends BaseContract.Presenter {
-
-//        void requestServices(Params params);
         void requestServiceCommodityList(Params params);
     }
 
     interface Model extends BaseContract.Model {
-//        Observable<OpenDoorRecordBean> requestServices(Params params);
-        Observable<ServicesCommodityListBean> requestServiceCommodityList(Params params);
+        Observable<ServicesListBean> requestServiceCommodityList(Params params);
     }
 }

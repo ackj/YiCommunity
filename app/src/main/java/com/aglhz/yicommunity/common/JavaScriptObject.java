@@ -2,12 +2,19 @@ package com.aglhz.yicommunity.common;
 
 import android.app.Activity;
 import android.webkit.JavascriptInterface;
-import android.widget.Toast;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.common.payment.ALiPayHelper;
+import com.aglhz.yicommunity.common.payment.WxPayHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
- * Created by YandZD on 2017/1/22.
+ * Author：leguang on 2017/4/12 0009 15:49
+ * Email：langmanleguang@qq.com
+ * <p>
+ * JS调用。
  */
 public class JavaScriptObject {
     private Activity mActivity;
@@ -18,12 +25,23 @@ public class JavaScriptObject {
 
     @JavascriptInterface
     public void appWeixinPay(String str) {
-        Toast.makeText(mActivity, "正在完善功能", Toast.LENGTH_SHORT).show();
+        ALog.e("JS--WX-->" + str);
+        WxPayHelper.WxPay(str);
     }
-
 
     @JavascriptInterface
     public void appAliPay(String str) {
-        new ALiPayHelper().pay(mActivity, str);
+        ALog.e("JS--appAliPay-->" + str);
+
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(str);
+
+            JSONObject jsonData = jsonObject.optJSONObject("data");
+            new ALiPayHelper().pay(mActivity, jsonData.optString("body"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

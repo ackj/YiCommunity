@@ -38,15 +38,12 @@ public class OpenDoorRecordPresenter extends BasePresenter<OpenDoorRecordContrac
 
     @Override
     public void requestRecord(Params params) {
-        ALog.e(TAG,"1111111111111111111111");
         mRxManager.add(mModel.getOpenDoorRecord(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(openDoorRecordBean -> {
                     if (openDoorRecordBean.getOther().getCode() == 200) {
-                        ALog.e(TAG,"2222222222222222222222222");
                         getView().responseRecord(openDoorRecordBean.getData());
                     } else {
-                        ALog.e(TAG,"333333333333333333333333");
                         getView().error(openDoorRecordBean.getOther().getMessage());
                     }
                 }, this::error));

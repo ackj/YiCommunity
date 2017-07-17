@@ -9,9 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.aglhz.abase.common.ActivityManager;
-import com.aglhz.abase.log.ALog;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -92,12 +89,12 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
      */
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
-
+        throwable.printStackTrace();
         //由于主线程的异常都被try catch掉了，能被捕获到这里的都是子线程异常。这样保存信息什么的都不需要开启线程。
         handleException(throwable);
 
 //        if (mDefaultHandler != null) {
-        //如果用户没有处理则让系统默认的异常处理器来处理
+//            如果用户没有处理则让系统默认的异常处理器来处理,系统默认处理就会弹出对话框，并推出程序。
 //            mDefaultHandler.uncaughtException(thread, throwable);
 //        }
     }

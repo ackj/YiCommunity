@@ -383,8 +383,12 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
+        if (recyclerView == null || ptrFrameLayout == null) {
+            return;
+        }
         adapter.getData().clear();
         adapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(0);
         ptrFrameLayout.autoRefresh();
     }
 
@@ -399,6 +403,10 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventRefreshSocialityList event) {
+        if (recyclerView == null || ptrFrameLayout == null) {
+            return;
+        }
+        recyclerView.scrollToPosition(0);
         ptrFrameLayout.autoRefresh();
     }
 

@@ -1,10 +1,10 @@
 package com.aglhz.yicommunity.main.publish.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.CommentBean;
 import com.aglhz.yicommunity.entity.bean.CommentListBean;
-import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
 
@@ -30,11 +30,15 @@ public interface CommentContract {
 
         void requestNeighbourCommentList(Params params);
 
+        void requestRemarkReplyList(Params params);
+
         void requestSubmitExchangeComment(Params params);
 
         void requestSubmitCarpoolComment(Params params);
 
         void requestSubmitNeighbourComment(Params params);
+
+        void requestSubmitRemark(Params params);
 
     }
 
@@ -45,11 +49,16 @@ public interface CommentContract {
 
         Observable<CommentListBean> requestNeighbourCommentList(Params params);
 
+        Observable<CommentListBean> requestRemarkReplyList(Params params);
+
+
         Observable<BaseBean> requestSubmitExchangeComment(Params params);
 
         Observable<BaseBean> requestSubmitCarpoolComment(Params params);
 
         Observable<BaseBean> requestSubmitNeighbourComment(Params params);
+
+        Observable<BaseBean> requestSubmitRemark(Params params);
     }
 
 }

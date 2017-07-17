@@ -41,7 +41,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
     private static final String TAG = SocialityListRVAdapter.class.getSimpleName();
 
     public SocialityListRVAdapter() {
-        super(R.layout.item_moments_list);
+        super(R.layout.item_sociality_list);
     }
 
     private int type;
@@ -52,7 +52,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
 //        ALog.e(">>>>>>>>>>>>>>", "position:" + helper.getLayoutPosition());
 
         helper.setText(R.id.tv_create_at_item_moments_list, DateUtils.formatCommentDate(item.getCreateTime()))
-                .setText(R.id.tv_name_item_moments_list, item.getMember()==null?"":item.getMember().getMemberNickName())
+                .setText(R.id.tv_name_item_moments_list, item.getMember() == null ? "" : item.getMember().getMemberNickName())
                 .setText(R.id.tv_comment_count_item_moments_list, item.getCommentCount() + "");
 
         helper.addOnClickListener(R.id.ll_comment_item_moments_list)
@@ -76,7 +76,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
 //                || type == SocialityListFragment.TYPE_MY_CARPOOL) {
 //            tvAddress.setText(item.getPublishPositionAddress());
 //        } else {
-            tvAddress.setText(item.getCommunityName());
+        tvAddress.setText(item.getCommunityName());
 //        }
 
         //--------------- 内容 ------------
@@ -186,7 +186,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
                 tvComment.setLayoutParams(tvLp);
 
                 SpannableString nameSpan = new SpannableString(text);
-                nameSpan.setSpan(new ForegroundColorSpan(0xFF5CA0C3), 0, (name + ":").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                nameSpan.setSpan(new ForegroundColorSpan(0xFF5CA0C3), 0, name.length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tvComment.setText(nameSpan);
 
                 commentsLayout.addView(tvComment);

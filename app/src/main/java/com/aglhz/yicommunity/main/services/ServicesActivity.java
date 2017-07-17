@@ -1,10 +1,13 @@
 package com.aglhz.yicommunity.main.services;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.main.services.view.RemarkFragment;
 import com.aglhz.yicommunity.main.services.view.ServicesListFragment;
 
 /**
@@ -13,6 +16,7 @@ import com.aglhz.yicommunity.main.services.view.ServicesListFragment;
  */
 
 public class ServicesActivity extends BaseActivity {
+    public static final String TAG = ServicesActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

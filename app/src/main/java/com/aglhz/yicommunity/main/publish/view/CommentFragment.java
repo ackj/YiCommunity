@@ -35,6 +35,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.CommentBean;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.event.EventRefreshRemarkList;
 import com.aglhz.yicommunity.event.EventRefreshSocialityList;
 import com.aglhz.yicommunity.event.KeyboardChangeListener;
 import com.aglhz.yicommunity.main.publish.contract.CommentContract;
@@ -94,6 +95,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     private StateManager mStateManager;
 
     public static CommentFragment newInstance(String fid, int type) {
+        ALog.e(TAG, " fid:" + fid);
         ALog.e(TAG, "newInstance type:" + type);
         CommentFragment fragment = new CommentFragment();
         Bundle bundle = new Bundle();
@@ -101,6 +103,16 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
         bundle.putInt(Constants.KEY_TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            fid = args.getString(Constants.KEY_FID);
+            type = args.getInt(Constants.KEY_TYPE);
+        }
     }
 
     @NonNull
@@ -121,9 +133,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Bundle bundle = getArguments();
-        fid = bundle.getString(Constants.KEY_FID);
-        type = bundle.getInt(Constants.KEY_TYPE);
         initToolbar();
         initData();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
@@ -140,8 +149,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     @Override
     public void onRefresh() {
         commentListParams.fid = fid;
-        commentListParams.page = 1;
-        commentListParams.pageSize = Constants.PAGE_SIZE;
         requestComments();//请求评论列表
     }
 
@@ -249,6 +256,9 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
             case TYPE_MY_NEIGHBOUR:
                 mPresenter.requestNeighbourCommentList(commentListParams);//请求左邻右里的评论列表
                 break;
+            case Constants.TYPE_REMARK:
+                mPresenter.requestRemarkReplyList(commentListParams);//请求社区服务点评回复列表。
+                break;
         }
     }
 
@@ -274,6 +284,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
         if (commentListParams.page == 1) {
             //为后面的pageState做准备
 //            mStateManager.showError();
@@ -281,7 +292,6 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
             adapter.loadMoreFail();
             commentListParams.page--;
         }
-        DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
     }
 
     /**
@@ -320,7 +330,11 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
     public void responseCommentSuccess(BaseBean bean) {
         etInputFragmentComment.setText("");
         ptrFrameLayout.autoRefresh();
-        EventBus.getDefault().post(new EventRefreshSocialityList());
+        if (type == Constants.TYPE_REMARK) {//因为邻里、闲置交换、拼车服务、点评都是公用这一个，所以最好判断一下，避免不必要的刷新。
+            EventBus.getDefault().post(new EventRefreshRemarkList());
+        } else {
+            EventBus.getDefault().post(new EventRefreshSocialityList());
+        }
     }
 
     @OnClick(R.id.tv_send_fragment_comment)
@@ -332,7 +346,7 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
      * 发送评论
      */
     private void sendComment() {
-        String comment = etInputFragmentComment.getText().toString().trim();
+        String comment = etInputFragmentComment.getText().toString();
         if (TextUtils.isEmpty(comment)) {
             DialogHelper.warningSnackbar(getView(), "请输入评论内容！不能为空");
             return;
@@ -356,6 +370,9 @@ public class CommentFragment extends BaseFragment<CommentContract.Presenter> imp
             case TYPE_NEIGHBOUR:
             case TYPE_MY_NEIGHBOUR:
                 mPresenter.requestSubmitNeighbourComment(commentPostParams);//请求提交左邻右里评论
+                break;
+            case Constants.TYPE_REMARK:
+                mPresenter.requestSubmitRemark(commentPostParams);//请求社区服务点评。
                 break;
         }
     }

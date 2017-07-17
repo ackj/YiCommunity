@@ -18,11 +18,11 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.ParkSelectBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
-import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.ParkSelectBean;
 import com.aglhz.yicommunity.event.EventPark;
 import com.aglhz.yicommunity.main.picker.contract.ParkPickerContract;
 import com.aglhz.yicommunity.main.picker.presenter.ParkPickerPresenter;
@@ -82,31 +82,16 @@ public class ParkPickerFragment extends BaseFragment<ParkPickerContract.Presente
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initLocate();
         initToolbar();
         initData();
         initListener();
         initPtrFrameLayout(ptrFrameLayout, recyclerView);
     }
 
-    private void initLocate() {
-        LbsManager.getInstance().startLocation(aMapLocation -> {
-            if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode() == 0) {
-                    String city = aMapLocation.getCity();
-                    if (!TextUtils.isEmpty(city)) {
-                        tvCity.setText(city);
-                        LbsManager.getInstance().stopLocation();
-                    }
-                }
-            }
-        });
-    }
-
     private void initToolbar() {
         initStateBar(toolbar);
         tvTitle.setText("选择停车场");
-        tvCity.setText("选择城市");
+        tvCity.setText(TextUtils.isEmpty(UserHelper.city) ? "选择城市" : UserHelper.city);
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
@@ -182,14 +167,9 @@ public class ParkPickerFragment extends BaseFragment<ParkPickerContract.Presente
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LbsManager.getInstance().stopLocation();
-    }
-
     /**
      * 响应请求停车场列表
+     *
      * @param beans
      */
     @Override

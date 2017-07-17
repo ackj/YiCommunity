@@ -126,12 +126,12 @@ public class BaseApplication extends MultiDexApplication implements Application.
         //sdk开启通知声音
         mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
 
-        ALog.e(TAG, UserHelper.account);
+        ALog.e(TAG, "UserHelper.account-->" + UserHelper.account);
 
         mPushAgent.addExclusiveAlias(UserHelper.account, "userType", new UTrack.ICallBack() {
             @Override
             public void onMessage(boolean b, String s) {
-                ALog.e(TAG, "addAlias::" + b + "……" + s);
+                ALog.e(TAG, "addAlias-->" + b + "……" + s);
             }
         });
 
@@ -141,8 +141,10 @@ public class BaseApplication extends MultiDexApplication implements Application.
             @Override
             public void onSuccess(String deviceToken) {
 
+                ALog.e(TAG, "deviceToken-->" + deviceToken);
+
                 HttpHelper.getService(ApiService.class)
-                        .requestUMeng(ApiService.requestUMeng, UserHelper.token, deviceToken, UserHelper.account, "userType")
+                        .requestUMeng(ApiService.requestUMeng, UserHelper.token, "and_" + deviceToken, UserHelper.account, "userType")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(baseBean -> ALog.e(TAG, baseBean.getOther().getMessage()));
@@ -186,7 +188,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
                 ALog.e(TAG, msg.getRaw().toString());
                 ALog.e(TAG, msg.custom);
 
-                ALog.e("111111getNotification");
                 EventBus.getDefault().post(new EventUnread());
                 EventBus.getDefault().post(new EventRefreshMessageList());
 

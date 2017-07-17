@@ -1,7 +1,6 @@
 package com.aglhz.yicommunity.main.mine.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,29 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.AbsListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.aglhz.abase.common.AudioPlayer;
-import com.aglhz.abase.common.ScrollingHelper;
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.entity.bean.MyHousesBean;
-import com.aglhz.yicommunity.event.EventCommunity;
-import com.aglhz.yicommunity.main.house.view.MemberRVAdapter;
-import com.aglhz.yicommunity.main.mine.contract.MyHousesContract;
-import com.aglhz.yicommunity.main.mine.presenter.MyHousesPresenter;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,8 +25,8 @@ import in.srain.cube.views.ptr.PtrHandler;
  * Author: LiuJia on 2017/4/20 9:26.
  * Email: liujia95me@126.com
  */
-public class HouseMembersFragment extends BaseFragment {
-    private static final String TAG = HouseMembersFragment.class.getSimpleName();
+public class MyHousesMembersFragment extends BaseFragment {
+    private static final String TAG = MyHousesMembersFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -53,14 +35,14 @@ public class HouseMembersFragment extends BaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
     PtrFrameLayout ptrFrameLayout;
-    private MyHouseMemberRVAdapter mAdapter;
+    private MyHousesMembersRVAdapter mAdapter;
     private Unbinder unbinder;
     private MyHousesBean.DataBean.AuthBuildingsBean bean;
 
-    public static HouseMembersFragment newInstance(MyHousesBean.DataBean.AuthBuildingsBean bean) {
+    public static MyHousesMembersFragment newInstance(MyHousesBean.DataBean.AuthBuildingsBean bean) {
         Bundle args = new Bundle();
         args.putSerializable(Constants.KEY_MEMBER, bean);
-        HouseMembersFragment fragment = new HouseMembersFragment();
+        MyHousesMembersFragment fragment = new MyHousesMembersFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -110,7 +92,7 @@ public class HouseMembersFragment extends BaseFragment {
         });
         //成员头像网格表
         recyclerView.setLayoutManager(new GridLayoutManager(_mActivity, 5));
-        mAdapter = new MyHouseMemberRVAdapter();
+        mAdapter = new MyHousesMembersRVAdapter();
         recyclerView.setAdapter(mAdapter);
         mAdapter.setNewData(bean.getMembers());
     }

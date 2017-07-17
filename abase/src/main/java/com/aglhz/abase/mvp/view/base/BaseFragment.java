@@ -17,7 +17,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.utils.ScreenUtils;
-import com.aglhz.abase.widget.Dialog.LoadingDialog;
+import com.aglhz.abase.widget.dialog.LoadingDialog;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;

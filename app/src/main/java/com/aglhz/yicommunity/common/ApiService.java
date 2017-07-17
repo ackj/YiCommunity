@@ -28,13 +28,14 @@ import com.aglhz.yicommunity.entity.bean.ParkSelectBean;
 import com.aglhz.yicommunity.entity.bean.PasswordBean;
 import com.aglhz.yicommunity.entity.bean.PropertyPayBean;
 import com.aglhz.yicommunity.entity.bean.PropertyPayDetailBean;
+import com.aglhz.yicommunity.entity.bean.RemarkListBean;
 import com.aglhz.yicommunity.entity.bean.RepairApplyBean;
 import com.aglhz.yicommunity.entity.bean.RepairDetailBean;
 import com.aglhz.yicommunity.entity.bean.RepairTypesBean;
 import com.aglhz.yicommunity.entity.bean.RoomBean;
+import com.aglhz.yicommunity.entity.bean.ServiceDetailBean;
 import com.aglhz.yicommunity.entity.bean.ServicesClassifyListBean;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesListBean;
 import com.aglhz.yicommunity.entity.bean.SipBean;
 import com.aglhz.yicommunity.entity.bean.SocialityListBean;
 import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
@@ -68,13 +69,20 @@ import retrofit2.http.Url;
 public interface ApiService {
 
     //*************基础路径*******************
-    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-    String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-    String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+    String BASE_PROPERTY = Constants.BASE_PROPERTY;   //物业
+    String BASE_USER = Constants.BASE_USER;           //用户
+    String BASE_PROPERTYCFG_M = Constants.BASE_PROPERTYCFG_M;
+
+    //*************基础路径*******************
+//    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+//    String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+//    String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
 
     //**********以下调试基础路径**************
 //    String BASE_PROPERTY = "http://192.168.250.107:8080/sub_property_ysq";//物业大叔主机IP
 //    String BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
+
+//    String BASE_PROPERTY = "http://192.168.7.101:8080/sub_property_ysq";   //小张主机物业调试IP
 
     //**********以上调试基础路径**************
 
@@ -88,7 +96,7 @@ public interface ApiService {
 
     String TEMP_PARKING = "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html";
 
-    String SUPERMARKET = "http://www.aglhz.com/mall/m/index.html?token=";
+    String SUPERMARKET = "http://www.aglhz.com/mall/m/index.html?payFrom=2&token=%1&lng=%2&lat=%3";
 
     String WULIU_SEARCH = "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?appType=2&token=";
 
@@ -193,8 +201,14 @@ public interface ApiService {
     //反馈
     String requestSubmitFeedback = BASE_PROPERTY + "/client/feedback.do";
 
-    @POST/*("/sub_property_ysq/client/feedback.do")*/
-    Observable<BaseBean> requestSubmitFeedback(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("des") String des, @Query("contact") String contact);
+    //    @POST/*("/sub_property_ysq/client/feedback.do")*/
+    @FormUrlEncoded
+    @POST
+    Observable<BaseBean> requestSubmitFeedback(@Url String url,
+                                               @Field("token") String token,
+                                               @Field("cmnt_c") String cmnt_c,
+                                               @Field("des") String des,
+                                               @Field("contact") String contact);
 
     //更新用户信息
     //@POST("/memberSYS-m/client/updateMemberFieldByToken.do")
@@ -839,8 +853,6 @@ public interface ApiService {
 
     //-------------------------------以下为2017.06.30添加的社区服务接口--------------------------------------------
 
-//    String BASE_ZHANG = "http://192.168.7.101:8080/sub_property_ysq";
-
     String requestServiceClassifyList = BASE_PROPERTY + "/services/classify/to-client/classify-list";
 
     @GET
@@ -852,15 +864,56 @@ public interface ApiService {
     String requestServiceCommodityList = BASE_PROPERTY + "/services/commodity/to-client/commodity-list";
 
     @GET
-    Observable<ServicesCommodityListBean> requestServiceCommodityList(@Url String url,
-                                                                      @Query("page") int page,
-                                                                      @Query("pageSize") int pageSize,
-                                                                      @Query("classifyFid") String classifyFid);
+    Observable<ServicesListBean> requestServiceCommodityList(@Url String url,
+                                                             @Query("page") int page,
+                                                             @Query("pageSize") int pageSize,
+                                                             @Query("classifyFid") String classifyFid);
 
     String requestServiceDetail = BASE_PROPERTY + "/services/commodity/to-client/commodity-details";
 
     @GET
-    Observable<ServicesCommodityDetailBean> requestServiceDetail(@Url String url, @Query("fid") String fid);
+    Observable<ServiceDetailBean> requestServiceDetail(@Url String url, @Query("fid") String fid);
 
+
+    //社区服务评论列表接口
+    String requestRemarkList = BASE_PROPERTY + "/services/commodity/to-client/commodity-comment-list";
+
+    @GET
+    Observable<RemarkListBean> requestRemarkList(@Url String url,
+                                                 @Query("page") int page,
+                                                 @Query("pageSize") int pageSize,
+                                                 @Query("commodityFid") String classifyFid);
+
+    //请求点评回复列表
+    String requestRemarkReplyList = BASE_PROPERTY + "/services/commodity/to-client/commodity/comment-reply-list";
+
+    @GET
+    Observable<CommentListBean> requestRemarkReplyList(@Url String url,
+                                                       @Query("commentFid") String commentFid,
+                                                       @Query("page") int page,
+                                                       @Query("pageSize") int pageSize);
+
+    //发表点评
+    String requestRemarkService = BASE_PROPERTY + "/services/commodity/from-client/commodity-comment-create";
+
+    @FormUrlEncoded
+    @POST
+    Observable<BaseBean> requestRemarkService(@Url String url,
+                                              @Field("token") String token,
+                                              @Field("commodityFid") String commodityFid,
+                                              @Field("startLevel") int startLevel,
+                                              @Field("content") String content);
+
+    //发表点评回复
+    String requestSubmitRemark = BASE_PROPERTY + "/services/commodity/from-client/commodity/comment-reply-create ";
+
+    @FormUrlEncoded
+    @POST
+    Observable<BaseBean> requestSubmitRemark(@Url String url,
+                                             @Field("token") String token,
+                                             @Field("commentFid") String commodityFid,
+                                             @Field("replyContent") String replyContent);
+    //-------------------------------以上为2017.06.30添加的社区服务接口--------------------------------------------
 
 }
+

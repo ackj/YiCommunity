@@ -5,28 +5,26 @@ import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityListBean;
+import com.aglhz.yicommunity.entity.bean.ServicesListBean;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
-
-import static java.lang.System.load;
 
 
 /**
  * Created by leguang on 2017/6/26 0026.
  * Email：langmanleguang@qq.com
  */
-public class ServicesRVAdapter extends BaseRecyclerViewAdapter<ServicesCommodityListBean.DataBean.DataListBean, BaseViewHolder> {
+public class ServicesRVAdapter extends BaseRecyclerViewAdapter<ServicesListBean.DataBean.DataListBean, BaseViewHolder> {
 
     public ServicesRVAdapter() {
         super(R.layout.item_rv_services);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ServicesCommodityListBean.DataBean.DataListBean item) {
+    protected void convert(BaseViewHolder helper, ServicesListBean.DataBean.DataListBean item) {
         helper.setText(R.id.tv_title_item_rv_services, item.getCommodityTitle())
                 .setText(R.id.tv_describe_item_rv_services, item.getCommodityDesc())
-                .setText(R.id.tv_cost_item_rv_services, item.getCommodityPrice())
+                .setText(R.id.tv_cost_item_rv_services, "¥" + item.getCommodityPrice())
                 .setText(R.id.tv_address_item_rv_services, item.getCoverageArea());
 
         ImageView ivPhoto = helper.getView(R.id.iv_photo_item_rv_services);

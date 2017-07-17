@@ -53,9 +53,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * Email：langmanleguang@qq.com
  */
 public class ACache {
-    private final String TAG = ACache.class.getClass().getSimpleName();
-    public static final int TIME_HOUR = 60 * 60;
-    public static final int TIME_DAY = TIME_HOUR * 24;
+    public final String TAG = ACache.class.getClass().getSimpleName();
+    private static final int TIME_HOUR = 60 * 60;
+    private static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
     private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();

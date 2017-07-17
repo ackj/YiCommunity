@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.main.services.contract;
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.entity.bean.ServicesCommodityDetailBean;
+import com.aglhz.yicommunity.entity.bean.ServiceDetailBean;
 
 import io.reactivex.Observable;
 
@@ -14,7 +14,7 @@ import io.reactivex.Observable;
 public interface ServicesDetailContract {
 
     interface View extends BaseContract.View {
-        void responseServiceDetail(ServicesCommodityDetailBean bean);
+        void responseServiceDetail(ServiceDetailBean bean);
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -22,7 +22,7 @@ public interface ServicesDetailContract {
     }
 
     interface Model extends BaseContract.Model {
-        Observable<ServicesCommodityDetailBean> requestServiceDetail(Params params);
+        Observable<ServiceDetailBean> requestServiceDetail(Params params);
     }
 
 }

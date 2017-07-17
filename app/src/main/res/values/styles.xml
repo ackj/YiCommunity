@@ -9,14 +9,14 @@
         <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-       <!-- <item name="android:navigationBarColor">@color/base_color</item>-->
+        <!-- <item name="android:navigationBarColor">@color/base_color</item>-->
         <item name="android:windowAnimationStyle">@style/NoAnimationTheme</item>
     </style>
 
     <style name="LaunchTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/bg_splash_720px_1280px</item>
         <item name="android:windowFullscreen">true</item>
-       <!-- <item name="android:navigationBarColor">@color/transparent</item>-->
+        <!-- <item name="android:navigationBarColor">@color/transparent</item>-->
         <item name="android:windowAnimationStyle">@style/NoAnimationTheme</item>
     </style>
 
@@ -245,5 +245,10 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-
+    <!--自定义样式的RatingBar-->
+    <style name="RatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/layer_list_rating_bar</item>
+        <item name="android:minHeight">13dp</item>
+        <item name="android:maxHeight">13dp</item>
+    </style>
 </resources>
