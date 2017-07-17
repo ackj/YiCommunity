@@ -96,7 +96,7 @@ public interface ApiService {
 
     String TEMP_PARKING = "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html";
 
-    String SUPERMARKET = "http://www.aglhz.com/mall/m/index.html?appType=2&payFrom=2&token=%1&lng=%2&lat=%3";
+    String SUPERMARKET = "http://www.aglhz.com/mall/m/index.html?payFrom=2&token=%1&lng=%2&lat=%3";
 
     String WULIU_SEARCH = "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?appType=2&token=";
 

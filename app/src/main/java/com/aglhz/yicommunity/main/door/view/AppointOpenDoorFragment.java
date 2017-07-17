@@ -9,21 +9,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
-import com.aglhz.yicommunity.common.UserHelper;
-import com.aglhz.yicommunity.entity.bean.BaseBean;
-import com.aglhz.yicommunity.entity.bean.DoorListBean;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.DoorListBean;
+import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.door.contract.AppointOpenDoorContract;
 import com.aglhz.yicommunity.main.door.presenter.AppointOpenDoorPresenter;
-import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.widget.OpenDoorDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,6 +56,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     private Unbinder unbinder;
     private Params params = Params.getInstance();
     private StateManager mStateManager;
+    private OpenDoorDialog openDoorDialog;
 
 
     public static AppointOpenDoorFragment newInstance() {
@@ -131,6 +132,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
             mPresenter.requestDoors(params);//请求获取开门列表
         }, recyclerView);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
+            showQuickOpenDoorDialog();
             Params params = Params.getInstance();
             params.dir = AppointOpenDoorFragment.this.adapter.getData().get(position).getDir();
             mPresenter.requestAppointOpenDoor(params);//请求一键开门
@@ -170,6 +172,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
      */
     @Override
     public void responseAppointOpenDoor(BaseBean mBaseBean) {
+        openDoorDialog.setSuccess();
         DialogHelper.successSnackbar(getView(), "开门成功！");
     }
 
@@ -178,9 +181,17 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
 
     }
 
+    public void showQuickOpenDoorDialog(){
+        if (openDoorDialog == null) {
+            openDoorDialog = new OpenDoorDialog(_mActivity);
+        }
+        openDoorDialog.show();
+    }
+
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
+        openDoorDialog.setError();
         DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
         if (params.page == 1) {
             //为后面的pageState做准备

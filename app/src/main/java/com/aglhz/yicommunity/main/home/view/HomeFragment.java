@@ -34,6 +34,7 @@ import com.aglhz.yicommunity.main.picker.PickerActivity;
 import com.aglhz.yicommunity.main.propery.view.NoticeListFragment;
 import com.aglhz.yicommunity.main.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
+import com.aglhz.yicommunity.widget.OpenDoorDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,6 +67,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     private LinearLayoutManager layoutManager;
     private String normalNotice = "欢迎来到亿社区！";
     private Params params = Params.getInstance();
+    private OpenDoorDialog openDoorialog;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -191,7 +193,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 case HomeBean.TYPE_COMMUNITY_FUNCTION:
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
-                            showLoadingDialog();
+                            showQuickOpenDoorDialog();
                             mPresenter.requestOpenDoor();
                             break;
                         case R.id.ll_property_payment:
@@ -236,6 +238,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void error(String errorMessage) {
+        openDoorialog.setError();
         dismissLoadingDialog();
         ptrFrameLayout.refreshComplete();
         adapter.notifyItemChanged(0);
@@ -271,7 +274,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseOpenDoor() {
-        dismissLoadingDialog();
+        openDoorialog.setSuccess();
         DialogHelper.successSnackbar(getView(), "开门成功，欢迎回家，我的主人！");
     }
 
@@ -289,5 +292,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         }
         recyclerView.scrollToPosition(0);
         ptrFrameLayout.autoRefresh();
+    }
+
+    public void showQuickOpenDoorDialog() {
+        if (openDoorialog == null) {
+            openDoorialog = new OpenDoorDialog(_mActivity);
+        }
+        openDoorialog.show();
     }
 }
