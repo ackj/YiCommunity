@@ -11,11 +11,10 @@ import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.UserHelper;
+import com.aglhz.yicommunity.widget.OpenDoorDialog;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.aglhz.yicommunity.common.UserHelper.clear;
 
 
 /**
@@ -26,12 +25,15 @@ import static com.aglhz.yicommunity.common.UserHelper.clear;
 public class QuickOpenActivity extends BaseActivity {
     private ViewGroup rootView;
     private RxManager rxManager;
+    private OpenDoorDialog openDoorDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         rootView = (ViewGroup) findViewById(android.R.id.content).getRootView();
         UserHelper.init();
+
+        showQuickOpenDoorDialog();
 
         rxManager = new RxManager();
         rxManager.add(HttpHelper.getService(ApiService.class).requestOpenDoor(ApiService.requestOpenDoor, UserHelper.token, UserHelper.dir)
@@ -40,12 +42,15 @@ public class QuickOpenActivity extends BaseActivity {
                 .subscribe(baseBean -> {
                     exit();
                     if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        openDoorDialog.setSuccess();
                         DialogHelper.successSnackbar(rootView, "开门成功，欢迎回家，我的主人！");
                     } else {
-                        DialogHelper.successSnackbar(rootView, baseBean.getOther().getMessage());
+                        openDoorDialog.setError();
+                        DialogHelper.errorSnackbar(rootView, baseBean.getOther().getMessage());
                     }
                 }, throwable -> {
                     exit();
+                    openDoorDialog.setSuccess();
                     DialogHelper.errorSnackbar(rootView, "网络异常，请重试！");
                 })
         );
@@ -60,6 +65,13 @@ public class QuickOpenActivity extends BaseActivity {
          * 得不停的等下面的1500ms。当然这个也有点鸡肋，如果能做到在桌面顶部弹框提示的话，就不需要Activity做支撑了。
          * 所以也不需要有一个界面了，不然就违背了快速这一初衷，本来打开失败就应该不停的点图标。
          */
+    }
+
+    public void showQuickOpenDoorDialog(){
+        if (openDoorDialog == null) {
+            openDoorDialog = new OpenDoorDialog(this);
+        }
+        openDoorDialog.show();
     }
 
     private void exit() {
