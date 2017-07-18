@@ -58,7 +58,6 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     private StateManager mStateManager;
     private OpenDoorDialog openDoorDialog;
 
-
     public static AppointOpenDoorFragment newInstance() {
         return new AppointOpenDoorFragment();
     }
@@ -133,9 +132,11 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         }, recyclerView);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             showQuickOpenDoorDialog();
-            Params params = Params.getInstance();
-            params.dir = AppointOpenDoorFragment.this.adapter.getData().get(position).getDir();
-            mPresenter.requestAppointOpenDoor(params);//请求一键开门
+            view.postDelayed(() -> {
+                Params params = Params.getInstance();
+                params.dir = AppointOpenDoorFragment.this.adapter.getData().get(position).getDir();
+                mPresenter.requestAppointOpenDoor(params);//请求一键开门
+            },1000);
         });
     }
 
@@ -185,6 +186,7 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         if (openDoorDialog == null) {
             openDoorDialog = new OpenDoorDialog(_mActivity);
         }
+        openDoorDialog.setOpenDoor();
         openDoorDialog.show();
     }
 
