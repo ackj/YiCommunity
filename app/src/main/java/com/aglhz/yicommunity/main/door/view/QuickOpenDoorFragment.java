@@ -41,6 +41,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * 打开方式：Start App-->管家-->智能门禁[设置开门]
  */
 public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Presenter> implements QuickOpenDoorContract.View {
+
     private static final String TAG = QuickOpenDoorFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;

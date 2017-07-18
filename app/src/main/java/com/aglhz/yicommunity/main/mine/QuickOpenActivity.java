@@ -34,26 +34,28 @@ public class QuickOpenActivity extends BaseActivity {
         UserHelper.init();
 
         showQuickOpenDoorDialog();
-
-        rxManager = new RxManager();
-        rxManager.add(HttpHelper.getService(ApiService.class).requestOpenDoor(ApiService.requestOpenDoor, UserHelper.token, UserHelper.dir)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(baseBean -> {
-                    exit();
-                    if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-                        openDoorDialog.setSuccess();
-                        DialogHelper.successSnackbar(rootView, "开门成功，欢迎回家，我的主人！");
-                    } else {
+        rootView.postDelayed(() -> {
+            rxManager = new RxManager();
+            rxManager.add(HttpHelper.getService(ApiService.class).requestOpenDoor(ApiService.requestOpenDoor, UserHelper.token, UserHelper.dir)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(baseBean -> {
+                        exit();
+                        if (baseBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                            openDoorDialog.setSuccess();
+                            DialogHelper.successSnackbar(rootView, "开门成功，欢迎回家，我的主人！");
+                        } else {
+                            openDoorDialog.setError();
+                            DialogHelper.errorSnackbar(rootView, baseBean.getOther().getMessage());
+                        }
+                    }, throwable -> {
+                        exit();
                         openDoorDialog.setError();
-                        DialogHelper.errorSnackbar(rootView, baseBean.getOther().getMessage());
-                    }
-                }, throwable -> {
-                    exit();
-                    openDoorDialog.setSuccess();
-                    DialogHelper.errorSnackbar(rootView, "网络异常，请重试！");
-                })
-        );
+                        DialogHelper.errorSnackbar(rootView, "网络异常，请重试！");
+                    })
+            );
+        },1000);
+
 
 
         /**
@@ -71,6 +73,7 @@ public class QuickOpenActivity extends BaseActivity {
         if (openDoorDialog == null) {
             openDoorDialog = new OpenDoorDialog(this);
         }
+        openDoorDialog.setOpenDoor();
         openDoorDialog.show();
     }
 

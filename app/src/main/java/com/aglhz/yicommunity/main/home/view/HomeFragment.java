@@ -193,7 +193,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
                             showQuickOpenDoorDialog();
-                            mPresenter.requestOpenDoor();
+                            view.postDelayed(() -> {
+                                mPresenter.requestOpenDoor();
+                            }, 1000);
                             break;
                         case R.id.ll_property_payment:
                             _mActivity.start(PropertyPayFragment.newInstance());
@@ -293,10 +295,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         ptrFrameLayout.autoRefresh();
     }
 
-    public void showQuickOpenDoorDialog(){
-        if (openDoorialog == null) {
+    public void showQuickOpenDoorDialog() {
+        if(openDoorialog == null){
             openDoorialog = new OpenDoorDialog(_mActivity);
         }
+        openDoorialog.setOpenDoor();
         openDoorialog.show();
     }
 }

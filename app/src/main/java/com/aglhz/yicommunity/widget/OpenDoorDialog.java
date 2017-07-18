@@ -33,14 +33,17 @@ public class OpenDoorDialog extends Dialog {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setContentView(R.layout.dialog_open_door);
         gifImageView = (GifImageView) findViewById(R.id.iv_gif);
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
+    }
+
+    public void setOpenDoor(){
         try {
             GifDrawable gifFromAssets = new GifDrawable(context.getAssets(),"monkey_open_door_200px.gif");
             gifImageView.setImageDrawable(gifFromAssets);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
     }
 
     public void setError(){
