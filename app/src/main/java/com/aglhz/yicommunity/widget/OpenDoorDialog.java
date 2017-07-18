@@ -50,6 +50,7 @@ public class OpenDoorDialog extends Dialog {
 
     public void setError() {
         try {
+            AudioPlayer.getInstance(context).stop();
             GifDrawable gifFromAssets = new GifDrawable(context.getAssets(), "open_door_error_200px.gif");
             gifImageView.setImageDrawable(gifFromAssets);
             gifImageView.postDelayed(() -> {
@@ -67,12 +68,9 @@ public class OpenDoorDialog extends Dialog {
             AudioPlayer.getInstance(context).play(AudioPlayer.OPEN);
             GifDrawable gifFromAssets = new GifDrawable(context.getAssets(), "open_door_success_200px.gif");
             gifImageView.setImageDrawable(gifFromAssets);
-            gifImageView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    gifImageView.setImageDrawable(null);
-                    dismiss();
-                }
+            gifImageView.postDelayed(() -> {
+                gifImageView.setImageDrawable(null);
+                dismiss();
             }, 1500);
         } catch (IOException e) {
             e.printStackTrace();
