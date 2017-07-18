@@ -227,6 +227,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         super.onDestroyView();
         unbinder.unbind();
         EventBus.getDefault().unregister(this);
+        AudioPlayer.getInstance(_mActivity).clear();
         if (adapter != null) {
             adapter = null;
         }
