@@ -54,7 +54,6 @@ public class MainActivity extends BaseActivity {
                 DoorManager.getInstance().setCallListener(new DoorManager.LinphoneCallBack() {
                     @Override
                     public void callState(LinphoneCore lc, LinphoneCall call, LinphoneCall.State state, String message) {
-                        ALog.e(TAG, 111 + state.toString());
                         if (state == LinphoneCall.State.OutgoingInit || state == LinphoneCall.State.OutgoingProgress) {
                             startActivity(new Intent(MainActivity.this, CallActivity.class));
                         }

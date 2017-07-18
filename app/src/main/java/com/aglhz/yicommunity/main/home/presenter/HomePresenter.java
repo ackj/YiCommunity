@@ -49,9 +49,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     }
 
     @Override
-    public void requestHomeNotices() {
-        Params params = Params.getInstance();
-        params.cmnt_c = UserHelper.communityCode;
+    public void requestHomeNotices(Params params) {
         mRxManager.add(mModel.requestHomeNotices(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(strings -> getView().responseHomeNotices(strings), this::error));
@@ -73,8 +71,8 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     }
 
     @Override
-    public void requestServiceClassifyList(Params params) {
-        mRxManager.add(mModel.requestServiceClassifyList(params)
+    public void requestServiceTypes(Params params) {
+        mRxManager.add(mModel.requestServiceTypes(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(classifyListBean -> {
                     if (classifyListBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {

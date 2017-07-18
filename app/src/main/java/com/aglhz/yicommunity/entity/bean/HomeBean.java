@@ -29,13 +29,13 @@ public class HomeBean implements MultiItemEntity {
     public boolean hasMore;
 //    public List<ServiceBean> services;
     public List<ServiceBean> qualityLifes;
-    public List<ServicesClassifyListBean.DataBean.ClassifyListBean> servicesClassifyList;
+    public List<ServicesTypesBean.DataBean.ClassifyListBean> servicesClassifyList;
 
-    public List<ServicesClassifyListBean.DataBean.ClassifyListBean> getServicesClassifyList() {
+    public List<ServicesTypesBean.DataBean.ClassifyListBean> getServicesClassifyList() {
         return servicesClassifyList;
     }
 
-    public void setServicesClassifyList(List<ServicesClassifyListBean.DataBean.ClassifyListBean> servicesClassifyList) {
+    public void setServicesClassifyList(List<ServicesTypesBean.DataBean.ClassifyListBean> servicesClassifyList) {
         this.servicesClassifyList = servicesClassifyList;
     }
 
