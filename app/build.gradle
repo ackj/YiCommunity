@@ -108,6 +108,6 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.1.6'
     //swipelayout
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
-
+    //Gif图加载框架
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
 }
