@@ -102,8 +102,6 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     @Override
     public void start(Object response) {
         dismissLoadingDialog();
-
-
         UserHelper.setRemember(cbRemember.isChecked());
         EventBus.getDefault().post(new EventData(Constants.login));
         _mActivity.finish();
