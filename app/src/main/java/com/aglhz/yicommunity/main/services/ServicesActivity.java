@@ -1,13 +1,10 @@
 package com.aglhz.yicommunity.main.services;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.main.services.view.RemarkFragment;
 import com.aglhz.yicommunity.main.services.view.ServicesListFragment;
 
 /**
@@ -25,7 +22,7 @@ public class ServicesActivity extends BaseActivity {
         String servicesFid = getIntent().getStringExtra(Constants.SERVICE_FID);
         String servicesName = getIntent().getStringExtra(Constants.SERVICE_NAME);
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_main_activity, ServicesListFragment.newInstance(servicesFid,servicesName));
+            loadRootFragment(R.id.fl_main_activity, ServicesListFragment.newInstance(servicesFid, servicesName));
         }
     }
 }

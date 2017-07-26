@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
@@ -163,11 +162,11 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
         String verCode = etVerifyCode.getText().toString();
 
         if (!password.equals(againPassword)) {
-            ToastUtils.showToast(_mActivity, "两次输入密码不一致");
+            DialogHelper.errorSnackbar(getView(), "两次密码输入不一致！");
             return;
         }
         if (!(password.length() >= 6 && password.length() <= 12)) {
-            ToastUtils.showToast(_mActivity, "请设置6-12位密码");
+            DialogHelper.errorSnackbar(getView(), "请设置6-12位密码！");
             return;
         }
         params.account = phoneNo;
@@ -227,7 +226,7 @@ public class RegisterFragment extends BaseFragment<RegisterPresenter> implements
 
     @Override
     public void registerSuccess(BaseBean baseBean) {
-        DialogHelper.successSnackbar(getView(), "注册成功！");
+        DialogHelper.successSnackbar(getView(), "恭喜您注册成功！");
         Bundle bundle = new Bundle();
         bundle.putString(UserHelper.ACCOUNT, params.account);
         bundle.putString(UserHelper.PASSWORD, params.password1);
