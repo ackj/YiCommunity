@@ -135,7 +135,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
             }
         });
 
-
         //注册推送服务 每次调用register都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
