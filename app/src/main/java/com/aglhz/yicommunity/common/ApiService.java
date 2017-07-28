@@ -96,7 +96,8 @@ public interface ApiService {
 
     String TEMP_PARKING = "http://www.aglhz.com/sub_property_ysq/m/html/banlicheka.html";
 
-    String SUPERMARKET = "http://www.aglhz.com/mall/m/index.html?payFrom=2&token=%1&lng=%2&lat=%3";
+    //生活超市
+    String SUPERMARKET = "http://www.aglhz.com/mall/m/index.html?appType=2&payFrom=2&token=%1&lng=%2&lat=%3";
 
     String WULIU_SEARCH = "http://www.aglhz.com/sub_property_ysq/m/mall_zyg/html/wuliuSearch.html?appType=2&token=";
 
@@ -123,7 +124,6 @@ public interface ApiService {
     String REPORT_URL = "http://www.aglhz.com/sub_property_ysq/m/html/report.html?token=%1$s&infoType=%2$s&infoFid=%3$s&appType=2";
 
     String REPORT_SERVICE_URL = "http://www.aglhz.com/sub_property_ysq/m/html/report.html?token=%1$s&infoFid=%2$s&appType=2";
-
 
     String BUSINESS_LICENSE_URL = "http://www.aglhz.com/sub_property_ysq/wx_public/html/merchantLicense.html?fid=";
 

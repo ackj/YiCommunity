@@ -241,7 +241,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void error(String errorMessage) {
-        openDoorialog.setError();
+        if (openDoorialog != null) {
+            openDoorialog.setError();
+        }
         dismissLoadingDialog();
         ptrFrameLayout.refreshComplete();
         adapter.notifyItemChanged(0);
@@ -277,7 +279,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseOpenDoor() {
-        openDoorialog.setSuccess();
+        if (openDoorialog != null) {
+            openDoorialog.setSuccess();
+        }
         DialogHelper.successSnackbar(getView(), "开门成功，欢迎回家，我的主人！");
     }
 
