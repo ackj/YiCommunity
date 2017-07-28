@@ -23,6 +23,7 @@ public interface QuickOpenDoorContract {
         //刷新界面，响应楼栋返回的数据
         void responseQuickOpenDoor(BaseBean mBaseBean);
 
+        void responseResetOneKeyOpenDoor(BaseBean baseBean);
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -32,11 +33,14 @@ public interface QuickOpenDoorContract {
         //请求楼栋列表数据
         void requestQuickOpenDoor(Params params);
 
+        void requestResetOneKeyOpenDoor(Params params);
     }
 
     interface Model extends BaseContract.Model {
         Observable<DoorListBean> requestDoors(Params params);
 
         Observable<BaseBean> requestSetQuickOpenDoor(Params params);
+
+        Observable<BaseBean> requestResetOneKeyOpenDoor(Params params);
     }
 }

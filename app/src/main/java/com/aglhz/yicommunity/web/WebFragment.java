@@ -24,6 +24,7 @@ import com.aglhz.yicommunity.common.JavaScriptObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
@@ -40,8 +41,11 @@ public class WebFragment extends BaseFragment {
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.toolbar_menu)
+    TextView toolbarMenu;
     private String title;
     private String link;
+    private Unbinder unbinder;
 
     public static WebFragment newInstance(String title, String link) {
         ALog.e(TAG, "link-->" + link);
@@ -70,7 +74,7 @@ public class WebFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_web, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -88,7 +92,9 @@ public class WebFragment extends BaseFragment {
             toolbarTitle.setText(title);
         }
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-        toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
+        toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
+        toolbarMenu.setText("关闭");
+        toolbarMenu.setOnClickListener(v -> _mActivity.onBackPressedSupport());
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -115,7 +121,9 @@ public class WebFragment extends BaseFragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                ptrFramlayout.refreshComplete();
+                if (ptrFramlayout != null) {
+                    ptrFramlayout.refreshComplete();
+                }
             }
 
             @Override
@@ -134,9 +142,7 @@ public class WebFragment extends BaseFragment {
 
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-
                 ALog.e("onReceiveValue::" + message);
-
                 return super.onJsAlert(view, url, message, result);
             }
         });
@@ -159,7 +165,9 @@ public class WebFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
         if (mWebView != null) {
             mWebView.removeAllViews();
             mWebView.destroy();
@@ -168,6 +176,5 @@ public class WebFragment extends BaseFragment {
             }
             mWebView = null;
         }
-        super.onDestroy();
     }
 }

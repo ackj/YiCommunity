@@ -19,9 +19,9 @@ public class LaunchActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
+        setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.fl_launch_activity, SplashFragment.newInstance());
+            loadRootFragment(R.id.fl_main_activity, SplashFragment.newInstance());
         }
     }
 

@@ -102,8 +102,6 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     @Override
     public void start(Object response) {
         dismissLoadingDialog();
-
-
         UserHelper.setRemember(cbRemember.isChecked());
         EventBus.getDefault().post(new EventData(Constants.login));
         _mActivity.finish();
@@ -164,10 +162,9 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
     @Override
     protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
-        ALog.e("requestCode-->" + requestCode);
-        ALog.e("resultCode-->" + resultCode);
-        ALog.e("data-->" + data.getString(UserHelper.ACCOUNT, ""));
-        ALog.e("data-->" + data.getString(UserHelper.PASSWORD, ""));
+        if (data == null) {
+            return;
+        }
 
         if (requestCode == LOGIN_REQUEST && resultCode == SupportFragment.RESULT_OK) {
             etUsername.setText(data.getString(UserHelper.ACCOUNT, ""));

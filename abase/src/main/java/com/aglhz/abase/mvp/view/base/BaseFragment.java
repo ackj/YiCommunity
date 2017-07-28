@@ -125,7 +125,7 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
 
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
-                AudioPlayer.getInstance(_mActivity).play(1);
+                AudioPlayer.getInstance(_mActivity).play(AudioPlayer.REFRESH);
                 ALog.e("______________onRefresh________________");
                 onRefresh();
             }

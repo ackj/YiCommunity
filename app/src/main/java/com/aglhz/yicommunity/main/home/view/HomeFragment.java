@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.aglhz.abase.common.AudioPlayer;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -23,6 +25,7 @@ import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
+import com.aglhz.yicommunity.entity.bean.OneKeyDoorBean;
 import com.aglhz.yicommunity.entity.bean.ServiceBean;
 import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 import com.aglhz.yicommunity.event.EventCommunity;
@@ -68,6 +71,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     private String normalNotice = "欢迎来到亿社区！";
     private Params params = Params.getInstance();
     private OpenDoorDialog openDoorialog;
+    private List<OneKeyDoorBean.DataBean.ItemListBean> oneKeyDoorList = new ArrayList<>();
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -145,6 +149,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         //add footer
         View footerView = LayoutInflater.from(_mActivity).inflate(R.layout.footer_no_anymore, null, false);
         adapter.addFooterView(footerView);
+
+        mPresenter.requestOneKeyOpenDoorDeviceList(params);
     }
 
     private void initPtrFrameLayout() {
@@ -193,10 +199,35 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 case HomeBean.TYPE_COMMUNITY_FUNCTION:
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
-                            showQuickOpenDoorDialog();
-                            view.postDelayed(() -> {
-                                mPresenter.requestOpenDoor();
-                            }, 1000);
+                            //请求列表
+
+//                            MultiSelectorDialog dialog = MultiSelectorDialog.builder(_mActivity)
+//                                    .setTitle("请选择开哪扇门")
+//                                    .setTabVisible(false)
+//                                    .setLevel(1)
+//                                    .setOnItemClickListener((pagerPosition, optionPosition, option) -> ToastUtils.showToast(_mActivity, "pagerPosition-->" + pagerPosition + "\r\noptionPosition-->" + optionPosition + "\r\noption-->" + option))
+//                                    .build();
+//                            dialog.show();
+//                            List<String> devicesList = new ArrayList<>();
+//                            for (int i = 0; i < 100; i++) {
+//                                devicesList.add("dfasdfa");
+//                            }
+//                            view.postDelayed(() -> dialog.notifyDataSetChanged(devicesList),500);
+
+
+                            if (oneKeyDoorList.size() == 0) {
+                                ToastUtils.showToast(_mActivity,"该社区没有指定开门");
+                            } else if (oneKeyDoorList.size() == 1) {
+                                openDoor(oneKeyDoorList.get(0).getDir());
+                            } else {
+                                String[] selectedArr = new String[oneKeyDoorList.size()];
+                                for (int i = 0; i < oneKeyDoorList.size(); i++) {
+                                    selectedArr[i] = oneKeyDoorList.get(i).getName();
+                                }
+                                new AlertDialog.Builder(_mActivity)
+                                        .setTitle("请选择开门")
+                                        .setItems(selectedArr, (dialog, which) -> openDoor(oneKeyDoorList.get(which).getDir())).show();
+                            }
                             break;
                         case R.id.ll_property_payment:
                             _mActivity.start(PropertyPayFragment.newInstance());
@@ -217,6 +248,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         });
     }
 
+    private void openDoor(String dir) {
+        UserHelper.dir = dir;
+        showQuickOpenDoorDialog();
+        recyclerView.postDelayed(() -> {
+            mPresenter.requestOpenDoor();
+        }, 1000);
+    }
+
     public void go2Web(String title, String link) {
         Intent intent = new Intent(_mActivity, WebActivity.class);
         intent.putExtra(Constants.KEY_TITLE, title);
@@ -229,6 +268,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         super.onDestroyView();
         unbinder.unbind();
         EventBus.getDefault().unregister(this);
+        AudioPlayer.getInstance(_mActivity).clear();
         if (adapter != null) {
             adapter = null;
         }
@@ -240,7 +280,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void error(String errorMessage) {
-        openDoorialog.setError();
+        if (openDoorialog != null) {
+            openDoorialog.setError();
+        }
         dismissLoadingDialog();
         ptrFrameLayout.refreshComplete();
         adapter.notifyItemChanged(0);
@@ -276,7 +318,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseOpenDoor() {
-        openDoorialog.setSuccess();
+        if (openDoorialog != null) {
+            openDoorialog.setSuccess();
+        }
         DialogHelper.successSnackbar(getView(), "开门成功，欢迎回家，我的主人！");
     }
 
@@ -286,6 +330,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         ALog.e(TAG, "responseServiceClassifyList size:" + classifys.size());
         adapter.getData().get(3).setServicesClassifyList(classifys);
         adapter.notifyItemChanged(3);
+    }
+
+    @Override
+    public void responseOneKeyOpenDoorDeviceList(List<OneKeyDoorBean.DataBean.ItemListBean> doorList) {
+        this.oneKeyDoorList = doorList;
     }
 
     public void go2TopAndRefresh() {

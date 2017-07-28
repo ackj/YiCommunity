@@ -127,7 +127,6 @@ public class DoorListBean {
          * quickopen : false
          * houses : []
          */
-
         private String name;
         private String dir;
         private boolean online;

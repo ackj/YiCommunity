@@ -82,4 +82,17 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestOneKeyOpenDoorDeviceList(Params params) {
+        mRxManager.add(mModel.requestOneKeyOpenDoorDeviceList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(oneKeyDoorBean -> {
+                    if (oneKeyDoorBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseOneKeyOpenDoorDeviceList(oneKeyDoorBean.getData().getItemList());
+                    } else {
+                        getView().error(oneKeyDoorBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }

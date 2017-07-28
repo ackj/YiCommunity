@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.view.Window;
 
+import com.aglhz.abase.common.AudioPlayer;
 import com.aglhz.yicommunity.R;
 
 import java.io.IOException;
@@ -37,42 +38,40 @@ public class OpenDoorDialog extends Dialog {
         setCanceledOnTouchOutside(false);
     }
 
-    public void setOpenDoor(){
+    public void setOpenDoor() {
         try {
-            GifDrawable gifFromAssets = new GifDrawable(context.getAssets(),"monkey_open_door_200px.gif");
+            AudioPlayer.getInstance(context).play(AudioPlayer.KNOCK, 1, 1, 0, -1, 1F);
+            GifDrawable gifFromAssets = new GifDrawable(context.getAssets(), "monkey_open_door_200px.gif");
             gifImageView.setImageDrawable(gifFromAssets);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void setError(){
+    public void setError() {
         try {
-            GifDrawable gifFromAssets = new GifDrawable(context.getAssets(),"open_door_error_200px.gif");
+            AudioPlayer.getInstance(context).stop();
+            GifDrawable gifFromAssets = new GifDrawable(context.getAssets(), "open_door_error_200px.gif");
             gifImageView.setImageDrawable(gifFromAssets);
-            gifImageView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    gifImageView.setImageDrawable(null);
-                    dismiss();
-                }
-            },1500);
+            gifImageView.postDelayed(() -> {
+                gifImageView.setImageDrawable(null);
+                dismiss();
+            }, 1500);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void setSuccess(){
+    public void setSuccess() {
         try {
-            GifDrawable gifFromAssets = new GifDrawable(context.getAssets(),"open_door_success_200px.gif");
+            AudioPlayer.getInstance(context).stop();
+            AudioPlayer.getInstance(context).play(AudioPlayer.OPEN);
+            GifDrawable gifFromAssets = new GifDrawable(context.getAssets(), "open_door_success_200px.gif");
             gifImageView.setImageDrawable(gifFromAssets);
-            gifImageView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    gifImageView.setImageDrawable(null);
-                    dismiss();
-                }
-            },1500);
+            gifImageView.postDelayed(() -> {
+                gifImageView.setImageDrawable(null);
+                dismiss();
+            }, 1500);
         } catch (IOException e) {
             e.printStackTrace();
         }

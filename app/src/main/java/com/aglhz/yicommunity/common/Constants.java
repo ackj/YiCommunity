@@ -112,7 +112,7 @@ public class Constants {
 
     public static final int TYPE_REMARK = 107;//社区服务点评回复
 
-    //——————————————区分debug版和非debug版的baseurl——————————————————————
+    //——————————————以下是区分debug版和非debug版的baseurl——————————————————————
 
     public static String BASE_PROPERTY = "";
     public static String BASE_USER = "";
@@ -121,12 +121,12 @@ public class Constants {
     static {
         if (BuildConfig.DEBUG) {
             //调试可以改这里的地址。
-//            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-//            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
 //            BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
 
-            BASE_USER = "http://192.168.7.116:8080/memberSYS-m";           //用户
-            BASE_PROPERTYCFG_M = "http://192.168.7.116:8080/propertyCFG-m";
+//            BASE_USER = "http://192.168.7.116:8080/memberSYS-m";           //用户
+//            BASE_PROPERTYCFG_M = "http://192.168.7.116:8080/propertyCFG-m";
             BASE_PROPERTY = "http://192.168.7.116:8080/sub_property_ysq";//物业调试IP
 
 //            BASE_PROPERTY = "http://192.168.7.101:8080/sub_property_ysq";   //小张主机物业调试IP
@@ -137,5 +137,6 @@ public class Constants {
             BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
         }
     }
+    //——————————————以上是区分debug版和非debug版的baseurl——————————————————————
 
 }

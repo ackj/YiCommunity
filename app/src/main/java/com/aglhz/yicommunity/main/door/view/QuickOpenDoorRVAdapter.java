@@ -28,14 +28,12 @@ public class QuickOpenDoorRVAdapter extends BaseRecyclerViewAdapter<DoorListBean
     }
 
     public void setSelectedItem(int position) {
-        mData.get(prePosition).setQuickopen(false);
-        mData.get(position).setQuickopen(true);
-        notifyItemChanged(prePosition);
-        notifyItemChanged(position);
-        prePosition = position;
-    }
+        mData.get(position).setQuickopen(!mData.get(position).isQuickopen());
 
-    public DoorListBean.DataBean getSelectedData() {
-        return mData.get(prePosition);
+//        mData.get(prePosition).setQuickopen(false);
+//        mData.get(position).setQuickopen(true);
+//        notifyItemChanged(prePosition);
+        notifyItemChanged(position);
+//        prePosition = position;
     }
 }

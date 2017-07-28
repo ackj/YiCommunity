@@ -26,7 +26,7 @@ public class HttpHelper {
     public static String BASE_URL = "http://www.aglhz.com:8090";
     private static OkHttpClient mOkHttpClient;
     private static Retrofit mRetrofit;
-    private static final int TIMEOUT = 35;
+    private static final int TIMEOUT = 15;
 
     //构造方法私有
     private HttpHelper() {

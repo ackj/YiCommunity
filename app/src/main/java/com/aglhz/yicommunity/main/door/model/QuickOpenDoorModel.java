@@ -46,4 +46,16 @@ public class QuickOpenDoorModel extends BaseModel implements QuickOpenDoorContra
                         params.deviceName)
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<BaseBean> requestResetOneKeyOpenDoor(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestResetOneKeyOpenDoor(ApiService.requestResetOneKeyOpenDoor,
+                        params.token,
+                        params.cmnt_c,
+                        params.directories)
+                .subscribeOn(Schedulers.io());
+    }
+
+
 }

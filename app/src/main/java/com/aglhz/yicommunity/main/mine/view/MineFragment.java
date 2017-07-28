@@ -236,13 +236,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-
     private void createShortCut() {
         Intent shortcutIntent = new Intent();
         //设置点击快捷方式时启动的Activity,因为是从Lanucher中启动，所以包名类名要写全。
@@ -348,6 +341,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     private void go2Web(String title, String link) {
