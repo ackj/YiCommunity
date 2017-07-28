@@ -149,8 +149,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         //add footer
         View footerView = LayoutInflater.from(_mActivity).inflate(R.layout.footer_no_anymore, null, false);
         adapter.addFooterView(footerView);
-
-        mPresenter.requestOneKeyOpenDoorDeviceList(params);
     }
 
     private void initPtrFrameLayout() {
@@ -213,21 +211,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 //                                devicesList.add("dfasdfa");
 //                            }
 //                            view.postDelayed(() -> dialog.notifyDataSetChanged(devicesList),500);
-
-
-                            if (oneKeyDoorList.size() == 0) {
-                                ToastUtils.showToast(_mActivity,"该社区没有指定开门");
-                            } else if (oneKeyDoorList.size() == 1) {
-                                openDoor(oneKeyDoorList.get(0).getDir());
-                            } else {
-                                String[] selectedArr = new String[oneKeyDoorList.size()];
-                                for (int i = 0; i < oneKeyDoorList.size(); i++) {
-                                    selectedArr[i] = oneKeyDoorList.get(i).getName();
-                                }
-                                new AlertDialog.Builder(_mActivity)
-                                        .setTitle("请选择开门")
-                                        .setItems(selectedArr, (dialog, which) -> openDoor(oneKeyDoorList.get(which).getDir())).show();
-                            }
+                            showLoadingDialog();
+                            mPresenter.requestOneKeyOpenDoorDeviceList(params);
                             break;
                         case R.id.ll_property_payment:
                             _mActivity.start(PropertyPayFragment.newInstance());
@@ -335,6 +320,20 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void responseOneKeyOpenDoorDeviceList(List<OneKeyDoorBean.DataBean.ItemListBean> doorList) {
         this.oneKeyDoorList = doorList;
+        dismissLoadingDialog();
+        if (oneKeyDoorList.size() == 0) {
+            ToastUtils.showToast(_mActivity,"该社区没有指定开门");
+        } else if (oneKeyDoorList.size() == 1) {
+            openDoor(oneKeyDoorList.get(0).getDir());
+        } else {
+            String[] selectedArr = new String[oneKeyDoorList.size()];
+            for (int i = 0; i < oneKeyDoorList.size(); i++) {
+                selectedArr[i] = oneKeyDoorList.get(i).getName();
+            }
+            new AlertDialog.Builder(_mActivity)
+                    .setTitle("请选择开门")
+                    .setItems(selectedArr, (dialog, which) -> openDoor(oneKeyDoorList.get(which).getDir())).show();
+        }
     }
 
     public void go2TopAndRefresh() {
