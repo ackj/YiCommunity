@@ -60,4 +60,17 @@ public class QuickOpenDoorPresenter extends BasePresenter<QuickOpenDoorContract.
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestResetOneKeyOpenDoor(Params params) {
+        mRxManager.add(mModel.requestResetOneKeyOpenDoor(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(baseBean -> {
+                    if (baseBean.getOther().getCode() == 200) {
+                        getView().responseResetOneKeyOpenDoor(baseBean);
+                    } else {
+                        getView().error(baseBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }

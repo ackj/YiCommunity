@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
@@ -103,12 +105,25 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
             if (adapter == null || adapter.getData().isEmpty()) {
                 return;
             }
-            String dir = adapter.getSelectedData().getDir();
-            String name = adapter.getSelectedData().getName();
-            Params params = Params.getInstance();
-            params.directory = dir;
-            params.deviceName = name;
-            mPresenter.requestQuickOpenDoor(params);//请求设置一键开门
+//            String dir = adapter.getSelectedData().getDir();
+//            String name = adapter.getSelectedData().getName();
+//            Params params = Params.getInstance();
+//            params.directory = dir;
+//            params.deviceName = name;
+//            mPresenter.requestQuickOpenDoor(params);//请求设置一键开门
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < adapter.getData().size(); i++) {
+                if(adapter.getData().get(i).isQuickopen()){
+                    if(TextUtils.isEmpty(stringBuilder.toString())){
+                        stringBuilder.append(adapter.getData().get(i).getDir());
+                    }else{
+                        stringBuilder.append(","+adapter.getData().get(i).getDir());
+                    }
+                }
+            }
+            params.directories = stringBuilder.toString();
+            ALog.e(TAG,"params.directories:"+params.directories);
+            mPresenter.requestResetOneKeyOpenDoor(params);
         });
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
         toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
@@ -129,6 +144,7 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
         }, recyclerView);
 
         recyclerView.setAdapter(adapter);
+
     }
 
     private void initStateManager() {
@@ -184,7 +200,12 @@ public class QuickOpenDoorFragment extends BaseFragment<QuickOpenDoorContract.Pr
     @Override
     public void responseQuickOpenDoor(BaseBean mBaseBean) {
         DialogHelper.successSnackbar(getView(), "设置成功！");
-        UserHelper.setDir(adapter.getSelectedData().getDir());
+//        UserHelper.setDir(adapter.getSelectedData().getDir());
+    }
+
+    @Override
+    public void responseResetOneKeyOpenDoor(BaseBean baseBean) {
+        DialogHelper.successSnackbar(getView(), "设置成功！");
     }
 
     @Override

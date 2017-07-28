@@ -193,7 +193,9 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     @Override
     public void error(String errorMessage) {
         ptrFrameLayout.refreshComplete();
-        openDoorDialog.setError();
+        if(openDoorDialog !=null){
+            openDoorDialog.setError();
+        }
         DialogHelper.warningSnackbar(getView(), errorMessage);//后面换成pagerstate的提示，不需要这种了
         if (params.page == 1) {
             //为后面的pageState做准备

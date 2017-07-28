@@ -2,7 +2,6 @@ package com.aglhz.yicommunity.main.home.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +14,7 @@ import com.aglhz.abase.common.AudioPlayer;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -24,10 +24,10 @@ import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
+import com.aglhz.yicommunity.entity.bean.OneKeyDoorBean;
 import com.aglhz.yicommunity.entity.bean.ServiceBean;
 import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 import com.aglhz.yicommunity.event.EventCommunity;
-import com.aglhz.yicommunity.main.MainActivity;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 import com.aglhz.yicommunity.main.home.presenter.HomePresenter;
 import com.aglhz.yicommunity.main.home.view.header.RentalsSunHeaderView;
@@ -71,6 +71,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     private String normalNotice = "欢迎来到亿社区！";
     private Params params = Params.getInstance();
     private OpenDoorDialog openDoorialog;
+    private List<OneKeyDoorBean.DataBean.ItemListBean> oneKeyDoorList = new ArrayList<>();
+    private MultiSelectorDialog dialog;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -101,7 +103,15 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     private void initView() {
-
+        dialog = MultiSelectorDialog.builder(_mActivity)
+                .setTitle("请选择开哪扇门")
+                .setTabVisible(false)
+                .setOnItemClickListener((pagerPosition, optionPosition, option) -> {
+                    dialog.dismiss();
+                    ALog.e("pagerPosition-->" + pagerPosition + "\r\noptionPosition-->" + optionPosition + "\r\noption-->" + option);
+                    openDoor(oneKeyDoorList.get(optionPosition).getDir());
+                })
+                .build();
     }
 
     private void initData() {
@@ -200,10 +210,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 case HomeBean.TYPE_COMMUNITY_FUNCTION:
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
-                            showQuickOpenDoorDialog();
-                            view.postDelayed(() -> {
-                                mPresenter.requestOpenDoor();
-                            }, 1000);
+                            showLoadingDialog();
+                            //请求列表
+                            mPresenter.requestOneKeyOpenDoorDeviceList(params);
                             break;
                         case R.id.ll_property_payment:
                             _mActivity.start(PropertyPayFragment.newInstance());
@@ -222,6 +231,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     break;
             }
         });
+    }
+
+    private void openDoor(String dir) {
+        UserHelper.dir = dir;
+        showQuickOpenDoorDialog();
+        recyclerView.postDelayed(() -> {
+            mPresenter.requestOpenDoor();
+        }, 1000);
     }
 
     public void go2Web(String title, String link) {
@@ -298,6 +315,32 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         ALog.e(TAG, "responseServiceClassifyList size:" + classifys.size());
         adapter.getData().get(3).setServicesClassifyList(classifys);
         adapter.notifyItemChanged(3);
+    }
+
+    @Override
+    public void responseOneKeyOpenDoorDeviceList(List<OneKeyDoorBean.DataBean.ItemListBean> doorList) {
+        this.oneKeyDoorList = doorList;
+        dismissLoadingDialog();
+        if (oneKeyDoorList.size() == 0) {
+            ToastUtils.showToast(_mActivity, "该社区没有指定开门");
+        } else if (oneKeyDoorList.size() == 1) {
+            openDoor(oneKeyDoorList.get(0).getDir());
+        } else {
+//            String[] selectedArr = new String[oneKeyDoorList.size()];
+//            for (int i = 0; i < oneKeyDoorList.size(); i++) {
+//                selectedArr[i] = oneKeyDoorList.get(i).getName();
+//            }
+//            new AlertDialog.Builder(_mActivity)
+//                    .setTitle("请选择开门")
+//                    .setItems(selectedArr, (dialog, which) -> openDoor(oneKeyDoorList.get(which).getDir())).show();
+            dialog.show();
+
+            List<String> list = new ArrayList<>();
+            for (OneKeyDoorBean.DataBean.ItemListBean itemListBean : oneKeyDoorList) {
+                list.add(itemListBean.getName());
+            }
+            getView().postDelayed(() -> dialog.notifyDataSetChanged(list), 200);
+        }
     }
 
     public void go2TopAndRefresh() {

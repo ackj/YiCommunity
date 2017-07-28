@@ -8,6 +8,7 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.NoticeBean;
+import com.aglhz.yicommunity.entity.bean.OneKeyDoorBean;
 import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 
@@ -71,6 +72,15 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
                 .requestServiceClassifyList(ApiService.requestServiceClassifyList,
                         params.page,
                         params.pageSize,
+                        Params.cmnt_c)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<OneKeyDoorBean> requestOneKeyOpenDoorDeviceList(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestOneKeyOpenDoorDeviceList(ApiService.requestOneKeyOpenDoorDeviceList,
+                        params.token,
                         Params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }

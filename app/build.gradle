@@ -112,5 +112,4 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
     //一个底部弹框的级联选择器
     compile 'com.github.leguang:MultiSelector:1.3'
-
 }

@@ -96,6 +96,7 @@ public class Params {
     public String ofids; //多个时用“,”分隔。
     public int topnum = 1;
     public boolean isCleanAll;//是否删除全部
+    public String directories;//设备编号，用逗号分开
 
 
     private Params() {
