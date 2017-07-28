@@ -110,4 +110,7 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     //Gif图加载框架
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
+    //一个底部弹框的级联选择器
+    compile 'com.github.leguang:MultiSelector:1.3'
+
 }

@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.main.home.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.aglhz.yicommunity.entity.bean.HomeBean;
 import com.aglhz.yicommunity.entity.bean.ServiceBean;
 import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 import com.aglhz.yicommunity.event.EventCommunity;
+import com.aglhz.yicommunity.main.MainActivity;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 import com.aglhz.yicommunity.main.home.presenter.HomePresenter;
 import com.aglhz.yicommunity.main.home.view.header.RentalsSunHeaderView;
@@ -46,6 +48,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.itsite.multiselector.MultiSelectorDialog;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
@@ -91,11 +94,15 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initView();
         initData();
         initListener();
         initPtrFrameLayout();
     }
 
+    private void initView() {
+
+    }
 
     private void initData() {
         layoutManager = new LinearLayoutManager(_mActivity);
