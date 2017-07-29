@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.mine;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
@@ -82,18 +81,13 @@ public class QuickOpenActivity extends BaseActivity {
                                         })
                                         .show();
 
-                                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialog) {
-                                        finish();
-                                    }
-                                });
+                                dialog.setOnCancelListener(dialog1 -> finish());
 
                                 List<String> list = new ArrayList<>();
                                 for (OneKeyDoorBean.DataBean.ItemListBean itemListBean : oneKeyDoorList) {
                                     list.add(itemListBean.getName());
                                 }
-                                rootView.postDelayed(() -> dialog.notifyDataSetChanged(list), 200);
+                                rootView.post(() -> dialog.notifyDataSetChanged(list));
 
                             }
                         }, throwable -> {

@@ -36,9 +36,9 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
     }
 
     @Override
-    public Observable<BannerBean> requestBanners() {
+    public Observable<BannerBean> requestBanners(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .requestBanners(ApiService.requestBanners)
+                .requestBanners(ApiService.requestBanners, params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 

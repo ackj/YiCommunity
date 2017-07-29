@@ -74,6 +74,8 @@ public class Params {
     public int type;//1.支付宝;2.微信
     public int pageSize = Constants.PAGE_SIZE;
     public int status;
+    public int timeset;
+    public int maxTimes;
     public int page = 1;
     public int monthCount;//月数值：1、6、12
     public int carpoolType;

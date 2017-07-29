@@ -36,8 +36,8 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     }
 
     @Override
-    public void requestBanners() {
-        mRxManager.add(mModel.requestBanners()
+    public void requestBanners(Params params) {
+        mRxManager.add(mModel.requestBanners(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bannerBean -> {
                     if (bannerBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {

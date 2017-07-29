@@ -186,7 +186,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 AudioPlayer.getInstance(_mActivity).play(1);
-                mPresenter.requestBanners();
+                mPresenter.requestBanners(params);
                 mPresenter.requestHomeNotices(params);
                 mPresenter.requestServiceTypes(params);
             }
@@ -298,6 +298,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         adapter.getData().get(0).community = UserHelper.city + UserHelper.communityName;
+        params.cmnt_c = UserHelper.communityCode;
         ptrFrameLayout.autoRefresh();
     }
 

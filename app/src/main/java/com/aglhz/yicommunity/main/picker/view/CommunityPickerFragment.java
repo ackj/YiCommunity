@@ -144,6 +144,7 @@ public class CommunityPickerFragment extends BaseFragment<CommunityPickerContrac
 
             //设置小区
             UserHelper.setCommunity(community.getName(), community.getCode());
+
             EventBus.getDefault().post(new EventCommunity(community));
             _mActivity.finish();
         });

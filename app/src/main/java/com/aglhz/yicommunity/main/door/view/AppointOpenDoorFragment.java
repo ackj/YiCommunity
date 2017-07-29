@@ -143,12 +143,12 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
     /**
      * 响应请求
      *
-     * @param datas
+     * @param data
      */
     @Override
-    public void responseDoors(DoorListBean datas) {
+    public void responseDoors(DoorListBean data) {
         ptrFrameLayout.refreshComplete();
-        if (datas == null || datas.getData().isEmpty()) {
+        if (data == null || data.getData().isEmpty()) {
             if (params.page == 1) {
                 mStateManager.showEmpty();
             }
@@ -157,10 +157,10 @@ public class AppointOpenDoorFragment extends BaseFragment<AppointOpenDoorContrac
         }
         if (params.page == 1) {
             mStateManager.showContent();
-            adapter.setNewData(datas.getData());
+            adapter.setNewData(data.getData());
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
-            adapter.addData(datas.getData());
+            adapter.addData(data.getData());
             adapter.setEnableLoadMore(true);
             adapter.loadMoreComplete();
         }
