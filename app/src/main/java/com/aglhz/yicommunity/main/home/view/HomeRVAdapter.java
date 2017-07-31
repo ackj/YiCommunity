@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseActivity;
@@ -56,7 +57,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
         switch (helper.getItemViewType()) {
             case HomeBean.TYPE_COMMUNITY_BANNER:
                 helper.addOnClickListener(R.id.fl_item_banner)
-                        .setText(R.id.tv_location_item_banner, item.community);
+                        .setText(R.id.tv_location_item_banner, TextUtils.isEmpty(item.community)?"请选择社区":item.community);
                 Banner banner = helper.getView(R.id.viewpager_item_banner);
                 List<BannerBean.DataBean.AdvsBean> banners = item.getBanners();
                 if (banners != null && banners.size() > 0) {
