@@ -30,6 +30,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author：leguang on 2017/4/12 0009 15:49
  * Email：langmanleguang@qq.com
+ *
+ * 负责项目中的web部分。
  */
 public class WebFragment extends BaseFragment {
     private static final String TAG = WebFragment.class.getSimpleName();
