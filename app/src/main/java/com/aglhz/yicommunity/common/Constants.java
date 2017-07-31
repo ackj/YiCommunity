@@ -1,6 +1,8 @@
 package com.aglhz.yicommunity.common;
 
 
+import com.aglhz.yicommunity.BuildConfig;
+
 /**
  * Author：leguang on 2016/10/9 0009 15:49
  * Email：langmanleguang@qq.com
@@ -117,26 +119,17 @@ public class Constants {
     public static String BASE_PROPERTYCFG_M = "";
 
     static {
-//        if (BuildConfig.DEBUG) {
-//            //调试可以改这里的地址。
-//            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-//            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
-////            BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
-//
-        BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-        BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
-
-////            BASE_USER = "http://192.168.7.116:8080/memberSYS-m";           //用户
-////            BASE_PROPERTYCFG_M = "http://192.168.7.116:8080/propertyCFG-m";
-            BASE_PROPERTY = "http://192.168.250.113:8080/sub_property_ysq";//物业调试IP
-//
-////            BASE_PROPERTY = "http://192.168.7.101:8080/sub_property_ysq";   //小张主机物业调试IP
-//        } else {
+        if (BuildConfig.DEBUG) {
+            //调试可以改这里的地址。
+            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+            BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
+        } else {
             //这里的是正式版的基础地址，永远不要动。
-//            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-//            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
-//            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-//        }
+            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+        }
     }
     //——————————————以上是区分debug版和非debug版的baseurl——————————————————————
 
