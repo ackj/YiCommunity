@@ -57,18 +57,6 @@ public class QuickOpenActivity extends BaseActivity {
                                 UserHelper.dir = oneKeyDoorList.get(0).getDir();
                                 openDoor();
                             } else {
-                                String[] selectedArr = new String[oneKeyDoorList.size()];
-                                for (int i = 0; i < oneKeyDoorList.size(); i++) {
-                                    selectedArr[i] = oneKeyDoorList.get(i).getName();
-                                }
-//                        new AlertDialog.Builder(this)
-//                                .setTitle("请选择开门")
-//                                .setItems(selectedArr, (dialog, which) -> {
-//                                    UserHelper.dir = oneKeyDoorList.get(which).getDir();
-//                                    openDoor();
-//                                })
-//                                .setCancelable(false)
-//                                .show();
 
                                 dialog = MultiSelectorDialog.builder(QuickOpenActivity.this)
                                         .setTitle("请选择开哪扇门")

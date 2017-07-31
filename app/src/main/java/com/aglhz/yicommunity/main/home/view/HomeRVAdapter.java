@@ -59,7 +59,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
         switch (helper.getItemViewType()) {
             case HomeBean.TYPE_COMMUNITY_BANNER:
                 helper.addOnClickListener(R.id.fl_item_banner)
-                        .setText(R.id.tv_location_item_banner, TextUtils.isEmpty(item.community)?"请选择社区":item.community);
+                        .setText(R.id.tv_location_item_banner, TextUtils.isEmpty(item.community) ? "请选择社区" : item.community);
                 Banner banner = helper.getView(R.id.viewpager_item_banner);
                 List<BannerBean.DataBean.AdvsBean> banners = item.getBanners();
                 if (banners != null && banners.size() > 0) {
@@ -70,14 +70,14 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                             ALog.e("bean.getCover()-->" + bean.getCover());
                             Glide.with(context).
                                     load(bean.getCover())
-                                    .error(R.drawable.ic_normal_banner)
-                                    .placeholder(R.drawable.ic_normal_banner)
+                                    .error(R.drawable.bg_normal_banner_red_1200_600)
+                                    .placeholder(R.drawable.bg_normal_banner_red_1200_600)
                                     .into(imageView);
                         }
                     }).start();
-                }else{
+                } else {
                     List<Integer> normal = new ArrayList<>();
-                    normal.add(R.drawable.ic_normal_banner);
+                    normal.add(R.drawable.bg_normal_banner_red_1200_600);
                     banner.setImages(normal).setImageLoader(new ImageLoader() {
                         @Override
                         public void displayImage(Context context, Object path, ImageView imageView) {

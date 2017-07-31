@@ -330,7 +330,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void responseServiceClassifyList(List<ServicesTypesBean.DataBean.ClassifyListBean> classifys) {
         ptrFrameLayout.refreshComplete();
-        ALog.e(TAG, "responseServiceClassifyList size:" + classifys.size());
         adapter.getData().get(3).setServicesClassifyList(classifys);
         adapter.notifyItemChanged(3);
     }
@@ -344,20 +343,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         } else if (oneKeyDoorList.size() == 1) {
             openDoor(oneKeyDoorList.get(0).getDir());
         } else {
-//            String[] selectedArr = new String[oneKeyDoorList.size()];
-//            for (int i = 0; i < oneKeyDoorList.size(); i++) {
-//                selectedArr[i] = oneKeyDoorList.get(i).getName();
-//            }
-//            new AlertDialog.Builder(_mActivity)
-//                    .setTitle("请选择开门")
-//                    .setItems(selectedArr, (dialog, which) -> openDoor(oneKeyDoorList.get(which).getDir())).show();
             dialog.show();
-
             List<String> list = new ArrayList<>();
             for (OneKeyDoorBean.DataBean.ItemListBean itemListBean : oneKeyDoorList) {
                 list.add(itemListBean.getName());
             }
-            getView().postDelayed(() -> dialog.notifyDataSetChanged(list), 200);
+            getView().post(() -> dialog.notifyDataSetChanged(list));
         }
     }
 
