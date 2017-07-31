@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.aglhz.abase.log.ALog;
@@ -28,6 +29,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +59,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
         switch (helper.getItemViewType()) {
             case HomeBean.TYPE_COMMUNITY_BANNER:
                 helper.addOnClickListener(R.id.fl_item_banner)
-                        .setText(R.id.tv_location_item_banner, item.community);
+                        .setText(R.id.tv_location_item_banner, TextUtils.isEmpty(item.community)?"请选择社区":item.community);
                 Banner banner = helper.getView(R.id.viewpager_item_banner);
                 List<BannerBean.DataBean.AdvsBean> banners = item.getBanners();
                 if (banners != null && banners.size() > 0) {
@@ -66,7 +68,22 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                         public void displayImage(Context context, Object path, ImageView imageView) {
                             BannerBean.DataBean.AdvsBean bean = (BannerBean.DataBean.AdvsBean) path;
                             ALog.e("bean.getCover()-->" + bean.getCover());
-                            Glide.with(context).load(bean.getCover()).into(imageView);
+                            Glide.with(context).
+                                    load(bean.getCover())
+                                    .error(R.drawable.ic_normal_banner)
+                                    .placeholder(R.drawable.ic_normal_banner)
+                                    .into(imageView);
+                        }
+                    }).start();
+                }else{
+                    List<Integer> normal = new ArrayList<>();
+                    normal.add(R.drawable.ic_normal_banner);
+                    banner.setImages(normal).setImageLoader(new ImageLoader() {
+                        @Override
+                        public void displayImage(Context context, Object path, ImageView imageView) {
+                            Glide.with(context).
+                                    load((Integer) path)
+                                    .into(imageView);
                         }
                     }).start();
                 }

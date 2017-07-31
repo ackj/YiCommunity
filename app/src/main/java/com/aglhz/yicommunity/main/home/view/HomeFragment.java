@@ -186,6 +186,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 AudioPlayer.getInstance(_mActivity).play(1);
+                ALog.e(TAG,"request all -- cmnt_c"+params.cmnt_c+" token:"+params.token);
                 mPresenter.requestBanners(params);
                 mPresenter.requestHomeNotices(params);
                 mPresenter.requestServiceTypes(params);
@@ -210,6 +211,20 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 case HomeBean.TYPE_COMMUNITY_FUNCTION:
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
+                            //请求列表
+//                            MultiSelectorDialog dialog = MultiSelectorDialog.builder(_mActivity)
+//                                    .setTitle("请选择开哪扇门")
+//                                    .setTabVisible(false)
+//                                    .setLevel(1)
+//                                    .setOnItemClickListener((pagerPosition, optionPosition, option) -> ToastUtils.showToast(_mActivity, "pagerPosition-->" + pagerPosition + "\r\noptionPosition-->" + optionPosition + "\r\noption-->" + option))
+//                                    .build();
+
+//                            dialog.show();
+//                            List<String> devicesList = new ArrayList<>();
+//                            for (int i = 0; i < 100; i++) {
+//                                devicesList.add("dfasdfa");
+//                            }
+//                            view.postDelayed(() -> dialog.notifyDataSetChanged(devicesList),500);
                             showLoadingDialog();
                             //请求列表
                             mPresenter.requestOneKeyOpenDoorDeviceList(params);
@@ -265,6 +280,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void error(String errorMessage) {
+        ALog.e(TAG,"error:"+errorMessage);
         if (openDoorialog != null) {
             openDoorialog.setError();
         }
@@ -277,6 +293,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseBanners(List<BannerBean.DataBean.AdvsBean> banners) {
+        ALog.e(TAG,"responseBanners:"+banners.size());
         ptrFrameLayout.refreshComplete();
         adapter.getData().get(0).setBanners(banners);
         adapter.notifyItemChanged(0);
@@ -284,10 +301,10 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseHomeNotices(List<String> notices) {
+        ALog.e(TAG,"responseHomeNotices:"+notices.size());
         ptrFrameLayout.refreshComplete();
         if (notices.size() > 0) {
             adapter.getData().get(1).notice = notices.get(0);
-            ALog.e(TAG, "responseHomeNotices:" + notices.size());
             adapter.notifyItemChanged(1);
         } else {
             adapter.getData().get(1).notice = normalNotice;

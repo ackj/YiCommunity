@@ -104,9 +104,10 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
         ImageView ivAvatar = helper.getView(R.id.iv_avatar_item_moments_list);
         Glide.with(BaseApplication.mContext)
                 .load(item.getMember().getAvator())
+                .error(R.drawable.ic_default_head_image_200px)
+                .placeholder(R.drawable.ic_default_head_image_200px)
                 .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
                 .into(ivAvatar);
-
 
         FrameLayout frameLayout = helper.getView(R.id.fl_video_pics_layout);
 

@@ -96,16 +96,25 @@
                 android:layout_height="1dp"
                 android:background="@color/base_grey" />
 
-            <TextView
-                android:id="@+id/tv_address_services_detail_fragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:lines="1"
-                android:text="商户地址："
-                android:textSize="15sp" />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="15sp"
+                    android:text="商户地址："
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_address_services_detail_fragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_time_services_detail_fragment"

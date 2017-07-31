@@ -255,7 +255,7 @@ public class ServicesDetailFragment extends BaseFragment<ServicesDetailContract.
         tvTitle.setText(bean.getData().getCommodityTitle());
         tvAge.setText("商家年龄：" + bean.getData().getMerchantAge() + "年");
         tvScope.setText("服务范畴：" + bean.getData().getServiceScopes());
-        tvAddress.setText("商户地址：" + bean.getData().getAddress());
+        tvAddress.setText(bean.getData().getAddress());
         tvTime.setText("经营时间：" + bean.getData().getBusinessHours());
         tvContact.setText(Html.fromHtml("联系方式：<font color=red>" + contactWay.substring(0, 3) + "****" + contactWay.substring(7, 11) + "</font>"));
 
