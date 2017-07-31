@@ -24,8 +24,8 @@ android {
         applicationId "com.aglhz.yicommunity"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 211
-        versionName "2.1.1"
+        versionCode 212
+        versionName "2.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'x86'
@@ -110,7 +110,6 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     //Gif图加载框架
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
-
-    compile 'com.github.leguang:MultiSelector:1.1'
-
+    //一个底部弹框的级联选择器
+    compile 'com.github.leguang:MultiSelector:1.3'
 }

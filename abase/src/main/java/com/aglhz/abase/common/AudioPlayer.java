@@ -57,7 +57,6 @@ public class AudioPlayer {
             throw new Error("Please initialize first!");
         }
         streamID = mSoundPool.play(soundID, 1, 1, 0, 0, 1);
-        ALog.e("streamID-->" + streamID);
     }
 
     public void play(int soundID, float leftVolume, float rightVolume, int priority, int loop, float rate) {

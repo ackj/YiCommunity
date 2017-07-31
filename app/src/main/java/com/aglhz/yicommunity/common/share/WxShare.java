@@ -2,7 +2,6 @@ package com.aglhz.yicommunity.common.share;
 
 import android.text.TextUtils;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.common.Constants;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -26,7 +25,6 @@ public class WxShare {
             return;
         }
 
-        text = "临时密码:" + text;
         WXTextObject textObj = new WXTextObject();
         textObj.text = text;
 

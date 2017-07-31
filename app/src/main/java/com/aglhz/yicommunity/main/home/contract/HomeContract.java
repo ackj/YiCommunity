@@ -34,7 +34,7 @@ public interface HomeContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void requestBanners();
+        void requestBanners(Params params);
 
         void requestHomeNotices(Params params);
 
@@ -46,7 +46,7 @@ public interface HomeContract {
     }
 
     interface Model extends BaseContract.Model {
-        Observable<BannerBean> requestBanners();
+        Observable<BannerBean> requestBanners(Params params);
 
         Single<List<String>> requestHomeNotices(Params params);
 

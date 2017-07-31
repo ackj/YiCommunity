@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,6 +48,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.itsite.multiselector.MultiSelectorDialog;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
@@ -72,6 +72,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     private Params params = Params.getInstance();
     private OpenDoorDialog openDoorialog;
     private List<OneKeyDoorBean.DataBean.ItemListBean> oneKeyDoorList = new ArrayList<>();
+    private MultiSelectorDialog dialog;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -95,9 +96,22 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initView();
         initData();
         initListener();
         initPtrFrameLayout();
+    }
+
+    private void initView() {
+        dialog = MultiSelectorDialog.builder(_mActivity)
+                .setTitle("请选择开哪扇门")
+                .setTabVisible(false)
+                .setOnItemClickListener((pagerPosition, optionPosition, option) -> {
+                    dialog.dismiss();
+                    ALog.e("pagerPosition-->" + pagerPosition + "\r\noptionPosition-->" + optionPosition + "\r\noption-->" + option);
+                    openDoor(oneKeyDoorList.get(optionPosition).getDir());
+                })
+                .build();
     }
 
     private void initData() {
@@ -172,8 +186,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 AudioPlayer.getInstance(_mActivity).play(1);
-                ALog.e(TAG,"request all -- cmnt_c"+params.cmnt_c+" ");
-                mPresenter.requestBanners();
+                ALog.e(TAG,"request all -- cmnt_c"+params.cmnt_c+" token:"+params.token);
+                mPresenter.requestBanners(params);
                 mPresenter.requestHomeNotices(params);
                 mPresenter.requestServiceTypes(params);
             }
@@ -212,6 +226,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 //                            }
 //                            view.postDelayed(() -> dialog.notifyDataSetChanged(devicesList),500);
                             showLoadingDialog();
+                            //请求列表
                             mPresenter.requestOneKeyOpenDoorDeviceList(params);
                             break;
                         case R.id.ll_property_payment:
@@ -300,6 +315,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
         adapter.getData().get(0).community = UserHelper.city + UserHelper.communityName;
+        params.cmnt_c = UserHelper.communityCode;
         ptrFrameLayout.autoRefresh();
     }
 
@@ -324,17 +340,24 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         this.oneKeyDoorList = doorList;
         dismissLoadingDialog();
         if (oneKeyDoorList.size() == 0) {
-            ToastUtils.showToast(_mActivity,"该社区没有指定开门");
+            ToastUtils.showToast(_mActivity, "该社区没有指定开门");
         } else if (oneKeyDoorList.size() == 1) {
             openDoor(oneKeyDoorList.get(0).getDir());
         } else {
-            String[] selectedArr = new String[oneKeyDoorList.size()];
-            for (int i = 0; i < oneKeyDoorList.size(); i++) {
-                selectedArr[i] = oneKeyDoorList.get(i).getName();
+//            String[] selectedArr = new String[oneKeyDoorList.size()];
+//            for (int i = 0; i < oneKeyDoorList.size(); i++) {
+//                selectedArr[i] = oneKeyDoorList.get(i).getName();
+//            }
+//            new AlertDialog.Builder(_mActivity)
+//                    .setTitle("请选择开门")
+//                    .setItems(selectedArr, (dialog, which) -> openDoor(oneKeyDoorList.get(which).getDir())).show();
+            dialog.show();
+
+            List<String> list = new ArrayList<>();
+            for (OneKeyDoorBean.DataBean.ItemListBean itemListBean : oneKeyDoorList) {
+                list.add(itemListBean.getName());
             }
-            new AlertDialog.Builder(_mActivity)
-                    .setTitle("请选择开门")
-                    .setItems(selectedArr, (dialog, which) -> openDoor(oneKeyDoorList.get(which).getDir())).show();
+            getView().postDelayed(() -> dialog.notifyDataSetChanged(list), 200);
         }
     }
 

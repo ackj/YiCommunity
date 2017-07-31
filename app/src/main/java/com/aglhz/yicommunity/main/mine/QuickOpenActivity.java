@@ -2,10 +2,10 @@ package com.aglhz.yicommunity.main.mine;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.view.ViewGroup;
 
 import com.aglhz.abase.common.RxManager;
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.abase.utils.ToastUtils;
@@ -20,6 +20,7 @@ import com.aglhz.yicommunity.widget.OpenDoorDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.itsite.multiselector.MultiSelectorDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -33,10 +34,9 @@ public class QuickOpenActivity extends BaseActivity {
     private ViewGroup rootView;
     private RxManager rxManager = new RxManager();
     private OpenDoorDialog openDoorDialog;
-
     private LoadingDialog loadingDialog;
-
     private List<OneKeyDoorBean.DataBean.ItemListBean> oneKeyDoorList = new ArrayList<>();
+    private MultiSelectorDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,36 +45,56 @@ public class QuickOpenActivity extends BaseActivity {
         UserHelper.init();
         showLoadingDialog();
         rxManager.add(HttpHelper.getService(ApiService.class)
-                .requestOneKeyOpenDoorDeviceList(ApiService.requestOneKeyOpenDoorDeviceList, UserHelper.token, UserHelper.communityCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(oneKeyDoorBean -> {
-                    dismissLoadingDialog();
-                    oneKeyDoorList = oneKeyDoorBean.getData().getItemList();
-                    if (oneKeyDoorList.size() == 0) {
-                        ToastUtils.showToast(this,"该社区没有指定开门");
-                    } else if (oneKeyDoorList.size() == 1) {
-                        UserHelper.dir = oneKeyDoorList.get(0).getDir();
-                        openDoor();
-                    } else {
-                        String[] selectedArr = new String[oneKeyDoorList.size()];
-                        for (int i = 0; i < oneKeyDoorList.size(); i++) {
-                            selectedArr[i] = oneKeyDoorList.get(i).getName();
-                        }
-                        new AlertDialog.Builder(this)
-                                .setTitle("请选择开门")
-                                .setItems(selectedArr, (dialog, which) -> {
-                                    UserHelper.dir = oneKeyDoorList.get(which).getDir();
-                                    openDoor();
-                                })
-                                .setCancelable(false)
-                                .show();
-                    }
-                }, throwable -> {
-                    exit();
-                    dismissLoadingDialog();
-                    DialogHelper.errorSnackbar(rootView, "网络异常，请重试！");
-                })
+                        .requestOneKeyOpenDoorDeviceList(ApiService.requestOneKeyOpenDoorDeviceList, UserHelper.token, UserHelper.communityCode)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(oneKeyDoorBean -> {
+                            dismissLoadingDialog();
+                            oneKeyDoorList = oneKeyDoorBean.getData().getItemList();
+                            if (oneKeyDoorList.size() == 0) {
+                                ToastUtils.showToast(this, "该社区没有指定开门");
+                            } else if (oneKeyDoorList.size() == 1) {
+                                UserHelper.dir = oneKeyDoorList.get(0).getDir();
+                                openDoor();
+                            } else {
+                                String[] selectedArr = new String[oneKeyDoorList.size()];
+                                for (int i = 0; i < oneKeyDoorList.size(); i++) {
+                                    selectedArr[i] = oneKeyDoorList.get(i).getName();
+                                }
+//                        new AlertDialog.Builder(this)
+//                                .setTitle("请选择开门")
+//                                .setItems(selectedArr, (dialog, which) -> {
+//                                    UserHelper.dir = oneKeyDoorList.get(which).getDir();
+//                                    openDoor();
+//                                })
+//                                .setCancelable(false)
+//                                .show();
+
+                                dialog = MultiSelectorDialog.builder(QuickOpenActivity.this)
+                                        .setTitle("请选择开哪扇门")
+                                        .setTabVisible(false)
+                                        .setOnItemClickListener((pagerPosition, optionPosition, option) -> {
+                                            dialog.dismiss();
+                                            ALog.e("pagerPosition-->" + pagerPosition + "\r\noptionPosition-->" + optionPosition + "\r\noption-->" + option);
+                                            UserHelper.dir = oneKeyDoorList.get(optionPosition).getDir();
+                                            openDoor();
+                                        })
+                                        .show();
+
+                                dialog.setOnCancelListener(dialog1 -> finish());
+
+                                List<String> list = new ArrayList<>();
+                                for (OneKeyDoorBean.DataBean.ItemListBean itemListBean : oneKeyDoorList) {
+                                    list.add(itemListBean.getName());
+                                }
+                                rootView.post(() -> dialog.notifyDataSetChanged(list));
+
+                            }
+                        }, throwable -> {
+                            exit();
+                            dismissLoadingDialog();
+                            DialogHelper.errorSnackbar(rootView, "网络异常，请重试！");
+                        })
         );
 
 
@@ -122,7 +142,7 @@ public class QuickOpenActivity extends BaseActivity {
     }
 
     private void exit() {
-        rootView.postDelayed(this::finish, 2000);
+        rootView.postDelayed(this::finish, 2000);//这里尽量设置大一点，因为敲门的动画设置是1500ms结束，如果低于1500，那Activity都结束了，可是动画还在，会有泄露。
     }
 
     public void showLoadingDialog() {

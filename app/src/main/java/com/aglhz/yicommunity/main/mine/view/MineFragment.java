@@ -163,7 +163,6 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 break;
             case R.id.ll_message_center:
                 if (isLogined()) {
-//                    _mActivity.startActivity(new Intent(_mActivity, MessageActivity.class));
                     _mActivity.start(MessageCenterFragment.newInstance());
                 }
                 break;
@@ -180,16 +179,16 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
                 }
                 break;
             case R.id.ll_make_shortcut:
-                if (TextUtils.isEmpty(UserHelper.dir)) {
-                    new AlertDialog.Builder(_mActivity)
-                            .setTitle("提醒")
-                            .setMessage("检测到您尚未设置一键开门，如需设置，请点击确定。")
-                            .setPositiveButton("确定", (dialog, which) -> go2SmartDoor(Constants.SET_OPEN_DOOR))
-                            .setNegativeButton("取消", null)
-                            .show();
-                } else {
+//                if (TextUtils.isEmpty(UserHelper.dir)) {
+//                    new AlertDialog.Builder(_mActivity)
+//                            .setTitle("提醒")
+//                            .setMessage("检测到您尚未设置一键开门，如需设置，请点击确定。")
+//                            .setPositiveButton("确定", (dialog, which) -> go2SmartDoor(Constants.SET_OPEN_DOOR))
+//                            .setNegativeButton("取消", null)
+//                            .show();
+//                } else {
                     createShortCut();
-                }
+//                }
                 break;
             case R.id.ll_my_publish:
                 startActivity(new Intent(_mActivity, MyPublishActivity.class));

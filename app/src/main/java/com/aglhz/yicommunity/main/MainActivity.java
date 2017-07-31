@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
+import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.ShakeHelper;
@@ -14,6 +14,9 @@ import com.aglhz.yicommunity.main.view.MainFragment;
 
 import org.linphone.core.LinphoneCall;
 import org.linphone.core.LinphoneCore;
+
+import cn.itsite.multiselector.MultiSelectorDialog;
+import cn.itsite.multiselector.MultiSelectorInterface;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -35,7 +38,6 @@ public class MainActivity extends BaseActivity {
             loadRootFragment(R.id.fl_main_activity, MainFragment.newInstance());
         }
         handler = new Handler();
-
         setCallListener();
 
 //        shakeHelper = new ShakeHelper(this);

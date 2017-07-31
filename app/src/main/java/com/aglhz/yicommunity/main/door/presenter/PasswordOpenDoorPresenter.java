@@ -36,6 +36,19 @@ public class PasswordOpenDoorPresenter extends BasePresenter<PasswordOpenDoorCon
     }
 
     @Override
+    public void requestDoors(Params params) {
+        mRxManager.add(mModel.requestDoors(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(doorListBean -> {
+                    if (doorListBean.getOther().getCode() == 200) {
+                        getView().responseDoors(doorListBean);
+                    } else {
+                        getView().error(doorListBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
     public void requestPassword(Params params) {
         mRxManager.add(mModel.getPassword(params)
                 .observeOn(AndroidSchedulers.mainThread())

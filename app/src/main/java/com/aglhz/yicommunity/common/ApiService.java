@@ -192,13 +192,13 @@ public interface ApiService {
                                                @Query("messageFids") String messageFids);
 
 
-
     //社区Banner
     //@POST("/sub_property_ysq/client/info/indexadvs")
     String requestBanners = BASE_PROPERTY + "/client/info/indexadvs";
 
     @POST
-    Observable<BannerBean> requestBanners(@Url String url);
+    Observable<BannerBean> requestBanners(@Url String url,
+                                          @Query("cmnt_c") String cmnt_c);
 
     //反馈
     String requestSubmitFeedback = BASE_PROPERTY + "/client/feedback.do";
@@ -376,7 +376,7 @@ public interface ApiService {
     //获取门禁列表
 //    @POST("/sub_property_ysq/smartdoor/info/doormchs")
 
-//    String requestDoors = BASE_PROPERTY + "/smartdoor/info/doormchs";
+    //    String requestDoors = BASE_PROPERTY + "/smartdoor/info/doormchs";
     String requestDoors = BASE_PROPERTY + "/smartdoor/info/cmnt-device-list ";
 
     @POST
@@ -396,7 +396,9 @@ public interface ApiService {
     @POST/*("/sub_property_ysq/smartdoor/client/temppwd")*/
     Observable<PasswordBean> requestPassword(@Url String url,
                                              @Query("token") String token,
-                                             @Query("dir") String dir);
+                                             @Query("dir") String dir,
+                                             @Query("timeset") int timeset,
+                                             @Query("maxTimes") int maxTimes);
 
     //设置快速开门
     String requestSetQuickOpenDoor = BASE_PROPERTY + "/smartdoor/client/qdos";
@@ -405,16 +407,16 @@ public interface ApiService {
     Observable<BaseBean> requestSetQuickOpenDoor(@Url String url, @Query("token") String token, @Query("directory") String directory, @Query("deviceName") String deviceName);
 
     // 设置一键开门
-    String requestResetOneKeyOpenDoor = BASE_PROPERTY+"/smartdoor/client/one-key-open-door-setting";
+    String requestResetOneKeyOpenDoor = BASE_PROPERTY + "/smartdoor/client/one-key-open-door-setting";
 
     @POST
-    Observable<BaseBean> requestResetOneKeyOpenDoor(@Url String url,@Query("token")String token,@Query("cmnt_c")String cmnt_c,@Query("directories")String directories);
+    Observable<BaseBean> requestResetOneKeyOpenDoor(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c, @Query("directories") String directories);
 
     //获取一键开门列表
-    String requestOneKeyOpenDoorDeviceList = BASE_PROPERTY +"/smartdoor/info/one-key-open-door-device-list";
+    String requestOneKeyOpenDoorDeviceList = BASE_PROPERTY + "/smartdoor/info/one-key-open-door-device-list";
 
     @POST
-    Observable<OneKeyDoorBean> requestOneKeyOpenDoorDeviceList(@Url String url, @Query("token")String token, @Query("cmnt_c")String cmnt_c);
+    Observable<OneKeyDoorBean> requestOneKeyOpenDoorDeviceList(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c);
 
     //获取开门记录
     String requestOpenDoorRecord = BASE_PROPERTY + "/smartdoor/info/dooropenlog";
