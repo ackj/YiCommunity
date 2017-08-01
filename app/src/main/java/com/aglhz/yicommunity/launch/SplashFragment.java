@@ -40,7 +40,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class SplashFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
     private static final String TAG = SplashFragment.class.getSimpleName();
     private static final int LOCATION = 122;
-    private RxManager rxManager = new RxManager();
+    private RxManager mRxManager = new RxManager();
 
     public static SplashFragment newInstance() {
         return new SplashFragment();
@@ -64,12 +64,13 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         location();
         initDoorManager();
         checkLogin();
+//        checkAppUpdate();
     }
-
 
     private void initDoorManager() {
         DoorManager.getInstance().startService();
     }
+
 
     @AfterPermissionGranted(LOCATION)
     private void location() {
@@ -94,7 +95,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void checkLogin() {
-        rxManager.add(HttpHelper.getService(ApiService.class)
+        mRxManager.add(HttpHelper.getService(ApiService.class)
                 .requestCheckToken(ApiService.requestCheckToken, UserHelper.token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -130,6 +131,25 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
                         go2Main();
                     }
                 });
+    }
+
+    private void checkAppUpdate() {
+        mRxManager.add(HttpHelper.getService(ApiService.class)
+                .requestCheckToken(ApiService.requestCheckToken, UserHelper.token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> {
+                    if (bean.getData().getStatus() == 1) {
+                        UserHelper.clear();
+                        go2Main();
+                    } else if (bean.getData().getStatus() == 0) {
+                        checkSip();
+                    }
+                }, throwable -> {
+                    ALog.e(throwable);
+                    go2Main();
+                })
+        );
     }
 
     private void go2Main() {
@@ -175,7 +195,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     @Override
     public void onDestroyView() {
         ALog.e(TAG + "onDestroyView");
-        rxManager.clear();
+        mRxManager.clear();
         super.onDestroyView();
     }
 }

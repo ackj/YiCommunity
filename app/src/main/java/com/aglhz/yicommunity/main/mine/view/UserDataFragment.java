@@ -24,7 +24,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.UserBean;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventData;
 import com.aglhz.yicommunity.main.mine.contract.UserDataContract;

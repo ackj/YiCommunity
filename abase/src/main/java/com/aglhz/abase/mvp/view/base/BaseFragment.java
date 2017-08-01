@@ -12,12 +12,19 @@ import android.widget.ScrollView;
 
 import com.aglhz.abase.R;
 import com.aglhz.abase.common.AudioPlayer;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.common.ScrollingHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.utils.ScreenUtils;
 import com.aglhz.abase.widget.dialog.LoadingDialog;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+
+import org.json.JSONException;
+
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
@@ -146,5 +153,38 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
         if (loadingDialog != null) {
             loadingDialog.dismiss();
         }
+    }
+
+    public void showLoading() {
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(_mActivity);
+        }
+        loadingDialog.show();
+    }
+
+    public void dismissLoading() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+    }
+
+    public void error(Throwable throwable) {
+        if (throwable == null) {
+            DialogHelper.errorSnackbar(getView(), "数据异常");
+            return;
+        }
+        if (throwable instanceof ConnectException) {
+            DialogHelper.errorSnackbar(getView(), "网络异常");
+        } else if (throwable instanceof HttpException) {
+            DialogHelper.errorSnackbar(getView(), "服务器异常");
+        } else if (throwable instanceof SocketTimeoutException) {
+            DialogHelper.errorSnackbar(getView(), "连接超时");
+        } else if (throwable instanceof JSONException) {
+            DialogHelper.errorSnackbar(getView(), "解析异常");
+        } else {
+            DialogHelper.errorSnackbar(getView(), "数据异常");
+        }
+        throwable.printStackTrace();
+        ALog.e(TAG, throwable);
     }
 }

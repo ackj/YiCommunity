@@ -123,7 +123,9 @@ public class Constants {
             //调试可以改这里的地址。
             BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
             BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
-            BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
+//            BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
+            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+
         } else {
             //这里的是正式版的基础地址，永远不要动。
             BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户

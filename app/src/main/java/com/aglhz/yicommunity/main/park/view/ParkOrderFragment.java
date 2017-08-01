@@ -13,7 +13,7 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.ParkOrderBean;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.main.park.contract.ParkOrderContract;
 import com.aglhz.yicommunity.main.park.presenter.ParkOrderPresenter;

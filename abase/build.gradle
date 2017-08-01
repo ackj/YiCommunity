@@ -57,5 +57,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     //权限申请框架
     compile 'pub.devrel:easypermissions:0.4.0'
+    //自定义的snackbar
+    compile 'com.trycatch.android:mysnackbar:1.2.2'
 
 }

@@ -1,5 +1,6 @@
 package com.aglhz.yicommunity.common;
 
+import com.aglhz.yicommunity.entity.bean.AppUpdateBean;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.BuildingBean;
@@ -129,6 +130,13 @@ public interface ApiService {
     String BUSINESS_LICENSE_URL = "http://www.aglhz.com/sub_property_ysq/wx_public/html/merchantLicense.html?fid=";
 
     //********************以上为Web*******************************
+
+    //********************以下为更新App接口*******************************
+    String requestAppUpdatae = "http://119.23.129.133:8090/sub_property_ysq/app/client/appversion";
+
+    @POST
+    Observable<AppUpdateBean> requestAppUpdatae(@Url String url);
+    //********************以上为更新App接口*******************************
 
 
     //登录验证

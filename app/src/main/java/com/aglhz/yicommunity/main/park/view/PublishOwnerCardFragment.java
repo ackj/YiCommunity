@@ -22,7 +22,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.CarCardListBean;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.event.EventPark;
 import com.aglhz.yicommunity.main.park.contract.PublishOwnerCardContract;

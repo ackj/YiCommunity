@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.common;
+package com.aglhz.abase.common;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -29,9 +29,7 @@ public class DialogHelper {
 
     public static void loadingSnackbar(View view, CharSequence text) {
         TSnackbar.make(view, text, TSnackbar.LENGTH_INDEFINITE, TSnackbar.APPEAR_FROM_TOP_TO_DOWN)
-                .setAction("取消", v -> {
-
-                })
+                .setAction("取消", null)
                 .setPromptThemBackground(Prompt.SUCCESS)
                 .addIconProgressLoading(0, true, false)
                 .show();

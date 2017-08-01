@@ -14,7 +14,7 @@ import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.RegexUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.event.EventPark;
 import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
