@@ -144,6 +144,8 @@ public class AboutUsFragment extends BaseFragment {
      * 检测是否有新版本需要下载更新。
      */
     private void updateApp() {
+        ALog.e("requestAppUpdatae-->" + ApiService.requestAppUpdatae);
+
         new UpdateAppManager
                 .Builder()
                 //必须设置，当前Activity

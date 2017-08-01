@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aglhz.abase.common.AudioPlayer;
-import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.AppUtils;
@@ -157,6 +156,7 @@ public class MainFragment extends BaseFragment {
      * 检测是否有新版本需要下载更新。
      */
     private void updateApp() {
+        ALog.e("requestAppUpdatae-->" + ApiService.requestAppUpdatae);
         new UpdateAppManager
                 .Builder()
                 .setActivity(_mActivity)

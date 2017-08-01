@@ -132,7 +132,7 @@ public interface ApiService {
     //********************以上为Web*******************************
 
     //********************以下为更新App接口*******************************
-    String requestAppUpdatae = "http://119.23.129.133:8090/sub_property_ysq/app/client/appversion";
+    String requestAppUpdatae = BASE_PROPERTY + "app/client/appversion";
 
     @POST
     Observable<AppUpdateBean> requestAppUpdatae(@Url String url);
