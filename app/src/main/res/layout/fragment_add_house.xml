@@ -41,22 +41,32 @@
                     android:layout_width="85dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center"
-                    android:layout_marginRight="50dp"
+                    android:layout_marginRight="25dp"
                     android:background="@drawable/bg_checked_red_340px_180px"
                     android:gravity="center"
                     android:tag="0"
                     android:text="@string/proprietor"
                     android:textColor="@color/base_color" />
-
                 <TextView
-                    android:id="@+id/tv_member_house_fragment"
+                    android:id="@+id/tv_relative_house_fragment"
+                    android:layout_width="85dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_unchecked_gray_340px_180px"
+                    android:gravity="center"
+                    android:tag="2"
+                    android:text="@string/relative"
+                    android:textColor="@color/default_text" />
+                <TextView
+                    android:id="@+id/tv_tenant_house_fragment"
                     android:layout_width="85dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_unchecked_gray_340px_180px"
                     android:gravity="center"
                     android:tag="1"
-                    android:text="@string/member"
+                    android:text="@string/tenant"
                     android:textColor="@color/default_text" />
 
             </LinearLayout>
