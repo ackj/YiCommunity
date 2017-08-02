@@ -12,7 +12,7 @@ import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.abase.widget.dialog.LoadingDialog;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.OneKeyDoorBean;
 import com.aglhz.yicommunity.widget.OpenDoorDialog;

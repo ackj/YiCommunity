@@ -18,11 +18,10 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
-import com.aglhz.abase.utils.RegexUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BuildingBean;
@@ -232,8 +231,13 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                     params.residentType = residentType;
                     params.name = etName.getText().toString().trim();
                     String idCard = etIdcard.getText().toString().trim();
-                    if (!(RegexUtils.isIDCard15(idCard) || RegexUtils.isIDCard18(idCard))) {
-                        DialogHelper.warningSnackbar(getView(), "请输入正确的身份证号码!");
+//                    if (!(RegexUtils.isIDCard15(idCard) || RegexUtils.isIDCard18(idCard))) {
+//                        DialogHelper.warningSnackbar(getView(), "请输入正确的身份证号码！");
+//                        return;
+//                    }
+
+                    if (TextUtils.isEmpty(idCard) && idCard.length() <= 18) {
+                        DialogHelper.warningSnackbar(getView(), "请输入正确的身份证号码！");
                         return;
                     }
                     params.idCard = idCard;

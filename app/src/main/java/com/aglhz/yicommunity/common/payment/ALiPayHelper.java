@@ -1,10 +1,8 @@
 package com.aglhz.yicommunity.common.payment;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.os.Message;
+import android.os.Vibrator;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.yicommunity.BaseApplication;
@@ -16,6 +14,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Iterator;
 import java.util.Map;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+
 /**
  * Author：leguang on 2017/4/12 0009 15:49
  * Email：langmanleguang@qq.com
@@ -24,40 +24,28 @@ import java.util.Map;
  */
 public class ALiPayHelper {
     private static final String TAG = ALiPayHelper.class.getSimpleName();
-    private static final int SDK_PAY_FLAG = 1;
-
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            if (msg.what == SDK_PAY_FLAG) {
-                Map<String, String> map = (Map<String, String>) msg.obj;
-                if (TextUtils.equals(map.get("result"), "9000")) {
-                    EventBus.getDefault().post(new EventPay(0));
-                } else {
-                    EventBus.getDefault().post(new EventPay(-1));
-                }
-            }
-        }
-    };
 
     public void pay(Activity mActivity, String orderInfo) {
-
         ALog.e("orderInfo-->" + orderInfo);
 
         new Thread(() -> {
             PayTask alipay = new PayTask(mActivity);
 
             Map<String, String> mapResult = alipay.payV2(orderInfo, true);
-            Message msg = new Message();
-            msg.what = SDK_PAY_FLAG;
-            msg.obj = mapResult;
-            mHandler.sendMessage(msg);
 
             Iterator<Map.Entry<String, String>> it = mapResult.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<String, String> entry = it.next();
-                System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+                ALog.e(TAG, "key= " + entry.getKey() + " and value= " + entry.getValue());
             }
 
+            if (TextUtils.equals(mapResult.get("resultStatus"), "9000")) {
+                EventBus.getDefault().post(new EventPay(0));
+            } else {
+                EventBus.getDefault().post(new EventPay(-1));
+            }
+
+            ((Vibrator) BaseApplication.mContext.getSystemService(VIBRATOR_SERVICE)).vibrate(500);
         }).start();
     }
 }

@@ -18,7 +18,7 @@ import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.yicommunity.common.DialogHelper;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 
 import butterknife.BindView;
