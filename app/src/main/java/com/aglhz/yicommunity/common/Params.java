@@ -67,6 +67,7 @@ public class Params {
     public String commodityFid;//上门服务商品ID
     public String replyContent;//上门服务商品ID
     public boolean isProprietor = true;
+    public int residentType;//居民类型：1=业主、2=家属、3=租客
     public boolean single;
     public boolean timeable;
     public boolean summerable;

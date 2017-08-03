@@ -87,7 +87,6 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
         ALog.e(params.bdg_u_c);
         ALog.e(params.bdg_f_c);
 
-
         return HttpHelper.getService(ApiService.class).requestRooms(ApiService.requestRooms
                 , params.sc
                 , params.cmnt_c
@@ -108,12 +107,21 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
         builder.addFormDataPart("bdg_f_h_c", params.bdg_f_h_c);
         builder.addFormDataPart("applyName", params.name);
         builder.addFormDataPart("idNO", params.idCard);
-        return HttpHelper.getService(ApiService.class).requestApply(apply(params.isProprietor)
+        return HttpHelper.getService(ApiService.class).requestApply(apply(params.residentType)
                 , builder.build())
                 .subscribeOn(Schedulers.io());
     }
 
-    String apply(boolean b) {
-        return b ? ApiService.ownerApply : ApiService.fmApply;
+    String apply(int type) {
+        switch (type) {
+            case 1:
+                return ApiService.ownerApply;
+            case 2:
+                return ApiService.relativeApply;
+            case 3:
+                return ApiService.fmApply;
+            default:
+                return null;
+        }
     }
 }

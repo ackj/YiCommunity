@@ -349,8 +349,11 @@ public interface ApiService {
     //业主申请
     String ownerApply = BASE_PROPERTY + "/client/ownerApply.do";
 
-    //申请成员
+    //申请租客
     String fmApply = BASE_PROPERTY + "/client/fmApply";
+
+    //申请家属 todo:
+    String relativeApply = BASE_PROPERTY+"";
 
     @POST
     Observable<BaseBean> requestApply(@Url String url

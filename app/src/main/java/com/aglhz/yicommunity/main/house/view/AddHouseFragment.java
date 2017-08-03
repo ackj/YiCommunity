@@ -57,8 +57,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     Toolbar toolbar;
     @BindView(R.id.tv_proprietor_house_fragment)
     TextView tvProprietor;
-    @BindView(R.id.tv_member_house_fragment)
-    TextView tvMember;
+    @BindView(R.id.tv_tenant_house_fragment)
+    TextView tvTenant;
+    @BindView(R.id.tv_relative_house_fragment)
+    TextView tvRelative;
     @BindView(R.id.et_name_house_fragment)
     EditText etName;
     @BindView(R.id.et_idcard_house_fragment)
@@ -89,7 +91,10 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     TextView tvFloor;
     @BindView(R.id.tv_room_add_house_fragment)
     TextView tvRoom;
-    private boolean isProprietor = true;//用于区分申请时是业主还是成员。
+//    private boolean isProprietor = true;//用于区分申请时是业主还是成员。
+
+    private int residentType = 1;//居民类型： 1、业主  2、家属  3、租客
+
     private BottomDialog addressSelector;//省、市、区选择。
     private Params params = Params.getInstance();//参数对象，每一个有网络请求的页面有都。
     private String title;//标题。
@@ -152,23 +157,28 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     }
 
     @OnClick({R.id.tv_proprietor_house_fragment,
-            R.id.tv_member_house_fragment,
+            R.id.tv_tenant_house_fragment,
             R.id.ll_area_add_house_fragment,
             R.id.ll_community_add_house_fragment,
+            R.id.tv_relative_house_fragment,
             R.id.ll_building_add_house_fragment,
             R.id.ll_unit_add_house_fragment,
             R.id.ll_floor_add_house_fragment,
             R.id.ll_room_add_house_fragment,
-            R.id.bt_submit_house_fragment,})
+            R.id.bt_submit_house_fragment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_proprietor_house_fragment:
                 isEdited = false;//标记曾经选择过。
-                resetIdentity(tvProprietor, tvMember, true);//当点击时，刷新背景。
+                resetIdentity(1);//当点击时，刷新背景。
                 break;
-            case R.id.tv_member_house_fragment:
+            case R.id.tv_relative_house_fragment://家属
+                isEdited = true;
+                resetIdentity( 2);//当点击时，刷新背景。
+                break;
+            case R.id.tv_tenant_house_fragment://租客
                 isEdited = true;//标记曾经选择过。
-                resetIdentity(tvMember, tvProprietor, false);//当点击时，刷新背景。
+                resetIdentity(3);//当点击时，刷新背景。
                 break;
             case R.id.ll_area_add_house_fragment:
                 showAddressSelector();//选择省市县。
@@ -217,7 +227,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvRoom.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(getView(), "请先选择房间！");
                 } else {
-                    params.isProprietor = isProprietor;
+//                    params.isProprietor = isProprietor;
+                    params.residentType = residentType;
                     params.name = etName.getText().toString().trim();
                     String idCard = etIdcard.getText().toString().trim();
 //                    if (!(RegexUtils.isIDCard15(idCard) || RegexUtils.isIDCard18(idCard))) {
@@ -240,17 +251,23 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     /**
      * 刷新一下身份选择的空间，如：改变背景和字体颜色等。
      *
-     * @param tvChecked   选中状态控件。
-     * @param tvUnChecked 未选中状态的控件。
-     * @param b           是否是业主。
+     * @param type 选中类型
      */
-    private void resetIdentity(TextView tvChecked, TextView tvUnChecked, boolean b) {
-        tvChecked.setBackgroundResource(R.drawable.bg_checked_red_340px_180px);
-        tvChecked.setTextColor(ContextCompat.getColor(BaseApplication.mContext, R.color.base_color));
-        tvUnChecked.setBackgroundResource(R.drawable.bg_unchecked_gray_340px_180px);
-        tvUnChecked.setTextColor(ContextCompat.getColor(BaseApplication.mContext, R.color.default_text));
-        isProprietor = b;
+    private void resetIdentity(int type) {
+        int checkedBgRes = R.drawable.bg_checked_red_340px_180px;
+        int checkedTvColor = R.color.base_color;
+        int unCheckedBgRes = R.drawable.bg_unchecked_gray_340px_180px;
+        int unCheckedTvColor = R.color.default_text;
+        tvProprietor.setBackgroundResource(type == 1 ? checkedBgRes : unCheckedBgRes);
+        tvProprietor.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 1 ? checkedTvColor : unCheckedTvColor));
+        tvRelative.setBackgroundResource(type == 2 ? checkedBgRes : unCheckedBgRes);
+        tvRelative.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 2 ? checkedTvColor : unCheckedTvColor));
+        tvTenant.setBackgroundResource(type == 3 ? checkedBgRes : unCheckedBgRes);
+        tvTenant.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 3 ? checkedTvColor : unCheckedTvColor));
+//        isProprietor = b;
+        residentType = type;
     }
+
 
     //选择省市县
     private void showAddressSelector() {
