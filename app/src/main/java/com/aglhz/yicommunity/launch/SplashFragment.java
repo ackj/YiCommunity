@@ -64,7 +64,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         location();
         initDoorManager();
         checkLogin();
-//        checkAppUpdate();
     }
 
     private void initDoorManager() {
@@ -114,8 +113,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void checkSip() {
-        ALog.e("11111UserHelper.sip-->" + UserHelper.sip);
-
         DoorManager.getInstance()
                 .initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
 
@@ -131,25 +128,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
                         go2Main();
                     }
                 });
-    }
-
-    private void checkAppUpdate() {
-        mRxManager.add(HttpHelper.getService(ApiService.class)
-                .requestCheckToken(ApiService.requestCheckToken, UserHelper.token)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bean -> {
-                    if (bean.getData().getStatus() == 1) {
-                        UserHelper.clear();
-                        go2Main();
-                    } else if (bean.getData().getStatus() == 0) {
-                        checkSip();
-                    }
-                }, throwable -> {
-                    ALog.e(throwable);
-                    go2Main();
-                })
-        );
     }
 
     private void go2Main() {

@@ -17,7 +17,6 @@ import com.aglhz.abase.R;
  * @author lexyhp
  */
 public class LoadingDialog extends Dialog {
-
     private TextView tvLoading;
 
     public LoadingDialog(@NonNull Context context) {

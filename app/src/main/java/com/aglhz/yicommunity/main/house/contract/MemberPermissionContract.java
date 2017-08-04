@@ -13,7 +13,7 @@ import io.reactivex.Observable;
  * <p>
  * 房屋模块所对应的各层对象应有的接口。
  */
-public interface HouseRightsContract {
+public interface MemberPermissionContract {
 
     interface View extends BaseContract.View {
 

@@ -7,7 +7,7 @@ import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
-import com.aglhz.yicommunity.main.house.contract.HouseRightsContract;
+import com.aglhz.yicommunity.main.house.contract.MemberPermissionContract;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -19,8 +19,8 @@ import io.reactivex.schedulers.Schedulers;
  * 负责房屋模块的Model层内容。
  */
 
-public class HouseRightsModel extends BaseModel implements HouseRightsContract.Model {
-    private final String TAG = HouseRightsModel.class.getSimpleName();
+public class MemberPermissionModel extends BaseModel implements MemberPermissionContract.Model {
+    private final String TAG = MemberPermissionModel.class.getSimpleName();
 
 
     @Override

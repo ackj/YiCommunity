@@ -26,8 +26,8 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.event.EventCommunity;
-import com.aglhz.yicommunity.main.house.contract.HouseRightsContract;
-import com.aglhz.yicommunity.main.house.presenter.HouseRightsPresenter;
+import com.aglhz.yicommunity.main.house.contract.MemberPermissionContract;
+import com.aglhz.yicommunity.main.house.presenter.MemberPermissionPresenter;
 import com.kyleduo.switchbutton.SwitchButton;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,7 +44,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Email: liujia95me@126.com
  * [房屋成员]的View层。
  */
-public class MemberPermissionFragment extends BaseFragment<HouseRightsContract.Presenter> implements HouseRightsContract.View {
+public class MemberPermissionFragment extends BaseFragment<MemberPermissionContract.Presenter> implements MemberPermissionContract.View {
     private static final String TAG = MemberPermissionFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -88,8 +88,8 @@ public class MemberPermissionFragment extends BaseFragment<HouseRightsContract.P
 
     @NonNull
     @Override
-    protected HouseRightsContract.Presenter createPresenter() {
-        return new HouseRightsPresenter(this);
+    protected MemberPermissionContract.Presenter createPresenter() {
+        return new MemberPermissionPresenter(this);
     }
 
     @Nullable

@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.main.house.contract.HouseRightsContract;
-import com.aglhz.yicommunity.main.house.model.HouseRightsModel;
+import com.aglhz.yicommunity.main.house.contract.MemberPermissionContract;
+import com.aglhz.yicommunity.main.house.model.MemberPermissionModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -17,17 +17,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * 负责房屋模块Presenter层内容。
  */
 
-public class HouseRightsPresenter extends BasePresenter<HouseRightsContract.View, HouseRightsContract.Model> implements HouseRightsContract.Presenter {
-    private final String TAG = HouseRightsPresenter.class.getSimpleName();
+public class MemberPermissionPresenter extends BasePresenter<MemberPermissionContract.View, MemberPermissionContract.Model> implements MemberPermissionContract.Presenter {
+    private final String TAG = MemberPermissionPresenter.class.getSimpleName();
 
-    public HouseRightsPresenter(HouseRightsContract.View mView) {
+    public MemberPermissionPresenter(MemberPermissionContract.View mView) {
         super(mView);
     }
 
     @NonNull
     @Override
-    protected HouseRightsContract.Model createModel() {
-        return new HouseRightsModel();
+    protected MemberPermissionContract.Model createModel() {
+        return new MemberPermissionModel();
     }
 
     @Override

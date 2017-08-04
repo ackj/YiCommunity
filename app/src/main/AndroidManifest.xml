@@ -171,6 +171,8 @@
         <activity
             android:name=".preview.PreviewActivity"
             android:theme="@style/Transparent" />
+
+        <!--快捷方式Activity，启动模式必须设置成singleInstance，否则主Activity存在的时候，点击快捷方式会把主Activity也带起来。-->
         <activity
             android:name=".main.mine.QuickOpenActivity"
             android:excludeFromRecents="true"
