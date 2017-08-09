@@ -70,23 +70,12 @@ import retrofit2.http.Url;
 
 public interface ApiService {
 
-    //*************基础路径*******************
+    //*************以下基础路径*******************
     String BASE_PROPERTY = Constants.BASE_PROPERTY;   //物业
     String BASE_USER = Constants.BASE_USER;           //用户
     String BASE_PROPERTYCFG_M = Constants.BASE_PROPERTYCFG_M;
 
-    //*************基础路径*******************
-//    String BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-//    String BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-//    String BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
-
-    //**********以下调试基础路径**************
-//    String BASE_PROPERTY = "http://192.168.250.107:8080/sub_property_ysq";//物业大叔主机IP
-//    String BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
-
-//    String BASE_PROPERTY = "http://192.168.7.101:8080/sub_property_ysq";   //小张主机物业调试IP
-
-    //**********以上调试基础路径**************
+    //*************以上基础路径*******************
 
 
     //********************以下为Web*******************************
@@ -445,10 +434,6 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> requestResetPassword(@Url String url, @Query("sc") String sc, @Query("account") String account, @Query("code") String code, @Query("pwd1") String password1, @Query("pwd2") String password2);
-
-    //找回密码
-    @POST("/memberSYS-m/client/renewMemberPwd.do")
-    Observable<BaseBean> forgetPwd();
 
     //获取验证码
     String requestVerifyCode = BASE_USER + "/client/validCode.do";

@@ -2,7 +2,6 @@ package com.aglhz.abase;
 
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
-import android.util.Log;
 
 import com.aglhz.abase.exception.AppExceptionHandler;
 import com.aglhz.abase.log.ALog;

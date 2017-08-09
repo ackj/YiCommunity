@@ -81,7 +81,7 @@
     <color name="item_service_green">#99CC00</color>
     <color name="item_service_orange">#FF9900</color>
 
-    <!--登录模块-->
+    <!--Launch模块-->
     <color name="edit_hint">#b4b4b4</color>
 
     <color name="light_green">#0BBD9B</color>
