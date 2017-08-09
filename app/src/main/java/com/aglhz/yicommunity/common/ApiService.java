@@ -132,10 +132,11 @@ public interface ApiService {
     //********************以上为Web*******************************
 
     //********************以下为更新App接口*******************************
-    String requestAppUpdatae = BASE_PROPERTY + "/app/client/appversion";
+    String requestAppUpdatae = BASE_PROPERTY + "/app/version/to-client/show-lastest-version";
 
     @POST
     Observable<AppUpdateBean> requestAppUpdatae(@Url String url);
+
     //********************以上为更新App接口*******************************
 
 
@@ -199,7 +200,6 @@ public interface ApiService {
                                                @Query("isCleanAll") boolean isCleanAll,
                                                @Query("messageFids") String messageFids);
 
-
     //社区Banner
     //@POST("/sub_property_ysq/client/info/indexadvs")
     String requestBanners = BASE_PROPERTY + "/client/info/indexadvs";
@@ -238,7 +238,6 @@ public interface ApiService {
                                                @Query("pwd0") String pwd0,
                                                @Query("pwd1") String pwd1,
                                                @Query("pwd2") String pwd2);
-
 
     //更新头像
     String requestUpdatePortrait = BASE_USER + "/client/uploadHeader2.do";
@@ -353,7 +352,7 @@ public interface ApiService {
     String fmApply = BASE_PROPERTY + "/client/fmApply";
 
     //申请家属 todo:
-    String relativeApply = BASE_PROPERTY+"";
+    String relativeApply = BASE_PROPERTY + "";
 
     @POST
     Observable<BaseBean> requestApply(@Url String url

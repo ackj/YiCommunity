@@ -24,8 +24,8 @@ android {
         applicationId "com.aglhz.yicommunity"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 214
-        versionName "2.1.4"
+        versionCode 213
+        versionName "2.1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'x86'
@@ -69,12 +69,12 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     //谷歌官方依赖
-    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:multidex:1.0.1'
-    //基础module
-    compile project(':abase')
+
+    //基础依赖Module
+    debugCompile project(path: ':abase', configuration: 'debug')
+    releaseCompile project(path: ':abase', configuration: 'release')
     //友盟推送
     compile project(':PushSDK')
     //黄油刀系列

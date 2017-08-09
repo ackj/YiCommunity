@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.RemarkListBean;
 import com.bumptech.glide.Glide;
@@ -47,7 +47,7 @@ public class RemarkListRVAdapter extends BaseRecyclerViewAdapter<RemarkListBean.
                 .load(item.getMember().getAvator())
                 .error(R.drawable.ic_default_img_120px)
                 .placeholder(R.drawable.ic_default_img_120px)
-                .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
+                .bitmapTransform(new CropCircleTransformation(App.mContext))
                 .into(ivPhoto);
 
         RatingBar rbStar = helper.getView(R.id.rb_star_item_rv_remark);
@@ -74,12 +74,12 @@ public class RemarkListRVAdapter extends BaseRecyclerViewAdapter<RemarkListBean.
                 String content = replyBean.getContent();
                 String text = name + ":" + content;
 
-                TextView tvComment = new TextView(BaseApplication.mContext);
+                TextView tvComment = new TextView(App.mContext);
                 tvComment.setTextSize(13);
                 tvComment.setTextColor(0xBB222222);
 
                 LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                int marginValue = DensityUtils.dp2px(BaseApplication.mContext, 1);
+                int marginValue = DensityUtils.dp2px(App.mContext, 1);
                 tvLp.setMargins(marginValue, marginValue, marginValue, marginValue);
                 tvComment.setLayoutParams(tvLp);
 

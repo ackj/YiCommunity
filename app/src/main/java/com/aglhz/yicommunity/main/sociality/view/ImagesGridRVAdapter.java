@@ -5,7 +5,7 @@ import android.widget.LinearLayout;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.SocialityListBean;
 import com.bumptech.glide.Glide;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ImagesGridRVAdapter extends BaseRecyclerViewAdapter<SocialityListBean.DataBean.PicsBean, BaseViewHolder> {
 
-    int displayWidth = DensityUtils.getDisplayWidth(BaseApplication.mContext);
+    int displayWidth = DensityUtils.getDisplayWidth(App.mContext);
 
     @Override
     public int getItemCount() {
@@ -40,18 +40,18 @@ public class ImagesGridRVAdapter extends BaseRecyclerViewAdapter<SocialityListBe
         int height;
         int size = getData().size();
         if (size >= 3) {
-            width = (displayWidth - DensityUtils.dp2px(BaseApplication.mContext, 50)) / 3;
+            width = (displayWidth - DensityUtils.dp2px(App.mContext, 50)) / 3;
             height = width;
         } else if (size == 2) {
-            width = (displayWidth - DensityUtils.dp2px(BaseApplication.mContext, 40)) / 2;
+            width = (displayWidth - DensityUtils.dp2px(App.mContext, 40)) / 2;
             height = width;
         } else {
-            width = displayWidth - DensityUtils.dp2px(BaseApplication.mContext, 30);
+            width = displayWidth - DensityUtils.dp2px(App.mContext, 30);
             height = width / 2;
         }
 
         iv.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(item.getUrl())
                 .error(R.drawable.ic_default_img_120px)
                 .placeholder(R.drawable.ic_default_img_120px)

@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.publish.view;
 import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.bilibili.boxing.model.entity.BaseMedia;
 import com.bumptech.glide.Glide;
@@ -26,7 +26,7 @@ public class PublishImageRVAdapter extends BaseRecyclerViewAdapter<BaseMedia, Ba
     protected void convert(BaseViewHolder helper, BaseMedia item) {
         helper.addOnClickListener(R.id.iv_img_item_image_add);
         ImageView image = helper.getView(R.id.iv_img_item_image_add);
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(item.getPath())
                 .into(image);
     }

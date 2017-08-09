@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
+import com.aglhz.abase.BaseApplication;
 import com.aglhz.abase.exception.AppExceptionHandler;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.network.http.HttpHelper;
@@ -37,8 +38,8 @@ import me.yokeyword.fragmentation.Fragmentation;
  * Author：leguang on 2016/10/9 0009 15:49
  * Email：langmanleguang@qq.com
  */
-public class BaseApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
-    private static final String TAG = BaseApplication.class.getSimpleName();
+public class App extends BaseApplication implements Application.ActivityLifecycleCallbacks {
+    private static final String TAG = App.class.getSimpleName();
     public static Context mContext;
 //    private RefWatcher mRefWatcher;
 
@@ -49,7 +50,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
         initData();//数据的初始化要在友盟推送之前，因为要注册别名时，用到用户名。
         initPush();//初始化友盟推送。
         initBoxing();//初始化图片选择器。
-        tempInit();//根据是不是Debug版本来设置。
     }
 
     private void initData() {
@@ -61,24 +61,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
         IBoxingMediaLoader loader = new BoxingGlideLoader();
         BoxingMediaLoader.getInstance().init(loader);
 //        BoxingCrop.getInstance().init(new BoxingUcrop());初始化图片裁剪（可选）
-    }
-
-    private void tempInit() {
-        if (BuildConfig.DEBUG) {
-            Fragmentation.builder()
-                    .stackViewMode(Fragmentation.BUBBLE)
-                    .install();
-            //初始化内存泄露监听
-//        mRefWatcher = LeakCanary.install(this);
-
-            // 初始化卡顿监听
-//        BlockCanary.install(this, new AppContext()).start();
-
-            ALog.init(true, "ysq");
-        } else {
-            ALog.init(false, "ysq");//在release版中禁止打印log。
-            Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler.getInstance(this));//在release版中处理全局异常。
-        }
     }
 
     @Override

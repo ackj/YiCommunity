@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -125,7 +125,7 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
     private void initData() {
         //房屋成员
         TextView tvMember = new TextView(_mActivity);
-        tvMember.setBackgroundColor(ContextCompat.getColor(BaseApplication.mContext, R.color.base_grey));
+        tvMember.setBackgroundColor(ContextCompat.getColor(App.mContext, R.color.base_grey));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         tvMember.setPadding(30, 30, 0, 14);
 
@@ -135,7 +135,7 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
 
         //成员头像网格表
         rvMember = new RecyclerView(_mActivity);
-        rvMember.setBackgroundColor(ContextCompat.getColor(BaseApplication.mContext, R.color.base_grey));
+        rvMember.setBackgroundColor(ContextCompat.getColor(App.mContext, R.color.base_grey));
         rvMember.setLayoutParams(new GridLayoutManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         rvMember.setLayoutManager(new GridLayoutManager(_mActivity, 5));
         memberAdapter = new MemberRVAdapter();
@@ -148,7 +148,7 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
         permissionAdapter.addHeaderView(rvMember);
 
         //删除成员footer
-        footerView = LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_remove_member, null);
+        footerView = LayoutInflater.from(App.mContext).inflate(R.layout.item_remove_member, null);
 
         rvPermission.setAdapter(permissionAdapter);
     }

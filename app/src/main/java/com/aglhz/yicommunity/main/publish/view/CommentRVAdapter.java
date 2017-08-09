@@ -4,7 +4,7 @@ import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.abase.utils.DateUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.CommentBean;
 import com.bumptech.glide.Glide;
@@ -30,10 +30,10 @@ public class CommentRVAdapter extends BaseRecyclerViewAdapter<CommentBean, BaseV
                 .setText(R.id.tv_time_item_comment, DateUtils.formatCommentDate(item.getCreateTime()));
 
         ImageView ivHead = helper.getView(R.id.iv_head_item_comment);
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(item.getMember().getAvator())
                 .placeholder(R.drawable.ic_default_head_image_200px)
-                .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
+                .bitmapTransform(new CropCircleTransformation(App.mContext))
                 .into(ivHead);
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.CarCardListBean;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -71,7 +71,7 @@ public class CarCardRVAdapter extends BaseRecyclerViewAdapter<CarCardListBean.Da
                         //-------------- 未过期 -------------
                         String surplusDays = String.format(getStringRes(R.string.surplus_days), String.valueOf(item.getSurplusDays()));
                         Spannable span = new SpannableString(surplusDays);
-                        span.setSpan(new AbsoluteSizeSpan(DensityUtils.sp2px(BaseApplication.mContext, 30)), 2, surplusDays.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        span.setSpan(new AbsoluteSizeSpan(DensityUtils.sp2px(App.mContext, 30)), 2, surplusDays.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         tvSurplusDays.setText(span);
                     }
                     tvTermOfValidity.setText(String.format(getStringRes(R.string.term_of_validity), item.getEndTime()));

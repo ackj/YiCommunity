@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.bumptech.glide.Glide;
 
@@ -33,9 +33,9 @@ public class BannerVPAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ImageView iv = new ImageView(BaseApplication.mContext);
+        ImageView iv = new ImageView(App.mContext);
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(datas.get(position).getCover())
                 .into(iv);
         container.addView(iv);

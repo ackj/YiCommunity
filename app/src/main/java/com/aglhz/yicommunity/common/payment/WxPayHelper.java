@@ -1,7 +1,7 @@
 package com.aglhz.yicommunity.common.payment;
 
 import com.aglhz.abase.log.ALog;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -48,7 +48,7 @@ public class WxPayHelper {
             ALog.e("sign", req.sign);
 
             appId = req.appId;
-            IWXAPI api = WXAPIFactory.createWXAPI(BaseApplication.mContext, req.appId);
+            IWXAPI api = WXAPIFactory.createWXAPI(App.mContext, req.appId);
             api.sendReq(req);
         } catch (JSONException e) {
             e.printStackTrace();

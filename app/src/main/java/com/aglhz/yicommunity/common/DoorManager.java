@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.aglhz.abase.log.ALog;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.main.door.call.CallActivity;
 import com.sipphone.sdk.SipCoreManager;
 import com.sipphone.sdk.SipCorePreferences;
@@ -56,8 +56,8 @@ public class DoorManager {
     public DoorManager startService() {
         ALog.e(TAG, "startService");
 
-        BaseApplication.mContext.startService(new Intent(ACTION_MAIN)
-                .setClass(BaseApplication.mContext, SipService.class));
+        App.mContext.startService(new Intent(ACTION_MAIN)
+                .setClass(App.mContext, SipService.class));
 
         Observable.create(o -> {
             try {
@@ -86,14 +86,14 @@ public class DoorManager {
     public void exit() {
         // 停止SipService，用户明确的退出
         removeCallListener();
-        BaseApplication.mContext.stopService(new Intent(ACTION_MAIN)
-                .setClass(BaseApplication.mContext, SipService.class));
+        App.mContext.stopService(new Intent(ACTION_MAIN)
+                .setClass(App.mContext, SipService.class));
     }
 
 
     public DoorManager initWebUserApi(String userName, AccessCallBack accessCallBack) {
 
-        mWebUserApi = new WebUserApi(BaseApplication.mContext);
+        mWebUserApi = new WebUserApi(App.mContext);
         mWebUserApi.setOnAccessTokenListener(accessCallBack);
         mWebUserApi.accessToken(Device.UUID, userName);
 

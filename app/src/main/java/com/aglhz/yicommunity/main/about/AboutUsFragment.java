@@ -16,17 +16,21 @@ import com.aglhz.abase.common.RxManager;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.AppUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.PermissionHelper;
+import com.aglhz.yicommunity.common.appupdate.UpdateAppHttpUtils;
 import com.aglhz.yicommunity.entity.bean.AppUpdateBean;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.google.gson.Gson;
 import com.vector.update_app.UpdateAppBean;
 import com.vector.update_app.UpdateAppManager;
 import com.vector.update_app.UpdateCallback;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,7 +91,7 @@ public class AboutUsFragment extends BaseFragment {
 
     @SuppressLint("SetTextI18n")
     private void initData() {
-        tvVersionName.setText("版本：" + AppUtils.getVersionName(BaseApplication.mContext));
+        tvVersionName.setText("版本：" + AppUtils.getVersionName(App.mContext));
     }
 
     @OnClick({R.id.ll_product_introduction
@@ -121,54 +125,23 @@ public class AboutUsFragment extends BaseFragment {
         }
     }
 
-//    private void checkAppUpdate() {
-//        mRxManager.add(HttpHelper.getService(ApiService.class)
-//                .requestAppUpdatae(ApiService.requestAppUpdatae)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(bean -> {
-//                    if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
-//                        if (AppUtils.getVersionCode(_mActivity) < bean.getData().getVersionCode()) {
-//                            updateApp();
-//                        } else {
-//                            DialogHelper.successSnackbar(getView(), "当前版本已是最新版本");
-//                        }
-//                    } else {
-//                        DialogHelper.errorSnackbar(getView(), "数据异常");
-//                    }
-//                }, this::error)
-//        );
-//    }
-
     /**
      * 检测是否有新版本需要下载更新。
      */
     private void updateApp() {
         ALog.e("requestAppUpdatae-->" + ApiService.requestAppUpdatae);
-
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("appType", "1");
         new UpdateAppManager
                 .Builder()
-                //必须设置，当前Activity
                 .setActivity(_mActivity)
-                //必须设置，实现httpManager接口的对象
                 .setHttpManager(new UpdateAppHttpUtils())
-                //必须设置，更新地址
                 .setUpdateUrl(ApiService.requestAppUpdatae)
-                //以下设置，都是可选
-                //设置请求方式，默认get
-                .setPost(false)
-                //不显示通知栏进度条
+                .setPost(true)
+                .setParams(params)
                 .dismissNotificationProgress()
-                //是否忽略版本
-//                .showIgnoreVersion()
-                //添加自定义参数，默认version=1.0.0（app的versionName）；apkKey=唯一表示（在AndroidManifest.xml配置）
-                .setParams(null)
-                //设置点击升级后，消失对话框，默认点击升级后，对话框显示下载进度
                 .hideDialogOnDownloading(false)
-                //设置apk下砸路径，默认是在下载到sd卡下/Download/1.0.0/test.apk
-//                .setTargetPath(path)
                 .build()
-                //检测是否有新版本
                 .checkNewApp(new UpdateCallback() {
                     /**
                      * 解析json,自定义协议

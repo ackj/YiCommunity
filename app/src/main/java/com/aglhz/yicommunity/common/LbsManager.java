@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.common;
 
 
 import com.aglhz.abase.log.ALog;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -42,7 +42,7 @@ public class LbsManager {
         if (mLocationClient != null) {
             return;
         }
-        mLocationClient = new AMapLocationClient(BaseApplication.mContext);
+        mLocationClient = new AMapLocationClient(App.mContext);
         //设置定位回调监听
 
         //初始化AMapLocationClientOption对象

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.utils.ToastUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.login.view.LoginFragment;
 
@@ -34,7 +34,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
         String[] perms = {Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS};
         if (EasyPermissions.hasPermissions(this, perms)) {
             //有权限就直接进行定位操作
-//            ToastUtils.showToast(BaseApplication.mContext, "正在定位……");
+//            ToastUtils.showToast(App.mContext, "正在定位……");
 //            initLocate();最好还是不需要定位，只记录手动选择的城市和小区。定位只是辅助筛选。
 
             ALog.e(TAG,"111111");
@@ -42,7 +42,7 @@ public class LoginActivity extends BaseActivity implements EasyPermissions.Permi
         } else {
             ALog.e(TAG,"22222");
             EasyPermissions.requestPermissions(this, "应用需要接收短信验证", SMS, perms);
-            ToastUtils.showToast(BaseApplication.mContext, "申请权限……");
+            ToastUtils.showToast(App.mContext, "申请权限……");
 
         }
     }

@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.message.view;
 import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -24,7 +24,7 @@ public class RepairDetailPicsRVAdapter extends BaseRecyclerViewAdapter<String, B
     @Override
     protected void convert(BaseViewHolder helper, String item) {
         ImageView imageView = helper.getView(R.id.image_item_image);
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(item)
                 .into(imageView);
     }

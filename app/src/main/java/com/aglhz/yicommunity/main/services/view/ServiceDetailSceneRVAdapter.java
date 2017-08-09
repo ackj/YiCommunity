@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.services.view;
 import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.ServiceDetailBean;
 import com.bumptech.glide.Glide;
@@ -23,7 +23,7 @@ public class ServiceDetailSceneRVAdapter extends BaseRecyclerViewAdapter<Service
     @Override
     protected void convert(BaseViewHolder helper, ServiceDetailBean.DataBean.MerchantSceneBean item) {
         ImageView ivPics = helper.getView(R.id.iv_pic);
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(item.getUrl())
                 .error(R.drawable.ic_default_img_120px)
                 .placeholder(R.drawable.ic_default_img_120px)

@@ -15,7 +15,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.widget.statemanager.StateLayout;
 import com.aglhz.abase.widget.statemanager.StateManager;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -242,9 +242,9 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Glide.with(BaseApplication.mContext).resumeRequests();
+                    Glide.with(App.mContext).resumeRequests();
                 } else {
-                    Glide.with(BaseApplication.mContext).pauseRequests();
+                    Glide.with(App.mContext).pauseRequests();
                 }
             }
         });

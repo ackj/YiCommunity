@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.abase.common.DialogHelper;
@@ -259,11 +259,11 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         int unCheckedBgRes = R.drawable.bg_unchecked_gray_340px_180px;
         int unCheckedTvColor = R.color.default_text;
         tvProprietor.setBackgroundResource(type == 1 ? checkedBgRes : unCheckedBgRes);
-        tvProprietor.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 1 ? checkedTvColor : unCheckedTvColor));
+        tvProprietor.setTextColor(ContextCompat.getColor(App.mContext, type == 1 ? checkedTvColor : unCheckedTvColor));
         tvRelative.setBackgroundResource(type == 2 ? checkedBgRes : unCheckedBgRes);
-        tvRelative.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 2 ? checkedTvColor : unCheckedTvColor));
+        tvRelative.setTextColor(ContextCompat.getColor(App.mContext, type == 2 ? checkedTvColor : unCheckedTvColor));
         tvTenant.setBackgroundResource(type == 3 ? checkedBgRes : unCheckedBgRes);
-        tvTenant.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 3 ? checkedTvColor : unCheckedTvColor));
+        tvTenant.setTextColor(ContextCompat.getColor(App.mContext, type == 3 ? checkedTvColor : unCheckedTvColor));
 //        isProprietor = b;
         residentType = type;
     }
