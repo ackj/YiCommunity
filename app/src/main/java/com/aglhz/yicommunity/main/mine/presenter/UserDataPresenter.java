@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.mine.presenter;
 import android.support.annotation.NonNull;
 
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.common.luban.Luban;
@@ -45,7 +45,7 @@ public class UserDataPresenter extends BasePresenter<UserDataContract.View, User
     }
 
     public void compress(Params params) {
-        Luban.get(BaseApplication.mContext)
+        Luban.get(App.mContext)
                 .load(params.file)
                 .putGear(Luban.THIRD_GEAR)
                 .asObservable()

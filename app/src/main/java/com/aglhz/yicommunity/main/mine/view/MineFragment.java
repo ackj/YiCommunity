@@ -21,7 +21,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.network.http.LogInterceptor;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -132,7 +132,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         mPresenter.requestUnreadMark(params);
         //动态给“个人资料”TextView设置drawableLeft并改变其大小
         Drawable drawableLeft = ContextCompat.getDrawable(_mActivity, R.drawable.ic_oneself_info_80px);
-        drawableLeft.setBounds(0, 0, DensityUtils.dp2px(BaseApplication.mContext, 16.f), DensityUtils.dp2px(BaseApplication.mContext, 16.f));
+        drawableLeft.setBounds(0, 0, DensityUtils.dp2px(App.mContext, 16.f), DensityUtils.dp2px(App.mContext, 16.f));
         tvUserData.setCompoundDrawables(drawableLeft, null, null, null);
         updataView();
     }
@@ -324,7 +324,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         tvLogout.setVisibility(View.GONE);
         sv.post(() -> sv.fullScroll(ScrollView.FOCUS_UP));//滑动到顶部，提高用户体验，方便用户点击头像登录。
         DoorManager.getInstance().exit();// 停止SipService，用户明确的退出。
-        PushAgent.getInstance(BaseApplication.mContext)
+        PushAgent.getInstance(App.mContext)
                 .removeAlias(UserHelper.account, "userType", new UTrack.ICallBack() {
                     @Override
                     public void onMessage(boolean b, String s) {

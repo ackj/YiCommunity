@@ -19,7 +19,7 @@ import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
@@ -95,7 +95,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     TextView tvRoom;
     @BindView(R.id.ll_card_container)
     LinearLayout llCardContainer;
-//    private boolean isProprietor = true;//用于区分申请时是业主还是成员。
 
     private int residentType = 1;//居民类型： 1、业主  2、家属  3、租客
 
@@ -274,13 +273,12 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         int unCheckedBgRes = R.drawable.bg_unchecked_gray_340px_180px;
         int unCheckedTvColor = R.color.default_text;
         tvProprietor.setBackgroundResource(type == 1 ? checkedBgRes : unCheckedBgRes);
-        tvProprietor.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 1 ? checkedTvColor : unCheckedTvColor));
+        tvProprietor.setTextColor(ContextCompat.getColor(App.mContext, type == 1 ? checkedTvColor : unCheckedTvColor));
         tvRelative.setBackgroundResource(type == 2 ? checkedBgRes : unCheckedBgRes);
-        tvRelative.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 2 ? checkedTvColor : unCheckedTvColor));
+        tvRelative.setTextColor(ContextCompat.getColor(App.mContext, type == 2 ? checkedTvColor : unCheckedTvColor));
         tvTenant.setBackgroundResource(type == 3 ? checkedBgRes : unCheckedBgRes);
-        tvTenant.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 3 ? checkedTvColor : unCheckedTvColor));
         llCardContainer.setVisibility(type == 2 ? View.GONE : View.VISIBLE);
-//        isProprietor = b;
+        tvTenant.setTextColor(ContextCompat.getColor(App.mContext, type == 3 ? checkedTvColor : unCheckedTvColor));
         residentType = type;
     }
 

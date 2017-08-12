@@ -15,7 +15,7 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.abase.utils.ToastUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.DoorManager;
@@ -64,7 +64,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         location();
         initDoorManager();
         checkLogin();
-//        checkAppUpdate();
     }
 
     private void initDoorManager() {
@@ -77,7 +76,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(_mActivity, perms)) {
             //有权限就直接进行定位操作
-//            ToastUtils.showToast(BaseApplication.mContext, "正在定位……");
+//            ToastUtils.showToast(App.mContext, "正在定位……");
 //            initLocate();最好还是不需要定位，只记录手动选择的城市和小区。定位只是辅助筛选。
 
             LbsManager.getInstance().startLocation(aMapLocation -> {
@@ -90,7 +89,7 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
 
         } else {
             EasyPermissions.requestPermissions(this, "亿社区需要定位权限", LOCATION, perms);
-            ToastUtils.showToast(BaseApplication.mContext, "申请权限……");
+            ToastUtils.showToast(App.mContext, "申请权限……");
         }
     }
 
@@ -114,8 +113,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void checkSip() {
-        ALog.e("11111UserHelper.sip-->" + UserHelper.sip);
-
         DoorManager.getInstance()
                 .initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
 
@@ -131,25 +128,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
                         go2Main();
                     }
                 });
-    }
-
-    private void checkAppUpdate() {
-        mRxManager.add(HttpHelper.getService(ApiService.class)
-                .requestCheckToken(ApiService.requestCheckToken, UserHelper.token)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bean -> {
-                    if (bean.getData().getStatus() == 1) {
-                        UserHelper.clear();
-                        go2Main();
-                    } else if (bean.getData().getStatus() == 0) {
-                        checkSip();
-                    }
-                }, throwable -> {
-                    ALog.e(throwable);
-                    go2Main();
-                })
-        );
     }
 
     private void go2Main() {

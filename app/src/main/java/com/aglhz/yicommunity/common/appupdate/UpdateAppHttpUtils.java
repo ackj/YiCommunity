@@ -1,4 +1,4 @@
-package com.aglhz.yicommunity.main.about;
+package com.aglhz.yicommunity.common.appupdate;
 
 import android.support.annotation.NonNull;
 

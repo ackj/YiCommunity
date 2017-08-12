@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -103,7 +103,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                 ViewPager viewpager = helper.getView(R.id.viewpager);
                 viewpager.setOffscreenPageLimit(3);
                 viewpager.setPageTransformer(true, new ZoomOutPageTransformer());
-                viewpager.setPageMargin(DensityUtils.dp2px(BaseApplication.mContext, 5));
+                viewpager.setPageMargin(DensityUtils.dp2px(App.mContext, 5));
                 viewpager.setAdapter(adapter);
                 viewpager.setCurrentItem(100);
                 adapter.setOnItemClickListener(position -> {
@@ -131,7 +131,7 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
             case HomeBean.TYPE_COMMUNITY_QUALITY_LIFE:
                 LifeRVAdapter qualityLifeAdapter = new LifeRVAdapter(item.getQualityLifes());
                 RecyclerView recyclerView = helper.getView(R.id.recyclerView);
-                recyclerView.setLayoutManager(new GridLayoutManager(BaseApplication.mContext, 3, GridLayoutManager.VERTICAL, false) {
+                recyclerView.setLayoutManager(new GridLayoutManager(App.mContext, 3, GridLayoutManager.VERTICAL, false) {
                     @Override
                     public boolean canScrollVertically() {
                         return false;

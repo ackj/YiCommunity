@@ -5,7 +5,7 @@ import android.os.Vibrator;
 import android.text.TextUtils;
 
 import com.aglhz.abase.log.ALog;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.event.EventPay;
 import com.alipay.sdk.app.PayTask;
 
@@ -45,7 +45,7 @@ public class ALiPayHelper {
                 EventBus.getDefault().post(new EventPay(-1));
             }
 
-            ((Vibrator) BaseApplication.mContext.getSystemService(VIBRATOR_SERVICE)).vibrate(500);
+            ((Vibrator) App.mContext.getSystemService(VIBRATOR_SERVICE)).vibrate(500);
         }).start();
     }
 }

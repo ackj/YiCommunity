@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.mine.model;
 import com.aglhz.abase.cache.CacheManager;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.UnreadMessageBean;
 import com.aglhz.yicommunity.common.ApiService;
@@ -37,7 +37,7 @@ public class MineModel extends BaseModel implements MineContract.Model {
     public Observable<String> requestCache() {
         return Observable.create((ObservableOnSubscribe<String>) e -> {
                     try {
-                        e.onNext(CacheManager.getTotalCacheSize(BaseApplication.mContext));
+                        e.onNext(CacheManager.getTotalCacheSize(App.mContext));
                     } catch (Exception ex) {
                         e.onError(ex);
                     }
@@ -49,9 +49,9 @@ public class MineModel extends BaseModel implements MineContract.Model {
     @Override
     public Observable<String> requestClearCache() {
         return Observable.create((ObservableOnSubscribe<String>) e -> {
-                    CacheManager.clearAllCache(BaseApplication.mContext);
+                    CacheManager.clearAllCache(App.mContext);
                     try {
-                        e.onNext(CacheManager.getTotalCacheSize(BaseApplication.mContext));
+                        e.onNext(CacheManager.getTotalCacheSize(App.mContext));
                     } catch (Exception ex) {
                         e.onError(ex);
                     }

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.aglhz.abase.log.ALog;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.entity.bean.UserBean;
 import com.google.gson.Gson;
 
@@ -303,7 +303,7 @@ public class UserHelper {
     }
 
     private static SharedPreferences getSp() {
-        return BaseApplication.mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        return App.mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
     }
 
     private static SharedPreferences.Editor getEditor() {
@@ -311,7 +311,7 @@ public class UserHelper {
     }
 
     private static SharedPreferences getDefaultSp() {
-        return BaseApplication.mContext.getSharedPreferences(DEFAULT, Context.MODE_PRIVATE);
+        return App.mContext.getSharedPreferences(DEFAULT, Context.MODE_PRIVATE);
     }
 
     private static SharedPreferences.Editor getDefaultEditor() {

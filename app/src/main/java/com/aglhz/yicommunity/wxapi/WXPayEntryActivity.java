@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 
 import com.aglhz.abase.log.ALog;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.event.EventPay;
@@ -57,7 +57,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         ALog.e(TAG, "resp.errCode=" + resp.transaction);
         ALog.e(TAG, "resp.errCode=" + resp.getType());
         ALog.e(TAG, "resp.errCode=" + resp.checkArgs());
-        ((Vibrator) BaseApplication.mContext.getSystemService(VIBRATOR_SERVICE)).vibrate(500);
+        ((Vibrator) App.mContext.getSystemService(VIBRATOR_SERVICE)).vibrate(500);
 
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
 

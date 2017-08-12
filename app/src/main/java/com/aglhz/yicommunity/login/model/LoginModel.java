@@ -7,7 +7,7 @@ import android.widget.Toast;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.SipBean;
 import com.aglhz.yicommunity.entity.bean.UserBean;
@@ -56,7 +56,7 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
 
     @Override
     public void requestUMeng(String alias) {
-        PushAgent mPushAgent = PushAgent.getInstance(BaseApplication.mContext);
+        PushAgent mPushAgent = PushAgent.getInstance(App.mContext);
         mPushAgent.addExclusiveAlias(alias, "userType", new UTrack.ICallBack() {
             @Override
             public void onMessage(boolean b, String s) {

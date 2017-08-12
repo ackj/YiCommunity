@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.smarthome.view;
 import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.FirstLevelBean;
 import com.bumptech.glide.Glide;
@@ -24,7 +24,7 @@ public class GoodsCategoryRVAdapter extends BaseRecyclerViewAdapter<FirstLevelBe
     protected void convert(BaseViewHolder helper, FirstLevelBean.DataBean item) {
         ImageView image = helper.getView(R.id.iv_goods_gategory);
 
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(item.getImage())
                 .into(image);
     }

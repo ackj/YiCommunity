@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
@@ -99,7 +99,7 @@ public class PreviewActivity extends BaseActivity {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            PhotoView mPhotoView = (PhotoView) LayoutInflater.from(BaseApplication.mContext).inflate(R.layout.item_preview, null, false);
+            PhotoView mPhotoView = (PhotoView) LayoutInflater.from(App.mContext).inflate(R.layout.item_preview, null, false);
             mPhotoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
@@ -143,7 +143,7 @@ public class PreviewActivity extends BaseActivity {
                 return false;
             });
 
-            Glide.with(BaseApplication.mContext)
+            Glide.with(App.mContext)
                     .load(picPath)
                     .error(R.drawable.ic_default_img_120px)
                     .placeholder(R.drawable.ic_default_img_120px)

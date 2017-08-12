@@ -3,7 +3,7 @@ package com.aglhz.yicommunity.main.mine.view;
 import android.widget.ImageView;
 
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.MyHousesBean;
 import com.bumptech.glide.Glide;
@@ -25,9 +25,9 @@ public class MyHousesMembersRVAdapter extends BaseRecyclerViewAdapter<MyHousesBe
     @Override
     protected void convert(BaseViewHolder helper, MyHousesBean.DataBean.AuthBuildingsBean.MembersBean item) {
 
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(item.getIcon())
-                .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
+                .bitmapTransform(new CropCircleTransformation(App.mContext))
                 .into((ImageView) helper.getView(R.id.iv_avatar));
 
         String memberType = "业主";

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.luban.Luban;
 import com.aglhz.yicommunity.main.publish.contract.PublishContract;
@@ -51,7 +51,7 @@ public class PublishNeighbourPresenter extends BasePresenter<PublishContract.Vie
     }
 
     public void compress(Params params) {
-        Luban.get(BaseApplication.mContext)
+        Luban.get(App.mContext)
                 .load(params.files)
                 .putGear(Luban.THIRD_GEAR)
                 .asList()

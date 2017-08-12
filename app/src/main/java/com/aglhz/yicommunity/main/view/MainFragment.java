@@ -12,12 +12,12 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.AppUtils;
 import com.aglhz.abase.utils.ToastUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.appupdate.UpdateAppHttpUtils;
 import com.aglhz.yicommunity.entity.bean.AppUpdateBean;
-import com.aglhz.yicommunity.main.about.UpdateAppHttpUtils;
 import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.home.view.HomeFragment;
 import com.aglhz.yicommunity.main.mine.view.MineFragment;
@@ -32,6 +32,8 @@ import com.vector.update_app.UpdateAppManager;
 import com.vector.update_app.UpdateCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -147,7 +149,7 @@ public class MainFragment extends BaseFragment {
             startActivity(intent);
         } else {
             TOUCH_TIME = System.currentTimeMillis();
-            ToastUtils.showToast(BaseApplication.mContext, Constants.PRESS_AGAIN);
+            ToastUtils.showToast(App.mContext, Constants.PRESS_AGAIN);
         }
         return true;
     }
@@ -157,17 +159,22 @@ public class MainFragment extends BaseFragment {
      */
     private void updateApp() {
         ALog.e("requestAppUpdatae-->" + ApiService.requestAppUpdatae);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("appType", "1");
+
         new UpdateAppManager
                 .Builder()
                 .setActivity(_mActivity)
                 .setHttpManager(new UpdateAppHttpUtils())
+                .setPost(true)
+                .setParams(params)
                 .setUpdateUrl(ApiService.requestAppUpdatae)
                 .hideDialogOnDownloading(false)
                 .build()
                 .checkNewApp(new UpdateCallback() {
                     @Override
                     protected UpdateAppBean parseJson(String json) {
-                        ALog.e("json-->" + json);
+                        ALog.e("requestAppUpdatae-->" + json);
                         UpdateAppBean updateAppBean = new UpdateAppBean();
                         AppUpdateBean mAppUpdateBean = new Gson().fromJson(json, AppUpdateBean.class);
 

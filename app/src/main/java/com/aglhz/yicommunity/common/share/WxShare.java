@@ -2,7 +2,7 @@ package com.aglhz.yicommunity.common.share;
 
 import android.text.TextUtils;
 
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.common.Constants;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -38,7 +38,7 @@ public class WxShare {
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneSession;
 
-        IWXAPI api = WXAPIFactory.createWXAPI(BaseApplication.mContext, Constants.WX_APP_ID);
+        IWXAPI api = WXAPIFactory.createWXAPI(App.mContext, Constants.WX_APP_ID);
         api.sendReq(req);
     }
 

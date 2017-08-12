@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.presenter.base.BasePresenter;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.luban.Luban;
 import com.aglhz.yicommunity.main.publish.model.ComplainModel;
@@ -47,7 +47,7 @@ public class ComplainPresenter extends BasePresenter<PublishContract.View, Publi
         for (int i = 0; i < params.files.size(); i++) {
             ALog.d(TAG, params.files.get(i).getAbsoluteFile() + " --- length----" + params.files.get(i).length());
         }
-        Luban.get(BaseApplication.mContext)
+        Luban.get(App.mContext)
                 .load(params.files)
                 .putGear(Luban.THIRD_GEAR)
                 .asList()

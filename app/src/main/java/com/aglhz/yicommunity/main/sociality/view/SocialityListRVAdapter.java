@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.abase.utils.DateUtils;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.yicommunity.BaseApplication;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.CommentBean;
 import com.aglhz.yicommunity.entity.bean.SocialityListBean;
@@ -102,11 +102,11 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
         }
         //------------------ 头像 -----------------
         ImageView ivAvatar = helper.getView(R.id.iv_avatar_item_moments_list);
-        Glide.with(BaseApplication.mContext)
+        Glide.with(App.mContext)
                 .load(item.getMember().getAvator())
                 .error(R.drawable.ic_default_head_image_200px)
                 .placeholder(R.drawable.ic_default_head_image_200px)
-                .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
+                .bitmapTransform(new CropCircleTransformation(App.mContext))
                 .into(ivAvatar);
 
         FrameLayout frameLayout = helper.getView(R.id.fl_video_pics_layout);
@@ -127,7 +127,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
                 jcVideoPlayerStandard.setUp(firstPicBean.getUrl()
                         , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
 
-                Glide.with(BaseApplication.mContext)
+                Glide.with(App.mContext)
                         .load(firstPicBean.getSrc())
                         .into(jcVideoPlayerStandard.thumbImageView);
             } else {
@@ -136,7 +136,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
                 jcVideoPlayerStandard.setVisibility(View.GONE);
                 ImagesGridRVAdapter adapter = new ImagesGridRVAdapter(item.getPics());
                 adapter.setOnItemChildClickListener((adapter1, view, position) -> {
-                    Context context = BaseApplication.mContext;
+                    Context context = App.mContext;
                     Intent intent = new Intent(context, PreviewActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Bundle bundle = new Bundle();
@@ -150,7 +150,7 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
                     context.startActivity(intent);
                 });
                 int spanCount = item.getPics().size() < 3 ? item.getPics().size() : 3;
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(BaseApplication.mContext, spanCount) {
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(App.mContext, spanCount) {
                     @Override
                     public boolean canScrollVertically() {
                         return false;
@@ -177,12 +177,12 @@ public class SocialityListRVAdapter extends BaseRecyclerViewAdapter<SocialityLis
                 String content = commentBean.getContent();
                 String text = name + ":" + content;
 
-                TextView tvComment = new TextView(BaseApplication.mContext);
+                TextView tvComment = new TextView(App.mContext);
                 tvComment.setTextSize(13);
                 tvComment.setTextColor(0xBB222222);
 
                 LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                int marginValue = DensityUtils.dp2px(BaseApplication.mContext, 1);
+                int marginValue = DensityUtils.dp2px(App.mContext, 1);
                 tvLp.setMargins(marginValue, marginValue, marginValue, marginValue);
                 tvComment.setLayoutParams(tvLp);
 

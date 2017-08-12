@@ -79,7 +79,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
     PtrFrameLayout ptrFrameLayout;
     @BindView(R.id.sv_steward_fragment)
     ScrollView svSteward;
-
     private StewardRVAdapter myHouseAdapter;
     private StewardRVAdapter smartHomeAdapter;
     private StewardRVAdapter smartDoorAdapter;

@@ -8,8 +8,8 @@ package com.aglhz.yicommunity.entity.bean;
 public class AppUpdateBean {
 
     /**
-     * data : {"appName":"yishequ","isForce":0,"time":"2017-5-25 10:33:21","size":"2173270","description":"有重要更新升级","url":"dataFile/apk/20170801.apk","versionCode":214,"versionName":"2.1.4"}
-     * other : {"code":200,"currpage":0,"first":"","forward":"","message":"获取成功","next":"","refresh":"","time":""}
+     * data : {"appName":"亿社区20170808","description":"","fid":"5b729574-6475-4537-b29c-b6bb96f919b8","fileName":"yishequ_2.1.2.apk","isEnable":true,"isForce":true,"size":"0.00 M","time":"2017-08-08 19:32:08","url":"http://aglhzysq.image.alimmdn.com/app/version/android/yishequ_2.1.2.apk","versionCode":212,"versionName":"2.1.2"}
+     * other : {"code":200,"currpage":0,"first":"","forward":"","message":"data success","next":"","refresh":"","time":""}
      */
 
     private DataBean data;
@@ -33,21 +33,27 @@ public class AppUpdateBean {
 
     public static class DataBean {
         /**
-         * appName : yishequ
-         * isForce : 0
-         * time : 2017-5-25 10:33:21
-         * size : 2173270
-         * description : 有重要更新升级
-         * url : dataFile/apk/20170801.apk
-         * versionCode : 214
-         * versionName : 2.1.4
+         * appName : 亿社区20170808
+         * description :
+         * fid : 5b729574-6475-4537-b29c-b6bb96f919b8
+         * fileName : yishequ_2.1.2.apk
+         * isEnable : true
+         * isForce : true
+         * size : 0.00 M
+         * time : 2017-08-08 19:32:08
+         * url : http://aglhzysq.image.alimmdn.com/app/version/android/yishequ_2.1.2.apk
+         * versionCode : 212
+         * versionName : 2.1.2
          */
 
         private String appName;
-        private int isForce;
-        private String time;
-        private String size;
         private String description;
+        private String fid;
+        private String fileName;
+        private boolean isEnable;
+        private boolean isForce;
+        private String size;
+        private String time;
         private String url;
         private int versionCode;
         private String versionName;
@@ -60,20 +66,44 @@ public class AppUpdateBean {
             this.appName = appName;
         }
 
-        public int getIsForce() {
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getFid() {
+            return fid;
+        }
+
+        public void setFid(String fid) {
+            this.fid = fid;
+        }
+
+        public String getFileName() {
+            return fileName;
+        }
+
+        public void setFileName(String fileName) {
+            this.fileName = fileName;
+        }
+
+        public boolean isIsEnable() {
+            return isEnable;
+        }
+
+        public void setIsEnable(boolean isEnable) {
+            this.isEnable = isEnable;
+        }
+
+        public boolean isIsForce() {
             return isForce;
         }
 
-        public void setIsForce(int isForce) {
+        public void setIsForce(boolean isForce) {
             this.isForce = isForce;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
         }
 
         public String getSize() {
@@ -84,12 +114,12 @@ public class AppUpdateBean {
             this.size = size;
         }
 
-        public String getDescription() {
-            return description;
+        public String getTime() {
+            return time;
         }
 
-        public void setDescription(String description) {
-            this.description = description;
+        public void setTime(String time) {
+            this.time = time;
         }
 
         public String getUrl() {
@@ -123,7 +153,7 @@ public class AppUpdateBean {
          * currpage : 0
          * first :
          * forward :
-         * message : 获取成功
+         * message : data success
          * next :
          * refresh :
          * time :
