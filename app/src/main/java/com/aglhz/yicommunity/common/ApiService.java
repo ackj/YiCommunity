@@ -347,13 +347,16 @@ public interface ApiService {
                                             @Field("status") int status);
 
     //业主申请
-    String ownerApply = BASE_PROPERTY + "/client/ownerApply.do";
+//    String ownerApply = BASE_PROPERTY + "/client/ownerApply.do";
+    String ownerApply = BASE_PROPERTY + "/client/apply-to-owner";
 
     //申请租客
-    String fmApply = BASE_PROPERTY + "/client/fmApply";
+//    String fmApply = BASE_PROPERTY + "/client/fmApply";
+    String fmApply = BASE_PROPERTY+"/client/apply-to-tenant";
 
-    //申请家属 todo:
-    String relativeApply = BASE_PROPERTY+"";
+    //申请家属
+//    String relativeApply = BASE_PROPERTY+"/client/renterApply";
+    String relativeApply =BASE_PROPERTY+"/client/apply-to-family-member";
 
     @POST
     Observable<BaseBean> requestApply(@Url String url
@@ -463,7 +466,8 @@ public interface ApiService {
     //获取我的房屋
 //    @POST("/sub_property_ysq/client/info/authBdgs.do")
 
-    String requestMyhouses = BASE_PROPERTY + "/client/info/authBdgs.do";
+//    String requestMyhouses = BASE_PROPERTY + "/client/info/authBdgs.do";
+    String requestMyhouses = BASE_PROPERTY + "/client/info/my-house-list";
 
     //查询用户名下某小区的房屋
     @POST
@@ -483,12 +487,15 @@ public interface ApiService {
     String UPDATE_RIGHTS_OTHER = BASE_PROPERTY + "/smartdoor/client/enmemberpower";
 
     //房屋成员及其门禁权限信息
-    String requestRights = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
+//    String requestRights = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
+    String requestRights = BASE_PROPERTY + "/smartdoor/info/inhabitant-house-and-power";
 
     @POST
     Observable<HouseRightsBean> requestRights(@Url String url
             , @Query("token") String token
             , @Query("fid") String fid);
+
+
 
     @POST
     Observable<BaseBean> requestUpdateRights(@Url String url
@@ -507,12 +514,14 @@ public interface ApiService {
             , @Query("powerCode") String powerCode);
 
 
+//    String requestDeleteMember = BASE_PROPERTY + "/client/unauthMember";
     String requestDeleteMember = BASE_PROPERTY + "/client/unauthMember";
 
     @POST
     Observable<BaseBean> requestDeleteMember(@Url String url
             , @Query("token") String token
             , @Query("fid") String fid
+            , @Query("identityType") int identityType
             , @Query("mfid") String mfid);
 
     //***********以上房屋权限系列接口********************************
@@ -639,7 +648,6 @@ public interface ApiService {
 
     @POST
     Observable<BaseBean> requestSubmitCarpoolComment(@Url String url, @Body MultipartBody file);
-
 
     //发送拼车服务信息
     String requestSubmitExchange = BASE_PROPERTY + "/neighbor/exchange/from-client/exchange-create";

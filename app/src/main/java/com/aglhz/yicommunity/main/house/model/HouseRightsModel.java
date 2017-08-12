@@ -62,6 +62,7 @@ public class HouseRightsModel extends BaseModel implements HouseRightsContract.M
                 .requestDeleteMember(ApiService.requestDeleteMember
                         , params.token
                         , params.fid
+                        ,params.identityType
                         , params.mfid)
                 .subscribeOn(Schedulers.io());
     }

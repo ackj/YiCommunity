@@ -172,7 +172,9 @@ public class MemberPermissionFragment extends BaseFragment<HouseRightsContract.P
 
         footerView.setOnClickListener(v -> {
             ALog.e("prePosition::" + memberPosition);
-            params.mfid = memberAdapter.getData().get(memberPosition).getMember().getFid();
+            HouseRightsBean.DataBean.MemberBean member = memberAdapter.getData().get(memberPosition).getMember();
+            params.mfid = member.getFid();
+            params.identityType = member.getIdentityType();
             mPresenter.requestDeleteMember(params);//请求删除成员
             showLoadingDialog();
         });
@@ -191,10 +193,10 @@ public class MemberPermissionFragment extends BaseFragment<HouseRightsContract.P
             if (memberAdapter.getData().size() == 1) {
                 params.url = ApiService.UPDATE_RIGHTS_MYSELF;
             } else {
-                if (memberAdapter.getData().get(memberPosition).getMember().getIsOwner() == 0) {
-                    params.url = ApiService.UPDATE_RIGHTS_OTHER;
-                } else {
+                if (memberAdapter.getData().get(memberPosition).getMember().getIdentityType()==1) {
                     params.url = ApiService.UPDATE_RIGHTS_MYSELF;
+                } else {
+                    params.url = ApiService.UPDATE_RIGHTS_OTHER;
                 }
             }
 

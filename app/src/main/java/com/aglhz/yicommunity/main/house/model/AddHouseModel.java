@@ -107,6 +107,7 @@ public class AddHouseModel extends BaseModel implements AddHouseContract.Model {
         builder.addFormDataPart("bdg_f_h_c", params.bdg_f_h_c);
         builder.addFormDataPart("applyName", params.name);
         builder.addFormDataPart("idNO", params.idCard);
+        builder.addFormDataPart("certificateType", params.certificateType);
         return HttpHelper.getService(ApiService.class).requestApply(apply(params.residentType)
                 , builder.build())
                 .subscribeOn(Schedulers.io());

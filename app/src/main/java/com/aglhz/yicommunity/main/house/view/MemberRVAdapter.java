@@ -30,7 +30,17 @@ public class MemberRVAdapter extends BaseRecyclerViewAdapter<HouseRightsBean.Dat
                 .bitmapTransform(new CropCircleTransformation(BaseApplication.mContext))
                 .into((ImageView) helper.getView(R.id.iv_avatar));
 
+        String memberType = "业主";
+        switch (item.getMember().getIdentityType()) {
+            case 2:
+                memberType = "家属";
+                break;
+            case 3:
+                memberType = "租客";
+                break;
+        }
+
         helper.setText(R.id.tv_name, item.getMember().getMname())
-                .setText(R.id.tv_role, 1 == item.getMember().getIsOwner() ? "业主" : "成员");
+                .setText(R.id.tv_role, memberType);
     }
 }

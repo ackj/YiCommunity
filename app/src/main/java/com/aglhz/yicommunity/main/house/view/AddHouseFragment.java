@@ -15,13 +15,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.yicommunity.BaseApplication;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BuildingBean;
@@ -55,6 +55,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_card_type)
+    TextView tvCardType;
     @BindView(R.id.tv_proprietor_house_fragment)
     TextView tvProprietor;
     @BindView(R.id.tv_tenant_house_fragment)
@@ -91,6 +93,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     TextView tvFloor;
     @BindView(R.id.tv_room_add_house_fragment)
     TextView tvRoom;
+    @BindView(R.id.ll_card_container)
+    LinearLayout llCardContainer;
 //    private boolean isProprietor = true;//用于区分申请时是业主还是成员。
 
     private int residentType = 1;//居民类型： 1、业主  2、家属  3、租客
@@ -100,6 +104,8 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
     private String title;//标题。
     private Unbinder unbinder;
     private boolean isEdited = false;//用于标记是否选择过、更改过、填写过内容，如果有责提示弹框，避免用户误触到处返回，数据丢失。
+
+    private String[] selectCardType = {"身份证", "护照"};
 
     /**
      * AddHouseFragment的创建入口
@@ -156,7 +162,9 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         toolbar.setNavigationOnClickListener(v -> onBackPressedSupport());
     }
 
-    @OnClick({R.id.tv_proprietor_house_fragment,
+    @OnClick({
+            R.id.tv_card_type,
+            R.id.tv_proprietor_house_fragment,
             R.id.tv_tenant_house_fragment,
             R.id.ll_area_add_house_fragment,
             R.id.ll_community_add_house_fragment,
@@ -168,13 +176,20 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
             R.id.bt_submit_house_fragment})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_card_type:
+                new AlertDialog.Builder(_mActivity)
+                        .setItems(selectCardType, (dialog, which) -> {
+                            params.certificateType = (which + 1) + "";
+                            tvCardType.setText(selectCardType[which]);
+                        }).show();
+                break;
             case R.id.tv_proprietor_house_fragment:
                 isEdited = false;//标记曾经选择过。
                 resetIdentity(1);//当点击时，刷新背景。
                 break;
             case R.id.tv_relative_house_fragment://家属
                 isEdited = true;
-                resetIdentity( 2);//当点击时，刷新背景。
+                resetIdentity(2);//当点击时，刷新背景。
                 break;
             case R.id.tv_tenant_house_fragment://租客
                 isEdited = true;//标记曾经选择过。
@@ -236,7 +251,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
 //                        return;
 //                    }
 
-                    if (TextUtils.isEmpty(idCard) && idCard.length() <= 18) {
+                    if (residentType != 2 && TextUtils.isEmpty(idCard) && idCard.length() <= 18) {
                         DialogHelper.warningSnackbar(getView(), "请输入正确的身份证号码！");
                         return;
                     }
@@ -264,6 +279,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         tvRelative.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 2 ? checkedTvColor : unCheckedTvColor));
         tvTenant.setBackgroundResource(type == 3 ? checkedBgRes : unCheckedBgRes);
         tvTenant.setTextColor(ContextCompat.getColor(BaseApplication.mContext, type == 3 ? checkedTvColor : unCheckedTvColor));
+        llCardContainer.setVisibility(type == 2 ? View.GONE : View.VISIBLE);
 //        isProprietor = b;
         residentType = type;
     }
