@@ -53,7 +53,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                         requestSip(Params.getInstance());
                         //登录成功后，通知相关页面刷新。
                         EventBus.getDefault().post(new EventCommunity(null));
-
                     } else {
                         getView().error(userBean.getOther().getMessage());
                     }

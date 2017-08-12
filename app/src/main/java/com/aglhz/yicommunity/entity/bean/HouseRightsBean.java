@@ -156,7 +156,7 @@ public class HouseRightsBean {
             private String fid;
             private String rfid;
             private String icon;
-            private int isOwner;
+            private int identityType;
             private String mname;
             private String name;
 
@@ -184,12 +184,12 @@ public class HouseRightsBean {
                 this.icon = icon;
             }
 
-            public int getIsOwner() {
-                return isOwner;
+            public int getIdentityType() {
+                return identityType;
             }
 
-            public void setIsOwner(int isOwner) {
-                this.isOwner = isOwner;
+            public void setIdentityType(int identityType) {
+                this.identityType = identityType;
             }
 
             public String getMname() {

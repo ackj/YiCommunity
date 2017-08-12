@@ -62,6 +62,7 @@ public class MemberPermissionModel extends BaseModel implements MemberPermission
                 .requestDeleteMember(ApiService.requestDeleteMember
                         , params.token
                         , params.fid
+                        ,params.identityType
                         , params.mfid)
                 .subscribeOn(Schedulers.io());
     }
