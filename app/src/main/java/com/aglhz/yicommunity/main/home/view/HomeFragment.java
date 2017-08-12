@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aglhz.abase.common.AudioPlayer;
+import com.aglhz.abase.common.ScrollingHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.DensityUtils;
@@ -20,7 +21,6 @@ import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.ScrollingHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
@@ -212,19 +212,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
                             //请求列表
-//                            MultiSelectorDialog dialog = MultiSelectorDialog.builder(_mActivity)
-//                                    .setTitle("请选择开哪扇门")
-//                                    .setTabVisible(false)
-//                                    .setLevel(1)
-//                                    .setOnItemClickListener((pagerPosition, optionPosition, option) -> ToastUtils.showToast(_mActivity, "pagerPosition-->" + pagerPosition + "\r\noptionPosition-->" + optionPosition + "\r\noption-->" + option))
-//                                    .build();
-
-//                            dialog.show();
-//                            List<String> devicesList = new ArrayList<>();
-//                            for (int i = 0; i < 100; i++) {
-//                                devicesList.add("dfasdfa");
-//                            }
-//                            view.postDelayed(() -> dialog.notifyDataSetChanged(devicesList),500);
                             showLoadingDialog();
                             //请求列表
                             mPresenter.requestOneKeyOpenDoorDeviceList(params);
