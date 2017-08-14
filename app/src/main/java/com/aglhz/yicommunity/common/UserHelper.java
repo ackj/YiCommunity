@@ -30,6 +30,8 @@ public class UserHelper {
     public static final String ADDRESS = "address";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
+    public static final String COMMUNITY_LONGITUDE = "community_longitude";
+    public static final String COMMUNITY_LATITUDE = "community_latitude";
     public static final String LOCATION_ADDRESS = "location_address";
     public static final String SIP = "sip";
     public static final String ISREMEMBER = "isRemember";
@@ -49,8 +51,10 @@ public class UserHelper {
     public static String county = "";
     public static String address = "";
     public static String dir = "";//默认设置的一键开门的设备路径。
-    public static String latitude = "";//纬度。
-    public static String longitude = "";//经度。
+    public static String longitude = "";//定位后的经度。
+    public static String latitude = "";//定位后的纬度。
+    public static String communityLongitude = "";//小区对应的经度。
+    public static String communityLatitude = "";//小区对应的纬度。
     public static String sip = "";
     public static String WXAPPID = "";
     public static String locationAddress = "";//定位的位置地址。
@@ -59,6 +63,13 @@ public class UserHelper {
 
     public static UserBean.DataBean.MemberInfoBean userInfo;
 
+    public static boolean setLongitude(String longitude) {
+        UserHelper.longitude = longitude;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(LONGITUDE, longitude);
+        return editor.commit();
+    }
+
     public static boolean setLatitude(String latitude) {
         UserHelper.latitude = latitude;
         SharedPreferences.Editor editor = getEditor();
@@ -66,10 +77,17 @@ public class UserHelper {
         return editor.commit();
     }
 
-    public static boolean setLongitude(String longitude) {
-        UserHelper.longitude = longitude;
+    public static boolean setCommunityLongitude(String longitude) {
+        UserHelper.communityLongitude = longitude;
         SharedPreferences.Editor editor = getEditor();
-        editor.putString(LONGITUDE, longitude);
+        editor.putString(COMMUNITY_LONGITUDE, longitude);
+        return editor.commit();
+    }
+
+    public static boolean setCommunityLatitude(String latitude) {
+        UserHelper.communityLatitude = latitude;
+        SharedPreferences.Editor editor = getEditor();
+        editor.putString(COMMUNITY_LATITUDE, latitude);
         return editor.commit();
     }
 
@@ -107,6 +125,8 @@ public class UserHelper {
         city = "";
         county = "";
         address = "";
+        communityLongitude = "";
+        communityLatitude = "";
     }
 
     //更新Token。
@@ -202,14 +222,12 @@ public class UserHelper {
 
         communityName = sp.getString(COMMUNITY_NAME, "");
         communityCode = sp.getString(COMMUNITY_CODE, "");
-
-        ALog.e(TAG, "communityName-->" + communityName);
-        ALog.e(TAG, "communityCode-->" + communityCode);
-
         dir = sp.getString(DIR, "");
         city = sp.getString(CITY, "");
-        latitude = sp.getString(LATITUDE, "");
         longitude = sp.getString(LONGITUDE, "");
+        latitude = sp.getString(LATITUDE, "");
+        communityLongitude = sp.getString(COMMUNITY_LONGITUDE, "");
+        communityLatitude = sp.getString(COMMUNITY_LATITUDE, "");
         sip = sp.getString(SIP, "");
         province = sp.getString(PROVINCE, "");
         city = sp.getString(CITY, "");

@@ -6,6 +6,12 @@ import com.aglhz.yicommunity.App;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.services.core.AMapException;
+import com.amap.api.services.geocoder.GeocodeAddress;
+import com.amap.api.services.geocoder.GeocodeQuery;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeResult;
 
 /**
  * Author：leguang on 2017/4/12 0009 15:49
@@ -108,6 +114,43 @@ public class LbsManager {
         mLocationClient.stopLocation();
     }
 
+    public void geocode(String address, String city, OnGeocodeListener listener) {
+        ALog.e("address-->" + address);
+        ALog.e("city-->" + city);
+
+        GeocodeSearch geocoderSearch = new GeocodeSearch(App.mContext);
+        geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
+            @Override
+            public void onRegeocodeSearched(RegeocodeResult result, int resultCode) {
+                ALog.e("result-->" + result);
+            }
+
+            @Override
+            public void onGeocodeSearched(GeocodeResult result, int resultCode) {
+                ALog.e("result-->" + result);
+
+                if (resultCode == AMapException.CODE_AMAP_SUCCESS) {
+                    if (result != null && result.getGeocodeAddressList() != null
+                            && result.getGeocodeAddressList().size() > 0) {
+                        GeocodeAddress address = result.getGeocodeAddressList().get(0);
+                        ALog.e("经纬度值:" + address.getLatLonPoint() + "\n位置描述:" + address.getFormatAddress());
+
+                        ALog.e("result.getGeocodeAddressList().size()-->" + result.getGeocodeAddressList().size());
+
+                        ALog.e("GeocodeAddress-->" + result.getGeocodeAddressList().size());
+
+                        listener.onGeocode(address.getLatLonPoint().getLongitude(), address.getLatLonPoint().getLatitude());
+
+                    }
+                }
+            }
+        });
+
+        GeocodeQuery query = new GeocodeQuery(address, city);
+
+        geocoderSearch.getFromLocationNameAsyn(query);
+
+    }
 
     //若销毁，则需要重新创建LocationClient，所以一般只要stopLocation。
     public void clear() {
@@ -123,5 +166,15 @@ public class LbsManager {
     public interface LocateCallBack {
 
         void CallBack(AMapLocation aMapLocation);
+    }
+
+    public interface OnGeocodeListener {
+
+        void onGeocode(double longitude, double latitude);
+    }
+
+    public interface OnReGeocodeListener {
+
+        void onReGeocode(String result);
     }
 }

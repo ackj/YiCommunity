@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aglhz.abase.common.AudioPlayer;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.common.ScrollingHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
@@ -19,7 +20,7 @@ import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.abase.common.DialogHelper;
+import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
@@ -186,7 +187,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             @Override
             public void onRefreshBegin(final PtrFrameLayout frame) {
                 AudioPlayer.getInstance(_mActivity).play(1);
-                ALog.e(TAG,"request all -- cmnt_c"+params.cmnt_c+" token:"+params.token);
+                ALog.e(TAG, "request all -- cmnt_c" + params.cmnt_c + " token:" + params.token);
                 mPresenter.requestBanners(params);
                 mPresenter.requestHomeNotices(params);
                 mPresenter.requestServiceTypes(params);
@@ -224,10 +225,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                             _mActivity.start(TemporaryParkPayFragment.newInstance());
                             break;
                         case R.id.ll_life_supermarket:
+
+                            ALog.e(UserHelper.communityLongitude);
+                            ALog.e(UserHelper.communityLatitude);
+
                             go2Web("生活超市", ApiService.SUPERMARKET
                                     .replace("%1", UserHelper.token)
-                                    .replace("%2", UserHelper.longitude)
-                                    .replace("%3", UserHelper.latitude));
+                                    .replace("%2", UserHelper.communityLongitude)
+                                    .replace("%3", UserHelper.communityLatitude));
                             break;
                     }
                     break;
@@ -267,7 +272,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void error(String errorMessage) {
-        ALog.e(TAG,"error:"+errorMessage);
+        ALog.e(TAG, "error:" + errorMessage);
         if (openDoorialog != null) {
             openDoorialog.setError();
         }
@@ -280,7 +285,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseBanners(List<BannerBean.DataBean.AdvsBean> banners) {
-        ALog.e(TAG,"responseBanners:"+banners.size());
+        ALog.e(TAG, "responseBanners:" + banners.size());
         ptrFrameLayout.refreshComplete();
         adapter.getData().get(0).setBanners(banners);
         adapter.notifyItemChanged(0);
@@ -288,7 +293,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseHomeNotices(List<String> notices) {
-        ALog.e(TAG,"responseHomeNotices:"+notices.size());
+        ALog.e(TAG, "responseHomeNotices:" + notices.size());
         ptrFrameLayout.refreshComplete();
         if (notices.size() > 0) {
             adapter.getData().get(1).notice = notices.get(0);
@@ -301,6 +306,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventCommunity event) {
+        //把地址转换成经纬度
+        LbsManager.getInstance().geocode(UserHelper.address, UserHelper.city,
+                (longitude, latitude) -> {
+                    UserHelper.setCommunityLongitude(String.valueOf(longitude));
+                    UserHelper.setCommunityLatitude(String.valueOf(latitude));
+                });
+
         adapter.getData().get(0).community = UserHelper.city + UserHelper.communityName;
         params.cmnt_c = UserHelper.communityCode;
         ptrFrameLayout.autoRefresh();
