@@ -190,13 +190,14 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
             ALog.e("switchButton.isChecked()::" + switchButton.isChecked());
 
             params.status = switchButton.isChecked() ? 0 : 1;
+
             if (memberAdapter.getData().size() == 1) {
-                params.url = ApiService.UPDATE_RIGHTS_MYSELF;
+                params.url = ApiService.UPDATE_PERMISSION_MYSELF;
             } else {
                 if (memberAdapter.getData().get(memberPosition).getMember().getIdentityType()==1) {
-                    params.url = ApiService.UPDATE_RIGHTS_MYSELF;
+                    params.url = ApiService.UPDATE_PERMISSION_MYSELF;
                 } else {
-                    params.url = ApiService.UPDATE_RIGHTS_OTHER;
+                    params.url = ApiService.UPDATE_PERMISSION_OTHER;
                 }
             }
 

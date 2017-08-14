@@ -340,11 +340,11 @@ public interface ApiService {
 
     //申请租客
 //    String fmApply = BASE_PROPERTY + "/client/fmApply";
-    String fmApply = BASE_PROPERTY+"/client/apply-to-tenant";
+    String fmApply = BASE_PROPERTY + "/client/apply-to-tenant";
 
     //申请家属
 //    String relativeApply = BASE_PROPERTY+"/client/renterApply";
-    String relativeApply =BASE_PROPERTY+"/client/apply-to-family-member";
+    String relativeApply = BASE_PROPERTY + "/client/apply-to-family-member";
 
     @POST
     Observable<BaseBean> requestApply(@Url String url
@@ -376,7 +376,6 @@ public interface ApiService {
     Observable<BaseBean> postComplain(@Url String url, @Body MultipartBody file);
 
     //获取门禁列表
-//    @POST("/sub_property_ysq/smartdoor/info/doormchs")
 
     //    String requestDoors = BASE_PROPERTY + "/smartdoor/info/doormchs";
     String requestDoors = BASE_PROPERTY + "/smartdoor/info/cmnt-device-list ";
@@ -450,7 +449,7 @@ public interface ApiService {
     //获取我的房屋
 //    @POST("/sub_property_ysq/client/info/authBdgs.do")
 
-//    String requestMyhouses = BASE_PROPERTY + "/client/info/authBdgs.do";
+    //    String requestMyhouses = BASE_PROPERTY + "/client/info/authBdgs.do";
     String requestMyhouses = BASE_PROPERTY + "/client/info/my-house-list";
 
     //查询用户名下某小区的房屋
@@ -465,30 +464,29 @@ public interface ApiService {
                                            @Query("token") String token);
 
     //对自己设置权限
-    String UPDATE_RIGHTS_MYSELF = BASE_PROPERTY + "/smartdoor/client/powerset";
+    String UPDATE_PERMISSION_MYSELF = BASE_PROPERTY + "/smartdoor/client/powerset";
 
     //对成员设置权限
-    String UPDATE_RIGHTS_OTHER = BASE_PROPERTY + "/smartdoor/client/enmemberpower";
+    String UPDATE_PERMISSION_OTHER = BASE_PROPERTY + "/smartdoor/client/enmemberpower";
 
     //房屋成员及其门禁权限信息
-//    String requestRights = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
-    String requestRights = BASE_PROPERTY + "/smartdoor/info/inhabitant-house-and-power";
+//    String requestPermission = BASE_PROPERTY + "/smartdoor/info/authBdgMemAcsPow";
+    String requestPermission = BASE_PROPERTY + "/smartdoor/info/inhabitant-house-and-power";
 
     @POST
-    Observable<HouseRightsBean> requestRights(@Url String url
+    Observable<HouseRightsBean> requestPermission(@Url String url
             , @Query("token") String token
             , @Query("fid") String fid);
 
-
-
     @POST
-    Observable<BaseBean> requestUpdateRights(@Url String url
+    Observable<BaseBean> requestUpdatePermission(@Url String url
             , @Query("token") String token
             , @Query("mfid") String mfid
             , @Query("fid") String fid
             , @Query("picode") String picode
             , @Query("status") int status);
 
+    //检查是否有监视等权限。
     String requestCheckPermission = BASE_PROPERTY + "/smartdoor/client/checkAcsPower";
 
     @POST
@@ -497,8 +495,6 @@ public interface ApiService {
             , @Query("dir") String dir
             , @Query("powerCode") String powerCode);
 
-
-//    String requestDeleteMember = BASE_PROPERTY + "/client/unauthMember";
     String requestDeleteMember = BASE_PROPERTY + "/client/unauthMember";
 
     @POST
@@ -512,7 +508,6 @@ public interface ApiService {
 
 
     //获取物业公告列表
-//    @POST("/sub_property_ysq/client/info/noticeList")
     String requestNotices = BASE_PROPERTY + "/client/info/noticeList";
 
     @POST
@@ -523,15 +518,6 @@ public interface ApiService {
                                           @Query("pageSize") String pageSize,
                                           @Query("summerable") boolean summerable,
                                           @Query("timeable") boolean timeable);
-
-//    //获取物业公告
-//    @POST("/sub_property_ysq/client/info/noticeList")
-//    Observable<NoticeBean> getNoticeList(@Query("token") String token,
-//                                         @Query("cmnt_c") String cmnt_c,
-//                                         @Query("summerable") boolean summerable,
-//                                         @Query("timeable") boolean timeable,
-//                                         @Query("page") int page,
-//                                         @Query("pageSize") int pageSize);
 
     //获取邻里圈列表
     String requestNeighbourList = BASE_PROPERTY + "/neighbor/moments/to-client/moments-list";
@@ -564,24 +550,32 @@ public interface ApiService {
     //获取我发布的闲置交换
     String requestMyExchangeList = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-mine-list";
 
-    @POST/*("sub_property_ysq/neighbor/exchange/to-client/exchange-mine-list")*/
-    Observable<SocialityListBean> requestMyExchangeList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+    @POST
+    Observable<SocialityListBean> requestMyExchangeList(@Url String url,
+                                                        @Query("token") String token,
+                                                        @Query("page") int page,
+                                                        @Query("pageSize") int pageSize);
 
     String requestMyNeighbourList = BASE_PROPERTY + "/neighbor/moments/to-client/moments-mine-list";
 
     //获取我发布的邻里圈列表
     @POST
-    Observable<SocialityListBean> requestMyNeighbourList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<SocialityListBean> requestMyNeighbourList(@Url String url,
+                                                         @Query("token") String token,
+                                                         @Query("page") int page,
+                                                         @Query("pageSize") int pageSize);
 
     String requestMyCarpoolList = BASE_PROPERTY + "/neighbor/carpool/to-client/carpool-mine-list";
 
     //获取我发布的拼车服务列表
     @POST
-    Observable<SocialityListBean> requestMyCarpoolList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<SocialityListBean> requestMyCarpoolList(@Url String url,
+                                                       @Query("token") String token,
+                                                       @Query("page") int page,
+                                                       @Query("pageSize") int pageSize);
 
 
     //首页获取公告列表
-    //    @POST("/sub_property_ysq/client/info/noticeTop")
     String requestHomeNotices = BASE_PROPERTY + "/client/info/noticeTop";
 
     @POST
@@ -595,7 +589,10 @@ public interface ApiService {
     String getExchangeComments = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-comment-list";
 
     @POST
-    Observable<CommentListBean> getExchangeComments(@Url String url, @Query("exchangeFid") String fid, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<CommentListBean> getExchangeComments(@Url String url,
+                                                    @Query("exchangeFid") String fid,
+                                                    @Query("page") int page,
+                                                    @Query("pageSize") int pageSize);
 
     //获取Sip账号，用户拨打门禁的电话。
     String requestSip = BASE_PROPERTY + "/smartdoor/client/cngsip";
@@ -607,13 +604,19 @@ public interface ApiService {
     String requestCarpoolComments = BASE_PROPERTY + "/neighbor/carpool/to-client/carpool-comment-list";
 
     @POST
-    Observable<CommentListBean> requestCarpoolComments(@Url String url, @Query("carpoolFid") String fid, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<CommentListBean> requestCarpoolComments(@Url String url,
+                                                       @Query("carpoolFid") String fid,
+                                                       @Query("page") int page,
+                                                       @Query("pageSize") int pageSize);
 
     //获取左邻右里的评论
     String requestNeighbourComments = BASE_PROPERTY + "/neighbor/moments/to-client/moments-comment-list";
 
     @POST
-    Observable<CommentListBean> requestNeighbourComments(@Url String url, @Query("momentsFid") String fid, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<CommentListBean> requestNeighbourComments(@Url String url,
+                                                         @Query("momentsFid") String fid,
+                                                         @Query("page") int page,
+                                                         @Query("pageSize") int pageSize);
 
     //发送 邻里圈评论
     String requestSubmitNeighbourComment = BASE_PROPERTY + "/neighbor/moments/from-client/moments-comment-create";
@@ -642,7 +645,6 @@ public interface ApiService {
                                                //附件类型（1=图片, 大小不能超过300K，2=视频，大小不能超过10M）
     );
 
-
     //发送拼车服务信息
     String requestSubmitCarpool = BASE_PROPERTY + "/neighbor/carpool/from-client/carpool-create";
 
@@ -660,19 +662,25 @@ public interface ApiService {
     String requestRemoveNeighbour = BASE_PROPERTY + "/neighbor/moments/from-client/moments-delete";
 
     @POST
-    Observable<BaseBean> requestRemoveNeighbour(@Url String url, @Query("token") String token, @Query("momentsFids") String fid);
+    Observable<BaseBean> requestRemoveNeighbour(@Url String url,
+                                                @Query("token") String token,
+                                                @Query("momentsFids") String fid);
 
     //移除闲置交换我发布的信息
     String requestRemoveExchange = BASE_PROPERTY + "/neighbor/exchange/from-client/exchange-delete";
 
     @POST
-    Observable<BaseBean> requestRemoveExchange(@Url String url, @Query("token") String token, @Query("exchangeFids") String fid);
+    Observable<BaseBean> requestRemoveExchange(@Url String url,
+                                               @Query("token") String token,
+                                               @Query("exchangeFids") String fid);
 
     //移除拼车服务我发布的信息
     String requestRemoveCarpool = BASE_PROPERTY + "/neighbor/carpool/from-client/carpool-delete";
 
     @POST
-    Observable<BaseBean> requestRemoveCarpool(@Url String url, @Query("token") String token, @Query("carpoolFids") String fid);
+    Observable<BaseBean> requestRemoveCarpool(@Url String url,
+                                              @Query("token") String token,
+                                              @Query("carpoolFids") String fid);
 
 
     //******************************以下为物业部分****************************
@@ -680,7 +688,6 @@ public interface ApiService {
     String requestPropertyNotPay = BASE_PROPERTY + "/client/info/pptBillsWait.do";
 
     //物业缴费
-//    @POST("/sub_property_ysq/client/info/pptBillsWait.do")
     @POST
     Observable<PropertyPayBean> requestPropertyNotPay(@Url String url,
                                                       @Query("token") String token,
@@ -705,7 +712,6 @@ public interface ApiService {
                                                                @Query("fid") String fid);
 
     //微信、支付宝等第三方支付物业缴费订单 type为1.支付宝;2.微信
-//    String requestOrder = BASE_PROPERTY + "/client/pay/generatePayJSON";  改版后的接口也改了，各类支付改成统一接口
     String requestOrder = BASE_PROPERTY + "/pay/client/generatePayJSON";
 
     @POST
@@ -747,8 +753,6 @@ public interface ApiService {
 
     //月卡办理
     String requestSubmitMonthCard = BASE_PROPERTY + "/park/card/from-client/month-card-create";
-//    String requestSubmitMonthCard = BASE_TEST_PROPERTY_CODE + "/park/card/from-client/month-card-create";
-
 
     @POST
     Observable<BaseBean> requestSubmitMonthCard(@Url String url, @Body MultipartBody body);
@@ -768,7 +772,6 @@ public interface ApiService {
 
     //我的车卡列表
     String requestCarCardList = BASE_PROPERTY + "/park/card/to-client/card-list";
-//    String requestCarCardList = BASE_TEST_PROPERTY_CODE + "/park/card/to-client/card-list";
 
     @POST
     Observable<CarCardListBean> requestCarCardList(@Url String url, @Query("token") String token, @Query("page") int page, @Query("pageSize") int pageSize);
@@ -824,11 +827,6 @@ public interface ApiService {
 
     //车卡管理里某免费卡的修改页
     String requestModifyOwnerCard = BASE_PROPERTY + "/park/card/from-client/owner-card-modify";
-//    String requestModifyOwnerCard ="http://192.168.250.108:8080/property_code/park/card/from-client/owner-card-modify";
-
-//    @POST
-//    Observable<BaseBean> requestModifyOwnerCard(@Url String url,
-//                                                @Body MultipartBody body);
 
     @FormUrlEncoded
     @POST
@@ -842,7 +840,6 @@ public interface ApiService {
 
     //todo:（临时测试用的接口）车卡管理里列出某会员的月卡充值记录列表
     String requestRechargeRecord = BASE_PROPERTY + "/park/card/to-client/month-card-recharge-record-list";
-//    String requestRechargeRecord = BASE_PROPERTY+"/park/card/to-client/month-card-recharge-record-list";
 
     @POST
     Observable<MonthCardBillListBean> requestRechargeRecord(@Url String url,
