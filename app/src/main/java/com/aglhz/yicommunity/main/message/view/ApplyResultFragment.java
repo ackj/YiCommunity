@@ -40,8 +40,9 @@ public class ApplyResultFragment extends BaseFragment {
 
     /**
      * ApplyResultFragment的创建入口
+     *
      * @param title toolbar的标题
-     * @param des 结果的描述信息
+     * @param des   结果的描述信息
      * @return
      */
     public static ApplyResultFragment newInstance(String title, String des) {
@@ -86,6 +87,8 @@ public class ApplyResultFragment extends BaseFragment {
         tvDesc.setText(des);
         if (des.contains("通过")) {
             ivImage.setImageResource(R.drawable.ic_apply_pass_200px);
+        } else if (des.contains("来电")) {
+            ivImage.setImageResource(R.drawable.ic_photo_200px);
         } else {
             ivImage.setImageResource(R.drawable.ic_apply_refuse_200px);
         }

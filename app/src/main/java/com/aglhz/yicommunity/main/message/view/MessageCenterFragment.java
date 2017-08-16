@@ -190,8 +190,8 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                     case PROPERTY_BILL://物业账单
                         start(PropertyPayFragment.newInstance());
                         break;
-                    case SMARTDOOR_PUSHREC://
-                        //无动作
+                    case SMARTDOOR_PUSHREC://来电提醒
+                        start(ApplyResultFragment.newInstance(bean.getTitle(), bean.getOpTime()+"\n"+bean.getDes()+"，请留意！"));
                         break;
                     case COMPLAINT_REPLY://物业投诉回复
                         start(ComplainReplyFragment.newInstance(bean.getSfid()));

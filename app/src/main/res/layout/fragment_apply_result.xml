@@ -16,6 +16,7 @@
         android:src="@drawable/ic_apply_refuse_200px" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/tv_desc_apply_result_fargment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
