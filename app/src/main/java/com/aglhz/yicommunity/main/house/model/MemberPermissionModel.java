@@ -1,6 +1,5 @@
 package com.aglhz.yicommunity.main.house.model;
 
-import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.common.ApiService;
@@ -31,7 +30,7 @@ public class MemberPermissionModel extends BaseModel implements MemberPermission
     @Override
     public Observable<HouseRightsBean> requestRights(Params params) {
         return HttpHelper.getService(ApiService.class)
-                .requestRights(ApiService.requestRights
+                .requestPermission(ApiService.requestPermission
                         , params.token
                         , params.fid)
                 .subscribeOn(Schedulers.io());
@@ -39,15 +38,9 @@ public class MemberPermissionModel extends BaseModel implements MemberPermission
 
     @Override
     public Observable<BaseBean> requestUpdateRights(Params params) {
-        ALog.e(params.url);
-        ALog.e(params.token);
-        ALog.e(params.mfid);
-        ALog.e(params.rfid);
-        ALog.e(params.picode);
-        ALog.e(params.status);
 
         return HttpHelper.getService(ApiService.class)
-                .requestUpdateRights(params.url
+                .requestUpdatePermission(params.url
                         , params.token
                         , params.mfid
                         , params.rfid

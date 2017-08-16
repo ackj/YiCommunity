@@ -125,7 +125,6 @@ public class Constants {
             BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
             BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";//物业调试IP
 //            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-//            BASE_PROPERTY = "http://192.168.250.112:8080/sub_property_ysq";   //物业
 
         } else {
             //这里的是正式版的基础地址，永远不要动。

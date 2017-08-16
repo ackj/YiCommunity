@@ -40,8 +40,6 @@ import me.yokeyword.fragmentation.Fragmentation;
  */
 public class App extends BaseApplication implements Application.ActivityLifecycleCallbacks {
     private static final String TAG = App.class.getSimpleName();
-    public static Context mContext;
-//    private RefWatcher mRefWatcher;
 
     @Override
     public void onCreate() {

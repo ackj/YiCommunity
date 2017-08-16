@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.network.http.LogInterceptor;
@@ -25,7 +26,6 @@ import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
@@ -186,7 +186,7 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 //                            .setNegativeButton("取消", null)
 //                            .show();
 //                } else {
-                    createShortCut();
+                createShortCut();
 //                }
                 break;
             case R.id.ll_my_publish:
@@ -274,6 +274,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
         if (UserHelper.isLogined()) {
             Glide.with(this)
                     .load(UserHelper.userInfo.getFace())
+                    .placeholder(R.drawable.ic_mine_avatar_normal_320px)
+                    .error(R.drawable.ic_mine_avatar_normal_320px)
                     .bitmapTransform(new CropCircleTransformation(_mActivity))
                     .into(ivHead);
 
