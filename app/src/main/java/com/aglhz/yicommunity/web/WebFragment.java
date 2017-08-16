@@ -30,7 +30,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Author：leguang on 2017/4/12 0009 15:49
  * Email：langmanleguang@qq.com
- *
+ * <p>
  * 负责项目中的web部分。
  */
 public class WebFragment extends BaseFragment {
@@ -123,6 +123,7 @@ public class WebFragment extends BaseFragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                link = url;
                 if (ptrFramlayout != null) {
                     ptrFramlayout.refreshComplete();
                 }
