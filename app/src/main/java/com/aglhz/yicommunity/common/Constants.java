@@ -105,6 +105,10 @@ public class Constants {
     public static final String SP_KEY_GUIDE_MY_CARD = "sp_key_guide_my_card";
     //临停缴费
     public static final String SP_KEY_GUIDE_TEMPPORARY_PARK_PAY = "sp_key_guide_tempporary_park_pay";
+    //欢迎页
+    public static final String SP_KEY_WELCOME = "sp_key_welcome";
+
+
     //********************以下权限名称***********************
     public static final String PERMISSION_REMOTEWATCH = "RemoteWatch";
 

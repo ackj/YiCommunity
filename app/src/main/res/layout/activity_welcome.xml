@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/imageview1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/yindao302ye1242px2208px" />
+
+    <ImageView
+        android:id="@+id/imageview2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/yindao304ye1242px2208px" />
+
+    <LinearLayout
+        android:id="@+id/ll_pointer_container"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@drawable/shape_solid_gray_pointer" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@drawable/shape_solid_gray_pointer" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@drawable/shape_solid_gray_pointer" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_pointer"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_solid_red_pointer" />
+
+    <Button
+        android:id="@+id/btn_begin"
+        android:text="开始体验"
+        android:textColor="@color/base_color"
+        android:layout_width="100dp"
+        android:background="@drawable/shape_round_solid_stroke_normal"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="60dp"
+        android:layout_height="30dp" />
+
+</FrameLayout>
