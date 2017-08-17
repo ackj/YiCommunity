@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aglhz.abase.cache.SPCache;
 import com.aglhz.abase.common.RxManager;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
@@ -18,6 +19,7 @@ import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.UserHelper;
@@ -131,7 +133,12 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     }
 
     private void go2Main() {
-        startActivity(new Intent(_mActivity, MainActivity.class));
+        boolean welcomed = (boolean) SPCache.get(_mActivity, Constants.SP_KEY_WELCOME, false);
+        if (!welcomed) {
+            startActivity(new Intent(_mActivity, WelcomeActivity.class));
+        }else{
+            startActivity(new Intent(_mActivity, MainActivity.class));
+        }
         _mActivity.overridePendingTransition(0, 0);
         //此处之所以延迟退出是因为立即退出在小米手机上会有一个退出跳转动画，而我不想要这个垂直退出的跳转动画。
         new Handler().postDelayed(() -> _mActivity.finish(), 1000);

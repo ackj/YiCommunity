@@ -143,6 +143,9 @@
         <activity
             android:name=".qrcode.ScanQRCodeActivity"
             android:theme="@style/Transparent" />
+        <activity
+            android:name=".launch.WelcomeActivity"
+            android:theme="@style/Transparent" />
 
         <service
             android:name="com.sipphone.sdk.SipService"
