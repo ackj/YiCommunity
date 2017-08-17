@@ -255,10 +255,8 @@ public class MineFragment extends BaseFragment<MineContract.Presenter> implement
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(EventData event) {
-        ALog.e("11111onLoginEvent");
         if (event.code == Constants.login) {
             if (_mActivity instanceof MainActivity) {
-                ALog.e("11111setCallListener");
                 ((MainActivity) _mActivity).setCallListener();
             }
             updataView();

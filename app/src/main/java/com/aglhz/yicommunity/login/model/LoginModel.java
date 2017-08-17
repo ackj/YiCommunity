@@ -8,11 +8,11 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.model.base.BaseModel;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.App;
+import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.SipBean;
 import com.aglhz.yicommunity.entity.bean.UserBean;
-import com.aglhz.yicommunity.common.ApiService;
-import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.login.contract.LoginContract;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -47,8 +47,6 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
 
     @Override
     public Observable<SipBean> requestSip(Params params) {
-        ALog.e("11111"+params.token);
-
         return HttpHelper.getService(ApiService.class)
                 .requestSip(ApiService.requestSip, params.token)
                 .subscribeOn(Schedulers.io());
@@ -68,10 +66,10 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
             public void onSuccess(String deviceToken) {
-                ALog.e(TAG, "deviceToken::" + deviceToken);
+                ALog.e(TAG, "deviceToken-->" + deviceToken);
 
                 HttpHelper.getService(ApiService.class)
-                        .requestUMeng(ApiService.requestUMeng, UserHelper.token, deviceToken, alias, "userType")
+                        .requestUMeng(ApiService.requestUMeng, UserHelper.token, "and_" + deviceToken, alias, "userType")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(baseBean -> ALog.e(TAG, baseBean.getOther().getMessage()));

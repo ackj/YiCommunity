@@ -14,12 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
-import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.share.WxShare;
 import com.aglhz.yicommunity.entity.bean.DoorListBean;
@@ -58,6 +59,8 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
     EditText etTime;
     @BindView(R.id.tv_door_name_password_opendoor_fragment)
     TextView tvDoorName;
+    @BindView(R.id.ll_door_name_password_opendoor_fragment)
+    LinearLayout llDoorName;
     private Unbinder unbinder;
     private Params params = Params.getInstance();
     private MultiSelectorDialog dialog;
@@ -106,7 +109,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
         tvPassword.setText(mPasswordBean.getData().getSecretCode());
     }
 
-    @OnClick({R.id.bt_password, R.id.bt_share, R.id.tv_door_name_password_opendoor_fragment})
+    @OnClick({R.id.bt_password, R.id.bt_share, R.id.ll_door_name_password_opendoor_fragment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_password:
@@ -122,7 +125,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
             case R.id.bt_share:
                 sharePassword();
                 break;
-            case R.id.tv_door_name_password_opendoor_fragment:
+            case R.id.ll_door_name_password_opendoor_fragment:
                 mPresenter.requestDoors(params);
                 showLoadingDialog();
                 break;
