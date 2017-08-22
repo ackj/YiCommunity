@@ -118,12 +118,9 @@ public class WelcomeActivity extends BaseActivity {
             }
         });
 
-        btnBegin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SPCache.put(WelcomeActivity.this, Constants.SP_KEY_WELCOME, true);
-                go2Main();
-            }
+        btnBegin.setOnClickListener(v -> {
+            SPCache.put(WelcomeActivity.this, Constants.SP_KEY_WELCOME, true);
+            go2Main();
         });
     }
 

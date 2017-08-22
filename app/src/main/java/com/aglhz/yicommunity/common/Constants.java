@@ -133,8 +133,14 @@ public class Constants {
 
         } else {
             //这里的是正式版的基础地址，永远不要动。
+//            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+//            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";//配置系统
+//            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+
+
+            //给成都电信测试。
             BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";
+            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";//配置系统
             BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
         }
     }
