@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
@@ -323,6 +324,8 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     @Override
     public void onRefresh() {
+        ALog.e("params.token = UserHelper.token-->"+params.token );
+
         params.token = UserHelper.token;
         params.cmnt_c = UserHelper.communityCode;
         mPresenter.start(params);

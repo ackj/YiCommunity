@@ -28,10 +28,8 @@ public class WelcomeActivity extends BaseActivity {
     private static final String TAG = WelcomeActivity.class.getSimpleName();
     private ViewPager viewPager;
 
-    private int[] welcomeBg = {
-            R.drawable.yindao300ye1242px2208px,
-            R.drawable.yindao301ye1242px2208px,
-            R.drawable.yindao303ye1242px2208px};
+    private int[] welcomeBg = {R.drawable.yindao300ye1242px2208px,
+            R.drawable.yindao301ye1242px2208px, R.drawable.yindao303ye1242px2208px};
     private View pointer;
     private ImageView imageView1;
     private ImageView imageView2;
@@ -60,7 +58,7 @@ public class WelcomeActivity extends BaseActivity {
         btnStartX = DensityUtils.getDisplayWidth(this) * 2
                 + DensityUtils.getDisplayWidth(this) / 2
                 - DensityUtils.dp2px(this, 50);
-        ALog.e(TAG,"pointerStartX:"+pointerStartX);
+        ALog.e(TAG, "pointerStartX:" + pointerStartX);
         imageView1.setX(imageView1StartX);
         imageView2.setX(imageView2StartX);
         btnBegin.setX(btnStartX);
@@ -80,6 +78,7 @@ public class WelcomeActivity extends BaseActivity {
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 ImageView iv = new ImageView(WelcomeActivity.this);
+                iv.setScaleType(ImageView.ScaleType.FIT_XY);
                 Glide.with(WelcomeActivity.this)
                         .load(welcomeBg[position])
                         .into(iv);
@@ -92,7 +91,6 @@ public class WelcomeActivity extends BaseActivity {
                 container.removeView((View) object);
             }
         });
-
     }
 
     private void initListener() {
@@ -123,7 +121,7 @@ public class WelcomeActivity extends BaseActivity {
         btnBegin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SPCache.put(WelcomeActivity.this, Constants.SP_KEY_WELCOME,true);
+                SPCache.put(WelcomeActivity.this, Constants.SP_KEY_WELCOME, true);
                 go2Main();
             }
         });
@@ -140,5 +138,4 @@ public class WelcomeActivity extends BaseActivity {
     public boolean swipeBackPriority() {
         return false;
     }
-
 }
