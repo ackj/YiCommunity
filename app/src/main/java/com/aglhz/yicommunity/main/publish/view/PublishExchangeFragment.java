@@ -194,13 +194,13 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
     @Override
     public void responseSuccess(BaseBean bean) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         EventBus.getDefault().post(new EventPublish());
         pop();
@@ -252,7 +252,7 @@ public class PublishExchangeFragment extends BaseFragment<PublishContract.Presen
         params.cmnt_c = UserHelper.communityCode;
         params.content = content;
         params.price = money;
-        showLoadingDialog();
+        showLoading();
         mPresenter.requestSubmit(params);//请求提交闲置交换
     }
 

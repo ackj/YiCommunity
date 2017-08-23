@@ -176,7 +176,7 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
             params.mfid = member.getFid();
             params.identityType = member.getIdentityType();
             mPresenter.requestDeleteMember(params);//请求删除成员
-            showLoadingDialog();
+            showLoading();
         });
 
         permissionAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -202,7 +202,7 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
             }
 
             mPresenter.requestUpdateRights(params);//请求修改成员信息
-            showLoadingDialog();
+            showLoading();
 
         });
     }
@@ -227,7 +227,7 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
      */
     @Override
     public void responseUpdateRights(BaseBean mBaseBean) {
-        dismissLoadingDialog();
+        dismissLoading();
         permissionAdapter.getData().get(permissionPosition).setStatus(params.status);
         permissionAdapter.notifyDataSetChanged();
         DialogHelper.successSnackbar(getView(), mBaseBean.getOther().getMessage());
@@ -240,7 +240,7 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
      */
     @Override
     public void responseDeleteMember(BaseBean mBaseBean) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.successSnackbar(getView(), mBaseBean.getOther().getMessage());
         memberAdapter.remove(memberPosition);
         permissionAdapter.setNewData(null);
@@ -257,7 +257,7 @@ public class MemberPermissionFragment extends BaseFragment<MemberPermissionContr
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         permissionAdapter.notifyDataSetChanged();
         ptrFrameLayout.refreshComplete();
         DialogHelper.errorSnackbar(getView(), errorMessage);

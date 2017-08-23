@@ -201,7 +201,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvArea.getText().toString())) {
                     DialogHelper.warningSnackbar(getView(), "请先选择区域！");
                 } else {
-                    showLoadingDialog();
+                    showLoading();
                     mPresenter.requestCommunitys(params);//根据城市请求网络获取城市的社区列表信息并展示在dialog里，让用户选择。
                 }
                 break;
@@ -209,7 +209,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvCommunity.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(getView(), "请先选择小区！");
                 } else {
-                    showLoadingDialog();
+                    showLoading();
                     mPresenter.requestBuildings(params);//根据社区请求网络获取社区中的楼栋列表信息，
                 }
                 break;
@@ -217,7 +217,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvBuilding.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(getView(), "请先选择楼栋！");
                 } else {
-                    showLoadingDialog();
+                    showLoading();
                     mPresenter.requestUnits(params);//根据楼栋获取单元信息列表。
                 }
                 break;
@@ -225,7 +225,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvUnit.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(getView(), "请先选择单元！");
                 } else {
-                    showLoadingDialog();
+                    showLoading();
                     mPresenter.requestFloors(params);//根据单元获取楼层信息列表。
                 }
                 break;
@@ -233,7 +233,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                 if (TextUtils.isEmpty(tvFloor.getText().toString().trim())) {
                     DialogHelper.warningSnackbar(getView(), "请先选择楼层！");
                 } else {
-                    showLoadingDialog();
+                    showLoading();
                     mPresenter.requestRooms(params);//根据楼层请求网络获取房屋号信息列表。
                 }
                 break;
@@ -255,7 +255,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
                         return;
                     }
                     params.idCard = idCard;
-                    showLoadingDialog();
+                    showLoading();
                     mPresenter.requestApply(params);//拿到用户填表的参数，请求网络，申请房屋。
                 }
                 break;
@@ -328,7 +328,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
      */
     @Override
     public void responseCommunitys(final List<CommunitySelectBean.DataBean.CommunitiesBean> communities) {
-        dismissLoadingDialog();
+        dismissLoading();
         String[] array = new String[communities.size()];
         for (int i = 0; i < communities.size(); i++) {
             array[i] = communities.get(i).getName();
@@ -361,7 +361,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
      */
     @Override
     public void responseBuildings(List<BuildingBean.DataBean.BuildingsBean> buildings) {
-        dismissLoadingDialog();
+        dismissLoading();
 
         String[] array = new String[buildings.size()];
         for (int i = 0; i < buildings.size(); i++) {
@@ -393,7 +393,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
      */
     @Override
     public void responseUnits(List<UnitBean.DataBean.BuildingUnitsBean> units) {
-        dismissLoadingDialog();
+        dismissLoading();
 
         String[] array = new String[units.size()];
         for (int i = 0; i < units.size(); i++) {
@@ -423,7 +423,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
      */
     @Override
     public void responseFloors(List<FloorBean.DataBean.FloorsBean> floors) {
-        dismissLoadingDialog();
+        dismissLoading();
 
         String[] array = new String[floors.size()];
         for (int i = 0; i < floors.size(); i++) {
@@ -450,7 +450,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
      */
     @Override
     public void responseRooms(List<RoomBean.DataBean.HousesBean> rooms) {
-        dismissLoadingDialog();
+        dismissLoading();
 
         String[] array = new String[rooms.size()];
         for (int i = 0; i < rooms.size(); i++) {
@@ -475,7 +475,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
      */
     @Override
     public void responseApply(String message) {
-        dismissLoadingDialog();
+        dismissLoading();
         if (TextUtils.isEmpty(UserHelper.communityName)
                 || TextUtils.isEmpty(UserHelper.communityCode)) {
             UserHelper.setCommunity(tvCommunity.getText().toString(), params.cmnt_c);
@@ -500,7 +500,7 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
      */
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 

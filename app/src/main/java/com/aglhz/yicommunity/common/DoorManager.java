@@ -31,9 +31,9 @@ import static android.content.Intent.ACTION_MAIN;
 
 public class DoorManager {
     private static final String TAG = DoorManager.class.getSimpleName();
-    //    private static final String URL = "http://member.planidea.cn";
+    private static final String URL = "http://member.planidea.cn";
     //给成都电信测试。
-    private static final String URL = "http://mem.planidea.cn";
+//    private static final String URL = "http://mem.planidea.cn";
     private static DoorManager mDoorManager;
     private WebUserApi mWebUserApi;
     private LinphoneCallBack mListener;

@@ -143,7 +143,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -154,7 +154,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
      */
     @Override
     public void responseSuccess(BaseBean baseBean) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         getView().postDelayed(() -> _mActivity.finish(), 300);
     }
@@ -226,7 +226,7 @@ public class ComplainFragment extends BaseFragment<PublishContract.Presenter> im
     private void submit(Params params) {
         params.cmnt_c = UserHelper.communityCode;
         mPresenter.requestSubmit(params);//上传
-        showLoadingDialog();
+        showLoading();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

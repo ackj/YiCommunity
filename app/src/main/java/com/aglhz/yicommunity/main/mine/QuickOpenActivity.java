@@ -9,7 +9,6 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.abase.utils.ToastUtils;
-import com.aglhz.abase.widget.dialog.LoadingDialog;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.abase.common.DialogHelper;
@@ -20,6 +19,7 @@ import com.aglhz.yicommunity.widget.OpenDoorDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.itsite.adialog.dialog.LoadingDialog;
 import cn.itsite.multiselector.MultiSelectorDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

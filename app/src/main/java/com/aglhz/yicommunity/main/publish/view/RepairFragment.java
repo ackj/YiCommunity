@@ -196,12 +196,12 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
         switch (view.getId()) {
             case R.id.rl_house_name://选择房屋名称
                 if (isPrivate) {
-                    showLoadingDialog();
+                    showLoading();
                     ((RepairPresenter) mPresenter).requestMyhouse(params);//请求房屋名称
                 }
                 break;
             case R.id.tl_repair_type://选择报修类型
-                showLoadingDialog();
+                showLoading();
                 if (isPrivate) {
                     params.type = 1;
                 } else {
@@ -241,7 +241,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
     }
 
     private void submit(Params params) {
-        showLoadingDialog();
+        showLoading();
         params.cmnt_c = UserHelper.communityCode;
         mPresenter.requestSubmit(params);//请求提交
     }
@@ -271,7 +271,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -281,7 +281,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
      * @param iconBeans
      */
     public void responseMyHouse(List<IconBean> iconBeans) {
-        dismissLoadingDialog();
+        dismissLoading();
         String[] houseTitles = new String[iconBeans.size()];
         for (int i = 0; i < iconBeans.size(); i++) {
             houseTitles[i] = iconBeans.get(i).title;
@@ -304,7 +304,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
      * @param datas
      */
     public void responseRepairTypes(List<RepairTypesBean.DataBean.TypesBean> datas) {
-        dismissLoadingDialog();
+        dismissLoading();
         String[] arr = new String[datas.size()];
         for (int i = 0; i < datas.size(); i++) {
             arr[i] = datas.get(i).getName();
@@ -325,7 +325,7 @@ public class RepairFragment extends BaseFragment<PublishContract.Presenter> impl
      */
     @Override
     public void responseSuccess(BaseBean bean) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         setFragmentResult(RESULT_OK, null);
         pop();

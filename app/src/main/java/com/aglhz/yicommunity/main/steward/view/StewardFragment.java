@@ -1,6 +1,7 @@
 package com.aglhz.yicommunity.main.steward.view;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,18 +10,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.aglhz.abase.log.ALog;
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.DoorManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
@@ -50,6 +51,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.itsite.adialog.dialogfragment.SelectorDialogFragment;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
@@ -220,7 +222,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         //设置智能门禁卡片点击事件。
         smartDoorAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (position == 3) {
-                showLoadingDialog();
+                showLoading();
                 mPresenter.requestDoors(params);
             } else {
                 go2SmartDoor(position);
@@ -239,7 +241,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
             }
             if (position == 1) {
                 params.cmnt_c = UserHelper.communityCode;
-                showLoadingDialog();
+                showLoading();
                 mPresenter.requestContact(params);
             } else {
                 go2PropertyService(position);
@@ -324,8 +326,6 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     @Override
     public void onRefresh() {
-        ALog.e("params.token = UserHelper.token-->"+params.token );
-
         params.token = UserHelper.token;
         params.cmnt_c = UserHelper.communityCode;
         mPresenter.start(params);
@@ -338,7 +338,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         ptrFrameLayout.refreshComplete();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
@@ -390,7 +390,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     @Override
     public void responseContact(String[] arrayPhones) {
-        dismissLoadingDialog();
+        dismissLoading();
         new AlertDialog.Builder(_mActivity)
                 .setTitle("联系方式")
                 .setItems(arrayPhones, (dialog, which) -> {
@@ -400,33 +400,61 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
 
     @Override
     public void responseDoors(DoorListBean bean) {
-        dismissLoadingDialog();
+        dismissLoading();
         if (bean == null || bean.getData() == null || bean.getData().isEmpty()) {
             DialogHelper.errorSnackbar(getView(), "没找到门禁");
             return;
         }
 
-        String[] arrayDoors = new String[bean.getData().size()];
-
-        for (int i = 0; i < bean.getData().size(); i++) {
-            arrayDoors[i] = bean.getData().get(i).getName();
-        }
-
-        new AlertDialog.Builder(_mActivity)
-                .setTitle("选择门禁")
-                .setItems(arrayDoors, (dialog, which) -> {
-                    params.dir = bean.getData().get(which).getDir();
-//                    params.powerCode = "RemoteWatch";
+        //创建对话框。
+        new SelectorDialogFragment()
+                .setTitle("请选择门禁")
+                .setItemLayoutId(R.layout.item_rv_door_selector)
+                .setData(bean.getData())
+                .setOnItemConvertListener((holder, position, dialog) -> {
+                    DoorListBean.DataBean item = bean.getData().get(position);
+                    holder.setText(R.id.tv_name_item_rv_door_selector, item.getName())
+                            .setText(R.id.tv_community_item_rv_door_selector, UserHelper.communityName)
+                            .setText(R.id.tv_online_item_rv_door_selector, item.isOnline() ? "在线" : "离线")
+                            .setTextColor(R.id.tv_online_item_rv_door_selector,
+                                    item.isOnline() ? Color.parseColor("#999999") : Color.parseColor("#FF0000"));
+                })
+                .setOnItemClickListener((view, baseViewHolder, position, dialog) -> {
+                    dialog.dismiss();
+                    params.dir = bean.getData().get(position).getDir();
                     params.powerCode = Constants.PERMISSION_REMOTEWATCH;
                     mPresenter.requestCheckPermission(params);
-                    showLoadingDialog();
+                    showLoading();
                 })
-                .show();
+                .setAnimStyle(R.style.SlideAnimation)
+                .setGravity(Gravity.BOTTOM)
+                .setHeight(350)
+                .show(getChildFragmentManager());
+
+        /**
+         * 以下注释代码随时可删除
+         */
+//        String[] arrayDoors = new String[bean.getData().size()];
+//
+//        for (int i = 0; i < bean.getData().size(); i++) {
+//            arrayDoors[i] = bean.getData().get(i).getName();
+//        }
+//
+//        new AlertDialog.Builder(_mActivity)
+//                .setTitle("选择门禁")
+//                .setItems(arrayDoors, (dialog, which) -> {
+//                    params.dir = bean.getData().get(which).getDir();
+////                    params.powerCode = "RemoteWatch";
+//                    params.powerCode = Constants.PERMISSION_REMOTEWATCH;
+//                    mPresenter.requestCheckPermission(params);
+//                    showLoading();
+//                })
+//                .show();
     }
 
     @Override
     public void responseCheckPermission(BaseBean mBaseBean) {
-        dismissLoadingDialog();
+        dismissLoading();
         DoorManager
                 .getInstance()
                 .callOut(params.dir);

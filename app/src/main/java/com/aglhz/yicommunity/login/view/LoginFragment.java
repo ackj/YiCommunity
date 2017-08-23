@@ -100,7 +100,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
 
     @Override
     public void start(Object response) {
-        dismissLoadingDialog();
+        dismissLoading();
         UserHelper.setRemember(cbRemember.isChecked());
         EventBus.getDefault().post(new EventData(Constants.login));
         _mActivity.finish();
@@ -108,7 +108,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -130,7 +130,7 @@ public class LoginFragment extends BaseFragment<LoginContract.Presenter> impleme
             case R.id.cb_remember:
                 break;
             case R.id.bt_login:
-                showLoadingDialog();
+                showLoading();
                 params.user = etUsername.getText().toString().trim();
                 params.pwd = etPassword.getText().toString().trim();
                 mPresenter.start(params);

@@ -207,7 +207,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
@@ -218,7 +218,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
      */
     @Override
     public void responseSuccess(BaseBean bean) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         EventBus.getDefault().post(new EventPublish());
         pop();
@@ -367,7 +367,7 @@ public class PublishCarpoolFragment extends BaseFragment<PublishContract.Present
         params.currentPositionLng = UserHelper.longitude;
         params.positionAddress = UserHelper.locationAddress;
         params.positionType = 2;
-        showLoadingDialog();
+        showLoading();
         mPresenter.requestSubmit(params);//请求提交拼车服务
     }
 

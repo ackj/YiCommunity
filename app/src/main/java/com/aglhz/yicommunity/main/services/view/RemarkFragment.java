@@ -124,7 +124,7 @@ public class RemarkFragment extends BaseFragment {
             return;
         }
 
-        showLoadingDialog();
+        showLoading();
         params.startLevel = (int) rbRemark.getRating();
         params.content = etDescribe.getText().toString();
         HttpHelper.getService(ApiService.class)
@@ -136,7 +136,7 @@ public class RemarkFragment extends BaseFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bean -> {
-                    dismissLoadingDialog();
+                    dismissLoading();
                     if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         DialogHelper.successSnackbar(getView(), bean.getOther().getMessage());
                         setFragmentResult(RESULT_RECORD, new Bundle());
@@ -145,7 +145,7 @@ public class RemarkFragment extends BaseFragment {
                         DialogHelper.errorSnackbar(getView(), bean.getOther().getMessage());
                     }
                 }, throwable -> {
-                    dismissLoadingDialog();
+                    dismissLoading();
                     DialogHelper.errorSnackbar(getView(), "网络异常");
                 });
     }

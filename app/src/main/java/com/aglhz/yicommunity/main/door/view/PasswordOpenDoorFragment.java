@@ -104,7 +104,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
      */
     @Override
     public void responsePassword(PasswordBean mPasswordBean) {
-        dismissLoadingDialog();
+        dismissLoading();
         tvPassword.setTextColor(Color.parseColor("#000000"));
         tvPassword.setText(mPasswordBean.getData().getSecretCode());
     }
@@ -120,14 +120,14 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
                 params.timeset = Integer.valueOf(etDuration.getText().toString());
                 params.maxTimes = Integer.valueOf(etTime.getText().toString());
                 mPresenter.requestPassword(params);
-                showLoadingDialog();
+                showLoading();
                 break;
             case R.id.bt_share:
                 sharePassword();
                 break;
             case R.id.ll_door_name_password_opendoor_fragment:
                 mPresenter.requestDoors(params);
-                showLoadingDialog();
+                showLoading();
                 break;
         }
     }
@@ -171,7 +171,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -183,7 +183,7 @@ public class PasswordOpenDoorFragment extends BaseFragment<PasswordOpenDoorContr
 
     @Override
     public void responseDoors(DoorListBean data) {
-        dismissLoadingDialog();
+        dismissLoading();
         if (data != null && data.getData().isEmpty()) {
             return;
         }

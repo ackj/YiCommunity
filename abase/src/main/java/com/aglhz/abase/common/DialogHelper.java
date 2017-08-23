@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.view.View;
 
-import com.aglhz.abase.widget.dialog.LoadingDialog;
 import com.trycatch.mysnackbar.Prompt;
 import com.trycatch.mysnackbar.TSnackbar;
 
@@ -39,9 +38,5 @@ public class DialogHelper {
         TSnackbar.make(view, text, TSnackbar.LENGTH_SHORT, TSnackbar.APPEAR_FROM_TOP_TO_DOWN)
                 .setPromptThemBackground(Prompt.WARNING)
                 .show();
-    }
-
-    public static Dialog loading(Activity activity) {
-        return new LoadingDialog(activity);
     }
 }

@@ -216,7 +216,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.errorSnackbar(getView(), errorMessage);
     }
 
@@ -227,7 +227,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
      */
     @Override
     public void responseSuccess(BaseBean bean) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.successSnackbar(getView(), "提交成功!");
         EventBus.getDefault().post(new EventPublish());
         pop();
@@ -260,7 +260,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     private void submit(String content) {
         params.cmnt_c = UserHelper.communityCode;
         params.content = content;
-        showLoadingDialog();
+        showLoading();
         mPresenter.requestSubmit(params);//请求提交左邻右里
     }
 

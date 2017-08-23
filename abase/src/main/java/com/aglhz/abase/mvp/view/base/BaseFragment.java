@@ -18,7 +18,6 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.utils.DensityUtils;
 import com.aglhz.abase.utils.ScreenUtils;
-import com.aglhz.abase.widget.dialog.LoadingDialog;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import org.json.JSONException;
@@ -26,6 +25,7 @@ import org.json.JSONException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
+import cn.itsite.adialog.dialog.LoadingDialog;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
@@ -140,19 +140,6 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
     }
 
     public void onRefresh() {
-    }
-
-    public void showLoadingDialog() {
-        if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(_mActivity);
-        }
-        loadingDialog.show();
-    }
-
-    public void dismissLoadingDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
     }
 
     public void showLoading() {

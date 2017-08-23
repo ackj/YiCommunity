@@ -248,7 +248,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Override
     public void responseDeleteSuccess(BaseBean bean) {
-        dismissLoadingDialog();
+        dismissLoading();
         //判断是单个删除还是删除全部
         if (params.isCleanAll) {
             ptrFrameLayout.autoRefresh();
@@ -285,7 +285,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         ptrFrameLayout.refreshComplete();
         if (params.page == 1) {
             mStateManager.showError();
@@ -302,7 +302,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
             new AlertDialog.Builder(_mActivity)
                     .setTitle("温馨提示")
                     .setPositiveButton("确定", (dialog, which) -> {
-                        showLoadingDialog();
+                        showLoading();
                         params.isCleanAll = true;
                         params.fid = null;
                         mPresenter.requestDeleteMessage(params);

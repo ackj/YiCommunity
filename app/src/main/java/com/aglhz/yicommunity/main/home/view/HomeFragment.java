@@ -1,11 +1,13 @@
 package com.aglhz.yicommunity.main.home.view;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,8 @@ import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.common.ScrollingHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.mvp.view.base.BaseRecyclerViewAdapter;
 import com.aglhz.abase.utils.DensityUtils;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
@@ -38,6 +40,7 @@ import com.aglhz.yicommunity.main.propery.view.NoticeListFragment;
 import com.aglhz.yicommunity.main.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.aglhz.yicommunity.widget.OpenDoorDialog;
+import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,7 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import cn.itsite.multiselector.MultiSelectorDialog;
+import cn.itsite.adialog.dialogfragment.SelectorDialogFragment;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
@@ -72,8 +75,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     private String normalNotice = "欢迎来到亿社区！";
     private Params params = Params.getInstance();
     private OpenDoorDialog openDoorialog;
-    private List<OneKeyDoorBean.DataBean.ItemListBean> oneKeyDoorList = new ArrayList<>();
-    private MultiSelectorDialog dialog;
+    private BaseRecyclerViewAdapter<OneKeyDoorBean.DataBean.ItemListBean, BaseViewHolder> selectorAdapter;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -104,15 +106,26 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     private void initView() {
-        dialog = MultiSelectorDialog.builder(_mActivity)
-                .setTitle("请选择开哪扇门")
-                .setTabVisible(false)
-                .setOnItemClickListener((pagerPosition, optionPosition, option) -> {
-                    dialog.dismiss();
-                    ALog.e("pagerPosition-->" + pagerPosition + "\r\noptionPosition-->" + optionPosition + "\r\noption-->" + option);
-                    openDoor(oneKeyDoorList.get(optionPosition).getDir());
-                })
-                .build();
+//        dialog = MultiSelectorDialog.builder(_mActivity)
+//                .setTitle("请选择开哪扇门")
+//                .setTabVisible(false)
+//                .setOnItemClickListener((pagerPosition, optionPosition, option) -> {
+//                    dialog.dismiss();
+//                    ALog.e("pagerPosition-->" + pagerPosition + "\r\noptionPosition-->" + optionPosition + "\r\noption-->" + option);
+//                    openDoor(oneKeyDoorList.get(optionPosition).getDir());
+//                })
+//                .build();
+
+        selectorAdapter = new BaseRecyclerViewAdapter<OneKeyDoorBean.DataBean.ItemListBean, BaseViewHolder>(R.layout.item_rv_door_selector) {
+            @Override
+            protected void convert(BaseViewHolder helper, OneKeyDoorBean.DataBean.ItemListBean item) {
+                helper.setText(R.id.tv_name_item_rv_door_selector, item.getName())
+                        .setText(R.id.tv_community_item_rv_door_selector, UserHelper.communityName)
+                        .setText(R.id.tv_online_item_rv_door_selector, item.isOnline() ? "在线" : "离线");
+            }
+        };
+
+
     }
 
     private void initData() {
@@ -213,7 +226,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     switch (view.getId()) {
                         case R.id.ll_quick_open_door:
                             //请求列表
-                            showLoadingDialog();
+                            showLoading();
                             //请求列表
                             mPresenter.requestOneKeyOpenDoorDeviceList(params);
                             break;
@@ -243,9 +256,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     private void openDoor(String dir) {
         UserHelper.dir = dir;
         showQuickOpenDoorDialog();
-        recyclerView.postDelayed(() -> {
-            mPresenter.requestOpenDoor();
-        }, 1000);
+        recyclerView.postDelayed(() -> mPresenter.requestOpenDoor(), 1000);
     }
 
     public void go2Web(String title, String link) {
@@ -276,7 +287,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         if (openDoorialog != null) {
             openDoorialog.setError();
         }
-        dismissLoadingDialog();
+        dismissLoading();
         ptrFrameLayout.refreshComplete();
         adapter.notifyItemChanged(0);
         adapter.notifyItemChanged(1);
@@ -335,19 +346,33 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void responseOneKeyOpenDoorDeviceList(List<OneKeyDoorBean.DataBean.ItemListBean> doorList) {
-        this.oneKeyDoorList = doorList;
-        dismissLoadingDialog();
-        if (oneKeyDoorList.size() == 0) {
-            ToastUtils.showToast(_mActivity, "该社区没有指定开门");
-        } else if (oneKeyDoorList.size() == 1) {
-            openDoor(oneKeyDoorList.get(0).getDir());
+        dismissLoading();
+        if (doorList.size() == 0) {
+            DialogHelper.errorSnackbar(getView(), "该社区没有指定开门");
+        } else if (doorList.size() == 1) {
+            openDoor(doorList.get(0).getDir());
         } else {
-            dialog.show();
-            List<String> list = new ArrayList<>();
-            for (OneKeyDoorBean.DataBean.ItemListBean itemListBean : oneKeyDoorList) {
-                list.add(itemListBean.getName());
-            }
-            getView().post(() -> dialog.notifyDataSetChanged(list));
+            //创建对话框。
+            new SelectorDialogFragment()
+                    .setTitle("请选择门禁")
+                    .setItemLayoutId(R.layout.item_rv_door_selector)
+                    .setData(doorList)
+                    .setOnItemConvertListener((holder, position, dialog) -> {
+                        OneKeyDoorBean.DataBean.ItemListBean item = doorList.get(position);
+                        holder.setText(R.id.tv_name_item_rv_door_selector, item.getName())
+                                .setText(R.id.tv_community_item_rv_door_selector, UserHelper.communityName)
+                                .setText(R.id.tv_online_item_rv_door_selector, item.isOnline() ? "在线" : "离线")
+                                .setTextColor(R.id.tv_online_item_rv_door_selector,
+                                        item.isOnline() ? Color.parseColor("#999999") : Color.parseColor("#FF0000"));
+                    })
+                    .setOnItemClickListener((view, baseViewHolder, position, dialog) -> {
+                        dialog.dismiss();
+                        openDoor(doorList.get(position).getDir());
+                    })
+                    .setAnimStyle(R.style.SlideAnimation)
+                    .setGravity(Gravity.BOTTOM)
+                    .setHeight(350)
+                    .show(getChildFragmentManager());
         }
     }
 

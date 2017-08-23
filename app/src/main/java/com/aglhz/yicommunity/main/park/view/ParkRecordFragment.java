@@ -121,7 +121,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         if (params.page == 1) {
             //为后面的pageState做准备
             mStateManager.showError();
@@ -138,7 +138,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
      */
     @Override
     public void responseParkRecord(List<ParkRecordListBean.PackRecordBean> datas) {
-        dismissLoadingDialog();
+        dismissLoading();
         if (datas == null || datas.isEmpty()) {
             if (params.page == 1) {
                 mStateManager.showEmpty();
@@ -204,7 +204,7 @@ public class ParkRecordFragment extends BaseFragment<ParkRecordContract.Presente
             adapter.notifyDataSetChanged();
         }
         mPresenter.requestParkReocrd(params);//请求停车记录
-        showLoadingDialog();
+        showLoading();
     }
 
     private String getTime(Date date) {//可根据需要自行截取数据显示

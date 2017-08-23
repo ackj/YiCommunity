@@ -80,7 +80,7 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
 
     @Override
     public void start(Object response) {
-        dismissLoadingDialog();
+        dismissLoading();
         if (response instanceof String) {
             DialogHelper.successSnackbar(getView(), (String) response);
         }
@@ -88,7 +88,7 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -106,7 +106,7 @@ public class FeedbackFragment extends BaseFragment<FeedbackContract.Presenter> i
         }
         params.des = etDescribe.getText().toString().trim();
         mPresenter.start(params);//请求提交反馈
-        showLoadingDialog();
+        showLoading();
     }
 
     @Override

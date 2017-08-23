@@ -92,7 +92,6 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
     TextView toolbarMenu;
     private Params params = Params.getInstance();
     private static final String[] arrGender = {"保密", "男", "女"};
-    private Dialog loadingDialog;
 
     public static UserDataFragment newInstance() {
         return new UserDataFragment();
@@ -162,7 +161,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
     @Override
     public void start(Object response) {
-        dismissLoadingDialog();
+        dismissLoading();
 
         if (response instanceof String) {
             DialogHelper.successSnackbar(getView(), (String) response);
@@ -182,7 +181,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
 
     @Override
     public void error(String errorMessage) {
-        dismissLoadingDialog();
+        dismissLoading();
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 
@@ -215,7 +214,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     dialog.dismiss();
                     params.field = "sex";//写死就好
                     params.val = which + "";
-                    showLoadingDialog();
+                    showLoading();
                     mPresenter.requestUpdateUserData(params);
                 }).show();
 
@@ -238,7 +237,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                 //网络请求
                 params.field = "nickName";//写死就好
                 params.val = nickName;
-                showLoadingDialog();
+                showLoading();
                 mPresenter.requestUpdateUserData(params);
                 break;
 
@@ -257,7 +256,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                     DialogHelper.warningSnackbar(getView(), "两次输入密码不相同！");
                     return;
                 }
-                showLoadingDialog();
+                showLoading();
                 mPresenter.requestUpdatePassword(params);
                 break;
         }
@@ -278,7 +277,7 @@ public class UserDataFragment extends BaseFragment<UserDataContract.Presenter> i
                         .into(ivPortrait);
 
                 params.file = file;
-                showLoadingDialog();
+                showLoading();
                 mPresenter.requestChangePortrait(params);
             }
         }
