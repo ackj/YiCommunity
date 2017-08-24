@@ -128,12 +128,12 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
 
     /**
      * 请求响应开门记录列表。
-     * @param datas
+     * @param data
      */
     @Override
-    public void responseRecord(List<OpenDoorRecordBean.DataBean> datas) {
+    public void responseRecord(List<OpenDoorRecordBean.DataBean> data) {
         ptrFrameLayout.refreshComplete();
-        if (datas == null || datas.isEmpty()) {
+        if (data == null || data.isEmpty()) {
             if (params.page == 1) {
                 mStateManager.showEmpty();
             }
@@ -143,10 +143,10 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
 
         if (params.page == 1) {
             mStateManager.showContent();
-            adapter.setNewData(datas);
+            adapter.setNewData(data);
             adapter.disableLoadMoreIfNotFullPage(recyclerView);
         } else {
-            adapter.addData(datas);
+            adapter.addData(data);
             adapter.setEnableLoadMore(true);
             adapter.loadMoreComplete();
         }
@@ -162,7 +162,6 @@ public class OpenDoorRecordFragment extends BaseFragment<OpenDoorRecordContract.
         ptrFrameLayout.refreshComplete();
         DialogHelper.warningSnackbar(getView(), errorMessage);
         if (params.page == 1) {
-            //为后面的pageState做准备
             mStateManager.showError();
         } else if (params.page > 1) {
             adapter.loadMoreFail();
