@@ -196,6 +196,7 @@
             android:value="da7f5447eccd1609e8dcce4cd0919ad8" />
 
         <service android:name="com.amap.api.location.APSService" />
+
         <service
             android:name="com.sipphone.sdk.SipService"
             android:label="Sip Service"

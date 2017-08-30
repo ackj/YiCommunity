@@ -112,7 +112,6 @@
         android:id="@+id/tv_check_update_about_us_fragment"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-
         android:drawableEnd="@drawable/ic_arrow_right_gray_60px"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"

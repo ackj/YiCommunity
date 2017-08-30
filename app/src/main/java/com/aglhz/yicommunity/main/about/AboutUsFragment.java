@@ -167,8 +167,7 @@ public class AboutUsFragment extends BaseFragment {
                                 //（必须）新版本号，
                                 .setNewVersion(mAppUpdateBean.getData().getVersionName())
                                 //（必须）下载地址
-                                .setApkFileUrl("http://aglhzysq.file.alimmdn.com/app/app-release.apk")
-//                                .setApkFileUrl(mAppUpdateBean.getData().getUrl())
+                                .setApkFileUrl(mAppUpdateBean.getData().getUrl())
                                 //（必须）更新内容
                                 .setUpdateLog(mAppUpdateBean.getData().getDescription())
                                 //大小，不设置不显示大小，可以不设置

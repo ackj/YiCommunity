@@ -38,6 +38,16 @@ public class DoorManager {
     private WebUserApi mWebUserApi;
     private LinphoneCallBack mListener;
 
+
+    public static class Device {
+        public final static String UUID = "b4ec659b-af86-4333-b753-98839a2d4dbb";
+        //给成都电信测试。
+//        public final static String UUID = "5D7F8D33-2D37-4EBC-8E38-172E8AFD9136";
+
+        public final static String UserName = "da";
+        public final static String tenantCode = "T0001";
+    }
+
     private DoorManager() {
         WebApiConstants.setHttpServer(URL);
     }
@@ -53,7 +63,6 @@ public class DoorManager {
         }
         return mDoorManager;
     }
-
 
     public DoorManager startService() {
         ALog.e(TAG, "startService");
@@ -157,9 +166,4 @@ public class DoorManager {
 
     }
 
-    public static class Device {
-        public final static String UUID = "b4ec659b-af86-4333-b753-98839a2d4dbb";
-        public final static String UserName = "da";
-        public final static String tenantCode = "T0001";
-    }
 }

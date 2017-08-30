@@ -128,6 +128,12 @@ public class Constants {
             BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
             BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";//配置系统
             BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+
+            //给成都电信测试。
+//            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+//            BASE_PROPERTYCFG_M = "http://mem.planidea.cn:8096/propertyCFG-m/";//配置系统
+//            BASE_PROPERTY = "http://mem.planidea.cn:8090/sub_property_ysq/";   //物业
+
         } else {
             //这里的是正式版的基础地址，永远不要动。
             BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
@@ -135,7 +141,7 @@ public class Constants {
             BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
 
 
-//            //给成都电信测试。
+            //给成都电信测试。
 //            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
 //            BASE_PROPERTYCFG_M = "http://mem.planidea.cn:8096/propertyCFG-m/";//配置系统
 //            BASE_PROPERTY = "http://mem.planidea.cn:8090/sub_property_ysq/";   //物业

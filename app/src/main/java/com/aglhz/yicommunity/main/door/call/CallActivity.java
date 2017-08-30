@@ -69,10 +69,9 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
         mListener = new LinphoneCoreListenerBase() {
             @Override
             public void callState(LinphoneCore lc, LinphoneCall call, State state, String message) {
-                ALog.e(TAG, 111 + state.toString());
+                ALog.e(TAG,  state.toString());
 
                 if (state == State.CallEnd || state == State.Error || state == State.CallReleased) {
-                    ALog.e(TAG, "state == State.CallEnd");
                     finish();
                 }
             }
