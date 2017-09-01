@@ -232,7 +232,9 @@ public interface ApiService {
     String requestUpdatePortrait = BASE_USER + "/client/uploadHeader2.do";
 
     @POST
-    Observable<UserDataBean> requestUpdatePortrait(@Url String url, @Query("token") String token, @Body MultipartBody file);
+    Observable<UserDataBean> requestUpdatePortrait(@Url String url,
+                                                   @Query("token") String token,
+                                                   @Body MultipartBody file);
 
     //物业报修列表
     String requestRepairApply = BASE_PROPERTY + "/client/info/repairApplyList";
@@ -284,43 +286,40 @@ public interface ApiService {
     //请求楼栋列表
     String requestBuildings = BASE_PROPERTYCFG_M + "/client/buildingList.do";
 
-
-    //    @POST("/propertyCFG-m/client/buildingList.do")
     @POST
-    Observable<BuildingBean> requestBuildings(@Url String url, @Query("sc") String sc
-            , @Query("cmnt_c") String cmnt_c);
+    Observable<BuildingBean> requestBuildings(@Url String url,
+                                              @Query("sc") String sc,
+                                              @Query("cmnt_c") String cmnt_c);
 
     //请求单元列表
     String requestUnits = BASE_PROPERTYCFG_M + "/client/buildingUnitList.do";
 
-
-    //    @POST("/propertyCFG-m/client/buildingUnitList.do")
     @POST
-    Observable<UnitBean> requestUnits(@Url String url, @Query("sc") String sc
-            , @Query("cmnt_c") String cmnt_c
-            , @Query("bdg_c") String bdg_c);
+    Observable<UnitBean> requestUnits(@Url String url,
+                                      @Query("sc") String sc,
+                                      @Query("cmnt_c") String cmnt_c,
+                                      @Query("bdg_c") String bdg_c);
 
     //请求楼层列表
     String requestFloors = BASE_PROPERTYCFG_M + "/client/floorList.do";
 
-
-    //    @POST("/propertyCFG-m/client/floorList.do")
     @POST
-    Observable<FloorBean> requestFloors(@Url String url, @Query("sc") String sc
-            , @Query("cmnt_c") String cmnt_c
-            , @Query("bdg_c") String bdg_c
-            , @Query("bdg_u_c") String bdg_u_c);
+    Observable<FloorBean> requestFloors(@Url String url,
+                                        @Query("sc") String sc,
+                                        @Query("cmnt_c") String cmnt_c,
+                                        @Query("bdg_c") String bdg_c,
+                                        @Query("bdg_u_c") String bdg_u_c);
 
     //请求房间列表
     String requestRooms = BASE_PROPERTYCFG_M + "/client/houseList.do";
 
-    //    @POST("/propertyCFG-m/client/houseList.do")
     @POST
-    Observable<RoomBean> requestRooms(@Url String url, @Query("sc") String sc
-            , @Query("cmnt_c") String cmnt_c
-            , @Query("bdg_c") String bdg_c
-            , @Query("bdg_u_c") String bdg_u_c
-            , @Query("bdg_f_c") String bdg_f_c);
+    Observable<RoomBean> requestRooms(@Url String url,
+                                      @Query("sc") String sc,
+                                      @Query("cmnt_c") String cmnt_c,
+                                      @Query("bdg_c") String bdg_c,
+                                      @Query("bdg_u_c") String bdg_u_c,
+                                      @Query("bdg_f_c") String bdg_f_c);
 
 
     //房屋成员认证审核
@@ -357,17 +356,17 @@ public interface ApiService {
     //***************根据社区代号得到物业联系方式***********************
     String CONTACT = BASE_PROPERTY + "/property/contact-property/to-client/contact-info";
 
-    //    @POST("/sub_property_ysq/property/contact-property/to-client/contact-info")
     @POST
-    Observable<ContactBean> requestContact(@Url String url, @Query("token") String token, @Query("cmnt_c") String cmnt_c);
+    Observable<ContactBean> requestContact(@Url String url,
+                                           @Query("token") String token,
+                                           @Query("cmnt_c") String cmnt_c);
     //***************根据社区代号得到物业联系方式***********************
 
-
-    //    @POST("/sub_property_ysq/client/repair")
     String postRepair = BASE_PROPERTY + "/client/repair";
 
     @POST
-    Observable<BaseBean> postRepair(@Url String url, @Body MultipartBody file);
+    Observable<BaseBean> postRepair(@Url String url,
+                                    @Body MultipartBody file);
 
     //提交管理投诉
     String requestComplain = BASE_PROPERTY + "/property/complaint/from-client/complaint-create";

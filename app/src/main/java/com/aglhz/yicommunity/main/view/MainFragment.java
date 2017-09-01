@@ -87,8 +87,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private void initData() {
-        //检测App的更新。
-        updateApp();
+        updateApp();//检测App的更新。
 
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.community, R.drawable.ic_home_black_78px, R.color.white);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.steward, R.drawable.ic_guanjia_black_79px, R.color.white);
