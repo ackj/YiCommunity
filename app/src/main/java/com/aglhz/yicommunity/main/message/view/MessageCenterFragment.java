@@ -198,6 +198,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                 params.isCleanAll = false;
                 removePosition = position;
                 mPresenter.requestDeleteMessage(params);
+                showLoading();
             }
         });
     }
@@ -248,8 +249,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         //判断是单个删除还是删除全部
         if (params.isCleanAll) {
             ptrFrameLayout.autoRefresh();
-//            adapter.setNewData(null);
-//            mStateManager.showEmpty();
             EventBus.getDefault().post(new EventUnread());
         } else if (removePosition > -1) {
             adapter.remove(removePosition);
@@ -302,6 +301,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                         params.isCleanAll = true;
                         params.fid = null;
                         mPresenter.requestDeleteMessage(params);
+                        showLoading();
                     })
                     .setMessage("清除所有消息和内容？")
                     .setNegativeButton("取消", null)

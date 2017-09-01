@@ -39,7 +39,7 @@ import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
  * <p>
  * 所有Fragment的基类。将Fragment作为View层对象，专职处理View的试图渲染和事件。
  */
-public abstract class BaseFragment<P extends BaseContract.Presenter> extends SwipeBackFragment {
+public abstract class BaseFragment<P extends BaseContract.Presenter> extends SwipeBackFragment implements BaseContract.View {
     private final String TAG = BaseFragment.class.getSimpleName();
     public P mPresenter;
     private LoadingDialog loadingDialog;
@@ -161,6 +161,17 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
         }
     }
 
+    /**
+     * 用于被P层调用的通用函数。
+     *
+     * @param response
+     */
+    @Override
+    public void start(Object response) {
+        ALog.e(TAG, "start");
+        showLoading();
+    }
+
     public void error(Throwable throwable) {
         if (throwable == null) {
             DialogHelper.errorSnackbar(getView(), "数据异常");
@@ -179,5 +190,21 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
         }
         throwable.printStackTrace();
         ALog.e(TAG, throwable);
+    }
+
+    /**
+     * 用于被P曾调用的通用函数。
+     *
+     * @param errorMessage P层传递过来的错误信息显示给用户。
+     */
+    @Override
+    public void error(String errorMessage) {
+        dismissLoading();
+        DialogHelper.errorSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public void complete(Object response) {
+        dismissLoading();
     }
 }
