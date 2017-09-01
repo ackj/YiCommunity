@@ -73,7 +73,6 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
             mPresenter.clear();
             mPresenter = null;
         }
-
         super.onDestroy();
     }
 
@@ -143,8 +142,15 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
     }
 
     public void showLoading() {
+        showLoading("玩命加载中…");
+    }
+
+    public void showLoading(String message) {
         if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(_mActivity);
+            loadingDialog.setDimAmount(0);
+        } else {
+            loadingDialog.setText(message);
         }
         loadingDialog.show();
     }

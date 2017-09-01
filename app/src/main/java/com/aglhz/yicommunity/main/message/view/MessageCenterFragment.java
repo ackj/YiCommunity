@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.mvp.view.base.Decoration;
 import com.aglhz.abase.widget.statemanager.StateManager;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.MessageCenterBean;
@@ -31,7 +31,6 @@ import com.aglhz.yicommunity.main.message.contract.MessageCenterContract;
 import com.aglhz.yicommunity.main.message.presenter.MessageCenterPresenter;
 import com.aglhz.yicommunity.main.propery.view.PropertyPayFragment;
 import com.aglhz.yicommunity.web.WebActivity;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -116,9 +115,6 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
         layoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageCenterRVAdapter(null);
-        //设置Item动画
-        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
-        adapter.isFirstOnly(true);
         //设置允许加载更多
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
@@ -191,7 +187,7 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
                         start(PropertyPayFragment.newInstance());
                         break;
                     case SMARTDOOR_PUSHREC://来电提醒
-                        start(ApplyResultFragment.newInstance(bean.getTitle(), bean.getOpTime()+"\n"+bean.getDes()+"，请留意！"));
+                        start(ApplyResultFragment.newInstance(bean.getTitle(), bean.getOpTime() + "\n" + bean.getDes() + "，请留意！"));
                         break;
                     case COMPLAINT_REPLY://物业投诉回复
                         start(ComplainReplyFragment.newInstance(bean.getSfid()));
@@ -315,23 +311,19 @@ public class MessageCenterFragment extends BaseFragment<MessageCenterContract.Pr
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshMessageListEvent(EventRefreshMessageList event) {
-        ALog.e("11111111onRefreshMessageListEvent");
-        recyclerView.scrollToPosition(0);
-        ptrFrameLayout.autoRefresh();
+        onRefresh();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCommunityEvent(EventCommunity event) {
-        recyclerView.scrollToPosition(0);
-        ptrFrameLayout.autoRefresh();
+        onRefresh();
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
         //之所以要这么刷新一下，是因为在处理了后个事件后，列表里的finished刷新后才会改变。这个字段用于标记是否让你再次操作。
-        recyclerView.scrollToPosition(0);
-        ptrFrameLayout.autoRefresh();
+        onRefresh();
     }
 }
 
