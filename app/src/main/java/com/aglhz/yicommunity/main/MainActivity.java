@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
         setCallListener();
 
 //        shakeHelper = new ShakeHelper(this);
-//        shakeHelper.Start();
+//        shakeHelper.start();
     }
 
     @Override
