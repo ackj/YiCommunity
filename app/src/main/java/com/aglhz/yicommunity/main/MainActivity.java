@@ -5,18 +5,13 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.aglhz.abase.mvp.view.base.BaseActivity;
-import com.aglhz.abase.utils.ToastUtils;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.DoorManager;
-import com.aglhz.yicommunity.common.ShakeHelper;
 import com.aglhz.yicommunity.main.door.call.CallActivity;
 import com.aglhz.yicommunity.main.view.MainFragment;
 
 import org.linphone.core.LinphoneCall;
 import org.linphone.core.LinphoneCore;
-
-import cn.itsite.multiselector.MultiSelectorDialog;
-import cn.itsite.multiselector.MultiSelectorInterface;
 
 /**
  * Author：leguang on 2017/4/12 0009 14:23
@@ -28,7 +23,6 @@ import cn.itsite.multiselector.MultiSelectorInterface;
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Handler handler;
-    private ShakeHelper shakeHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +34,6 @@ public class MainActivity extends BaseActivity {
         handler = new Handler();
         setCallListener();
 
-//        shakeHelper = new ShakeHelper(this);
-//        shakeHelper.start();
     }
 
     @Override
@@ -63,13 +55,5 @@ public class MainActivity extends BaseActivity {
                 });
             }
         }, 3000);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (shakeHelper != null) {
-            shakeHelper.Stop();
-        }
     }
 }
