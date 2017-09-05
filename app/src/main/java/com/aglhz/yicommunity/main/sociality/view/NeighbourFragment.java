@@ -1,9 +1,13 @@
 package com.aglhz.yicommunity.main.sociality.view;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +16,21 @@ import android.widget.TextView;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.entity.bean.CommunityBean;
 import com.aglhz.yicommunity.main.publish.view.PublishExchangeFragment;
 import com.aglhz.yicommunity.main.publish.view.PublishNeighbourFragment;
+import com.aglhz.yicommunity.main.sociality.contract.NeighbourContract;
+import com.aglhz.yicommunity.main.sociality.presenter.NeighbourPresenter;
 
+import java.util.List;
+
+import anetwork.channel.Param;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.itsite.adialog.dialogfragment.SelectorDialogFragment;
 
 /**
  * Author: LiuJia on 2017/5/11 0011 14:11.
@@ -26,17 +38,17 @@ import butterknife.Unbinder;
  * 闲置交换和左邻右里的父层Fragment
  */
 
-public class NeighbourFragment extends BaseFragment {
+public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter> implements NeighbourContract.View {
     private static final String TAG = NeighbourFragment.class.getSimpleName();
+
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.toolbar_menu)
-    TextView toolbarMenu;
 
     private Unbinder unbinder;
     private int type;
+    private CommunityBean.DataBean.CommunityInfoListBean allCommunity = new CommunityBean.DataBean.CommunityInfoListBean();
 
     /**
      * NeighbourFragment创建入口
@@ -58,6 +70,12 @@ public class NeighbourFragment extends BaseFragment {
         type = getArguments().getInt(Constants.KEY_TYPE);
     }
 
+    @NonNull
+    @Override
+    protected NeighbourContract.Presenter createPresenter() {
+        return new NeighbourPresenter(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,7 +92,14 @@ public class NeighbourFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         loadRootFragment(R.id.fl_container_fragment_fragment, SocialityListFragment.newInstance(type));
         initToolbar();
+        initData();
     }
+
+    private void initData() {
+        allCommunity.setCommunityFid("");
+        allCommunity.setCommunityName("所有社区");
+    }
+
 
     private void initToolbar() {
         initStateBar(toolbar);
@@ -86,7 +111,6 @@ public class NeighbourFragment extends BaseFragment {
                 toolbarTitle.setText("左邻右里");
                 break;
         }
-        toolbarMenu.setText("发布");
         if (type == SocialityListFragment.TYPE_EXCHANGE) {
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
             toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
@@ -108,25 +132,33 @@ public class NeighbourFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.toolbar_menu)
-    public void onViewClicked() {
-        switch (type) {
-            case SocialityListFragment.TYPE_EXCHANGE:
-                start(PublishExchangeFragment.newInstance());
+    @OnClick({R.id.fab_publish, R.id.iv_fenlei})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.fab_publish:
+                switch (type) {
+                    case SocialityListFragment.TYPE_EXCHANGE:
+                        start(PublishExchangeFragment.newInstance());
+                        break;
+                    case SocialityListFragment.TYPE_NEIGHBOUR:
+                        String[] arr = {"发布照片", "发布视频"};
+                        new AlertDialog.Builder(_mActivity)
+                                .setItems(arr, (dialog, which) -> {
+                                    //网络访问
+                                    dialog.dismiss();
+                                    _mActivity.start(PublishNeighbourFragment.newInstance(which));
+                                })
+                                .setTitle("请选择")
+                                .setPositiveButton("取消", null)
+                                .show();
+                        break;
+                }
                 break;
-            case SocialityListFragment.TYPE_NEIGHBOUR:
-                String[] arr = {"发布照片", "发布视频"};
-                new AlertDialog.Builder(_mActivity)
-                        .setItems(arr, (dialog, which) -> {
-                            //网络访问
-                            dialog.dismiss();
-                            _mActivity.start(PublishNeighbourFragment.newInstance(which));
-                        })
-                        .setTitle("请选择")
-                        .setPositiveButton("取消", null)
-                        .show();
+            case R.id.iv_fenlei:
+                mPresenter.requestCommunityList(Params.getInstance());
                 break;
         }
+
     }
 
     public void go2TopAndRefresh() {
@@ -137,5 +169,42 @@ public class NeighbourFragment extends BaseFragment {
             ((SocialityListFragment) getChildFragmentManager()
                     .getFragments().get(0)).go2TopAndRefresh(null);
         }
+    }
+
+    @Override
+    public void start(Object response) {
+
+    }
+
+    @Override
+    public void error(String errorMessage) {
+
+    }
+
+    @Override
+    public void responseCommunityList(List<CommunityBean.DataBean.CommunityInfoListBean> datas) {
+        datas.add(0, allCommunity);
+        new SelectorDialogFragment()
+                .setTitle("请选择要切换的社区")
+                .setItemLayoutId(android.R.layout.simple_list_item_1)
+                .setData(datas)
+                .setOnItemConvertListener((holder, position, dialog) -> {
+                    CommunityBean.DataBean.CommunityInfoListBean bean = datas.get(position);
+                    holder.setText(android.R.id.text1, bean.getCommunityName());
+                })
+                .setOnItemClickListener((view, baseViewHolder, position, dialog) -> {
+                    dialog.dismiss();
+                    CommunityBean.DataBean.CommunityInfoListBean bean = datas.get(position);
+                    if (getChildFragmentManager() != null
+                            && getChildFragmentManager().getFragments() != null
+                            && !getChildFragmentManager().getFragments().isEmpty()
+                            && getChildFragmentManager().getFragments().get(0) instanceof SocialityListFragment) {
+                        ((SocialityListFragment) getChildFragmentManager()
+                                .getFragments().get(0)).refresh(bean.getCommunityFid());
+                    }
+                })
+                .setAnimStyle(R.style.SlideAnimation)
+                .setGravity(Gravity.BOTTOM)
+                .show(getChildFragmentManager());
     }
 }
