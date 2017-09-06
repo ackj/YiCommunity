@@ -222,7 +222,6 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
                     _mActivity.startActivity(intent);
                     break;
                 case R.id.tv_remove_item_moments_list:
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(_mActivity);
                     builder.setMessage("确认删除吗？");
                     builder.setTitle("提示");
@@ -415,5 +414,10 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
             return;
         }
         recyclerView.scrollToPosition(0);
+    }
+
+    public void refresh(String fid){
+        params.cmnt_c_en = fid;
+        onRefresh();
     }
 }

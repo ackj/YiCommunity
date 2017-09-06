@@ -9,6 +9,7 @@ import com.aglhz.yicommunity.entity.bean.CarCardListBean;
 import com.aglhz.yicommunity.entity.bean.CardRechargeBean;
 import com.aglhz.yicommunity.entity.bean.CheckTokenBean;
 import com.aglhz.yicommunity.entity.bean.CommentListBean;
+import com.aglhz.yicommunity.entity.bean.CommunityBean;
 import com.aglhz.yicommunity.entity.bean.CommunitySelectBean;
 import com.aglhz.yicommunity.entity.bean.ComplainReplyBean;
 import com.aglhz.yicommunity.entity.bean.ContactBean;
@@ -532,7 +533,7 @@ public interface ApiService {
     String requestExchangeList = BASE_PROPERTY + "/neighbor/exchange/to-client/exchange-list";
 
     @POST
-    Observable<SocialityListBean> requestExchangeList(@Url String url, @Query("page") int page, @Query("pageSize") int pageSize);
+    Observable<SocialityListBean> requestExchangeList(@Url String url, @Query("page") int page, @Query("pageSize") int pageSize, @Query("cmnt_c") String cmnt_c);
 
     //获取拼车服务
     String requestCarpoolList = BASE_PROPERTY + "/neighbor/carpool/to-client/carpool-list/";
@@ -930,6 +931,12 @@ public interface ApiService {
                                              @Field("commentFid") String commodityFid,
                                              @Field("replyContent") String replyContent);
     //-------------------------------以上为2017.06.30添加的社区服务接口--------------------------------------------
+
+    String requestCommunityList = BASE_PROPERTY + "/neighbor/community/to-client/member-community-list";
+
+    @FormUrlEncoded
+    @POST
+    Observable<CommunityBean> requestCommunityList(@Url String url, @Field("token") String token);
 
 }
 

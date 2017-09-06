@@ -28,11 +28,10 @@ public class SocialityModel extends BaseModel implements SocialityContract.Model
 
     @Override
     public Observable<SocialityListBean> requestNeighbourList(Params params) {
-
         return HttpHelper.getService(ApiService.class)
                 .requestNeighbourList(ApiService.requestNeighbourList,
                         params.token,
-                        params.cmnt_c,
+                        params.cmnt_c_en,
                         params.page,
                         params.pageSize)
                 .subscribeOn(Schedulers.io());
@@ -40,7 +39,7 @@ public class SocialityModel extends BaseModel implements SocialityContract.Model
 
     @Override
     public Observable<SocialityListBean> requestExchangeList(Params params) {
-        return HttpHelper.getService(ApiService.class).requestExchangeList(ApiService.requestExchangeList, params.page, params.pageSize)
+        return HttpHelper.getService(ApiService.class).requestExchangeList(ApiService.requestExchangeList, params.page, params.pageSize,params.cmnt_c_en)
                 .subscribeOn(Schedulers.io());
     }
 

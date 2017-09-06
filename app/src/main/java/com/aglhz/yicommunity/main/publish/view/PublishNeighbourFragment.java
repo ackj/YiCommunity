@@ -66,6 +66,8 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     EditText etInputContent;
     @BindView(R.id.tv_community_name)
     TextView tvCommunityName;
+    @BindView(R.id.tv_selected_res_title)
+    TextView tvResTitle;
 
     private Unbinder unbinder;
     private PublishImageRVAdapter adapter;
@@ -126,6 +128,7 @@ public class PublishNeighbourFragment extends BaseFragment<PublishContract.Prese
     }
 
     private void initData() {
+        tvResTitle.setText(which == 0 ? "图片" : "视频");
         //因为params是单例，所以要将上次选择的清除
         params.files = new ArrayList<>();
         tvCommunityName.setText(UserHelper.communityName);
