@@ -139,6 +139,7 @@
         android:background="@color/base_grey" />
 
     <LinearLayout
+        android:id="@+id/ll_validity_date"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical">
@@ -253,6 +254,7 @@
         android:background="@color/base_grey" />
 
     <RelativeLayout
+        android:id="@+id/rl_should_pay"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical">
@@ -293,6 +295,7 @@
         android:background="@color/base_grey" />
 
     <TextView
+        android:id="@+id/tv_warn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

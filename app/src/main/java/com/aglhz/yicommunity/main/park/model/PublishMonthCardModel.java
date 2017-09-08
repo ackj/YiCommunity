@@ -34,9 +34,9 @@ public class PublishMonthCardModel extends BaseModel implements PublishMonthCard
         builder.addFormDataPart("carNo", params.carNo);
         builder.addFormDataPart("customerName", params.name);
         builder.addFormDataPart("phoneNo", params.phoneNo);
-        builder.addFormDataPart("monthName", params.monthName);
-        builder.addFormDataPart("monthCount", params.monthCount + "");
-        builder.addFormDataPart("money", params.price);
+//        builder.addFormDataPart("monthName", params.monthName);
+//        builder.addFormDataPart("monthCount", params.monthCount + "");
+//        builder.addFormDataPart("money", params.price);
 
         return HttpHelper.getService(ApiService.class).requestSubmitMonthCard(ApiService.requestSubmitMonthCard,
                 builder.build())

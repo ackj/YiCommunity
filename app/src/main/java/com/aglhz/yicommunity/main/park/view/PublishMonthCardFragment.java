@@ -13,21 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
 import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.RegexUtils;
 import com.aglhz.yicommunity.R;
+import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.Params;
+import com.aglhz.yicommunity.common.payment.ALiPayHelper;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.CarCardBean;
 import com.aglhz.yicommunity.entity.bean.CardRechargeBean;
 import com.aglhz.yicommunity.entity.bean.MonthCardRuleBean;
-import com.aglhz.yicommunity.common.Constants;
-import com.aglhz.abase.common.DialogHelper;
-import com.aglhz.yicommunity.common.Params;
-import com.aglhz.yicommunity.common.payment.ALiPayHelper;
 import com.aglhz.yicommunity.event.EventPark;
 import com.aglhz.yicommunity.event.EventPay;
 import com.aglhz.yicommunity.main.guide.GuideHelper;
@@ -52,7 +53,9 @@ import butterknife.Unbinder;
  * 打开方式：StartApp-->管家-->办理车卡-->月卡缴费
  */
 public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContract.Presenter> implements PublishMonthCardContract.View {
+
     private static final String TAG = PublishMonthCardFragment.class.getSimpleName();
+
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -87,10 +90,19 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     Button btSubmit;
     @BindView(R.id.rl_month_card_rule)
     RelativeLayout rlMonthCardRule;
+    @BindView(R.id.ll_validity_date)
+    LinearLayout llValidityDate;
+    @BindView(R.id.tv_need_pay_money_left)
+    TextView tvNeedPayMoneyLeft;
+    @BindView(R.id.rl_should_pay)
+    RelativeLayout rlShouldPay;
+    @BindView(R.id.tv_warn)
+    TextView tvWarn;
 
     private Unbinder unbinder;
     private Params params = Params.getInstance();
 
+    public static final int TYPE_CREATED_CARD = 0;//办理车卡
     public static final int TYPE_FIRST_PAY = 1;//首次缴费
     public static final int TYPE_RECHARGE = 2;//续费
 
@@ -153,16 +165,27 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     }
 
     private void initData() {
-        if (type == TYPE_FIRST_PAY) {
-            params.fid = fid;
-            mPresenter.requestCardPay(params);//请求月卡的信息
-            tvHintMessage.setVisibility(View.VISIBLE);
-            btSubmit.setText("立即缴费");
-        } else if (type == TYPE_RECHARGE) {
-            params.fid = fid;
-            mPresenter.requestCardRecharge(params);//请求月卡的信息
-            btSubmit.setText("立即续费");
-            GuideHelper.showCardPaydGuide(_mActivity);
+        if(type == TYPE_CREATED_CARD){
+            llValidityDate.setVisibility(View.GONE);
+            rlMonthCardRule.setVisibility(View.GONE);
+            rlShouldPay.setVisibility(View.GONE);
+            tvWarn.setVisibility(View.GONE);
+        }else{
+            llValidityDate.setVisibility(View.VISIBLE);
+            rlMonthCardRule.setVisibility(View.VISIBLE);
+            rlShouldPay.setVisibility(View.VISIBLE);
+            tvWarn.setVisibility(View.VISIBLE);
+            if (type == TYPE_FIRST_PAY) {
+                params.fid = fid;
+                mPresenter.requestCardPay(params);//请求月卡的信息
+                tvHintMessage.setVisibility(View.VISIBLE);
+                btSubmit.setText("立即缴费");
+            } else if (type == TYPE_RECHARGE) {
+                params.fid = fid;
+                mPresenter.requestCardRecharge(params);//请求月卡的信息
+                btSubmit.setText("立即续费");
+                GuideHelper.showCardPaydGuide(_mActivity);
+            }
         }
     }
 
@@ -211,7 +234,6 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     }
 
     private void pay() {
-
         new AlertDialog.Builder(_mActivity).setTitle("请选择支付类型")
                 .setItems(arrPayType, (dialog, which) -> {
                     switch (which) {
@@ -227,7 +249,6 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
                 })
                 .setNegativeButton("取消", null)
                 .show();
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -254,10 +275,10 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
             return;
         }
         //预交费月数
-        if (TextUtils.isEmpty(tvBeforehandPayMonthCount.getText().toString())) {
-            DialogHelper.warningSnackbar(getView(), "请选择预交费月数");
-            return;
-        }
+//        if (TextUtils.isEmpty(tvBeforehandPayMonthCount.getText().toString())) {
+//            DialogHelper.warningSnackbar(getView(), "请选择预交费月数");
+//            return;
+//        }
         //名字
         params.name = etInputName.getText().toString().trim();
         if (TextUtils.isEmpty(params.name)) {
