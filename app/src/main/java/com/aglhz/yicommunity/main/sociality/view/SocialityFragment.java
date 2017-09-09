@@ -3,6 +3,8 @@ package com.aglhz.yicommunity.main.sociality.view;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.FloatingActionButton.OnVisibilityChangedListener;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -43,6 +45,8 @@ public class SocialityFragment extends BaseFragment<SocialityContract.Presenter>
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.fab_publish)
+    FloatingActionButton fabPublish;
     private Unbinder unbinder;
     private int type;
     private CommunityBean.DataBean.CommunityInfoListBean allCommunity = new CommunityBean.DataBean.CommunityInfoListBean();
@@ -142,9 +146,15 @@ public class SocialityFragment extends BaseFragment<SocialityContract.Presenter>
             case R.id.fab_publish:
                 switch (type) {
                     case SocialityListFragment.TYPE_EXCHANGE:
-                        start(PublishExchangeFragment.newInstance());
+                        fabPublish.hide(new OnVisibilityChangedListener() {
+                            @Override
+                            public void onHidden(FloatingActionButton fab) {
+                                start(PublishExchangeFragment.newInstance());
+                            }
+                        });
                         break;
                     case SocialityListFragment.TYPE_NEIGHBOUR:
+                        fabPublish.hide();
                         String[] arr = {"发布照片", "发布视频"};
                         new AlertDialog.Builder(_mActivity)
                                 .setItems(arr, (dialog, which) -> {
@@ -153,7 +163,8 @@ public class SocialityFragment extends BaseFragment<SocialityContract.Presenter>
                                     _mActivity.start(PublishNeighbourFragment.newInstance(which));
                                 })
                                 .setTitle("请选择")
-                                .setPositiveButton("取消", null)
+                                .setPositiveButton("取消", (dialog, which) -> fabPublish.show())
+                                .setOnCancelListener(dialog -> fabPublish.show())
                                 .show();
                         break;
                 }
@@ -200,5 +211,23 @@ public class SocialityFragment extends BaseFragment<SocialityContract.Presenter>
                 .setAnimStyle(R.style.SlideAnimation)
                 .setGravity(Gravity.BOTTOM)
                 .show(getChildFragmentManager());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fabPublish.show();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        fabPublish.hide();
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        fabPublish.show();
     }
 }
