@@ -4,58 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--   <android.support.design.widget.AppBarLayout
-           android:id="@+id/appbar_toolbar"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:theme="@style/AppTheme.AppBarOverlay">
-
-           <android.support.v7.widget.Toolbar
-               android:id="@+id/toolbar"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:background="?attr/colorPrimary"
-               android:minHeight="?attr/actionBarSize"
-               app:popupTheme="@style/AppTheme.PopupOverlay"
-               app:titleTextAppearance="@style/ToolbarTitle">
-
-               <TextView
-                   android:id="@+id/toolbar_title"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_gravity="center"
-                   android:ellipsize="end"
-                   android:lines="1"
-                   android:paddingBottom="10dp"
-                   android:paddingTop="17dp"
-                   android:textColor="@color/white"
-                   android:textSize="18sp" />
-
-               <ImageView
-                   android:id="@+id/iv_fenlei"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_gravity="right"
-                   android:padding="10dp"
-                   android:src="@drawable/ic_classify_white_72" />
-           </android.support.v7.widget.Toolbar>
-
-       </android.support.design.widget.AppBarLayout>-->
-
     <include layout="@layout/toolbar" />
 
     <FrameLayout
-        android:id="@+id/fl_container_fragment_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl_container_fragment_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_publish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_margin="20dp"
-            android:src="@drawable/ic_fabu_red_200px" />
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_fab_publish_97" />
     </FrameLayout>
 
 </LinearLayout>
