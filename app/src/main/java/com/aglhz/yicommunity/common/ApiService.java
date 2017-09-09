@@ -855,7 +855,6 @@ public interface ApiService {
                                                          @Query("token") String token,
                                                          @Query("complaintFid") String String);
 
-
     String requestCarCardOrder = BASE_PROPERTY + "/park/card/from-client/month-card-bill-pay";
 
     @FormUrlEncoded
