@@ -21,7 +21,7 @@ import com.aglhz.yicommunity.entity.bean.AppUpdateBean;
 import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.home.view.HomeFragment;
 import com.aglhz.yicommunity.main.mine.view.MineFragment;
-import com.aglhz.yicommunity.main.sociality.view.NeighbourFragment;
+import com.aglhz.yicommunity.main.sociality.view.SocialityFragment;
 import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.aglhz.yicommunity.main.steward.view.StewardFragment;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -73,13 +73,13 @@ public class MainFragment extends BaseFragment {
         if (savedInstanceState == null) {
             mFragments[0] = HomeFragment.newInstance();
             mFragments[1] = StewardFragment.newInstance();
-            mFragments[2] = NeighbourFragment.newInstance(SocialityListFragment.TYPE_NEIGHBOUR);
+            mFragments[2] = SocialityFragment.newInstance(SocialityListFragment.TYPE_NEIGHBOUR);
             mFragments[3] = MineFragment.newInstance();
             loadMultipleRootFragment(R.id.fl_container_main_fragment, 0, mFragments[0], mFragments[1], mFragments[2], mFragments[3]);
         } else {
             mFragments[0] = findChildFragment(HomeFragment.class);
             mFragments[1] = findChildFragment(StewardFragment.class);
-            mFragments[2] = findChildFragment(NeighbourFragment.class);
+            mFragments[2] = findChildFragment(SocialityFragment.class);
             mFragments[3] = findChildFragment(MineFragment.class);
             prePosition = savedInstanceState.getInt("prePosition");
         }
@@ -120,7 +120,7 @@ public class MainFragment extends BaseFragment {
                         ((StewardFragment) mFragments[1]).go2TopAndRefresh(null);
                         break;
                     case 2:
-                        ((NeighbourFragment) mFragments[2]).go2TopAndRefresh();
+                        ((SocialityFragment) mFragments[2]).go2TopAndRefresh();
                         break;
                     case 3:
                         break;

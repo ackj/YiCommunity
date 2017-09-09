@@ -1,11 +1,10 @@
 package com.aglhz.yicommunity.main.sociality.view;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,18 +13,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.mvp.view.base.Decoration;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Constants;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.CommunityBean;
 import com.aglhz.yicommunity.main.publish.view.PublishExchangeFragment;
 import com.aglhz.yicommunity.main.publish.view.PublishNeighbourFragment;
-import com.aglhz.yicommunity.main.sociality.contract.NeighbourContract;
-import com.aglhz.yicommunity.main.sociality.presenter.NeighbourPresenter;
+import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
+import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
 
 import java.util.List;
 
-import anetwork.channel.Param;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,26 +37,24 @@ import cn.itsite.adialog.dialogfragment.SelectorDialogFragment;
  * 闲置交换和左邻右里的父层Fragment
  */
 
-public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter> implements NeighbourContract.View {
-    private static final String TAG = NeighbourFragment.class.getSimpleName();
-
+public class SocialityFragment extends BaseFragment<SocialityContract.Presenter> implements SocialityContract.View {
+    private static final String TAG = SocialityFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     private Unbinder unbinder;
     private int type;
     private CommunityBean.DataBean.CommunityInfoListBean allCommunity = new CommunityBean.DataBean.CommunityInfoListBean();
 
     /**
-     * NeighbourFragment创建入口
+     * SocialityFragment创建入口
      *
      * @param type 用于区分内容显示[左邻右里]还是[闲置交换]
      * @return
      */
-    public static NeighbourFragment newInstance(int type) {
-        NeighbourFragment fragment = new NeighbourFragment();
+    public static SocialityFragment newInstance(int type) {
+        SocialityFragment fragment = new SocialityFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_TYPE, type);
         fragment.setArguments(bundle);
@@ -72,14 +69,14 @@ public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter>
 
     @NonNull
     @Override
-    protected NeighbourContract.Presenter createPresenter() {
-        return new NeighbourPresenter(this);
+    protected SocialityContract.Presenter createPresenter() {
+        return new SocialityPresenter(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_sociality, container, false);
         unbinder = ButterKnife.bind(this, view);
         if (type == SocialityListFragment.TYPE_EXCHANGE) {
             view = attachToSwipeBack(view);
@@ -100,20 +97,17 @@ public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter>
         allCommunity.setCommunityName("所有社区");
     }
 
-
     private void initToolbar() {
         initStateBar(toolbar);
         switch (type) {
             case SocialityListFragment.TYPE_EXCHANGE:
                 toolbarTitle.setText("闲置交换");
+                toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
+                toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
                 break;
             case SocialityListFragment.TYPE_NEIGHBOUR:
                 toolbarTitle.setText("左邻右里");
                 break;
-        }
-        if (type == SocialityListFragment.TYPE_EXCHANGE) {
-            toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
-            toolbar.setNavigationOnClickListener(v -> _mActivity.onBackPressedSupport());
         }
         toolbar.setOnClickListener(v -> {
             if (getChildFragmentManager() != null
@@ -124,6 +118,16 @@ public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter>
                         .getFragments().get(0)).go2Top();
             }
         });
+
+        toolbar.inflateMenu(R.menu.menu_sociality);
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_switch:
+                    mPresenter.requestCommunitys(Params.getInstance());
+                    break;
+            }
+            return true;
+        });
     }
 
     @Override
@@ -132,7 +136,7 @@ public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter>
         unbinder.unbind();
     }
 
-    @OnClick({R.id.fab_publish, R.id.iv_fenlei})
+    @OnClick({R.id.fab_publish})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.fab_publish:
@@ -154,11 +158,7 @@ public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter>
                         break;
                 }
                 break;
-            case R.id.iv_fenlei:
-                mPresenter.requestCommunityList(Params.getInstance());
-                break;
         }
-
     }
 
     public void go2TopAndRefresh() {
@@ -172,25 +172,15 @@ public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter>
     }
 
     @Override
-    public void start(Object response) {
-
-    }
-
-    @Override
-    public void error(String errorMessage) {
-
-    }
-
-    @Override
-    public void responseCommunityList(List<CommunityBean.DataBean.CommunityInfoListBean> datas) {
+    public void responseCommunitys(List<CommunityBean.DataBean.CommunityInfoListBean> datas) {
         datas.add(0, allCommunity);
         new SelectorDialogFragment()
                 .setTitle("请选择要切换的社区")
-                .setItemLayoutId(android.R.layout.simple_list_item_1)
+                .setItemLayoutId(R.layout.item_rv_simple_selector)
                 .setData(datas)
                 .setOnItemConvertListener((holder, position, dialog) -> {
                     CommunityBean.DataBean.CommunityInfoListBean bean = datas.get(position);
-                    holder.setText(android.R.id.text1, bean.getCommunityName());
+                    holder.setText(R.id.tv_item_rv_simple_selector, bean.getCommunityName());
                 })
                 .setOnItemClickListener((view, baseViewHolder, position, dialog) -> {
                     dialog.dismiss();
@@ -202,6 +192,10 @@ public class NeighbourFragment extends BaseFragment<NeighbourContract.Presenter>
                         ((SocialityListFragment) getChildFragmentManager()
                                 .getFragments().get(0)).refresh(bean.getCommunityFid());
                     }
+                })
+                .setConvertListener((holder, dialogFragment) -> {
+                    ((RecyclerView) holder.getView(R.id.recyclerView_selector))
+                            .addItemDecoration(new Decoration(_mActivity, Decoration.VERTICAL_LIST));
                 })
                 .setAnimStyle(R.style.SlideAnimation)
                 .setGravity(Gravity.BOTTOM)

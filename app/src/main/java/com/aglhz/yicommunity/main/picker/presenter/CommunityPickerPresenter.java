@@ -39,16 +39,16 @@ public class CommunityPickerPresenter extends BasePresenter<CommunityPickerContr
 
     @Override
     public void requestCommunitys(Params params) {
-        ALog.d("requestCommunityList --------------");
+        ALog.d("requestCommunitys --------------");
         mRxManager.add(mModel.requestCommunitys(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(communitySelectBean -> {
-                    ALog.d("requestCommunityList 2222222");
+                    ALog.d("requestCommunitys 2222222");
                     if (communitySelectBean.getOther().getCode() == 200) {
-                        ALog.d("requestCommunityList 4444444");
+                        ALog.d("requestCommunitys 4444444");
                         getView().responseCommunitys(communitySelectBean.getData().getCommunities());
                     } else {
-                        ALog.d("requestCommunityList 3333333");
+                        ALog.d("requestCommunitys 3333333");
                         getView().error(communitySelectBean.getOther().getMessage());
                     }
                 }, this::error));
