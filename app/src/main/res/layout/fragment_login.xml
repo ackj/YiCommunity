@@ -43,9 +43,11 @@
             android:layout_marginRight="50dp"
             android:layout_marginTop="50dp"
             android:background="@null"
+            android:ellipsize="end"
             android:hint="请输入手机号"
             android:inputType="phone"
             android:layoutAnimation="@anim/layout_dock_left_enter"
+            android:maxLines="1"
             android:textColor="@android:color/black"
             android:textColorHint="@color/edit_hint"
             android:textSize="14sp" />
@@ -67,8 +69,10 @@
             android:layout_marginTop="20dp"
             android:background="@null"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"
+            android:ellipsize="end"
             android:hint="请输入密码"
             android:inputType="textPassword"
+            android:maxLines="1"
             android:textColor="@android:color/black"
             android:textColorHint="@color/edit_hint"
             android:textSize="14sp" />
@@ -110,7 +114,6 @@
                 android:textSize="14sp" />
 
         </RelativeLayout>
-
 
         <Button
             android:id="@+id/bt_login"
