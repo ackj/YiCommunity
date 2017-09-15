@@ -8,9 +8,11 @@ import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.FirstLevelBean;
 import com.aglhz.yicommunity.entity.bean.NoticeBean;
 import com.aglhz.yicommunity.entity.bean.OneKeyDoorBean;
 import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
+import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 
 import java.util.ArrayList;
@@ -84,6 +86,19 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
                 .requestOneKeyOpenDoorDeviceList(ApiService.requestOneKeyOpenDoorDeviceList,
                         params.token,
                         Params.cmnt_c)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<FirstLevelBean> requestFirstLevel(Params params) {
+        return HttpHelper.getService(ApiService.class).requestFirstLevel(ApiService.requestFirstLevel,params.keywords)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<SubCategoryBean> requestSubCategoryList(Params params) {
+        return HttpHelper.getService(ApiService.class).requestSubCategoryLevel(
+                ApiService.requestSubCategoryLevel,params.token,params.appType,params.id)
                 .subscribeOn(Schedulers.io());
     }
 }

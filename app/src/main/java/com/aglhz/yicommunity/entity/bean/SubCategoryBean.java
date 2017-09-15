@@ -1,5 +1,8 @@
 package com.aglhz.yicommunity.entity.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -19,7 +22,7 @@ public class SubCategoryBean extends BaseBean{
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * id : 3d48f009-a155-45ee-8730-246c887dd9be
          * name : 家庭安全系统
@@ -35,6 +38,23 @@ public class SubCategoryBean extends BaseBean{
         private Object image;
         private Object tmp;
         private Object lstCategory;
+
+        protected DataBean(Parcel in) {
+            id = in.readString();
+            name = in.readString();
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
 
         public String getId() {
             return id;
@@ -82,6 +102,17 @@ public class SubCategoryBean extends BaseBean{
 
         public void setLstCategory(Object lstCategory) {
             this.lstCategory = lstCategory;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(id);
+            dest.writeString(name);
         }
     }
 }

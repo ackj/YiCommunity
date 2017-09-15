@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <EditText
+        android:id="@+id/et_phone"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:hint="请输入11位手机号码或固话号码"
+        android:inputType="number"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textSize="14sp" />
+
+    <TextView
+        android:background="#F7F7F7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:lineSpacingExtra="8dp"
+        android:text=" * 亲情号码：当门禁机访客呼叫APP无人应答时，门禁机可以呼叫该号码，按 # 号键即可开门。\n * 固话号码请加上区号，如：0101234567"
+        android:textColor="@color/default_gray"
+        android:textSize="12sp" />
+
+</LinearLayout>

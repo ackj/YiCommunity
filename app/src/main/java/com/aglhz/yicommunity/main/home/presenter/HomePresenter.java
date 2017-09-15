@@ -95,4 +95,30 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestFirstLevel(Params params) {
+        mRxManager.add(mModel.requestFirstLevel(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(firstLevelBean -> {
+                    if (firstLevelBean.getOther().getCode() == 200) {
+                        getView().responseFirstLevel(firstLevelBean.getData());
+                    } else {
+                        getView().error(firstLevelBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
+
+    @Override
+    public void requestSubCategoryList(Params params) {
+        mRxManager.add(mModel.requestSubCategoryList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(categoryBean -> {
+                    if (categoryBean.getOther().getCode() == 200) {
+                        getView().responseSubCategoryList(categoryBean.getData());
+                    } else {
+                        getView().error(categoryBean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }

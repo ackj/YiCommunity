@@ -16,11 +16,11 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class GoodsCategoryModel extends BaseModel implements GoodsCategoryContract.Model {
+
     @Override
     public void start(Object request) {
 
     }
-
 
     @Override
     public Observable<FirstLevelBean> requestFirstLevel(Params params) {

@@ -40,10 +40,4 @@
         android:layout_marginRight="30dp"
         android:overScrollMode="never" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/base_grey" />
-
-
 </LinearLayout>

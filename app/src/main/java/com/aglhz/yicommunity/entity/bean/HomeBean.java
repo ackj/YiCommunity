@@ -14,6 +14,7 @@ public class HomeBean implements MultiItemEntity {
     public static final int TYPE_COMMUNITY_FUNCTION = 102;
     public static final int TYPE_COMMUNITY_SERVICE = 103;
     public static final int TYPE_COMMUNITY_QUALITY_LIFE = 104;
+    public static final int TYPE_COMMUNITY_WISDOM_LIFE = 105;
 
     //Banner
     public List<BannerBean.DataBean.AdvsBean> banners;
@@ -28,6 +29,7 @@ public class HomeBean implements MultiItemEntity {
     public int type;
     public boolean hasMore;
     public List<ServiceBean> qualityLifes;
+    public List<SubCategoryBean.DataBean> wisdomLife;
     public List<ServicesTypesBean.DataBean.ClassifyListBean> servicesClassifyList;
 
     public List<ServicesTypesBean.DataBean.ClassifyListBean> getServicesClassifyList() {
@@ -36,6 +38,14 @@ public class HomeBean implements MultiItemEntity {
 
     public void setServicesClassifyList(List<ServicesTypesBean.DataBean.ClassifyListBean> servicesClassifyList) {
         this.servicesClassifyList = servicesClassifyList;
+    }
+
+    public List<SubCategoryBean.DataBean> getWisdomLife() {
+        return wisdomLife;
+    }
+
+    public void setWisdomLife(List<SubCategoryBean.DataBean> wisdomLife) {
+        this.wisdomLife = wisdomLife;
     }
 
     public List<ServiceBean> getQualityLifes() {

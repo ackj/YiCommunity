@@ -165,12 +165,12 @@ public class PublishMonthCardFragment extends BaseFragment<PublishMonthCardContr
     }
 
     private void initData() {
-        if(type == TYPE_CREATED_CARD){
+        if (type == TYPE_CREATED_CARD) {
             llValidityDate.setVisibility(View.GONE);
             rlMonthCardRule.setVisibility(View.GONE);
             rlShouldPay.setVisibility(View.GONE);
             tvWarn.setVisibility(View.GONE);
-        }else{
+        } else {
             llValidityDate.setVisibility(View.VISIBLE);
             rlMonthCardRule.setVisibility(View.VISIBLE);
             rlShouldPay.setVisibility(View.VISIBLE);

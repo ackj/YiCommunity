@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.aglhz.abase.log.ALog;
@@ -20,11 +22,13 @@ import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
 import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
 import com.aglhz.yicommunity.main.services.ServicesActivity;
+import com.aglhz.yicommunity.main.smarthome.view.SmartHomeMallFragment;
 import com.aglhz.yicommunity.main.sociality.view.CarpoolFragment;
 import com.aglhz.yicommunity.main.sociality.view.NeighbourFragment;
 import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
@@ -39,7 +43,7 @@ import java.util.List;
 
 public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewHolder> {
 
-    HomeFragment fragment;
+    private HomeFragment fragment;
 
     public void setFragment(HomeFragment fragment) {
         this.fragment = fragment;
@@ -49,9 +53,10 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
         super(data);
         addItemType(HomeBean.TYPE_COMMUNITY_BANNER, R.layout.item_home_fragment_rv_banner);
         addItemType(HomeBean.TYPE_COMMUNITY_NOTICE, R.layout.item_home_fragment_rv_notice);
-        addItemType(HomeBean.TYPE_COMMUNITY_FUNCTION, R.layout.item_home_fragment_rv_function);
+        addItemType(HomeBean.TYPE_COMMUNITY_FUNCTION, R.layout.item_home_fragment_rv_function_2);
         addItemType(HomeBean.TYPE_COMMUNITY_SERVICE, R.layout.item_home_fragment_rv_service);
         addItemType(HomeBean.TYPE_COMMUNITY_QUALITY_LIFE, R.layout.item_home_fragment_rv_life);
+        addItemType(HomeBean.TYPE_COMMUNITY_WISDOM_LIFE, R.layout.item_home_fragment_rv_life);
     }
 
     @Override
@@ -151,6 +156,24 @@ public class HomeRVAdapter extends BaseMultiItemQuickAdapter<HomeBean, BaseViewH
                             break;
                     }
                 });
+                break;
+            case HomeBean.TYPE_COMMUNITY_WISDOM_LIFE:
+                helper.setText(R.id.tv_title, "智慧家居");
+                RecyclerView recyclerView2 = helper.getView(R.id.recyclerView);
+                recyclerView2.setLayoutManager(new LinearLayoutManager(App.mContext, LinearLayoutManager.HORIZONTAL, false) {
+                    @Override
+                    public boolean canScrollVertically() {
+                        return false;
+                    }
+                });
+                WisdomLifeAdapter wisdomLifeAdapter = new WisdomLifeAdapter(item.getWisdomLife());
+                wisdomLifeAdapter.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                        ((BaseActivity) fragment.getActivity()).start(SmartHomeMallFragment.newInstance(item.getWisdomLife(),position));
+                    }
+                });
+                recyclerView2.setAdapter(wisdomLifeAdapter);
                 break;
         }
     }

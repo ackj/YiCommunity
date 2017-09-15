@@ -91,4 +91,17 @@ public class StewardPresenter extends BasePresenter<StewardContract.View, Stewar
                     }
                 }, this::error));
     }
+
+    @Override
+    public void requestHouseInfoList(Params params) {
+        mRxManager.add(mModel.requestHouseInfoList(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> {
+                    if (bean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
+                        getView().responseHouseInfoList(bean.getData());
+                    } else {
+                        getView().error(bean.getOther().getMessage());
+                    }
+                }, this::error));
+    }
 }

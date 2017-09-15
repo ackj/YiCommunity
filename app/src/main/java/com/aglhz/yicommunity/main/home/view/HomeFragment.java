@@ -26,10 +26,12 @@ import com.aglhz.yicommunity.common.LbsManager;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
+import com.aglhz.yicommunity.entity.bean.FirstLevelBean;
 import com.aglhz.yicommunity.entity.bean.HomeBean;
 import com.aglhz.yicommunity.entity.bean.OneKeyDoorBean;
 import com.aglhz.yicommunity.entity.bean.ServiceBean;
 import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
+import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.main.home.contract.HomeContract;
 import com.aglhz.yicommunity.main.home.presenter.HomePresenter;
@@ -124,44 +126,36 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                         .setText(R.id.tv_online_item_rv_door_selector, item.isOnline() ? "在线" : "离线");
             }
         };
-
-
     }
 
     private void initData() {
         layoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(layoutManager);
-
         List<HomeBean> data = new ArrayList<>();
         //Banner
         HomeBean bannerBean = new HomeBean();
         bannerBean.community = UserHelper.city + UserHelper.communityName;
         bannerBean.setItemType(HomeBean.TYPE_COMMUNITY_BANNER);
         data.add(bannerBean);
-
         //Notice
         HomeBean noticeBean = new HomeBean();
         noticeBean.setItemType(HomeBean.TYPE_COMMUNITY_NOTICE);
         noticeBean.notice = normalNotice;
         data.add(noticeBean);
-
         //CommunityService
         HomeBean functioneBean = new HomeBean();
         functioneBean.setItemType(HomeBean.TYPE_COMMUNITY_FUNCTION);
         data.add(functioneBean);
-
         //
         HomeBean serviceBeans = new HomeBean();
         serviceBeans.setItemType(HomeBean.TYPE_COMMUNITY_SERVICE);
         data.add(serviceBeans);
-
         //品质服务
         ServiceBean qualityLifeBean0 = new ServiceBean("闲置交换", "社区闲置物品不得闲", R.drawable.bg_xianzhijiaohuan_346px_450px);
         ServiceBean qualityLifeBean1 = new ServiceBean("快递查询", "对接各物流快递公司", R.drawable.bg_expressdelivery_345px_450px);
         ServiceBean qualityLifeBean2 = new ServiceBean("拼车服务", "社区拼车方便快捷", R.drawable.bg_pinchefuwu_345px_450px);
 
         HomeBean lifes = new HomeBean();
-
         List<ServiceBean> lifeList = new ArrayList<>();
         lifeList.add(qualityLifeBean0);
         lifeList.add(qualityLifeBean1);
@@ -170,6 +164,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         lifes.setQualityLifes(lifeList);
         lifes.setItemType(HomeBean.TYPE_COMMUNITY_QUALITY_LIFE);
         data.add(lifes);
+
+        HomeBean wisdoms = new HomeBean();
+        wisdoms.setItemType(HomeBean.TYPE_COMMUNITY_WISDOM_LIFE);
+        data.add(wisdoms);
+
         adapter = new HomeRVAdapter(data);
         adapter.setFragment(this);
         recyclerView.setAdapter(adapter);
@@ -184,7 +183,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
         header.setPadding(0, DensityUtils.dp2px(_mActivity, 15), 0, DensityUtils.dp2px(_mActivity, 10));
         header.setUp(ptrFrameLayout);
-
         ptrFrameLayout.setLoadingMinTime(1000);
         ptrFrameLayout.setDurationToCloseHeader(1500);
         ptrFrameLayout.setHeaderView(header);
@@ -204,6 +202,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 mPresenter.requestBanners(params);
                 mPresenter.requestHomeNotices(params);
                 mPresenter.requestServiceTypes(params);
+                mPresenter.requestFirstLevel(params);
             }
         });
     }
@@ -238,10 +237,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                             _mActivity.start(TemporaryParkPayFragment.newInstance());
                             break;
                         case R.id.ll_life_supermarket:
-
                             ALog.e(UserHelper.communityLongitude);
                             ALog.e(UserHelper.communityLatitude);
-
                             go2Web("生活超市", ApiService.SUPERMARKET
                                     .replace("%1", UserHelper.token)
                                     .replace("%2", UserHelper.communityLongitude)
@@ -323,7 +320,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     UserHelper.setCommunityLongitude(String.valueOf(longitude));
                     UserHelper.setCommunityLatitude(String.valueOf(latitude));
                 });
-
         adapter.getData().get(0).community = UserHelper.city + UserHelper.communityName;
         params.cmnt_c = UserHelper.communityCode;
         ptrFrameLayout.autoRefresh();
@@ -373,6 +369,23 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     .setGravity(Gravity.BOTTOM)
                     .setHeight(350)
                     .show(getChildFragmentManager());
+        }
+    }
+
+    @Override
+    public void responseFirstLevel(List<FirstLevelBean.DataBean> datas) {
+        if (datas.size() > 0) {
+            params.id = datas.get(datas.size() - 1).getId();
+            mPresenter.requestSubCategoryList(params);
+        }
+    }
+
+    @Override
+    public void responseSubCategoryList(List<SubCategoryBean.DataBean> datas) {
+        if (datas.size() > 0) {
+            ptrFrameLayout.refreshComplete();
+            adapter.getData().get(5).setWisdomLife(datas);
+            adapter.notifyItemChanged(5);
         }
     }
 

@@ -8,6 +8,7 @@ import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.ContactBean;
 import com.aglhz.yicommunity.entity.bean.DoorListBean;
+import com.aglhz.yicommunity.entity.bean.HouseInfoBean;
 import com.aglhz.yicommunity.entity.bean.IconBean;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Params;
@@ -76,6 +77,16 @@ public class StewardModel extends BaseModel implements StewardContract.Model {
                         params.token,
                         params.dir,
                         params.powerCode)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<HouseInfoBean> requestHouseInfoList(Params params) {
+        return HttpHelper.getService(ApiService.class)
+                .requestHouseInfoList(
+                        ApiService.requestHouseInfoList,
+                        params.token,
+                        params.cmnt_c)
                 .subscribeOn(Schedulers.io());
     }
 }

@@ -27,10 +27,12 @@ import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.DoorListBean;
+import com.aglhz.yicommunity.entity.bean.HouseInfoBean;
 import com.aglhz.yicommunity.entity.bean.IconBean;
 import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.login.LoginActivity;
 import com.aglhz.yicommunity.main.door.DoorActivity;
+import com.aglhz.yicommunity.main.door.view.FamilyPhoneFragment;
 import com.aglhz.yicommunity.main.house.HouseActivity;
 import com.aglhz.yicommunity.main.park.ParkActivity;
 import com.aglhz.yicommunity.main.picker.PickerActivity;
@@ -160,6 +162,7 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         listSmartDoor.add(new IconBean(R.drawable.ic_password_open_door_green_140px, "密码开门", ""));
         listSmartDoor.add(new IconBean(R.drawable.ic_call_door_green_140px, "门禁监控", ""));
         listSmartDoor.add(new IconBean(R.drawable.ic_open_recording_green_140px, "开门记录", ""));
+        listSmartDoor.add(new IconBean(R.drawable.ic_qinqinghaoma_240px, "亲情号码", ""));
         smartDoorAdapter.setNewData(listSmartDoor);
 
         //智慧停车卡片
@@ -224,6 +227,9 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
             if (position == 3) {
                 showLoading();
                 mPresenter.requestDoors(params);
+            } else if (position == 5) {
+                mPresenter.requestHouseInfoList(params);
+                showLoading();
             } else {
                 go2SmartDoor(position);
             }
@@ -458,6 +464,27 @@ public class StewardFragment extends BaseFragment<StewardContract.Presenter> imp
         DoorManager
                 .getInstance()
                 .callOut(params.dir);
+    }
+
+    @Override
+    public void responseHouseInfoList(List<HouseInfoBean.DataBean> datas) {
+        dismissLoading();
+        new SelectorDialogFragment()
+                .setTitle("请选择要切换的社区")
+                .setItemLayoutId(android.R.layout.simple_list_item_1)
+                .setData(datas)
+                .setOnItemConvertListener((holder, position, dialog) -> {
+                    HouseInfoBean.DataBean bean = datas.get(position);
+                    holder.setText(android.R.id.text1, bean.getHouseName());
+                })
+                .setOnItemClickListener((view, baseViewHolder, position, dialog) -> {
+                    dialog.dismiss();
+                    HouseInfoBean.DataBean bean = datas.get(position);
+                    _mActivity.start(FamilyPhoneFragment.newInstance(bean.getRoomDir(),bean.getFamilyNumber()));
+                })
+                .setAnimStyle(R.style.SlideAnimation)
+                .setGravity(Gravity.BOTTOM)
+                .show(getChildFragmentManager());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

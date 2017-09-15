@@ -17,6 +17,7 @@ import com.aglhz.yicommunity.entity.bean.DoorListBean;
 import com.aglhz.yicommunity.entity.bean.FirstLevelBean;
 import com.aglhz.yicommunity.entity.bean.FloorBean;
 import com.aglhz.yicommunity.entity.bean.GoodsBean;
+import com.aglhz.yicommunity.entity.bean.HouseInfoBean;
 import com.aglhz.yicommunity.entity.bean.HouseRightsBean;
 import com.aglhz.yicommunity.entity.bean.MessageCenterBean;
 import com.aglhz.yicommunity.entity.bean.MonthCardBillListBean;
@@ -937,6 +938,21 @@ public interface ApiService {
     @FormUrlEncoded
     @POST
     Observable<CommunityBean> requestCommunityList(@Url String url, @Field("token") String token);
+
+    //业主房屋列表
+    String requestHouseInfoList = BASE_PROPERTY+"/smartdoor/info/houseinfo-list";
+
+    @FormUrlEncoded
+    @POST
+    Observable<HouseInfoBean> requestHouseInfoList(@Url String url, @Field("token") String token, @Field("cmnt_c") String cmnt_c);
+
+
+    //设置亲情号码
+    String requestSetFamilyPhone = BASE_PROPERTY+"/smartdoor/client/setFamilyNumber";
+
+    @FormUrlEncoded
+    @POST
+    Observable<BaseBean> requestSetFamilyPhone(@Url String url, @Field("token") String token,@Field("calleePhones") String calleePhones, @Field("roomDir") String roomDir);
 
 }
 

@@ -128,7 +128,8 @@ public class Constants {
             BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
             BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";//配置系统
 //            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
-            BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";   //物业
+//            BASE_PROPERTY = "http://119.23.129.133:8090/sub_property_ysq";   //物业
+            BASE_PROPERTY = "http://192.168.7.106:8080/sub_property_ysq";   //物业
 
             //给成都电信测试。
 //            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户

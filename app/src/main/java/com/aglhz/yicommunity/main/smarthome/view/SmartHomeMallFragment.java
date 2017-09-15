@@ -2,6 +2,7 @@ package com.aglhz.yicommunity.main.smarthome.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +25,7 @@ import com.aglhz.yicommunity.main.smarthome.contract.SmartHomeMallContract;
 import com.aglhz.yicommunity.main.smarthome.presenter.SmartHomeMallPresenter;
 import com.aglhz.yicommunity.web.WebActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,9 +55,21 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
     private Params params = Params.getInstance();
     private SmartHomeMenuRVAdapter menuAdapter;
     private SmartHomeGoodsRVAdapter goodsAdapter;
+    private List<SubCategoryBean.DataBean> data;
+    private int position;
+
+    public static SmartHomeMallFragment newInstance(List<SubCategoryBean.DataBean> data, int position) {
+        SmartHomeMallFragment fragment = new SmartHomeMallFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) data);
+        bundle.putInt("position",position);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     /**
      * SmartHomeMallFragment 的创建入口
+     *
      * @param id 一级菜单项的id，用于获取二级菜单的数据
      * @return
      */
@@ -77,6 +91,8 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         params.id = getArguments().getString(Constants.KEY_ID);
+        data = getArguments().getParcelableArrayList("data");
+        position = getArguments().getInt("position");
     }
 
     @Nullable
@@ -106,7 +122,6 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
     }
 
     private void initData() {
-        mPresenter.requestSubCategoryList(params);
         recyclerViewMenu.setLayoutManager(new LinearLayoutManager(_mActivity));
         menuAdapter = new SmartHomeMenuRVAdapter();
         recyclerViewMenu.setAdapter(menuAdapter);
@@ -114,6 +129,12 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
         recyclerViewGoods.setLayoutManager(new GridLayoutManager(_mActivity, 2));
         goodsAdapter = new SmartHomeGoodsRVAdapter();
         recyclerViewGoods.setAdapter(goodsAdapter);
+
+        if (data != null && data.size() > 0) {
+            responseSubCategoryList(data);
+        }else{
+            mPresenter.requestSubCategoryList(params);
+        }
     }
 
     private void initListener() {
@@ -135,13 +156,14 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
 
     /**
      * 响应请求商品类型（左侧列表）
+     *
      * @param datas
      */
     @Override
     public void responseSubCategoryList(List<SubCategoryBean.DataBean> datas) {
         menuAdapter.setNewData(datas);
         if (datas.size() > 0) {
-            SubCategoryBean.DataBean bean = datas.get(0);
+            SubCategoryBean.DataBean bean = datas.get(position);
             menuAdapter.setSelectItem(bean);
             params.secondCategoryId = bean.getId();
             mPresenter.requestGoodsList(params);
@@ -150,6 +172,7 @@ public class SmartHomeMallFragment extends BaseFragment<SmartHomeMallContract.Pr
 
     /**
      * 响应请求商品列表（右侧列表）
+     *
      * @param datas
      */
     @Override

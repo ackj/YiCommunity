@@ -103,6 +103,7 @@ public class Params {
     public String certificateType = "1";//证件类型（1=身份证，2=护照）
     public int identityType;//住户类型（1=业主，2=家属，3=租客）
     public String cmnt_c_en;//闲置交换和左邻右里的社区切换
+    public String roomDir ; //6-31-1-1
 
 
     private Params() {

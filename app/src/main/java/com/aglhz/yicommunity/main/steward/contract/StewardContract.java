@@ -2,13 +2,12 @@ package com.aglhz.yicommunity.main.steward.contract;
 
 
 import com.aglhz.abase.mvp.contract.base.BaseContract;
+import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
 import com.aglhz.yicommunity.entity.bean.ContactBean;
 import com.aglhz.yicommunity.entity.bean.DoorListBean;
+import com.aglhz.yicommunity.entity.bean.HouseInfoBean;
 import com.aglhz.yicommunity.entity.bean.IconBean;
-import com.aglhz.yicommunity.entity.bean.MyHousesBean;
-import com.aglhz.yicommunity.entity.bean.SipBean;
-import com.aglhz.yicommunity.common.Params;
 
 import java.util.List;
 
@@ -33,6 +32,7 @@ public interface StewardContract {
 
         void responseCheckPermission(BaseBean mBaseBean);
 
+        void responseHouseInfoList(List<HouseInfoBean.DataBean> datas);
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -41,6 +41,8 @@ public interface StewardContract {
         void requestDoors(Params params);
 
         void requestCheckPermission(Params params);
+
+        void requestHouseInfoList(Params params);
 
     }
 
@@ -52,6 +54,8 @@ public interface StewardContract {
         Observable<DoorListBean> requestDoors(Params params);
 
         Observable<BaseBean> requestCheckPermission(Params params);
+
+        Observable<HouseInfoBean> requestHouseInfoList(Params params);
 
     }
 }

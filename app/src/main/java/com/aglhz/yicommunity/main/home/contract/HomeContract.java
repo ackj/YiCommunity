@@ -5,8 +5,10 @@ import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BannerBean;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
+import com.aglhz.yicommunity.entity.bean.FirstLevelBean;
 import com.aglhz.yicommunity.entity.bean.OneKeyDoorBean;
 import com.aglhz.yicommunity.entity.bean.ServicesTypesBean;
+import com.aglhz.yicommunity.entity.bean.SubCategoryBean;
 
 import java.util.List;
 
@@ -31,6 +33,12 @@ public interface HomeContract {
         void responseServiceClassifyList(List<ServicesTypesBean.DataBean.ClassifyListBean> classifys);
 
         void responseOneKeyOpenDoorDeviceList(List<OneKeyDoorBean.DataBean.ItemListBean> doorList);
+
+        //智慧商城一级列表
+        void responseFirstLevel(List<FirstLevelBean.DataBean> datas);
+
+        //智慧商城二级列表
+        void responseSubCategoryList(List<SubCategoryBean.DataBean> datas);
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -43,6 +51,12 @@ public interface HomeContract {
         void requestServiceTypes(Params params);
 
         void requestOneKeyOpenDoorDeviceList(Params params);
+
+        //智慧商城一级列表
+        void requestFirstLevel(Params params);
+
+        //智慧商城二级列表
+        void requestSubCategoryList(Params params);
     }
 
     interface Model extends BaseContract.Model {
@@ -55,5 +69,11 @@ public interface HomeContract {
         Observable<ServicesTypesBean> requestServiceTypes(Params params);
 
         Observable<OneKeyDoorBean> requestOneKeyOpenDoorDeviceList(Params params);
+
+        //智慧商城一级列表
+        Observable<FirstLevelBean> requestFirstLevel(Params params);
+
+        //智慧商城二级列表
+        Observable<SubCategoryBean> requestSubCategoryList(Params params);
     }
 }
