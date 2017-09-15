@@ -130,7 +130,7 @@ public class AboutUsFragment extends BaseFragment {
      */
     private void updateApp() {
         ALog.e("requestAppUpdatae-->" + ApiService.requestAppUpdatae);
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("appType", "1");
         new UpdateAppManager
                 .Builder()
@@ -173,7 +173,7 @@ public class AboutUsFragment extends BaseFragment {
                                 //大小，不设置不显示大小，可以不设置
                                 .setTargetSize(mAppUpdateBean.getData().getSize())
                                 //是否强制更新，可以不设置
-                                .setConstraint(false);
+                                .setConstraint(mAppUpdateBean.getData().isIsForce());
 
                         return updateAppBean;
                     }

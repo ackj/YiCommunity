@@ -10,15 +10,16 @@ import com.aglhz.yicommunity.main.sociality.model.SocialityModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
- * Author：leguang on 2016/10/9 0009 10:35
- * Email：langmanleguang@qq.com
- * <p>
- * 负责邻里模块Presenter层内容。
+ * Author: LiuJia on 2017/9/5 0005 17:35.
+ * Email: liujia95me@126.com
  */
 
-public class SocialityPresenter extends BasePresenter<SocialityContract.View, SocialityContract.Model> implements SocialityContract.Presenter {
-    private final String TAG = SocialityPresenter.class.getSimpleName();
-
+public class SocialityPresenter extends BasePresenter<SocialityContract.View,SocialityContract.Model> implements SocialityContract.Presenter {
+    /**
+     * 创建Presenter的时候就绑定View和创建model。
+     *
+     * @param mView 所要绑定的view层对象，一般在View层创建Presenter的时候通过this把自己传过来。
+     */
     public SocialityPresenter(SocialityContract.View mView) {
         super(mView);
     }
@@ -29,128 +30,16 @@ public class SocialityPresenter extends BasePresenter<SocialityContract.View, So
         return new SocialityModel();
     }
 
-
     @Override
-    public void start(Object request) {
-
-    }
-
-    @Override
-    public void requestNeighbourList(Params params) {
-        mRxManager.add(mModel.requestNeighbourList(params)
+    public void requestCommunitys(Params params) {
+        mRxManager.add(mModel.requestCommunitys(params)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(neighbourListBean -> {
-                    if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseSuccess(neighbourListBean.getData().getMomentsList());
+                .subscribe(communityBean -> {
+                    if (communityBean.getOther().getCode() == 200) {
+                        getView().responseCommunitys(communityBean.getData().getCommunityInfoList());
                     } else {
-                        getView().error(neighbourListBean.getOther().getMessage());
+                        getView().error(communityBean.getOther().getMessage());
                     }
                 }, this::error));
     }
-
-    @Override
-    public void requestExchangeList(Params params) {
-        mRxManager.add(mModel.requestExchangeList(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(neighbourListBean -> {
-                    if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseSuccess(neighbourListBean.getData().getExchangeList());
-                    } else {
-                        getView().error(neighbourListBean.getOther().getMessage());
-                    }
-                }, this::error));
-    }
-
-    @Override
-    public void requestCarpoolList(Params params) {
-        mRxManager.add(mModel.requestCarpoolList(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(neighbourListBean -> {
-                    if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseSuccess(neighbourListBean.getData().getCarpoolList());
-                    } else {
-                        getView().error(neighbourListBean.getOther().getMessage());
-                    }
-                }, this::error));
-    }
-
-    @Override
-    public void requestMyNeihbourList(Params params) {
-        mRxManager.add(mModel.requestMyNeihbourList(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(neighbourListBean -> {
-                    if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseSuccess(neighbourListBean.getData().getMomentsList());
-                    } else {
-                        getView().error(neighbourListBean.getOther().getMessage());
-                    }
-                }, this::error));
-    }
-
-    @Override
-    public void requestMyExchangeList(Params params) {
-        mRxManager.add(mModel.requestMyExchangeList(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(neighbourListBean -> {
-                    if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseSuccess(neighbourListBean.getData().getExchangeList());
-                    } else {
-                        getView().error(neighbourListBean.getOther().getMessage());
-                    }
-                }, this::error));
-    }
-
-    @Override
-    public void requestMyCarpoolList(Params params) {
-        mRxManager.add(mModel.requestMyCarpoolList(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(neighbourListBean -> {
-                    if (neighbourListBean.getOther().getCode() == 200) {
-                        getView().responseSuccess(neighbourListBean.getData().getCarpoolList());
-                    } else {
-                        getView().error(neighbourListBean.getOther().getMessage());
-                    }
-                }, this::error));
-    }
-
-    @Override
-    public void requestRemoveMyCarpool(Params params) {
-        mRxManager.add(mModel.requestRemoveMyCarpool(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
-                        getView().removeSuccess(baseBean);
-                    } else {
-                        getView().error(baseBean.getOther().getMessage());
-                    }
-                }, this::error));
-    }
-
-    @Override
-    public void requestRemoveMyExchange(Params params) {
-        mRxManager.add(mModel.requestRemoveMyExchange(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
-                        getView().removeSuccess(baseBean);
-                    } else {
-                        getView().error(baseBean.getOther().getMessage());
-                    }
-                }, this::error));
-    }
-
-    @Override
-    public void requestRemoveMyNeighbour(Params params) {
-        mRxManager.add(mModel.requestRemoveMyNeighbour(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(baseBean -> {
-                    if (baseBean.getOther().getCode() == 200) {
-                        getView().removeSuccess(baseBean);
-                    } else {
-                        getView().error(baseBean.getOther().getMessage());
-                    }
-                }, this::error));
-    }
-
-
 }

@@ -28,12 +28,11 @@ import com.aglhz.yicommunity.event.EventCommunity;
 import com.aglhz.yicommunity.event.EventPublish;
 import com.aglhz.yicommunity.event.EventRefreshSocialityList;
 import com.aglhz.yicommunity.main.publish.CommentActivity;
-import com.aglhz.yicommunity.main.sociality.contract.SocialityContract;
-import com.aglhz.yicommunity.main.sociality.presenter.SocialityPresenter;
+import com.aglhz.yicommunity.main.sociality.contract.SocialityListContract;
+import com.aglhz.yicommunity.main.sociality.presenter.SocialityListPresenter;
 import com.aglhz.yicommunity.preview.PreviewActivity;
 import com.aglhz.yicommunity.web.WebActivity;
 import com.bumptech.glide.Glide;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,8 +53,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * 所有与社交相关（拼车服务，左邻右里，闲置交换）的真正内容的View层
  */
 
-public class SocialityListFragment extends BaseFragment<SocialityContract.Presenter> implements SocialityContract.View {
-    private static final String TAG = NeighbourFragment.class.getSimpleName();
+public class SocialityListFragment extends BaseFragment<SocialityListContract.Presenter> implements SocialityListContract.View {
+    private static final String TAG = SocialityFragment.class.getSimpleName();
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.ptrFrameLayout)
@@ -94,8 +93,8 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
 
     @NonNull
     @Override
-    protected SocialityContract.Presenter createPresenter() {
-        return new SocialityPresenter(this);
+    protected SocialityListContract.Presenter createPresenter() {
+        return new SocialityListPresenter(this);
     }
 
     @Override
@@ -168,7 +167,6 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
         mLinearLayoutManager = new LinearLayoutManager(_mActivity);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         adapter = new SocialityListRVAdapter();
-
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> {
             params.page++;
@@ -180,25 +178,22 @@ public class SocialityListFragment extends BaseFragment<SocialityContract.Presen
     }
 
     private void initListener() {
-        adapter.setOnItemChildLongClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
-            @Override
-            public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
-                SocialityListBean.DataBean.MomentsListBean bean = (SocialityListBean.DataBean.MomentsListBean) adapter.getData().get(position);
-                switch (view.getId()) {
-                    case R.id.iv_avatar_item_moments_list:
-                        new AlertDialog.Builder(_mActivity)
-                                .setItems(new String[]{"举报"}, (dialog, which) -> {
-                                    Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
-                                    introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
-                                    String link = String.format(ApiService.REPORT_URL, UserHelper.token, infoType, bean.getFid());
-                                    ALog.e(TAG, "report url:::" + link);
-                                    introductionIntent.putExtra(Constants.KEY_LINK, link);
-                                    _mActivity.startActivity(introductionIntent);
-                                }).show();
-                        break;
-                }
-                return false;
+        adapter.setOnItemChildLongClickListener((adapter1, view, position) -> {
+            SocialityListBean.DataBean.MomentsListBean bean = adapter.getData().get(position);
+            switch (view.getId()) {
+                case R.id.iv_avatar_item_moments_list:
+                    new AlertDialog.Builder(_mActivity)
+                            .setItems(new String[]{"举报"}, (dialog, which) -> {
+                                Intent introductionIntent = new Intent(_mActivity, WebActivity.class);
+                                introductionIntent.putExtra(Constants.KEY_TITLE, "举报投诉");
+                                String link = String.format(ApiService.REPORT_URL, UserHelper.token, infoType, bean.getFid());
+                                ALog.e(TAG, "report url:::" + link);
+                                introductionIntent.putExtra(Constants.KEY_LINK, link);
+                                _mActivity.startActivity(introductionIntent);
+                            }).show();
+                    break;
             }
+            return false;
         });
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             SocialityListBean.DataBean.MomentsListBean bean = (SocialityListBean.DataBean.MomentsListBean) adapter.getData().get(position);

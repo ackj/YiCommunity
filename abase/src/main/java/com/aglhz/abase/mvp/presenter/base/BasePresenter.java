@@ -21,9 +21,8 @@ import java.net.SocketTimeoutException;
  * <p>
  * 所有Presenter类的基类，负责调度View层和Model层的交互。
  */
-public abstract class BasePresenter<V extends BaseContract.View, M extends BaseContract.Model> {
+public abstract class BasePresenter<V extends BaseContract.View, M extends BaseContract.Model> implements BaseContract.Presenter {
     private final String TAG = BasePresenter.class.getSimpleName();
-
     public Reference<V> mViewReference;
     public M mModel;
     //每一套mvp应该拥有一个独立的RxManager
@@ -63,17 +62,14 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
 
     @UiThread
     public void clear() {
-
         //优先释放Model层对象，避免内存泄露
         if (mModel != null) {
             mModel.clear();
             mModel = null;
         }
-
         if (mRxManager != null) {
             mRxManager.clear();
         }
-
         //释放View层对象，避免内存泄露
         if (mViewReference != null) {
             mViewReference.clear();
@@ -81,8 +77,12 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
         }
     }
 
+    /**
+     * P层通用函数，用于对异常的统一处理，并调用V层显示通知用户。
+     *
+     * @param throwable
+     */
     public void error(Throwable throwable) {
-
         if (!isViewAttached()) {
             return;
         }
@@ -102,6 +102,24 @@ public abstract class BasePresenter<V extends BaseContract.View, M extends BaseC
             getView().error("数据异常");
         }
         throwable.printStackTrace();
-        ALog.e(TAG,throwable);
+        ALog.e(TAG, throwable);
+    }
+
+    /**
+     * 默认实现的接口，用于P层调用。
+     *
+     * @param request 传一些参数给P层。
+     */
+    @Override
+    public void start(Object request) {
+        if (isViewAttached()) {
+            getView().start("");
+        }
+    }
+
+    public void complete() {
+        if (isViewAttached()) {
+            getView().complete("");
+        }
     }
 }

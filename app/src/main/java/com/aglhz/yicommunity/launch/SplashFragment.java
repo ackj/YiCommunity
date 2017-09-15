@@ -72,7 +72,6 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
         DoorManager.getInstance().startService();
     }
 
-
     @AfterPermissionGranted(LOCATION)
     private void location() {
         String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
@@ -159,7 +158,12 @@ public class SplashFragment extends BaseFragment implements EasyPermissions.Perm
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         ALog.e(TAG, "onPermissionsDenied:" + requestCode + ":" + perms.size());
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            new AppSettingsDialog.Builder(this).build().show();
+            //这里需要重新设置Rationale和title，否则默认是英文格式
+            new AppSettingsDialog.Builder(this)
+                    .setRationale("没有该权限，此应用程序可能无法正常工作。打开应用设置屏幕以修改应用权限")
+                    .setTitle("必需权限")
+                    .build()
+                    .show();
         }
     }
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><!--作为简单选择器中的每一个item的样式。-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_item_rv_simple_selector"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:ellipsize="end"
+    android:maxLines="2"
+    android:padding="10dp" />

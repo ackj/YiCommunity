@@ -317,7 +317,6 @@ public class AddHouseFragment extends BaseFragment<AddHouseContract.Presenter> i
         if (addressSelector != null) {
             addressSelector = null;
         }
-
         super.onDestroy();
     }
 

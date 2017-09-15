@@ -19,7 +19,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 
 public class MessageCenterPresenter extends BasePresenter<MessageCenterContract.View, MessageCenterContract.Model> implements MessageCenterContract.Presenter {
-
     private final String TAG = MessageCenterPresenter.class.getSimpleName();
 
     public MessageCenterPresenter(MessageCenterContract.View mView) {

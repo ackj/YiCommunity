@@ -39,7 +39,7 @@ import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
  * <p>
  * 所有Fragment的基类。将Fragment作为View层对象，专职处理View的试图渲染和事件。
  */
-public abstract class BaseFragment<P extends BaseContract.Presenter> extends SwipeBackFragment {
+public abstract class BaseFragment<P extends BaseContract.Presenter> extends SwipeBackFragment implements BaseContract.View {
     private final String TAG = BaseFragment.class.getSimpleName();
     public P mPresenter;
     private LoadingDialog loadingDialog;
@@ -73,7 +73,6 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
             mPresenter.clear();
             mPresenter = null;
         }
-
         super.onDestroy();
     }
 
@@ -143,8 +142,15 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
     }
 
     public void showLoading() {
+        showLoading("玩命加载中…");
+    }
+
+    public void showLoading(String message) {
         if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(_mActivity);
+            loadingDialog.setDimAmount(0);
+        } else {
+            loadingDialog.setText(message);
         }
         loadingDialog.show();
     }
@@ -153,6 +159,17 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
         if (loadingDialog != null) {
             loadingDialog.dismiss();
         }
+    }
+
+    /**
+     * 用于被P层调用的通用函数。
+     *
+     * @param response
+     */
+    @Override
+    public void start(Object response) {
+        ALog.e(TAG, "start");
+        showLoading();
     }
 
     public void error(Throwable throwable) {
@@ -173,5 +190,21 @@ public abstract class BaseFragment<P extends BaseContract.Presenter> extends Swi
         }
         throwable.printStackTrace();
         ALog.e(TAG, throwable);
+    }
+
+    /**
+     * 用于被P曾调用的通用函数。
+     *
+     * @param errorMessage P层传递过来的错误信息显示给用户。
+     */
+    @Override
+    public void error(String errorMessage) {
+        dismissLoading();
+        DialogHelper.errorSnackbar(getView(), errorMessage);
+    }
+
+    @Override
+    public void complete(Object response) {
+        dismissLoading();
     }
 }

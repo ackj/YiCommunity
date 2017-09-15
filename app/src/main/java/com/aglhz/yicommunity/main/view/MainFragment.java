@@ -21,7 +21,7 @@ import com.aglhz.yicommunity.entity.bean.AppUpdateBean;
 import com.aglhz.yicommunity.main.guide.GuideHelper;
 import com.aglhz.yicommunity.main.home.view.HomeFragment;
 import com.aglhz.yicommunity.main.mine.view.MineFragment;
-import com.aglhz.yicommunity.main.sociality.view.NeighbourFragment;
+import com.aglhz.yicommunity.main.sociality.view.SocialityFragment;
 import com.aglhz.yicommunity.main.sociality.view.SocialityListFragment;
 import com.aglhz.yicommunity.main.steward.view.StewardFragment;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -73,13 +73,13 @@ public class MainFragment extends BaseFragment {
         if (savedInstanceState == null) {
             mFragments[0] = HomeFragment.newInstance();
             mFragments[1] = StewardFragment.newInstance();
-            mFragments[2] = NeighbourFragment.newInstance(SocialityListFragment.TYPE_NEIGHBOUR);
+            mFragments[2] = SocialityFragment.newInstance(SocialityListFragment.TYPE_NEIGHBOUR);
             mFragments[3] = MineFragment.newInstance();
             loadMultipleRootFragment(R.id.fl_container_main_fragment, 0, mFragments[0], mFragments[1], mFragments[2], mFragments[3]);
         } else {
             mFragments[0] = findChildFragment(HomeFragment.class);
             mFragments[1] = findChildFragment(StewardFragment.class);
-            mFragments[2] = findChildFragment(NeighbourFragment.class);
+            mFragments[2] = findChildFragment(SocialityFragment.class);
             mFragments[3] = findChildFragment(MineFragment.class);
             prePosition = savedInstanceState.getInt("prePosition");
         }
@@ -87,8 +87,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private void initData() {
-        //检测App的更新。
-        updateApp();
+        updateApp();//检测App的更新。
 
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.community, R.drawable.ic_home_black_78px, R.color.white);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.steward, R.drawable.ic_guanjia_black_79px, R.color.white);
@@ -121,7 +120,7 @@ public class MainFragment extends BaseFragment {
                         ((StewardFragment) mFragments[1]).go2TopAndRefresh(null);
                         break;
                     case 2:
-                        ((NeighbourFragment) mFragments[2]).go2TopAndRefresh();
+                        ((SocialityFragment) mFragments[2]).go2TopAndRefresh();
                         break;
                     case 3:
                         break;
@@ -158,10 +157,8 @@ public class MainFragment extends BaseFragment {
      * 检测是否有新版本需要下载更新。
      */
     private void updateApp() {
-        ALog.e("requestAppUpdatae-->" + ApiService.requestAppUpdatae);
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("appType", "1");
-
         new UpdateAppManager
                 .Builder()
                 .setActivity(_mActivity)
@@ -196,7 +193,7 @@ public class MainFragment extends BaseFragment {
                                 //大小，不设置不显示大小，可以不设置
                                 .setTargetSize(mAppUpdateBean.getData().getSize())
                                 //是否强制更新，可以不设置
-                                .setConstraint(false);
+                                .setConstraint(mAppUpdateBean.getData().isIsForce());
 
                         return updateAppBean;
                     }
