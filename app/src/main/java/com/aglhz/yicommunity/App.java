@@ -5,14 +5,14 @@ import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.multidex.MultiDexApplication;
-import android.widget.Toast;
+import android.os.PowerManager;
 
 import com.aglhz.abase.BaseApplication;
-import com.aglhz.abase.exception.AppExceptionHandler;
+import com.aglhz.abase.common.ActivityHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.yicommunity.common.ApiService;
+import com.aglhz.yicommunity.common.NotificationHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.aglhz.yicommunity.common.boxing.BoxingGlideLoader;
 import com.aglhz.yicommunity.event.EventRefreshMessageList;
@@ -20,7 +20,6 @@ import com.aglhz.yicommunity.event.EventUnread;
 import com.bilibili.boxing.BoxingMediaLoader;
 import com.bilibili.boxing.loader.IBoxingMediaLoader;
 import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
@@ -31,7 +30,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import me.yokeyword.fragmentation.Fragmentation;
 
 
 /**
@@ -102,9 +100,9 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         PushAgent mPushAgent = PushAgent.getInstance(this);
         mPushAgent.setDebugMode(true);
         mPushAgent.setResourcePackageName("com.aglhz.yicommunity");
-
+        mPushAgent.setNotificaitonOnForeground(false);
         //sdk开启通知声音
-        mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
+//        mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
 
         ALog.e(TAG, "UserHelper.account-->" + UserHelper.account);
 
@@ -136,36 +134,22 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         });
 
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
-//            @Override
-//            public void dealWithCustomMessage(final Context context, final UMessage msg) {
-//                ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
-//
-//                new Handler().post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        // TODO Auto-generated method stub
-//                        // 对自定义消息的处理方式，点击或者忽略
-//                        boolean isClickOrDismissed = true;
-//                        if (isClickOrDismissed) {
-////统计自定义消息的打开
-//                            UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
-//                        } else {
-////统计自定义消息的忽略
-//                            UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
-//                        }
-//                        Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
-//
-//                    }
-//                });
-//            }
 
             //自定义通知样式
             @Override
             public Notification getNotification(Context context, UMessage msg) {
                 //每当有通知送达时，均会回调getNotification方法，因此可以通过监听此方法来判断通知是否送达。
                 ALog.e(TAG, msg.getRaw().toString());
-                ALog.e(TAG, msg.custom);
+                ALog.e(TAG, "msg.builder_id-->" + msg.builder_id);
+
+                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, NotificationHelper.CALL_IN + "");
+                wakeLock.acquire();
+//                wakeLock.release();
+
+                if (msg.builder_id == 1 && !ActivityHelper.getInstance().isEmpty()) {
+                    msg.builder_id = 0;
+                }
 
                 EventBus.getDefault().post(new EventUnread());
                 EventBus.getDefault().post(new EventRefreshMessageList());
@@ -174,19 +158,38 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
                     //自定义通知样式编号
                     case 1:
                         ALog.e(TAG, msg.builder_id);
+                        ALog.e(TAG, msg.custom);
+                        ALog.e(TAG, msg.play_vibrate);
+                        ALog.e(TAG, msg.play_lights);
+                        ALog.e(TAG, msg.play_sound);
 
-//                        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-//                        RemoteViews myNotificationView = new RemoteViews(context.getPackageName(), R.layout.notification_view);
-//                        myNotificationView.setTextViewText(R.id.notification_title, msg.title);
-//                        myNotificationView.setTextViewText(R.id.notification_text, msg.text);
-//                        myNotificationView.setImageViewBitmap(R.id.notification_large_icon, getLargeIcon(context, msg));
-//                        myNotificationView.setImageViewResource(R.id.notification_small_icon, getSmallIconId(context, msg));
-//                        builder.setContent(myNotificationView);
-//                        builder.setAutoCancel(true);
-//                        Notification mNotification = builder.build();
-//                        //由于Android v4包的bug，在2.3及以下系统，Builder创建出来的Notification，并没有设置RemoteView，故需要添加此代码
-//                        mNotification.contentView = myNotificationView;
-//                        return mNotification;
+//                        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                        Notification notification = new NotificationCompat.Builder(App.mContext)
+//                                .setContentTitle(msg.title)
+//                                .setContentText(msg.text)
+//                                .setWhen(System.currentTimeMillis())
+//                                .setSmallIcon(R.mipmap.ic_app_logo)
+//                                .setLargeIcon(BitmapFactory.decodeResource(App.mContext.getResources(), R.mipmap.ic_app_logo))
+//                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
+//                                .setVibrate(new long[]{0, 1000, 1000, 1000})
+//                                .setLights(Color.RED, 1000, 1000)
+//                                .setPriority(NotificationCompat.PRIORITY_MAX)
+//                                .setAutoCancel(true)
+//                                .build();
+//                        notification.flags |= Notification.FLAG_INSISTENT;
+//
+//                        Observable.timer(10, TimeUnit.SECONDS)
+//                                .subscribe(new Consumer<Long>() {
+//                                    @Override
+//                                    public void accept(@NonNull Long aLong) throws Exception {
+//                                        NotificationHelper.cancel();
+//                                        notification.flags = Notification.DEFAULT_SOUND;
+//                                        manager.notify(NotificationHelper.CALL_IN, notification);
+//                                    }
+//                                });
+
+                        return NotificationHelper.callIn(msg);
+//                        return notification;
                     default:
                         //默认为0，若填写的builder_id并不存在，也使用默认。
                         return super.getNotification(context, msg);
@@ -206,13 +209,12 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
             //点击通知的自定义行为
             @Override
             public void dealWithCustomAction(Context context, UMessage msg) {
-                Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
                 ALog.e(TAG, msg.getRaw().toString());//未来考虑把这个写入本地日志系统，当然要考虑异步形式。
                 ALog.e(TAG, msg.custom);
+//                ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).cancel();
             }
         };
-
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
-
     }
 }

@@ -120,7 +120,7 @@ public class AppExceptionHandler implements Thread.UncaughtExceptionHandler {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-//            ActivityManager.getInstance().appExit();
+//            ActivityHelper.getInstance().appExit();
         }
     }
 

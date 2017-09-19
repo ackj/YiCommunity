@@ -13,8 +13,8 @@
 
     <SurfaceView
         android:id="@+id/videoCaptureSurface"
-        android:layout_width="140dp"
-        android:layout_height="100dp"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"

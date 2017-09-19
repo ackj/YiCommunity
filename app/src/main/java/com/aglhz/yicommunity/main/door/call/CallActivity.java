@@ -14,9 +14,11 @@ import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.view.base.BaseActivity;
 import com.aglhz.abase.network.http.HttpHelper;
 import com.aglhz.abase.utils.ToastUtils;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.ApiService;
 import com.aglhz.yicommunity.common.Constants;
+import com.aglhz.yicommunity.common.NotificationHelper;
 import com.aglhz.yicommunity.common.UserHelper;
 import com.sipphone.sdk.BluetoothManager;
 import com.sipphone.sdk.SipCoreManager;
@@ -53,10 +55,9 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         setContentView(R.layout.activity_call);
-
+        NotificationHelper.cancel();
         if (!BluetoothManager.getInstance().isBluetoothHeadsetAvailable()) {    // true
             BluetoothManager.getInstance().initBluetooth();
         }
@@ -69,7 +70,11 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
         mListener = new LinphoneCoreListenerBase() {
             @Override
             public void callState(LinphoneCore lc, LinphoneCall call, State state, String message) {
-                ALog.e(TAG,  state.toString());
+//                ToastUtils.showToast(App.mContext, "state-->" + state + "-----" + "message-->" + message);
+                ALog.e("state-->" + state + "-----" + "message-->" + message);
+                if (SipCoreManager.getLc().getCallsNb() == 0) {
+                    finish();
+                }
 
                 if (state == State.CallEnd || state == State.Error || state == State.CallReleased) {
                     finish();
@@ -157,6 +162,7 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.accept_call:
+                NotificationHelper.cancel();
                 accept();
                 break;
             case R.id.video:
@@ -166,10 +172,7 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
                 toggleMicro();
                 break;
             case R.id.iv_open_door:
-
                 openDoor();
-
-
                 break;
         }
     }
@@ -184,8 +187,6 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
         if (dir.contains("D")) {
             dir = dir.substring(1);
         }
-
-//        ToastUtils.showToast(BaseApplication.mContext, dir);
 
         rxManager.add(HttpHelper.getService(ApiService.class)
                 .requestOpenDoor(ApiService.requestOpenDoor, UserHelper.token, dir)
@@ -210,7 +211,11 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onDestroy() {
+        ToastUtils.showToast(App.mContext, "通话已结束！");
+
         super.onDestroy();
+        NotificationHelper.cancel();
+
         hangUp();
 
         if (rxManager != null) {
@@ -221,6 +226,7 @@ public class CallActivity extends BaseActivity implements View.OnClickListener {
         if (lc != null) {
             lc.removeListener(mListener);
         }
+
     }
 
     public void displayVideoCall(boolean display) {

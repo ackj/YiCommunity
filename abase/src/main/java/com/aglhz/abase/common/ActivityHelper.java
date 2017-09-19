@@ -9,12 +9,12 @@ import java.util.Stack;
  * Author：leguang on 2016/10/9 0009 15:49
  * Email：langmanleguang@qq.com
  */
-public class ActivityManager {
-    private final String TAG = this.getClass().getSimpleName();
-    private static Stack<Activity> activityStack;
-    private static ActivityManager instance;
+public class ActivityHelper {
+    private final String TAG = ActivityHelper.class.getSimpleName();
+    private Stack<Activity> activityStack;
+    private static ActivityHelper instance;
 
-    private ActivityManager() {
+    private ActivityHelper() {
         if (activityStack == null) {
             activityStack = new Stack<Activity>();
         }
@@ -23,9 +23,9 @@ public class ActivityManager {
     /**
      * 单一实例
      */
-    public static ActivityManager getInstance() {
+    public static ActivityHelper getInstance() {
         if (instance == null) {
-            instance = new ActivityManager();
+            instance = new ActivityHelper();
         }
         return instance;
     }
@@ -35,7 +35,7 @@ public class ActivityManager {
      *
      * @author kymjs
      */
-    public static Activity getActivity(Class<?> cls) {
+    public Activity getActivity(Class<?> cls) {
         if (activityStack != null)
             for (Activity activity : activityStack) {
                 if (activity.getClass().equals(cls)) {
@@ -125,5 +125,9 @@ public class ActivityManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isEmpty() {
+        return activityStack.isEmpty();
     }
 }

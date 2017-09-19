@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.WindowManager;
 
-import com.aglhz.abase.common.ActivityManager;
+import com.aglhz.abase.common.ActivityHelper;
 import com.aglhz.abase.log.ALog;
 import com.aglhz.abase.mvp.contract.base.BaseContract;
 import com.aglhz.abase.network.http.LogInterceptor;
@@ -53,7 +53,7 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
 
     private void initActivity() {
         //把每一个Activity加入栈中
-        ActivityManager.getInstance().addActivity(this);
+        ActivityHelper.getInstance().addActivity(this);
 
         //一旦启动某个Activity就打印Log，方便找到该类
         ALog.e(TAG);
@@ -77,7 +77,7 @@ public abstract class BaseActivity<P extends BaseContract.Presenter> extends Swi
             mPresenter = null;
         }
         //把每一个Activity弹出栈
-        ActivityManager.getInstance().removeActivity(this);
+        ActivityHelper.getInstance().removeActivity(this);
         super.onDestroy();
     }
 
