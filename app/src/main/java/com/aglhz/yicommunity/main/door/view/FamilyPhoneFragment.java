@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.aglhz.abase.common.DialogHelper;
 import com.aglhz.abase.mvp.view.base.BaseFragment;
+import com.aglhz.abase.utils.KeyBoardUtils;
 import com.aglhz.abase.utils.RegexUtils;
+import com.aglhz.yicommunity.App;
 import com.aglhz.yicommunity.R;
 import com.aglhz.yicommunity.common.Params;
 import com.aglhz.yicommunity.entity.bean.BaseBean;
@@ -31,8 +33,7 @@ import butterknife.Unbinder;
  */
 
 public class FamilyPhoneFragment extends BaseFragment<FamilyPhoneContract.Presenter> implements FamilyPhoneContract.View {
-
-    private static final String TAG = QuickOpenDoorFragment.class.getSimpleName();
+    public static final String TAG = QuickOpenDoorFragment.class.getSimpleName();
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
@@ -42,7 +43,6 @@ public class FamilyPhoneFragment extends BaseFragment<FamilyPhoneContract.Presen
     @BindView(R.id.et_phone)
     EditText etPhone;
     private Unbinder unbinder;
-
     private Params params = Params.getInstance();
 
     public static FamilyPhoneFragment newInstance(String roomDir, String phone) {
@@ -107,6 +107,7 @@ public class FamilyPhoneFragment extends BaseFragment<FamilyPhoneContract.Presen
 
     @Override
     public void onDestroyView() {
+        KeyBoardUtils.hideKeybord(etPhone, App.mContext);
         super.onDestroyView();
         unbinder.unbind();
     }

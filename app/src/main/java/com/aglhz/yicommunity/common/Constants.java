@@ -128,14 +128,14 @@ public class Constants {
             UUID = "5D7F8D33-2D37-4EBC-8E38-172E8AFD9136";//给成都电信测试。
 
             //调试可以改这里的地址。
-//            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-//            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";//配置系统
-//            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
+            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+            BASE_PROPERTYCFG_M = "http://www.aglhz.com:8096/propertyCFG-m";//配置系统
+            BASE_PROPERTY = "http://www.aglhz.com:8090/sub_property_ysq";   //物业
 
             //给成都电信测试。
-            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
-            BASE_PROPERTYCFG_M = "http://mem.planidea.cn:8096/propertyCFG-m/";//配置系统
-            BASE_PROPERTY = "http://mem.planidea.cn:8090/sub_property_ysq/";   //物业
+//            BASE_USER = "http://www.aglhz.com:8076/memberSYS-m";           //用户
+//            BASE_PROPERTYCFG_M = "http://mem.planidea.cn:8096/propertyCFG-m/";//配置系统
+//            BASE_PROPERTY = "http://mem.planidea.cn:8090/sub_property_ysq/";   //物业
 
         } else {
             //门禁机WebServer

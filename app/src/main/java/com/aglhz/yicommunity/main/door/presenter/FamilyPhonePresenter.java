@@ -14,7 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Email: liujia95me@126.com
  */
 
-public class FamilyPhonePresenter extends BasePresenter<FamilyPhoneContract.View,FamilyPhoneContract.Model> implements FamilyPhoneContract.Presenter {
+public class FamilyPhonePresenter extends BasePresenter<FamilyPhoneContract.View, FamilyPhoneContract.Model> implements FamilyPhoneContract.Presenter {
     /**
      * 创建Presenter的时候就绑定View和创建model。
      *
@@ -31,11 +31,6 @@ public class FamilyPhonePresenter extends BasePresenter<FamilyPhoneContract.View
     }
 
     @Override
-    public void start(Object request) {
-
-    }
-
-    @Override
     public void requestSetFamilyPhone(Params params) {
         mRxManager.add(mModel.requestSetFamilyPhone(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -45,6 +40,6 @@ public class FamilyPhonePresenter extends BasePresenter<FamilyPhoneContract.View
                     } else {
                         getView().error(bean.getOther().getMessage());
                     }
-                }, this::error));
+                }, this::error, this::complete, disposable -> start("")));
     }
 }

@@ -41,11 +41,6 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
     }
 
     @Override
-    public void start(Object request) {
-
-    }
-
-    @Override
     public Observable<SipBean> requestSip(Params params) {
         return HttpHelper.getService(ApiService.class)
                 .requestSip(ApiService.requestSip, params.token)

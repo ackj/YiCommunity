@@ -67,6 +67,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View, LoginContr
                 .subscribe(sipBean -> {
                     if (sipBean.getOther().getCode() == Constants.RESPONSE_CODE_NOMAL) {
                         UserHelper.setSip(sipBean.getData().getAccount());
+                        ALog.e("UserHelper.sip-->" + UserHelper.sip);
                         DoorManager.getInstance().initWebUserApi(UserHelper.sip, new DoorManager.AccessCallBack() {
 
                             @Override
