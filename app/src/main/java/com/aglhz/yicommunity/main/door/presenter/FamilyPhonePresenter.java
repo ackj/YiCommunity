@@ -15,11 +15,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 
 public class FamilyPhonePresenter extends BasePresenter<FamilyPhoneContract.View, FamilyPhoneContract.Model> implements FamilyPhoneContract.Presenter {
-    /**
-     * 创建Presenter的时候就绑定View和创建model。
-     *
-     * @param mView 所要绑定的view层对象，一般在View层创建Presenter的时候通过this把自己传过来。
-     */
+    public static final String TAG = FamilyPhonePresenter.class.getSimpleName();
+
     public FamilyPhonePresenter(FamilyPhoneContract.View mView) {
         super(mView);
     }

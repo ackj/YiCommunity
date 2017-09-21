@@ -83,8 +83,6 @@ public class FamilyPhoneFragment extends BaseFragment<FamilyPhoneContract.Presen
         super.onViewCreated(view, savedInstanceState);
         initToolbar();
         initData();
-        initStateManager();
-        initListener();
     }
 
     private void initToolbar() {
@@ -100,18 +98,6 @@ public class FamilyPhoneFragment extends BaseFragment<FamilyPhoneContract.Presen
             etPhone.setText(params.phoneNo);
         }
     }
-
-    private void initStateManager() {
-    }
-
-    private void initListener() {
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
 
     @Override
     public void onDestroyView() {
@@ -136,12 +122,8 @@ public class FamilyPhoneFragment extends BaseFragment<FamilyPhoneContract.Presen
     }
 
     @Override
-    public void start(Object response) {
-
-    }
-
-    @Override
     public void error(String errorMessage) {
+        super.error(errorMessage);
         DialogHelper.warningSnackbar(getView(), errorMessage);
     }
 

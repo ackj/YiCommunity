@@ -16,16 +16,12 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class FamilyPhoneModel extends BaseModel implements FamilyPhoneContract.Model {
-
-    @Override
-    public void start(Object request) {
-
-    }
+    public static final String TAG = FamilyPhoneModel.class.getSimpleName();
 
     @Override
     public Observable<BaseBean> requestSetFamilyPhone(Params params) {
         return HttpHelper.getService(ApiService.class).requestSetFamilyPhone(ApiService.requestSetFamilyPhone,
-                params.token,params.phoneNo,params.roomDir)
+                params.token, params.phoneNo, params.roomDir)
                 .subscribeOn(Schedulers.io());
     }
 }
