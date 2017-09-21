@@ -60,13 +60,21 @@ public class FamilyPhoneFragment extends BaseFragment<FamilyPhoneContract.Presen
         return new FamilyPhonePresenter(this);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            params.roomDir = getArguments().getString("roomDir");
+            params.phoneNo = getArguments().getString("phone");
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_family_phone, container, false);
         unbinder = ButterKnife.bind(this, view);
-        params.roomDir = getArguments().getString("roomDir");
-        params.phoneNo = getArguments().getString("phone");
         return view;
     }
 
